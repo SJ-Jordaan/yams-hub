@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:yams_hub/core/dashboard/section_decode.dart';
 import 'package:yams_hub/core/theme/theme.dart';
 import 'package:yams_hub/core/widgets/widgets.dart';
 import 'package:yams_models/yams_models.dart';
@@ -18,7 +19,7 @@ class SubtitlesDashboardCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final card = section.decode(SubtitlesCard.fromJson);
+    final card = decodeCached(section, SubtitlesCard.fromJson);
     if (card == null) {
       return Text('No data', style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant));
     }

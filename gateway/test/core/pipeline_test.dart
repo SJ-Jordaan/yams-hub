@@ -453,6 +453,7 @@ void main() {
   });
 
   group('static web', () {
+    const revision = '89c39edfdfae2949f6806e4a315c0c08522238b7';
     late Directory web;
     late Handler handler;
     setUpAll(() async {
@@ -461,6 +462,13 @@ void main() {
           .writeAsStringSync('<!doctype html><title>hub</title>');
       File(p.join(web.path, 'main.dart.js'))
           .writeAsStringSync('console.log(1);' * 200);
+      File(p.join(web.path, 'flutter_bootstrap.js')).writeAsStringSync(
+        '_flutter.buildConfig = {"engineRevision":"$revision","builds":[]};',
+      );
+      Directory(p.join(web.path, 'canvaskit', 'chromium'))
+          .createSync(recursive: true);
+      File(p.join(web.path, 'canvaskit', 'canvaskit.wasm'))
+          .writeAsBytesSync(List.generate(4096, (i) => i % 7));
       Directory(p.join(web.path, 'assets')).createSync();
       File(p.join(web.path, 'assets', 'AssetManifest.json'))
           .writeAsStringSync('{}');
@@ -497,15 +505,217 @@ void main() {
       expect(again.statusCode, 304);
     });
 
-    test('gzips compressible files', () async {
-      final r = await get(
-        '/main.dart.js',
-        headers: {'accept-encoding': 'gzip'},
-      );
-      expect(r.headers['content-encoding'], 'gzip');
-      final body = await r.read().expand((c) => c).toList();
-      expect(utf8.decode(gzip.decode(body)), startsWith('console.log(1);'));
-    });
+    Future<Response> call(
+      StaticWebHandler h,
+      String path, {
+      Map<String, String> headers = const {},
+    }) async => h(
+      Request(
+        'GET',
+        Uri.parse('http://192.168.10.183:8090$path'),
+        headers: headers,
+      ),
+    );
+
+    test(
+      'compression never runs on the request path; warmed files are gzipped',
+      () async {
+        final h = StaticWebHandler(web.path);
+        // Cold: served as is, at once, and queued for compression.
+        final cold = await call(
+          h,
+          '/main.dart.js',
+          headers: {'accept-encoding': 'gzip'},
+        );
+        expect(h.gzipCacheBytes, 0, reason: 'nothing was compressed inline');
+        expect(cold.statusCode, 200);
+        expect(cold.headers['content-encoding'], isNull);
+        expect(cold.headers['vary'], 'Accept-Encoding');
+        expect(await cold.readAsString(), startsWith('console.log(1);'));
+
+        await h.warmUp();
+        expect(h.gzipCacheBytes, greaterThan(0));
+        final warm = await call(
+          h,
+          '/main.dart.js',
+          headers: {'accept-encoding': 'gzip'},
+        );
+        expect(warm.headers['content-encoding'], 'gzip');
+        expect(warm.headers['vary'], 'Accept-Encoding');
+        final body = await warm.read().expand((c) => c).toList();
+        expect(utf8.decode(gzip.decode(body)), startsWith('console.log(1);'));
+        final wasm = await call(
+          h,
+          '/canvaskit/canvaskit.wasm',
+          headers: {'accept-encoding': 'gzip'},
+        );
+        expect(wasm.headers['content-encoding'], 'gzip');
+
+        // Small files (≤ 1 KiB) and clients without gzip get identity.
+        final small = await call(
+          h,
+          '/assets/AssetManifest.json',
+          headers: {'accept-encoding': 'gzip'},
+        );
+        expect(small.headers['content-encoding'], isNull);
+        expect(await small.readAsString(), '{}');
+        final identity = await call(h, '/main.dart.js');
+        expect(identity.headers['content-encoding'], isNull);
+      },
+    );
+
+    test(
+      'a file served before warm-up is compressed in the background',
+      () async {
+        final h = StaticWebHandler(web.path);
+        final first = await call(
+          h,
+          '/canvaskit/canvaskit.wasm',
+          headers: {'accept-encoding': 'gzip'},
+        );
+        expect(first.headers['content-encoding'], isNull);
+        await first.read().drain<void>();
+        for (var i = 0; i < 200 && h.gzipCacheBytes == 0; i++) {
+          await Future<void>.delayed(const Duration(milliseconds: 10));
+        }
+        final second = await call(
+          h,
+          '/canvaskit/canvaskit.wasm',
+          headers: {'accept-encoding': 'gzip'},
+        );
+        expect(second.headers['content-encoding'], 'gzip');
+        final body = await second.read().expand((c) => c).toList();
+        expect(gzip.decode(body), List.generate(4096, (i) => i % 7));
+      },
+    );
+
+    test(
+      'ETags are content hashes: same bytes with a new mtime still 304',
+      () async {
+        final dir = await Directory.systemTemp.createTemp('yams-hub-web-etag-');
+        addTearDown(() => dir.delete(recursive: true));
+        File(p.join(dir.path, 'index.html'))
+            .writeAsStringSync('<title>x</title>');
+        final js = File(p.join(dir.path, 'main.dart.js'))
+          ..writeAsStringSync('var a = 1;' * 300);
+        js.setLastModifiedSync(DateTime.utc(2026, 1, 1));
+
+        final before = StaticWebHandler(dir.path);
+        await before.warmUp();
+        final r = await call(before, '/main.dart.js');
+        final etag = r.headers['etag']!;
+        expect(etag, matches(RegExp(r'^"[0-9a-f]{32}"$')));
+        expect(r.headers['cache-control'], 'no-cache');
+
+        // A redeploy rewrites the same bytes: new mtime, same ETag.
+        js
+          ..writeAsStringSync('var a = 1;' * 300)
+          ..setLastModifiedSync(DateTime.utc(2026, 2, 1));
+        final after = StaticWebHandler(dir.path);
+        await after.warmUp();
+        final again = await call(after, '/main.dart.js');
+        expect(again.headers['etag'], etag);
+
+        // A conditional request answers 304, even before the new process has
+        // hashed the file (the hash is computed for the conditional request).
+        final cold = StaticWebHandler(dir.path);
+        final notModified = await call(
+          cold,
+          '/main.dart.js',
+          headers: {'if-none-match': etag},
+        );
+        expect(notModified.statusCode, 304);
+        expect(notModified.headers['etag'], etag);
+        expect(notModified.headers['cache-control'], 'no-cache');
+        expect(notModified.headers['vary'], 'Accept-Encoding');
+
+        // Different bytes give a different ETag and a full response.
+        js.writeAsStringSync('var b = 2;' * 300);
+        final changed = await call(
+          after,
+          '/main.dart.js',
+          headers: {'if-none-match': etag},
+        );
+        expect(changed.statusCode, 200);
+        expect(changed.headers['etag'], isNot(etag));
+        expect(await changed.readAsString(), startsWith('var b = 2;'));
+      },
+    );
+
+    test(
+      'before its hash is known a file has a size+mtime ETag that stays valid',
+      () async {
+        final h = StaticWebHandler(web.path);
+        final r = await call(h, '/index.html');
+        final statTag = r.headers['etag']!;
+        expect(statTag, matches(RegExp(r'^"[0-9a-f]+-[0-9a-f]+"$')));
+        await h.warmUp();
+        final again = await call(
+          h,
+          '/index.html',
+          headers: {'if-none-match': statTag},
+        );
+        expect(again.statusCode, 304);
+        expect(
+          again.headers['etag'],
+          matches(RegExp(r'^"[0-9a-f]{32}"$')),
+          reason: 'the 304 hands the client the content hash',
+        );
+      },
+    );
+
+    test(
+      'canvaskit-<engineRevision>/ is the immutable alias of canvaskit/',
+      () async {
+        final h = StaticWebHandler(web.path);
+        expect(h.engineRevision, revision);
+        await h.warmUp();
+        final r = await call(h, '/canvaskit-$revision/canvaskit.wasm');
+        expect(r.statusCode, 200);
+        expect(r.headers['cache-control'], immutableCacheControl);
+        expect(
+          await r.read().expand((c) => c).toList(),
+          List.generate(4096, (i) => i % 7),
+        );
+        // The plain path keeps working, revalidated as before.
+        final plain = await call(h, '/canvaskit/canvaskit.wasm');
+        expect(plain.statusCode, 200);
+        expect(plain.headers['cache-control'], 'no-cache');
+        expect(plain.headers['etag'], r.headers['etag']);
+        final notModified = await call(
+          h,
+          '/canvaskit-$revision/canvaskit.wasm',
+          headers: {'if-none-match': r.headers['etag']!},
+        );
+        expect(notModified.statusCode, 304);
+        expect(notModified.headers['cache-control'], immutableCacheControl);
+        // Any other revision, missing files and directories are 404 (never the
+        // SPA page, which an immutable cache would keep for a year).
+        for (final path in [
+          '/canvaskit-0000000000000000000000000000000000000000/canvaskit.wasm',
+          '/canvaskit-/canvaskit.wasm',
+          '/canvaskit-$revision/missing.wasm',
+          '/canvaskit-$revision/chromium',
+        ]) {
+          expect((await call(h, path)).statusCode, 404, reason: path);
+        }
+        // A build without flutter_bootstrap.js serves no alias.
+        final dir = await Directory.systemTemp.createTemp('yams-hub-web-nobs-');
+        addTearDown(() => dir.delete(recursive: true));
+        File(p.join(dir.path, 'index.html'))
+            .writeAsStringSync('<title>x</title>');
+        Directory(p.join(dir.path, 'canvaskit')).createSync();
+        File(p.join(dir.path, 'canvaskit', 'canvaskit.js'))
+            .writeAsStringSync('x');
+        final bare = StaticWebHandler(dir.path);
+        expect(bare.engineRevision, isNull);
+        expect(
+          (await call(bare, '/canvaskit-$revision/canvaskit.js')).statusCode,
+          404,
+        );
+        expect((await call(bare, '/canvaskit/canvaskit.js')).statusCode, 200);
+      },
+    );
 
     test(
       'SPA fallback for extension-less paths, 404 for missing files',

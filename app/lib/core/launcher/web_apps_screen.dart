@@ -73,9 +73,7 @@ class _LauncherGrid extends StatelessWidget {
                 mainAxisSpacing: 12,
                 crossAxisSpacing: 12,
                 childAspectRatio: 0.9,
-                children: [
-                  for (final e in entries.where((e) => e.group == group)) LauncherTile(entry: e),
-                ],
+                children: [for (final e in entries.where((e) => e.group == group)) LauncherTile(entry: e)],
               ),
             ),
           ],

@@ -10,6 +10,7 @@ import 'package:yams_models/yams_models.dart';
 import '../settings/app_settings.dart';
 import '../theme/theme.dart';
 import '../widgets/formatters.dart';
+import 'dashboard_providers.dart';
 
 /// [alerts] without the dismissed ones, most severe first (newest first
 /// within a severity).
@@ -28,10 +29,9 @@ List<Alert> visibleAlerts(List<Alert> alerts, Set<String> dismissed) {
   return list;
 }
 
+/// The dashboard's alerts; watches only `alerts` of [dashboardProvider].
 class AlertsPanel extends ConsumerStatefulWidget {
-  const AlertsPanel({super.key, required this.alerts});
-
-  final List<Alert> alerts;
+  const AlertsPanel({super.key});
 
   /// Rows shown before "N more".
   static const collapsedCount = 3;
@@ -46,7 +46,8 @@ class _AlertsPanelState extends ConsumerState<AlertsPanel> {
   @override
   Widget build(BuildContext context) {
     final dismissed = ref.watch(appSettingsProvider.select((s) => s.dismissedAlerts));
-    final alerts = visibleAlerts(widget.alerts, dismissed);
+    final all = ref.watch(dashboardProvider.select((s) => s.value?.alerts ?? const <Alert>[]));
+    final alerts = visibleAlerts(all, dismissed);
     if (alerts.isEmpty) return const SizedBox.shrink();
     final shown = _expanded ? alerts : alerts.take(AlertsPanel.collapsedCount).toList();
     final hidden = alerts.length - shown.length;
@@ -92,14 +93,17 @@ class _AlertRow extends StatelessWidget {
     ].join(' · ');
     return InkWell(
       onTap: canOpen ? () => context.go(route) : null,
-      child: IntrinsicHeight(
+      // The colour bar is a border, not a stretched child: no intrinsic
+      // layout pass.
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          border: Border(left: BorderSide(width: 4, color: color)),
+        ),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Container(width: 4, color: color),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(12, 10, 4, 10),
+                padding: const EdgeInsets.fromLTRB(16, 10, 4, 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,

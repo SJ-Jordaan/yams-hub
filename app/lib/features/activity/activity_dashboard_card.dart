@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:yams_hub/core/auth/auth_controller.dart';
+import 'package:yams_hub/core/dashboard/section_decode.dart';
 import 'package:yams_hub/core/routing/paths.dart';
 import 'package:yams_hub/core/theme/theme.dart';
 import 'package:yams_hub/core/widgets/widgets.dart';
@@ -23,7 +24,7 @@ class ActivityDashboardCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     ActivityCard? card;
     try {
-      card = section.decode(ActivityCard.fromJson);
+      card = decodeCached(section, ActivityCard.fromJson);
     } on FormatException {
       card = null;
     }

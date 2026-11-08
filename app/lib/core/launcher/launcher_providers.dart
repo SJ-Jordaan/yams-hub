@@ -42,13 +42,7 @@ const Map<ExternalApp, ({LauncherGroup group, IconData icon})> launcherApps = {
 /// One launcher tile.
 @immutable
 class LauncherEntry {
-  const LauncherEntry({
-    required this.app,
-    required this.group,
-    required this.icon,
-    this.health,
-    this.url,
-  });
+  const LauncherEntry({required this.app, required this.group, required this.icon, this.health, this.url});
 
   final ExternalApp app;
   final LauncherGroup group;
@@ -105,17 +99,45 @@ String launcherSummary(List<LauncherEntry> entries) {
   return withStatus.isEmpty ? apps : '$apps · $up up';
 }
 
+/// Whether [a] and [b] show the same tiles (app, URL, status dot and
+/// version); latency and the other health fields are not shown.
+bool sameLauncherEntries(List<LauncherEntry> a, List<LauncherEntry> b) {
+  if (identical(a, b)) return true;
+  if (a.length != b.length) return false;
+  for (var i = 0; i < a.length; i++) {
+    final x = a[i], y = b[i];
+    if (x.app != y.app ||
+        x.url != y.url ||
+        (x.health == null) != (y.health == null) ||
+        x.status != y.status ||
+        x.version != y.version) {
+      return false;
+    }
+  }
+  return true;
+}
+
 /// The visible launcher tiles. Fails only when `GET /server` fails; a failed
-/// `GET /health` just removes the status dots.
-final launcherEntriesProvider = FutureProvider.autoDispose<List<LauncherEntry>>((ref) async {
-  final hidden = ref.watch(appSettingsProvider.select((s) => s.hiddenLauncherApps));
-  final resolver = ref.watch(externalLinkResolverProvider);
-  final config = await ref.watch(serverConfigProvider.future);
-  final health = ref.watch(healthProvider).value;
-  return buildLauncherEntries(
-    config: config,
-    health: health,
-    hidden: hidden,
-    resolveUrl: (app) => resolver.resolve(ExternalLink(app, '/')),
-  );
-});
+/// `GET /health` just removes the status dots. A health refresh that changes
+/// no tile keeps the previous list, so the tiles do not rebuild.
+class LauncherEntriesController extends AsyncNotifier<List<LauncherEntry>> {
+  @override
+  Future<List<LauncherEntry>> build() async {
+    final hidden = ref.watch(appSettingsProvider.select((s) => s.hiddenLauncherApps));
+    final resolver = ref.watch(externalLinkResolverProvider);
+    final config = await ref.watch(serverConfigProvider.future);
+    final health = ref.watch(healthProvider).value;
+    final next = buildLauncherEntries(
+      config: config,
+      health: health,
+      hidden: hidden,
+      resolveUrl: (app) => resolver.resolve(ExternalLink(app, '/')),
+    );
+    final previous = state.value;
+    return previous != null && sameLauncherEntries(previous, next) ? previous : next;
+  }
+}
+
+final launcherEntriesProvider = AsyncNotifierProvider.autoDispose<LauncherEntriesController, List<LauncherEntry>>(
+  LauncherEntriesController.new,
+);

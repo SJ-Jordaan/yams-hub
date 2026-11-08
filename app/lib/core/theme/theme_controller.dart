@@ -7,6 +7,13 @@ import 'package:flutter/material.dart';
 import '../settings/app_settings.dart';
 import 'theme.dart';
 
+/// The settings the themes depend on (a record, compared by value).
+typedef HubThemeSettings = ({ThemeMode themeMode, bool dynamicColor, int seedColor, ListDensity listDensity});
+
+/// The theme fields of [s].
+HubThemeSettings themeSettingsOf(AppSettings s) =>
+    (themeMode: s.themeMode, dynamicColor: s.dynamicColor, seedColor: s.seedColor, listDensity: s.listDensity);
+
 /// The two themes plus the mode `MaterialApp` should use.
 @immutable
 class HubThemes {
@@ -14,18 +21,15 @@ class HubThemes {
 
   /// Picks the dynamic schemes when the user enabled dynamic colour and the
   /// platform supplied them (Android 12+), otherwise the seeded schemes.
-  factory HubThemes.resolve(
-    AppSettings settings, {
-    ColorScheme? lightDynamic,
-    ColorScheme? darkDynamic,
-  }) {
+  factory HubThemes.resolve(AppSettings settings, {ColorScheme? lightDynamic, ColorScheme? darkDynamic}) =>
+      HubThemes.from(themeSettingsOf(settings), lightDynamic: lightDynamic, darkDynamic: darkDynamic);
+
+  /// [HubThemes.resolve] from the theme fields alone.
+  factory HubThemes.from(HubThemeSettings settings, {ColorScheme? lightDynamic, ColorScheme? darkDynamic}) {
     final useDynamic = settings.dynamicColor && lightDynamic != null && darkDynamic != null;
-    final light = useDynamic
-        ? lightDynamic.completed()
-        : seededScheme(settings.seed, Brightness.light);
-    final dark = useDynamic
-        ? darkDynamic.completed()
-        : seededScheme(settings.seed, Brightness.dark);
+    final seed = Color(settings.seedColor);
+    final light = useDynamic ? lightDynamic.completed() : seededScheme(seed, Brightness.light);
+    final dark = useDynamic ? darkDynamic.completed() : seededScheme(seed, Brightness.dark);
     final compact = settings.listDensity == ListDensity.compact;
     return HubThemes(
       light: buildHubTheme(light, compactLists: compact),

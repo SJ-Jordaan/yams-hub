@@ -3,6 +3,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:yams_models/yams_models.dart';
 
@@ -12,9 +13,61 @@ import '../widgets/error_view.dart';
 import '../widgets/formatters.dart';
 import '../widgets/section_card.dart';
 import 'dashboard_cards.dart';
+import 'dashboard_providers.dart';
 
-class DashboardCardFrame extends StatelessWidget {
-  const DashboardCardFrame({super.key, required this.spec, required this.section, this.onRetry});
+/// The dashboard card for [cardKey], watching only that card's section: a
+/// refresh that leaves the section unchanged (same instance, see
+/// `reuseSection`) does not rebuild it.
+///
+/// The built card is reused while the section is the same, so a parent
+/// rebuild (the lazy list re-running its builder) stops here instead of
+/// rebuilding the whole card. Inherited changes (theme, text scale) still
+/// reach the card's widgets directly.
+///
+/// Cards also show times relative to now ("last scan 5 min ago", today's
+/// aired episodes), so an unchanged card is still rebuilt once per minute of
+/// the dashboard's `generatedAt` (at most once a minute, on a refresh).
+class DashboardCardFrame extends ConsumerStatefulWidget {
+  const DashboardCardFrame({super.key, required this.cardKey});
+
+  /// One of [DashboardCardKeys], registered in [dashboardCards].
+  final String cardKey;
+
+  @override
+  ConsumerState<DashboardCardFrame> createState() => _DashboardCardFrameState();
+}
+
+class _DashboardCardFrameState extends ConsumerState<DashboardCardFrame> {
+  Section? _section;
+  DashboardCardSpec? _spec;
+  int? _minute;
+  Widget? _view;
+
+  void _retry() => refreshDashboard(ref);
+
+  @override
+  Widget build(BuildContext context) {
+    final key = widget.cardKey;
+    final spec = dashboardCards[key];
+    final section = ref.watch(dashboardProvider.select((s) => s.value?.card(key)));
+    final minute = ref.watch(dashboardProvider.select((s) => dashboardMinuteOf(s.value?.generatedAt)));
+    if (spec == null || section == null) return const SizedBox.shrink();
+    if (_view == null || !identical(section, _section) || !identical(spec, _spec) || minute != _minute) {
+      _section = section;
+      _spec = spec;
+      _minute = minute;
+      _view = DashboardCardView(spec: spec, section: section, onRetry: _retry);
+    }
+    return _view!;
+  }
+}
+
+/// The whole minutes since the epoch of [t] (null when there is no data).
+int? dashboardMinuteOf(DateTime? t) => t == null ? null : t.millisecondsSinceEpoch ~/ Duration.millisecondsPerMinute;
+
+/// A feature card in core's frame for a given [section].
+class DashboardCardView extends StatelessWidget {
+  const DashboardCardView({super.key, required this.spec, required this.section, this.onRetry});
 
   final DashboardCardSpec spec;
   final Section section;
@@ -88,7 +141,9 @@ class _CardNote extends StatelessWidget {
       children: [
         Icon(icon, size: 18, color: color),
         const SizedBox(width: 8),
-        Expanded(child: Text(text, style: theme.textTheme.bodyMedium?.copyWith(color: color))),
+        Expanded(
+          child: Text(text, style: theme.textTheme.bodyMedium?.copyWith(color: color)),
+        ),
       ],
     );
   }

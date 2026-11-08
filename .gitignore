@@ -11,6 +11,10 @@ coverage/
 .DS_Store
 *.log
 
+# Python bytecode (tool/perf)
+__pycache__/
+*.pyc
+
 # Secrets never go into the repo (ARCHITECTURE §5.2)
 .env
 *.env

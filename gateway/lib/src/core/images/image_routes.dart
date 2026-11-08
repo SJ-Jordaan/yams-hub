@@ -14,6 +14,7 @@ import '../../config/config.dart';
 import '../clock.dart';
 import '../http/api_exception.dart';
 import '../http/api_request.dart';
+import '../http/api_response.dart';
 import '../http/api_router.dart';
 import '../services/seerr_identity.dart';
 import '../upstream/remote_fetcher.dart';
@@ -36,6 +37,9 @@ const imageSecurityHeaders = {
   'cross-origin-resource-policy': 'same-origin',
   'content-disposition': 'inline',
 };
+
+/// `Cache-Control` of an image `404`.
+const imageNotFoundCacheControl = 'private, max-age=300';
 
 final class _Fetched {
   const _Fetched(this.bytes, this.contentType);
@@ -132,8 +136,22 @@ final class ImageService {
       ..get('/img/seerr-avatar/<seerrUserId|[^/]+>', h('seerr-avatar'));
   }
 
-  /// Serves [spec] for [req].
+  /// Serves [spec] for [req]. A `404` lets the browser cache the miss for
+  /// five minutes, so a missing poster or avatar is not asked for again on
+  /// every navigation; other errors stay uncacheable (`no-store`).
   Future<Response> serve(ApiRequest req, ImageSpec spec) async {
+    try {
+      return await _serve(req, spec);
+    } on ApiException catch (e) {
+      if (e.status != 404) rethrow;
+      return ApiResponse.error(
+        e,
+        req.requestId,
+      ).change(headers: const {'cache-control': imageNotFoundCacheControl});
+    }
+  }
+
+  Future<Response> _serve(ApiRequest req, ImageSpec spec) async {
     final key = spec.cacheKey;
     final cached = await cache.read(key);
     final stale =
@@ -219,7 +237,12 @@ final class ImageService {
         );
         if (r.status == 404) {
           final fb = spec.fallback;
-          if (fb != null) return _fetchRemote(fb);
+          // The fallback (often a TMDB `/t/p/original/` URL) is fetched at
+          // the requested size bucket; the cache key stays the arr spec.
+          if (fb != null) {
+            final width = spec.size == 'full' ? null : int.parse(spec.size);
+            return _fetchRemote(RemoteImageSpec(fb, width).upstreamUrl);
+          }
           throw ApiException.notFound('Image not found.');
         }
         return _check(r);

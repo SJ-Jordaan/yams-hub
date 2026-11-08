@@ -6,6 +6,7 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:yams_hub/core/dashboard/section_decode.dart';
 import 'package:yams_hub/core/widgets/hub_image.dart';
 import 'package:yams_models/yams_models.dart';
 
@@ -24,7 +25,7 @@ class CalendarDashboardCard extends ConsumerWidget {
     final muted = theme.colorScheme.onSurfaceVariant;
     final CalendarCard card;
     try {
-      card = section.decode(CalendarCard.fromJson) ?? const CalendarCard(items: [], countNext7Days: 0);
+      card = decodeCached(section, CalendarCard.fromJson) ?? const CalendarCard(items: [], countNext7Days: 0);
     } on FormatException {
       return Text('Unexpected data from the hub', style: theme.textTheme.bodyMedium?.copyWith(color: muted));
     }
@@ -109,7 +110,10 @@ class _CardRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final row = Padding(
+    final muted = theme.colorScheme.onSurfaceVariant;
+    // Unmonitored: dimmed poster and muted text, without an Opacity layer.
+    final dimmed = !item.monitored;
+    return Padding(
       padding: const EdgeInsets.symmetric(vertical: 3),
       child: Row(
         children: [
@@ -119,29 +123,36 @@ class _CardRow extends StatelessWidget {
             height: 42,
             borderRadius: BorderRadius.circular(4),
             placeholderIcon: item.isMovie ? Icons.movie_outlined : Icons.tv_outlined,
+            opacity: dimmed ? calendarDimmedOpacity : 1,
           ),
           const SizedBox(width: 10),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(item.title, maxLines: 1, overflow: TextOverflow.ellipsis, style: theme.textTheme.bodyMedium),
+                Text(
+                  item.title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: dimmed ? theme.textTheme.bodyMedium?.copyWith(color: muted) : theme.textTheme.bodyMedium,
+                ),
                 Text(
                   item.subtitle,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: dimmed ? muted.withValues(alpha: calendarDimmedAlpha) : muted,
+                  ),
                 ),
               ],
             ),
           ),
           const SizedBox(width: 8),
-          CalendarWhen(item: item),
+          CalendarWhen(item: item, dimmed: dimmed),
           const SizedBox(width: 6),
           CalendarStatusIcon(item: item, now: now, size: 16),
         ],
       ),
     );
-    return item.monitored ? row : Opacity(opacity: 0.5, child: row);
   }
 }

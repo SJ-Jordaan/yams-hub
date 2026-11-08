@@ -110,12 +110,21 @@ class CalendarStatusIcon extends StatelessWidget {
   }
 }
 
+/// Opacity of an unmonitored item's poster.
+const double calendarDimmedOpacity = 0.5;
+
+/// Alpha of an unmonitored item's coloured text.
+const double calendarDimmedAlpha = 0.6;
+
 /// The left column of a row: the air time of an episode, or the release type
 /// of a movie.
 class CalendarWhen extends StatelessWidget {
-  const CalendarWhen({super.key, required this.item});
+  const CalendarWhen({super.key, required this.item, this.dimmed = false});
 
   final CalendarItem item;
+
+  /// Muted colours (an unmonitored item).
+  final bool dimmed;
 
   @override
   Widget build(BuildContext context) {
@@ -131,11 +140,20 @@ class CalendarWhen extends StatelessWidget {
           maxLines: 1,
           overflow: TextOverflow.fade,
           softWrap: false,
-          style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.onTertiaryContainer),
+          style: theme.textTheme.labelSmall?.copyWith(
+            color: dimmed
+                ? theme.colorScheme.onTertiaryContainer.withValues(alpha: calendarDimmedAlpha)
+                : theme.colorScheme.onTertiaryContainer,
+          ),
         ),
       );
     }
-    return Text(formatTime(at), style: theme.textTheme.labelLarge);
+    return Text(
+      formatTime(at),
+      style: dimmed
+          ? theme.textTheme.labelLarge?.copyWith(color: theme.colorScheme.onSurfaceVariant)
+          : theme.textTheme.labelLarge,
+    );
   }
 }
 
@@ -181,6 +199,8 @@ class CalendarItemTile extends StatelessWidget {
     final muted = theme.colorScheme.onSurfaceVariant;
     final finale = calendarFinaleLabel(item.finaleType);
     final detail = item.isEpisode ? item.network : null;
+    // Unmonitored: dimmed poster and muted text, without an Opacity layer.
+    final dimmed = !item.monitored;
     final content = Row(
       children: [
         SizedBox(
@@ -190,7 +210,7 @@ class CalendarItemTile extends StatelessWidget {
             // Large text: shrink the time/chip rather than overflow.
             child: FittedBox(
               fit: BoxFit.scaleDown,
-              child: CalendarWhen(item: item),
+              child: CalendarWhen(item: item, dimmed: dimmed),
             ),
           ),
         ),
@@ -200,6 +220,7 @@ class CalendarItemTile extends StatelessWidget {
           height: 60,
           borderRadius: BorderRadius.circular(6),
           placeholderIcon: item.isMovie ? Icons.movie_outlined : Icons.tv_outlined,
+          opacity: dimmed ? calendarDimmedOpacity : 1,
         ),
         const SizedBox(width: 12),
         Expanded(
@@ -214,7 +235,7 @@ class CalendarItemTile extends StatelessWidget {
                       item.title,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: theme.textTheme.titleSmall,
+                      style: dimmed ? theme.textTheme.titleSmall?.copyWith(color: muted) : theme.textTheme.titleSmall,
                     ),
                   ),
                   if (finale != null) ...[
@@ -227,14 +248,18 @@ class CalendarItemTile extends StatelessWidget {
                 item.subtitle,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: theme.textTheme.bodySmall?.copyWith(color: muted),
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: dimmed ? muted.withValues(alpha: calendarDimmedAlpha) : muted,
+                ),
               ),
               if (detail != null)
                 Text(
                   detail,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: theme.textTheme.labelSmall?.copyWith(color: muted),
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    color: dimmed ? muted.withValues(alpha: calendarDimmedAlpha) : muted,
+                  ),
                 ),
             ],
           ),
@@ -247,10 +272,7 @@ class CalendarItemTile extends StatelessWidget {
       height: extent,
       child: InkWell(
         onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          child: item.monitored ? content : Opacity(opacity: 0.5, child: content),
-        ),
+        child: Padding(padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8), child: content),
       ),
     );
   }

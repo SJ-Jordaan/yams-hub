@@ -51,7 +51,7 @@ void main() {
 
   testWidgets('inside the core frame with the registered spec', (tester) async {
     final spec = dashboardCards[DashboardCardKeys.subtitles]!;
-    await tester.pumpWidget(_wrap(DashboardCardFrame(spec: spec, section: _section(episodes: 7))));
+    await tester.pumpWidget(_wrap(DashboardCardView(spec: spec, section: _section(episodes: 7))));
     expect(find.text('Subtitles'), findsOneWidget);
     expect(find.text('7'), findsOneWidget);
   });

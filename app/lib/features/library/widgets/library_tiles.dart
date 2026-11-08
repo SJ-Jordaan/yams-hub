@@ -56,15 +56,13 @@ class LibraryPosterCard extends StatelessWidget {
                 child: Stack(
                   fit: StackFit.expand,
                   children: [
-                    Opacity(
-                      opacity: dimmed ? 0.45 : 1,
-                      child: LayoutBuilder(
-                        builder: (context, c) => HubImage(
-                          imagePath,
-                          width: c.maxWidth,
-                          height: c.maxHeight,
-                          placeholderIcon: placeholderIcon,
-                        ),
+                    LayoutBuilder(
+                      builder: (context, c) => HubImage(
+                        imagePath,
+                        width: c.maxWidth,
+                        height: c.maxHeight,
+                        placeholderIcon: placeholderIcon,
+                        opacity: dimmed ? 0.45 : 1,
                       ),
                     ),
                     if (dimmed)
@@ -188,9 +186,12 @@ class SeriesListRow extends StatelessWidget {
         width: 40,
         child: AspectRatio(
           aspectRatio: 2 / 3,
-          child: Opacity(
+          child: HubImage(
+            s.posterPath,
+            width: 40,
+            height: 60,
+            borderRadius: BorderRadius.circular(6),
             opacity: s.monitored ? 1 : 0.45,
-            child: HubImage(s.posterPath, width: 40, height: 60, borderRadius: BorderRadius.circular(6)),
           ),
         ),
       ),
@@ -272,15 +273,13 @@ class MovieListRow extends StatelessWidget {
         width: 40,
         child: AspectRatio(
           aspectRatio: 2 / 3,
-          child: Opacity(
+          child: HubImage(
+            m.posterPath,
+            width: 40,
+            height: 60,
+            borderRadius: BorderRadius.circular(6),
+            placeholderIcon: Icons.movie_outlined,
             opacity: m.monitored ? 1 : 0.45,
-            child: HubImage(
-              m.posterPath,
-              width: 40,
-              height: 60,
-              borderRadius: BorderRadius.circular(6),
-              placeholderIcon: Icons.movie_outlined,
-            ),
           ),
         ),
       ),

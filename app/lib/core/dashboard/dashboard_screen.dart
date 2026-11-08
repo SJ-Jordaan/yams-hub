@@ -2,8 +2,10 @@
 library;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:yams_models/yams_models.dart';
 
 import '../auth/auth_controller.dart';
 import '../launcher/web_apps_section.dart';
@@ -24,70 +26,112 @@ import 'dashboard_providers.dart';
 /// Number of masonry columns for a width (1 < 600 dp, 2 < 1200 dp, else 3).
 int dashboardColumnsFor(double width) => width < 600 ? 1 : (width < 1200 ? 2 : 3);
 
-class DashboardScreen extends ConsumerWidget {
+/// What [DashboardScreen] lays out: which cards exist and whether there is
+/// data, an error or alerts. Card contents are watched by the cards.
+typedef _DashboardLayout = ({bool hasData, Object? error, String keys, bool hasAlerts, DateTime? staleSince});
+
+_DashboardLayout _layoutOf(AsyncValue<DashboardResponse> s) {
+  final data = s.value;
+  return (
+    hasData: data != null,
+    error: s.hasError ? s.error : null,
+    keys: data?.cards.keys.join(',') ?? '',
+    hasAlerts: data?.alerts.isNotEmpty ?? false,
+    staleSince: s.hasError ? data?.generatedAt : null,
+  );
+}
+
+class DashboardScreen extends ConsumerStatefulWidget {
   const DashboardScreen({super.key});
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final dashboard = ref.watch(dashboardProvider);
-    final order = ref.watch(appSettingsProvider.select((s) => s.visibleCards));
-    final data = dashboard.value;
+  /// The scroll view's cache extent once the first frame is out: the cards
+  /// below the fold are then built a few at a time (one step per frame) and
+  /// kept, so scrolling does not build them.
+  static const prebuildExtent = 4000.0;
 
-    Future<void> refresh() async {
-      ref.invalidate(dashboardProvider);
-      try {
-        await ref.read(dashboardProvider.future);
-      } catch (_) {
-        // Shown by the screen.
-      }
-    }
+  /// How far the cache extent grows per frame: about one card, so no frame
+  /// builds more than one or two cards on a phone.
+  static const prebuildStep = 250.0;
+
+  @override
+  ConsumerState<DashboardScreen> createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends ConsumerState<DashboardScreen> {
+  /// Starts at zero, so the first frame builds only what is visible.
+  double _cacheExtent = 0;
+  bool _growScheduled = false;
+
+  void _scheduleGrow() {
+    if (_growScheduled || _cacheExtent >= DashboardScreen.prebuildExtent) return;
+    _growScheduled = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _growScheduled = false;
+      if (!mounted) return;
+      setState(() {
+        _cacheExtent = (_cacheExtent + DashboardScreen.prebuildStep).clamp(0, DashboardScreen.prebuildExtent);
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final layout = ref.watch(dashboardProvider.select(_layoutOf));
+    // Joined so the comparison is by value.
+    final order = ref.watch(appSettingsProvider.select((s) => s.visibleCards.join(',')));
+    final present = layout.keys.split(',').toSet();
+    final keys = [
+      for (final key in order.split(','))
+        if (dashboardCards.containsKey(key) && present.contains(key)) key,
+    ];
+
+    Future<void> refresh() => refreshDashboard(ref);
 
     final Widget body;
-    if (data == null && dashboard.hasError) {
+    final error = layout.error;
+    if (!layout.hasData && error != null) {
       body = ErrorView(
-        error: dashboard.error!,
+        error: error,
         onRetry: refresh,
         actions: [
           if (ref.watch(hostingModeProvider).hasServerProfiles)
-            OutlinedButton(onPressed: () => context.go(AppPaths.settingsServers()), child: const Text('Server settings')),
+            OutlinedButton(
+              onPressed: () => context.go(AppPaths.settingsServers()),
+              child: const Text('Server settings'),
+            ),
         ],
       );
     } else {
+      if (layout.hasData) _scheduleGrow();
       body = RefreshIndicator(
         onRefresh: refresh,
         child: CustomScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
+          scrollCacheExtent: ScrollCacheExtent.pixels(_cacheExtent),
           slivers: [
-            if (data != null && dashboard.hasError)
-              SliverToBoxAdapter(child: StaleBanner(since: data.generatedAt, onRetry: refresh)),
-            SliverPadding(
-              padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-              sliver: SliverToBoxAdapter(child: _Header(updatedAt: data?.generatedAt)),
-            ),
-            if (data != null && data.alerts.isNotEmpty)
-              SliverPadding(
-                padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
-                sliver: SliverToBoxAdapter(child: AlertsPanel(alerts: data.alerts)),
+            if (layout.staleSince case final since?)
+              SliverToBoxAdapter(
+                child: StaleBanner(since: since, onRetry: refresh),
               ),
-            SliverPadding(
-              padding: const EdgeInsets.all(16),
-              sliver: SliverToBoxAdapter(
-                child: data == null
-                    ? const _CardsSkeleton()
-                    : _CardMasonry(
-                        children: [
-                          for (final key in order)
-                            if (dashboardCards[key] case final spec?)
-                              if (data.card(key) case final section?)
-                                DashboardCardFrame(spec: spec, section: section, onRetry: refresh),
-                        ],
-                      ),
-              ),
-            ),
             const SliverPadding(
-              padding: EdgeInsets.fromLTRB(16, 0, 16, 24),
-              sliver: SliverToBoxAdapter(child: WebAppsSection()),
+              padding: EdgeInsets.fromLTRB(16, 8, 16, 0),
+              sliver: SliverToBoxAdapter(child: _Header()),
             ),
+            if (layout.hasAlerts)
+              const SliverPadding(
+                padding: EdgeInsets.fromLTRB(16, 12, 16, 0),
+                sliver: SliverToBoxAdapter(child: AlertsPanel()),
+              ),
+            if (layout.hasData)
+              SliverPadding(
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
+                sliver: _DashboardCards(keys: keys),
+              )
+            else
+              const SliverPadding(
+                padding: EdgeInsets.all(16),
+                sliver: SliverToBoxAdapter(child: _CardsSkeleton()),
+              ),
           ],
         ),
       );
@@ -96,10 +140,63 @@ class DashboardScreen extends ConsumerWidget {
   }
 }
 
-class _Header extends ConsumerWidget {
-  const _Header({this.updatedAt});
+/// The feature cards, then the web apps.
+///
+/// On one column this is a lazy list: only the cards in and near the viewport
+/// are built (each behind a repaint boundary), and the web apps (with their
+/// providers) only once scrolled near. Wider layouts use the masonry, each
+/// card behind its own repaint boundary.
+class _DashboardCards extends StatelessWidget {
+  const _DashboardCards({required this.keys});
 
-  final DateTime? updatedAt;
+  final List<String> keys;
+
+  /// Space between the last card and the web apps.
+  static const _webAppsGap = 16.0;
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverLayoutBuilder(
+      builder: (context, constraints) {
+        if (dashboardColumnsFor(constraints.crossAxisExtent) == 1) {
+          return SliverList.separated(
+            itemCount: keys.length + 1,
+            itemBuilder: (context, i) => i == keys.length
+                ? const WebAppsSection()
+                : DashboardCardFrame(key: ValueKey(keys[i]), cardKey: keys[i]),
+            separatorBuilder: (_, i) => SizedBox(height: i == keys.length - 1 ? _webAppsGap : 12),
+            findItemIndexCallback: (key) {
+              if (key is! ValueKey<String>) return null;
+              final i = keys.indexOf(key.value);
+              return i < 0 ? null : i;
+            },
+          );
+        }
+        return SliverToBoxAdapter(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _CardMasonry(
+                children: [
+                  for (final key in keys)
+                    RepaintBoundary(
+                      key: ValueKey(key),
+                      child: DashboardCardFrame(cardKey: key),
+                    ),
+                ],
+              ),
+              const SizedBox(height: _webAppsGap),
+              const RepaintBoundary(child: WebAppsSection()),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _Header extends ConsumerWidget {
+  const _Header();
 
   static String greeting(DateTime now) {
     final h = now.hour;
@@ -114,6 +211,7 @@ class _Header extends ConsumerWidget {
     final theme = Theme.of(context);
     final user = ref.watch(authControllerProvider.select((s) => s.user));
     final connection = ref.watch(activeServerProvider);
+    final updatedAt = ref.watch(dashboardProvider.select((s) => s.value?.generatedAt));
     final name = user?.displayName;
     final hello = greeting(DateTime.now());
     return Wrap(
@@ -201,7 +299,9 @@ class _CardsSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _CardMasonry(
-      children: [for (final h in [160.0, 120.0, 140.0, 120.0]) SkeletonBox(height: h, radius: 16)],
+      children: [
+        for (final h in [160.0, 120.0, 140.0, 120.0]) SkeletonBox(height: h, radius: 16),
+      ],
     );
   }
 }

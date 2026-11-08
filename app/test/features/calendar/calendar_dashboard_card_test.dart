@@ -4,8 +4,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:yams_hub/core/auth/token_manager.dart';
 import 'package:yams_hub/core/servers/server_connection.dart';
 import 'package:yams_hub/core/theme/theme.dart';
+import 'package:yams_hub/core/widgets/hub_image.dart';
 import 'package:yams_hub/features/calendar/calendar_dashboard_card.dart';
 import 'package:yams_hub/features/calendar/providers/calendar_providers.dart';
+import 'package:yams_hub/features/calendar/widgets/calendar_item_tile.dart';
 import 'package:yams_models/yams_models.dart';
 
 import '../../support/builders.dart';
@@ -125,5 +127,53 @@ void main() {
       ], 2),
     );
     expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('an unmonitored row dims its poster without an Opacity layer', (tester) async {
+    await _pumpCard(
+      tester,
+      _section([
+        episode(1, day(11, 8), title: 'The Apothecary Diaries'),
+        episode(9001, day(11, 12), title: 'Frieren', monitored: false),
+      ], 2),
+    );
+    expect(find.byType(Opacity), findsNothing);
+    HubImage imageOf(String title) => tester.widget<HubImage>(
+      find.descendant(
+        of: find.ancestor(of: find.text(title), matching: find.byType(Row)).last,
+        matching: find.byType(HubImage),
+      ),
+    );
+    expect(imageOf('Frieren').opacity, calendarDimmedOpacity);
+    expect(imageOf('The Apothecary Diaries').opacity, 1);
+  });
+
+  testWidgets('an unmonitored agenda tile dims its poster without an Opacity layer', (tester) async {
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          activeServerProvider.overrideWith(
+            () => ActiveServerController(
+              fixed: ServerConnection(status: ConnectionStatus.connected, baseUrl: testLanUrl),
+            ),
+          ),
+          accessTokenProvider.overrideWithValue('yha_access1'),
+        ],
+        child: MaterialApp(
+          home: Scaffold(
+            body: Column(
+              children: [
+                CalendarItemTile(
+                  item: episode(9001, day(11, 12), title: 'Frieren', monitored: false),
+                  now: calendarTestNow,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+    expect(find.descendant(of: find.byType(CalendarItemTile), matching: find.byType(Opacity)), findsNothing);
+    expect(tester.widget<HubImage>(find.byType(HubImage)).opacity, calendarDimmedOpacity);
   });
 }

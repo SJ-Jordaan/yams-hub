@@ -6,6 +6,7 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:yams_hub/core/dashboard/section_decode.dart';
 import 'package:yams_hub/core/routing/paths.dart';
 import 'package:yams_hub/core/theme/theme.dart';
 import 'package:yams_hub/core/widgets/widgets.dart';
@@ -25,7 +26,7 @@ class ContainersDashboardCard extends ConsumerWidget {
     final colors = StatusColors.of(context);
     final ContainersCard? card;
     try {
-      card = section.decode(ContainersCard.fromJson);
+      card = decodeCached(section, ContainersCard.fromJson);
     } on FormatException {
       return Text('No data', style: theme.textTheme.bodyMedium);
     }

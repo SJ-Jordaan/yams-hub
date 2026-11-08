@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:test/test.dart';
 import 'package:yams_hub_gateway/src/core/images/image_cache.dart';
+import 'package:yams_hub_gateway/src/core/images/image_routes.dart';
 import 'package:yams_hub_gateway/src/core/images/image_spec.dart';
 
 import '../support/test_hub.dart';
@@ -349,6 +350,80 @@ void main() {
         reason: 'the /7 poster upstream call happened once',
       );
     });
+
+    test('an arr fallback is fetched at the requested size bucket', () async {
+      hub.fakes.on(
+        ServiceId.radarr,
+        'GET',
+        RegExp(r'^/MediaCover/'),
+        (_) => FakeResponse.json({'message': 'NotFound'}, status: 404),
+      );
+      for (final w in ['w342', 'w500', 'original']) {
+        hub.fakes.onRemote(
+          'image.tmdb.org',
+          'GET',
+          '/t/p/$w/x.jpg',
+          (_) => FakeResponse.bytes(_jpeg, contentType: 'image/jpeg'),
+        );
+      }
+      final fallback = Uri.encodeQueryComponent(
+        'https://image.tmdb.org/t/p/original/x.jpg',
+      );
+      Future<String> fetched(String size) async {
+        hub.fakes.clearCalls();
+        final r = await hub.get(
+          '/api/v1/img/arr/radarr/9/poster?size=$size&fallback=$fallback',
+        );
+        expect(r.status, 200, reason: r.body);
+        return hub.fakes.remoteCalls('image.tmdb.org').single.path;
+      }
+
+      expect(await fetched('250'), '/t/p/w342/x.jpg');
+      expect(await fetched('500'), '/t/p/w500/x.jpg');
+      expect(await fetched('full'), '/t/p/original/x.jpg');
+      // The cache key stays the arr spec: one entry per size.
+      expect(hub.hub.imageService.cache.entryCount, 3);
+      hub.fakes.clearCalls();
+      await hub.get(
+        '/api/v1/img/arr/radarr/9/poster?size=250&fallback=$fallback',
+      );
+      expect(hub.fakes.remoteCalls('image.tmdb.org'), isEmpty);
+    });
+
+    test(
+      'an image 404 may be cached briefly by the browser; 502 may not',
+      () async {
+        final missing = await hub.get('/api/v1/img/arr/sonarr/8/poster');
+        expect(missing.status, 404);
+        expect(missing.errorCode, 'not_found');
+        expect(missing.headers['cache-control'], imageNotFoundCacheControl);
+        expect(imageNotFoundCacheControl, 'private, max-age=300');
+        // An upstream 404 (unmatched fake) is the same.
+        final upstream = await hub.get('/api/v1/img/kavita/series/77');
+        expect(upstream.status, 404, reason: upstream.body);
+        expect(upstream.headers['cache-control'], imageNotFoundCacheControl);
+
+        hub.fakes.onRemote(
+          'image.tmdb.org',
+          'GET',
+          '/t/p/w342/broken.png',
+          (_) => FakeResponse.bytes(_svg, contentType: 'image/svg+xml'),
+        );
+        final bad = await hub.get('/api/v1/img/tmdb/w342/broken.png');
+        expect(bad.status, 502);
+        expect(bad.headers['cache-control'], 'no-store');
+        // Validation errors and authentication failures stay uncacheable.
+        final invalid = await hub.get('/api/v1/img/tmdb/w1/x.jpg');
+        expect(invalid.status, 400);
+        expect(invalid.headers['cache-control'], 'no-store');
+        final anon = await hub.get(
+          '/api/v1/img/abs/li_1',
+          as: TestAs.anonymous,
+        );
+        expect(anon.status, 401);
+        expect(anon.headers['cache-control'], 'no-store');
+      },
+    );
 
     test('an SVG upstream image gives 502 and is not cached', () async {
       var calls = 0;

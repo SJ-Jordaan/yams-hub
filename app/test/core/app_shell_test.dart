@@ -30,8 +30,11 @@ void main() {
     // Feature card frames.
     expect(find.text('System'), findsWidgets);
     expect(find.text('Downloads'), findsOneWidget);
-    expect(find.text('Not configured on the hub'), findsOneWidget); // library: disabled
+    // The phone layout builds cards lazily: scroll to the ones below the fold.
+    await tester.scrollUntilVisible(find.text('Not configured on the hub'), 300); // library: disabled
+    expect(find.text('Not configured on the hub'), findsOneWidget);
     await tester.scrollUntilVisible(find.text('Web apps'), 300);
+    await settle(tester);
     expect(find.text('Web apps'), findsOneWidget);
     expect(find.text('Jellyfin'), findsOneWidget);
     // One full dashboard request (no ?cards=).

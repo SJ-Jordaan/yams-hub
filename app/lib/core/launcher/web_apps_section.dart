@@ -17,7 +17,7 @@ class WebAppsSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final entries = ref.watch(launcherEntriesProvider).value;
+    final entries = ref.watch(launcherEntriesProvider.select((s) => s.value));
     if (entries == null || entries.isEmpty) return const SizedBox.shrink();
     return SectionCard(
       title: 'Web apps',

@@ -82,6 +82,8 @@ class _RequestTileState extends ConsumerState<RequestTile> {
                 aspectRatio: 2 / 3,
                 child: HubImage(
                   r.posterPath,
+                  width: posterWidth,
+                  height: posterWidth * 3 / 2,
                   borderRadius: BorderRadius.circular(8),
                   placeholderIcon: mediaTypeIcon(r.mediaType),
                 ),

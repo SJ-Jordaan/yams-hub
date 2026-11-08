@@ -5,6 +5,7 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:yams_hub/core/dashboard/section_decode.dart';
 import 'package:yams_hub/core/theme/theme.dart';
 import 'package:yams_hub/core/widgets/widgets.dart';
 import 'package:yams_models/yams_models.dart';
@@ -22,7 +23,7 @@ class LibraryDashboardCard extends ConsumerWidget {
     final theme = Theme.of(context);
     LibraryCard? card;
     try {
-      card = section.decode(LibraryCard.fromJson);
+      card = decodeCached(section, LibraryCard.fromJson);
     } on FormatException {
       card = null;
     }

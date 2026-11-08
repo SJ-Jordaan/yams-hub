@@ -1,0 +1,561 @@
+{
+ "label": "iter1",
+ "meta": {
+  "date": "2026-11-08T22:55:48+02:00",
+  "git": "54dae65",
+  "cpu": 4,
+  "gpu": "hw",
+  "mock_args": "--poster-mode arr"
+ },
+ "environment": {
+  "browser": "156.0.8078.4",
+  "gpu": "hw",
+  "webgl_renderer": "ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3080 Ti/PCIe/SSE2, OpenGL ES 3.2)",
+  "device": {
+   "viewport": {
+    "width": 412,
+    "height": 839
+   },
+   "dpr": 2.625,
+   "ua": "Mozilla/5.0 (Linux; Android 14; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Mobile Safari/537.36"
+  },
+  "cpu_throttle": 4.0
+ },
+ "repeats": 3,
+ "metrics_median": {
+  "boot.flutter_view_ms": 1578.1,
+  "boot.first_flutter_frame_ms": 1600.5,
+  "boot.login_screen_idle_ms": 2296.8,
+  "login.dashboard_frame_after_login_ms": 525.1,
+  "login.client_after_login_to_settled_ms": 1679.9,
+  "login.jank.frames_over_50ms": 8,
+  "login.jank.longtask_ms_total": 768,
+  "login.jank.flutter_frame_ms_max": 143.2,
+  "login.img_requests.count": 9,
+  "dashboard_scroll.jank.fps": 59.9,
+  "dashboard_scroll.jank.frame_ms_p50": 16.7,
+  "dashboard_scroll.jank.frame_ms_p90": 17.3,
+  "dashboard_scroll.jank.frame_ms_p99": 23.69,
+  "dashboard_scroll.jank.frames_over_32ms": 0,
+  "dashboard_scroll.jank.frames_over_100ms": 0,
+  "dashboard_scroll.jank.flutter_frame_ms_p90": 5.21,
+  "dashboard_scroll.jank.longtask_ms_total": 0,
+  "dashboard_scroll.cdp.ScriptDuration_ms": 2206.7,
+  "tabs.requests.first_frame_ms": 147.8,
+  "tabs.requests.settled_ms": 1470.3,
+  "tabs.requests.jank.longtask_ms_total": 225,
+  "tabs.requests.jank.frames_over_50ms": 2,
+  "tabs.requests.jank.flutter_frame_ms_max": 114,
+  "tabs.requests.scroll_jank.fps": 58.8,
+  "tabs.requests.scroll_jank.frames_over_32ms": 2,
+  "tabs.library.first_frame_ms": 114.4,
+  "tabs.library.settled_ms": 529.3,
+  "tabs.library.jank.longtask_ms_total": 271,
+  "tabs.library.jank.frames_over_50ms": 2,
+  "tabs.library.jank.flutter_frame_ms_max": 158.6,
+  "tabs.library.scroll_jank.fps": 57.4,
+  "tabs.library.scroll_jank.frames_over_32ms": 6,
+  "tabs.activity.first_frame_ms": 107.3,
+  "tabs.activity.settled_ms": 544.4,
+  "tabs.activity.jank.longtask_ms_total": 140,
+  "tabs.activity.jank.frames_over_50ms": 2,
+  "tabs.activity.jank.flutter_frame_ms_max": 82.6,
+  "tabs.activity.scroll_jank.fps": 59.3,
+  "tabs.activity.scroll_jank.frames_over_32ms": 0,
+  "tabs.system.first_frame_ms": 128.1,
+  "tabs.system.settled_ms": 536.1,
+  "tabs.system.jank.longtask_ms_total": 322,
+  "tabs.system.jank.frames_over_50ms": 3,
+  "tabs.system.jank.flutter_frame_ms_max": 142.1,
+  "tabs.system.scroll_jank.fps": 56.5,
+  "tabs.system.scroll_jank.frames_over_32ms": 3,
+  "tabs.home_again.first_frame_ms": 52.6,
+  "tabs.home_again.settled_ms": 995.1,
+  "tabs.home_again.jank.longtask_ms_total": 0,
+  "tabs.home_again.jank.frames_over_50ms": 0,
+  "tabs.home_again.jank.flutter_frame_ms_max": 25,
+  "tabs.home_again.scroll_jank.fps": 59.4,
+  "tabs.home_again.scroll_jank.frames_over_32ms": 0,
+  "images.movies_fast.images_reappear": true,
+  "images.movies_fast.jank_down.fps": 43.6,
+  "images.movies_fast.jank_down.frame_ms_p90": 39.82,
+  "images.movies_fast.jank_down.frames_over_32ms": 24,
+  "images.movies_fast.jank_down.image_decodes": 111,
+  "images.movies_fast.img_requests_scrolling_down.count": 111,
+  "images.movies_fast.diff_before_vs_after_6s": 0.0,
+  "images.tv.images_reappear": true,
+  "images.tv.jank_down.fps": 58.9,
+  "images.tv.jank_down.frame_ms_p90": 17.52,
+  "images.tv.jank_down.frames_over_32ms": 10,
+  "images.tv.jank_down.image_decodes": 33,
+  "images.tv.img_requests_scrolling_down.count": 33,
+  "images.tv.diff_before_vs_after_6s": 0.0,
+  "images.movies.images_reappear": true,
+  "images.movies.jank_down.fps": 60.0,
+  "images.movies.jank_down.frame_ms_p90": 17.3,
+  "images.movies.jank_down.frames_over_32ms": 0,
+  "images.movies.jank_down.image_decodes": 0,
+  "images.movies.img_requests_scrolling_down.count": 0,
+  "images.movies.diff_before_vs_after_6s": 0.0,
+  "final_js_heap_mb": 56.1,
+  "console_summary.font_fallback_fetch_failures": 15
+ },
+ "metrics_runs": {
+  "boot.flutter_view_ms": [
+   1566.1,
+   1578.3,
+   1578.1
+  ],
+  "boot.first_flutter_frame_ms": [
+   1587.7,
+   1600.9,
+   1600.5
+  ],
+  "boot.login_screen_idle_ms": [
+   2495.6,
+   2290.5,
+   2296.8
+  ],
+  "login.dashboard_frame_after_login_ms": [
+   519.8,
+   525.1,
+   560.0
+  ],
+  "login.client_after_login_to_settled_ms": [
+   1679.9,
+   1674.2,
+   1743.2
+  ],
+  "login.jank.frames_over_50ms": [
+   8,
+   8,
+   8
+  ],
+  "login.jank.longtask_ms_total": [
+   777,
+   768,
+   762
+  ],
+  "login.jank.flutter_frame_ms_max": [
+   143.2,
+   146.6,
+   140.6
+  ],
+  "login.img_requests.count": [
+   9,
+   9,
+   9
+  ],
+  "dashboard_scroll.jank.fps": [
+   59.9,
+   59.7,
+   60.0
+  ],
+  "dashboard_scroll.jank.frame_ms_p50": [
+   16.7,
+   16.7,
+   16.6
+  ],
+  "dashboard_scroll.jank.frame_ms_p90": [
+   17.3,
+   17.3,
+   17.3
+  ],
+  "dashboard_scroll.jank.frame_ms_p99": [
+   22.03,
+   23.69,
+   24.23
+  ],
+  "dashboard_scroll.jank.frames_over_32ms": [
+   1,
+   0,
+   0
+  ],
+  "dashboard_scroll.jank.frames_over_100ms": [
+   0,
+   0,
+   0
+  ],
+  "dashboard_scroll.jank.flutter_frame_ms_p90": [
+   5.2,
+   5.32,
+   5.21
+  ],
+  "dashboard_scroll.jank.longtask_ms_total": [
+   0,
+   0,
+   0
+  ],
+  "dashboard_scroll.cdp.ScriptDuration_ms": [
+   2222.5,
+   2206.7,
+   2194.0
+  ],
+  "tabs.requests.first_frame_ms": [
+   151.2,
+   147.4,
+   147.8
+  ],
+  "tabs.requests.settled_ms": [
+   1471.3,
+   1269.3,
+   1470.3
+  ],
+  "tabs.requests.jank.longtask_ms_total": [
+   225,
+   229,
+   225
+  ],
+  "tabs.requests.jank.frames_over_50ms": [
+   2,
+   2,
+   2
+  ],
+  "tabs.requests.jank.flutter_frame_ms_max": [
+   114,
+   114.3,
+   113.2
+  ],
+  "tabs.requests.scroll_jank.fps": [
+   58.8,
+   58.3,
+   58.8
+  ],
+  "tabs.requests.scroll_jank.frames_over_32ms": [
+   2,
+   2,
+   2
+  ],
+  "tabs.library.first_frame_ms": [
+   114.1,
+   118.1,
+   114.4
+  ],
+  "tabs.library.settled_ms": [
+   529.3,
+   544.4,
+   529.2
+  ],
+  "tabs.library.jank.longtask_ms_total": [
+   284,
+   271,
+   254
+  ],
+  "tabs.library.jank.frames_over_50ms": [
+   2,
+   2,
+   2
+  ],
+  "tabs.library.jank.flutter_frame_ms_max": [
+   178.7,
+   158.6,
+   147.5
+  ],
+  "tabs.library.scroll_jank.fps": [
+   57.4,
+   56.8,
+   57.4
+  ],
+  "tabs.library.scroll_jank.frames_over_32ms": [
+   6,
+   6,
+   6
+  ],
+  "tabs.activity.first_frame_ms": [
+   104.1,
+   107.3,
+   111.3
+  ],
+  "tabs.activity.settled_ms": [
+   527.4,
+   544.4,
+   544.4
+  ],
+  "tabs.activity.jank.longtask_ms_total": [
+   86,
+   140,
+   142
+  ],
+  "tabs.activity.jank.frames_over_50ms": [
+   2,
+   2,
+   2
+  ],
+  "tabs.activity.jank.flutter_frame_ms_max": [
+   80,
+   82.6,
+   85.7
+  ],
+  "tabs.activity.scroll_jank.fps": [
+   59.2,
+   59.3,
+   59.3
+  ],
+  "tabs.activity.scroll_jank.frames_over_32ms": [
+   0,
+   0,
+   0
+  ],
+  "tabs.system.first_frame_ms": [
+   128.3,
+   124.4,
+   128.1
+  ],
+  "tabs.system.settled_ms": [
+   536.4,
+   536.1,
+   521.7
+  ],
+  "tabs.system.jank.longtask_ms_total": [
+   345,
+   322,
+   316
+  ],
+  "tabs.system.jank.frames_over_50ms": [
+   3,
+   3,
+   3
+  ],
+  "tabs.system.jank.flutter_frame_ms_max": [
+   151.5,
+   139.4,
+   142.1
+  ],
+  "tabs.system.scroll_jank.fps": [
+   56.0,
+   56.5,
+   56.6
+  ],
+  "tabs.system.scroll_jank.frames_over_32ms": [
+   4,
+   3,
+   3
+  ],
+  "tabs.home_again.first_frame_ms": [
+   53.4,
+   52.6,
+   50.9
+  ],
+  "tabs.home_again.settled_ms": [
+   846.3,
+   1111.2,
+   995.1
+  ],
+  "tabs.home_again.jank.longtask_ms_total": [
+   0,
+   0,
+   0
+  ],
+  "tabs.home_again.jank.frames_over_50ms": [
+   0,
+   0,
+   0
+  ],
+  "tabs.home_again.jank.flutter_frame_ms_max": [
+   25,
+   26,
+   23.8
+  ],
+  "tabs.home_again.scroll_jank.fps": [
+   59.4,
+   59.4,
+   59.3
+  ],
+  "tabs.home_again.scroll_jank.frames_over_32ms": [
+   0,
+   0,
+   0
+  ],
+  "images.movies_fast.images_reappear": [
+   true,
+   true,
+   true
+  ],
+  "images.movies_fast.jank_down.fps": [
+   44.8,
+   40.2,
+   43.6
+  ],
+  "images.movies_fast.jank_down.frame_ms_p90": [
+   37.4,
+   47.08,
+   39.82
+  ],
+  "images.movies_fast.jank_down.frames_over_32ms": [
+   21,
+   24,
+   25
+  ],
+  "images.movies_fast.jank_down.image_decodes": [
+   111,
+   111,
+   111
+  ],
+  "images.movies_fast.img_requests_scrolling_down.count": [
+   111,
+   111,
+   111
+  ],
+  "images.movies_fast.diff_before_vs_after_6s": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "images.tv.images_reappear": [
+   true,
+   true,
+   true
+  ],
+  "images.tv.jank_down.fps": [
+   59.5,
+   58.9,
+   58.7
+  ],
+  "images.tv.jank_down.frame_ms_p90": [
+   17.52,
+   17.4,
+   17.82
+  ],
+  "images.tv.jank_down.frames_over_32ms": [
+   6,
+   10,
+   10
+  ],
+  "images.tv.jank_down.image_decodes": [
+   33,
+   33,
+   33
+  ],
+  "images.tv.img_requests_scrolling_down.count": [
+   33,
+   33,
+   33
+  ],
+  "images.tv.diff_before_vs_after_6s": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "images.movies.images_reappear": [
+   true,
+   true,
+   true
+  ],
+  "images.movies.jank_down.fps": [
+   60.0,
+   60.0,
+   60.0
+  ],
+  "images.movies.jank_down.frame_ms_p90": [
+   17.4,
+   17.3,
+   17.23
+  ],
+  "images.movies.jank_down.frames_over_32ms": [
+   0,
+   0,
+   0
+  ],
+  "images.movies.jank_down.image_decodes": [
+   0,
+   0,
+   0
+  ],
+  "images.movies.img_requests_scrolling_down.count": [
+   0,
+   0,
+   0
+  ],
+  "images.movies.diff_before_vs_after_6s": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "final_js_heap_mb": [
+   69.6,
+   56.1,
+   56.1
+  ],
+  "console_summary.font_fallback_fetch_failures": [
+   15,
+   15,
+   15
+  ]
+ },
+ "safari_decode_path_images": {
+  "note": "Chromium with WebCodecs ImageDecoder hidden: Flutter decodes through <img> like Safari/iOS and Firefox",
+  "images_reappear": true,
+  "movies_fast": {
+   "images_reappear": true,
+   "diff_before_vs_after_0s": 1.36,
+   "diff_before_vs_after_6s": 0.0,
+   "img_requests_returning": {
+    "count": 6,
+    "done": 6,
+    "canceled": 0,
+    "failed": 0,
+    "pending": 0,
+    "from_cache": 0,
+    "unique_urls": 6,
+    "bytes": 137724
+   },
+   "returning_requests_for_previously_loaded_urls": 0,
+   "jank_down": {
+    "fps": 38.2,
+    "frame_ms_p90": 52.95,
+    "frames_over_32ms": 25,
+    "frames_over_100ms": 0,
+    "image_decodes": 105,
+    "image_decode_ms_p50": 42.2
+   }
+  },
+  "tv": {
+   "images_reappear": true,
+   "diff_before_vs_after_0s": 1.16,
+   "diff_before_vs_after_6s": 0.0,
+   "img_requests_returning": {
+    "count": 0,
+    "done": 0,
+    "canceled": 0,
+    "failed": 0,
+    "pending": 0,
+    "from_cache": 0,
+    "unique_urls": 0,
+    "bytes": 0
+   },
+   "returning_requests_for_previously_loaded_urls": 0,
+   "jank_down": {
+    "fps": 56.4,
+    "frame_ms_p90": 17.46,
+    "frames_over_32ms": 15,
+    "frames_over_100ms": 0,
+    "image_decodes": 51,
+    "image_decode_ms_p50": 0.8
+   }
+  },
+  "movies": {
+   "images_reappear": true,
+   "diff_before_vs_after_0s": 1.25,
+   "diff_before_vs_after_6s": 0.0,
+   "img_requests_returning": {
+    "count": 0,
+    "done": 0,
+    "canceled": 0,
+    "failed": 0,
+    "pending": 0,
+    "from_cache": 0,
+    "unique_urls": 0,
+    "bytes": 0
+   },
+   "returning_requests_for_previously_loaded_urls": 0,
+   "jank_down": {
+    "fps": 60.0,
+    "frame_ms_p90": 17.3,
+    "frames_over_32ms": 0,
+    "frames_over_100ms": 0,
+    "image_decodes": 0,
+    "image_decode_ms_p50": null
+   }
+  }
+ }
+}

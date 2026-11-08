@@ -39,14 +39,29 @@ class _YamsHubAppState extends ConsumerState<YamsHubApp> {
     super.dispose();
   }
 
+  // The last themes and what they were built from: ThemeData is rebuilt only
+  // when a theme setting or the platform's dynamic schemes change.
+  (HubThemeSettings, ColorScheme?, ColorScheme?)? _themesKey;
+  HubThemes? _themes;
+
+  HubThemes _resolveThemes(HubThemeSettings settings, ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
+    final key = (settings, lightDynamic, darkDynamic);
+    final cached = _themes;
+    if (cached != null && key == _themesKey) return cached;
+    _themesKey = key;
+    return _themes = HubThemes.from(settings, lightDynamic: lightDynamic, darkDynamic: darkDynamic);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final settings = ref.watch(appSettingsProvider);
+    // Only the theme fields: other settings (a dismissed alert, card order)
+    // do not rebuild MaterialApp.
+    final settings = ref.watch(appSettingsProvider.select(themeSettingsOf));
     final router = ref.watch(routerProvider);
     final messengerKey = ref.watch(scaffoldMessengerKeyProvider);
     return DynamicColorBuilder(
       builder: (lightDynamic, darkDynamic) {
-        final themes = HubThemes.resolve(settings, lightDynamic: lightDynamic, darkDynamic: darkDynamic);
+        final themes = _resolveThemes(settings, lightDynamic, darkDynamic);
         return MaterialApp.router(
           title: appTitle,
           debugShowCheckedModeBanner: false,

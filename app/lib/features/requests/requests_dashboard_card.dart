@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:yams_hub/core/auth/auth_controller.dart';
 import 'package:yams_hub/core/dashboard/dashboard_providers.dart';
+import 'package:yams_hub/core/dashboard/section_decode.dart';
 import 'package:yams_hub/core/routing/paths.dart';
 import 'package:yams_hub/core/theme/theme.dart';
 import 'package:yams_models/yams_models.dart';
@@ -29,7 +30,7 @@ class RequestsDashboardCard extends ConsumerWidget {
     final isAdmin = ref.watch(isAdminProvider);
     RequestsCard card;
     try {
-      card = section.decode(RequestsCard.fromJson) ?? const RequestsCard();
+      card = decodeCached(section, RequestsCard.fromJson) ?? const RequestsCard();
     } on FormatException {
       card = const RequestsCard();
     }

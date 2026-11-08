@@ -7,6 +7,7 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:yams_hub/core/dashboard/section_decode.dart';
 import 'package:yams_hub/core/theme/theme.dart';
 import 'package:yams_hub/core/widgets/widgets.dart';
 import 'package:yams_models/yams_models.dart';
@@ -22,7 +23,7 @@ class SystemDashboardCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final card = section.decode(SystemCard.fromJson);
+    final card = decodeCached(section, SystemCard.fromJson);
     if (card == null) return const SizedBox.shrink();
     return SystemCardView(card: card);
   }

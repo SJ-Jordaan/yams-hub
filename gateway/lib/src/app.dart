@@ -48,6 +48,7 @@ final class Hub {
     required this.modules,
     required this.router,
     required this.handler,
+    required this.web,
     required this.instanceId,
     required this._pollers,
   });
@@ -66,6 +67,9 @@ final class Hub {
   final List<FeatureModule> modules;
   final ApiRouter router;
   final Handler handler;
+
+  /// The web build handler (pre-compressed by [start]).
+  final StaticWebHandler web;
   final String instanceId;
   final PollerFactory _pollers;
   final _started = <FeatureModule>[];
@@ -214,11 +218,8 @@ final class Hub {
       m.registerRoutes(router);
     }
 
-    final handler = buildPipeline(
-      config,
-      router.handler,
-      createWebHandler(config.webDir),
-    );
+    final web = StaticWebHandler(config.webDir);
+    final handler = buildPipeline(config, router.handler, web.call);
     return Hub._(
       config: config,
       clock: clock,
@@ -234,18 +235,20 @@ final class Hub {
       modules: featureModules,
       router: router,
       handler: handler,
+      web: web,
       instanceId: instanceId,
       pollers: pollers,
     );
   }
 
   /// Starts the core background work (proxy self-test, capability probes,
-  /// image-cache prune) and the modules' `start()` (only those in [only]
+  /// image-cache prune, web build pre-compression) and the modules' `start()` (only those in [only]
   /// when given).
   Future<void> start({Set<String>? only, bool core = true}) async {
     if (core && !_coreStarted) {
       _coreStarted = true;
       imageService.start();
+      unawaited(web.warmUp());
       unawaited(
         health.start().catchError(
           (Object e) => _log.warning('start-up probes failed', e),

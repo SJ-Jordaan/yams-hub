@@ -45,19 +45,39 @@ Duration? scaledInterval(Ref ref, Duration base) =>
 /// The timer is cancelled when the provider rebuilds or is disposed, paused
 /// while the app is not resumed (and the provider is refreshed on resume when
 /// "Refresh on app resume" is on), and restarted when the preset changes.
-/// Riverpod additionally pauses providers whose widgets are not visible.
+///
+/// Riverpod additionally pauses providers whose widgets are not visible (an
+/// inactive tab). A refresh due while paused is remembered instead, and runs
+/// [autoRefreshResumeDelay] after the provider resumes, so returning to a tab
+/// plays its transition before the refetches and rebuilds start.
 void autoRefresh(Ref ref, Duration base) {
   final preset = ref.watch(appSettingsProvider.select((s) => s.refreshPreset));
   final interval = preset.scale(base);
   Timer? timer;
+  Timer? resumeTimer;
+  var stale = false;
 
   void schedule() {
     timer?.cancel();
     if (interval == null) return;
     timer = Timer(interval, () {
-      if (ref.mounted) ref.invalidateSelf();
+      if (!ref.mounted) return;
+      if (ref.isPaused) {
+        stale = true;
+      } else {
+        ref.invalidateSelf();
+      }
     });
   }
+
+  ref.onResume(() {
+    if (!stale) return;
+    stale = false;
+    resumeTimer?.cancel();
+    resumeTimer = Timer(autoRefreshResumeDelay, () {
+      if (ref.mounted) ref.invalidateSelf();
+    });
+  });
 
   if (ref.read(appLifecycleProvider) == AppLifecycleState.resumed) schedule();
 
@@ -72,5 +92,12 @@ void autoRefresh(Ref ref, Duration base) {
       timer?.cancel();
     }
   });
-  ref.onDispose(() => timer?.cancel());
+  ref.onDispose(() {
+    timer?.cancel();
+    resumeTimer?.cancel();
+  });
 }
+
+/// How long after a paused provider resumes its overdue refresh runs (the
+/// tab-switch transition plays first).
+const autoRefreshResumeDelay = Duration(milliseconds: 300);

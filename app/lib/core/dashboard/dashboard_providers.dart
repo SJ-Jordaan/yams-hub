@@ -4,6 +4,7 @@ library;
 
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:yams_models/yams_models.dart';
@@ -17,20 +18,72 @@ import '../settings/app_settings.dart';
 /// Cards refreshed on the fast interval.
 const fastDashboardCards = [DashboardCardKeys.activity, DashboardCardKeys.system, DashboardCardKeys.media];
 
+/// [old] when [next] carries the same content, else [next]: unchanged
+/// sections keep their identity across refreshes, so the cards that select
+/// them do not rebuild. `fetchedAt` only counts while the data is stale (the
+/// stale badge shows it).
+Section reuseSection(Section? old, Section next) {
+  if (old == null || identical(old, next)) return next;
+  final same =
+      old.status == next.status &&
+      old.stale == next.stale &&
+      old.error?.code == next.error?.code &&
+      old.error?.message == next.error?.message &&
+      (!next.stale || old.fetchedAt == next.fetchedAt) &&
+      const DeepCollectionEquality().equals(old.data, next.data);
+  return same ? old : next;
+}
+
+/// [old] when [next] holds the same alerts in the same order, else [next].
+List<Alert> reuseAlerts(List<Alert> old, List<Alert> next) {
+  if (identical(old, next)) return next;
+  if (old.length != next.length) return next;
+  const eq = DeepCollectionEquality();
+  for (var i = 0; i < old.length; i++) {
+    if (!identical(old[i], next[i]) && !eq.equals(old[i].toJson(), next[i].toJson())) return next;
+  }
+  return old;
+}
+
+/// [next] with every unchanged section and the alerts (when unchanged) taken
+/// from [previous].
+DashboardResponse reuseDashboard(DashboardResponse? previous, DashboardResponse next) {
+  if (previous == null) return next;
+  return DashboardResponse(
+    generatedAt: next.generatedAt,
+    alerts: reuseAlerts(previous.alerts, next.alerts),
+    cards: {for (final e in next.cards.entries) e.key: reuseSection(previous.cards[e.key], e.value)},
+  );
+}
+
 /// Merges a partial response (some cards only) into [current]: its cards
 /// replace the old ones, and its alerts replace the alerts of those cards'
-/// features.
+/// features. Unchanged sections and alerts keep their identity.
 DashboardResponse mergeDashboard(DashboardResponse current, DashboardResponse partial) {
   final refreshed = partial.cards.keys.toSet();
   return DashboardResponse(
     generatedAt: partial.generatedAt,
-    alerts: [
+    alerts: reuseAlerts(current.alerts, [
       for (final a in current.alerts)
         if (!refreshed.contains(a.feature)) a,
       ...partial.alerts,
-    ],
-    cards: {...current.cards, ...partial.cards},
+    ]),
+    cards: {
+      ...current.cards,
+      for (final e in partial.cards.entries) e.key: reuseSection(current.cards[e.key], e.value),
+    },
   );
+}
+
+/// Re-fetches the whole dashboard (pull to refresh, retry buttons); errors are
+/// shown by the screen.
+Future<void> refreshDashboard(WidgetRef ref) async {
+  ref.invalidate(dashboardProvider);
+  try {
+    await ref.read(dashboardProvider.future);
+  } catch (_) {
+    // Shown by the screen.
+  }
 }
 
 class DashboardController extends AsyncNotifier<DashboardResponse> {
@@ -54,11 +107,12 @@ class DashboardController extends AsyncNotifier<DashboardResponse> {
     final cards = visible.isEmpty ? const [DashboardCardKeys.system] : visible;
     final all = cards.length == DashboardCardKeys.all.length;
     final response = await api.dashboard(cards: all ? null : cards);
-    if (ref.mounted) {
-      ref.read(navBadgesProvider.notifier).seed(response);
-      _scheduleFast(visible);
-    }
-    return response;
+    if (!ref.mounted) return response;
+    ref.read(navBadgesProvider.notifier).seed(response);
+    _scheduleFast(visible);
+    // Against the value shown while reloading: unchanged cards keep their
+    // sections and do not rebuild.
+    return reuseDashboard(state.value, response);
   }
 
   void _scheduleFast(List<String> visible) {

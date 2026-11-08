@@ -1,0 +1,3089 @@
+{
+ "label": "baseline-arr",
+ "meta": {
+  "date": "2026-11-08T22:47:39+02:00",
+  "git": "none",
+  "cpu": 4,
+  "gpu": "hw",
+  "mock_args": "--poster-mode arr"
+ },
+ "environment": {
+  "browser": "156.0.8078.4",
+  "gpu": "hw",
+  "webgl_renderer": "ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 3080 Ti/PCIe/SSE2, OpenGL ES 3.2)",
+  "device": {
+   "viewport": {
+    "width": 412,
+    "height": 839
+   },
+   "dpr": 2.625,
+   "ua": "Mozilla/5.0 (Linux; Android 14; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Mobile Safari/537.36"
+  },
+  "cpu_throttle": 4.0
+ },
+ "repeats": 3,
+ "metrics_median": {
+  "boot.flutter_view_ms": 1597,
+  "boot.first_flutter_frame_ms": 1618.4,
+  "boot.login_screen_idle_ms": 2315.7,
+  "login.dashboard_frame_after_login_ms": 490.1,
+  "login.client_after_login_to_settled_ms": 2043.8,
+  "login.jank.frames_over_50ms": 5,
+  "login.jank.longtask_ms_total": 811,
+  "login.jank.flutter_frame_ms_max": 370.8,
+  "login.img_requests.count": 9,
+  "dashboard_scroll.jank.fps": 58.1,
+  "dashboard_scroll.jank.frame_ms_p50": 16.7,
+  "dashboard_scroll.jank.frame_ms_p90": 17.6,
+  "dashboard_scroll.jank.frame_ms_p99": 27.22,
+  "dashboard_scroll.jank.frames_over_32ms": 3,
+  "dashboard_scroll.jank.frames_over_100ms": 0,
+  "dashboard_scroll.jank.flutter_frame_ms_p90": 10.5,
+  "dashboard_scroll.jank.longtask_ms_total": 189,
+  "dashboard_scroll.cdp.ScriptDuration_ms": 3157.5,
+  "tabs.requests.first_frame_ms": 170.7,
+  "tabs.requests.settled_ms": 1518.7,
+  "tabs.requests.jank.longtask_ms_total": 231,
+  "tabs.requests.jank.frames_over_50ms": 2,
+  "tabs.requests.jank.flutter_frame_ms_max": 119.7,
+  "tabs.requests.scroll_jank.fps": 59.0,
+  "tabs.requests.scroll_jank.frames_over_32ms": 2,
+  "tabs.library.first_frame_ms": 114.2,
+  "tabs.library.settled_ms": 576.0,
+  "tabs.library.jank.longtask_ms_total": 222,
+  "tabs.library.jank.frames_over_50ms": 2,
+  "tabs.library.jank.flutter_frame_ms_max": 107.2,
+  "tabs.library.scroll_jank.fps": 59.8,
+  "tabs.library.scroll_jank.frames_over_32ms": 3,
+  "tabs.activity.first_frame_ms": 102.0,
+  "tabs.activity.settled_ms": 543.5,
+  "tabs.activity.jank.longtask_ms_total": 84,
+  "tabs.activity.jank.frames_over_50ms": 1,
+  "tabs.activity.jank.flutter_frame_ms_max": 79,
+  "tabs.activity.scroll_jank.fps": 59.3,
+  "tabs.activity.scroll_jank.frames_over_32ms": 0,
+  "tabs.system.first_frame_ms": 120.8,
+  "tabs.system.settled_ms": 534.8,
+  "tabs.system.jank.longtask_ms_total": 316,
+  "tabs.system.jank.frames_over_50ms": 3,
+  "tabs.system.jank.flutter_frame_ms_max": 139.6,
+  "tabs.system.scroll_jank.fps": 56.6,
+  "tabs.system.scroll_jank.frames_over_32ms": 3,
+  "tabs.home_again.first_frame_ms": 118.1,
+  "tabs.home_again.settled_ms": 546.2,
+  "tabs.home_again.jank.longtask_ms_total": 152,
+  "tabs.home_again.jank.frames_over_50ms": 2,
+  "tabs.home_again.jank.flutter_frame_ms_max": 90.8,
+  "tabs.home_again.scroll_jank.fps": 59.3,
+  "tabs.home_again.scroll_jank.frames_over_32ms": 0,
+  "images.movies_fast.images_reappear": true,
+  "images.movies_fast.jank_down.fps": 44.2,
+  "images.movies_fast.jank_down.frame_ms_p90": 38.76,
+  "images.movies_fast.jank_down.frames_over_32ms": 24,
+  "images.movies_fast.jank_down.image_decodes": 222,
+  "images.movies_fast.img_requests_scrolling_down.count": 111,
+  "images.movies_fast.diff_before_vs_after_6s": 0.0,
+  "images.tv.images_reappear": true,
+  "images.tv.jank_down.fps": 60.0,
+  "images.tv.jank_down.frame_ms_p90": 17.7,
+  "images.tv.jank_down.frames_over_32ms": 0,
+  "images.tv.jank_down.image_decodes": 84,
+  "images.tv.img_requests_scrolling_down.count": 33,
+  "images.tv.diff_before_vs_after_6s": 0.0,
+  "images.movies.images_reappear": true,
+  "images.movies.jank_down.fps": 60.0,
+  "images.movies.jank_down.frame_ms_p90": 17.4,
+  "images.movies.jank_down.frames_over_32ms": 0,
+  "images.movies.jank_down.image_decodes": 111,
+  "images.movies.img_requests_scrolling_down.count": 0,
+  "images.movies.diff_before_vs_after_6s": 0.0,
+  "final_js_heap_mb": 55.4,
+  "console_summary.font_fallback_fetch_failures": 15
+ },
+ "metrics_runs": {
+  "boot.flutter_view_ms": [
+   1591.5,
+   1597,
+   1600.6
+  ],
+  "boot.first_flutter_frame_ms": [
+   1613.6,
+   1618.4,
+   1622.5
+  ],
+  "boot.login_screen_idle_ms": [
+   2305.8,
+   2315.7,
+   2523
+  ],
+  "login.dashboard_frame_after_login_ms": [
+   498.0,
+   490.1,
+   456.6
+  ],
+  "login.client_after_login_to_settled_ms": [
+   2060.2,
+   2043.8,
+   1994.6
+  ],
+  "login.jank.frames_over_50ms": [
+   5,
+   5,
+   5
+  ],
+  "login.jank.longtask_ms_total": [
+   817,
+   811,
+   797
+  ],
+  "login.jank.flutter_frame_ms_max": [
+   370.8,
+   383.6,
+   364.9
+  ],
+  "login.img_requests.count": [
+   9,
+   9,
+   9
+  ],
+  "dashboard_scroll.jank.fps": [
+   58.1,
+   57.9,
+   58.3
+  ],
+  "dashboard_scroll.jank.frame_ms_p50": [
+   16.7,
+   16.7,
+   16.7
+  ],
+  "dashboard_scroll.jank.frame_ms_p90": [
+   17.64,
+   17.6,
+   17.52
+  ],
+  "dashboard_scroll.jank.frame_ms_p99": [
+   28.36,
+   27.22,
+   26.36
+  ],
+  "dashboard_scroll.jank.frames_over_32ms": [
+   3,
+   3,
+   3
+  ],
+  "dashboard_scroll.jank.frames_over_100ms": [
+   0,
+   0,
+   0
+  ],
+  "dashboard_scroll.jank.flutter_frame_ms_p90": [
+   10.77,
+   10.5,
+   10.42
+  ],
+  "dashboard_scroll.jank.longtask_ms_total": [
+   189,
+   193,
+   189
+  ],
+  "dashboard_scroll.cdp.ScriptDuration_ms": [
+   3157.5,
+   3335.6,
+   3121.7
+  ],
+  "tabs.requests.first_frame_ms": [
+   173.5,
+   153.6,
+   170.7
+  ],
+  "tabs.requests.settled_ms": [
+   1784.9,
+   1485.3,
+   1518.7
+  ],
+  "tabs.requests.jank.longtask_ms_total": [
+   231,
+   230,
+   232
+  ],
+  "tabs.requests.jank.frames_over_50ms": [
+   2,
+   2,
+   2
+  ],
+  "tabs.requests.jank.flutter_frame_ms_max": [
+   122.9,
+   119.7,
+   118.8
+  ],
+  "tabs.requests.scroll_jank.fps": [
+   59.0,
+   59.0,
+   59.1
+  ],
+  "tabs.requests.scroll_jank.frames_over_32ms": [
+   2,
+   2,
+   2
+  ],
+  "tabs.library.first_frame_ms": [
+   114.2,
+   110.1,
+   116.0
+  ],
+  "tabs.library.settled_ms": [
+   577.0,
+   556.3,
+   576.0
+  ],
+  "tabs.library.jank.longtask_ms_total": [
+   220,
+   222,
+   227
+  ],
+  "tabs.library.jank.frames_over_50ms": [
+   2,
+   2,
+   2
+  ],
+  "tabs.library.jank.flutter_frame_ms_max": [
+   106,
+   107.2,
+   110
+  ],
+  "tabs.library.scroll_jank.fps": [
+   59.7,
+   59.8,
+   59.8
+  ],
+  "tabs.library.scroll_jank.frames_over_32ms": [
+   3,
+   3,
+   3
+  ],
+  "tabs.activity.first_frame_ms": [
+   99.7,
+   102.0,
+   104.9
+  ],
+  "tabs.activity.settled_ms": [
+   541.2,
+   543.5,
+   543.6
+  ],
+  "tabs.activity.jank.longtask_ms_total": [
+   84,
+   83,
+   87
+  ],
+  "tabs.activity.jank.frames_over_50ms": [
+   1,
+   1,
+   1
+  ],
+  "tabs.activity.jank.flutter_frame_ms_max": [
+   79,
+   77.7,
+   80.7
+  ],
+  "tabs.activity.scroll_jank.fps": [
+   59.3,
+   59.3,
+   59.3
+  ],
+  "tabs.activity.scroll_jank.frames_over_32ms": [
+   0,
+   0,
+   0
+  ],
+  "tabs.system.first_frame_ms": [
+   120.8,
+   120.6,
+   123.6
+  ],
+  "tabs.system.settled_ms": [
+   534.8,
+   535.0,
+   522.4
+  ],
+  "tabs.system.jank.longtask_ms_total": [
+   316,
+   256,
+   320
+  ],
+  "tabs.system.jank.frames_over_50ms": [
+   3,
+   2,
+   3
+  ],
+  "tabs.system.jank.flutter_frame_ms_max": [
+   135.2,
+   139.7,
+   139.6
+  ],
+  "tabs.system.scroll_jank.fps": [
+   56.6,
+   56.5,
+   56.6
+  ],
+  "tabs.system.scroll_jank.frames_over_32ms": [
+   3,
+   4,
+   3
+  ],
+  "tabs.home_again.first_frame_ms": [
+   118.1,
+   118.6,
+   117.1
+  ],
+  "tabs.home_again.settled_ms": [
+   546.2,
+   546.8,
+   530.9
+  ],
+  "tabs.home_again.jank.longtask_ms_total": [
+   168,
+   152,
+   150
+  ],
+  "tabs.home_again.jank.frames_over_50ms": [
+   2,
+   2,
+   2
+  ],
+  "tabs.home_again.jank.flutter_frame_ms_max": [
+   91.1,
+   90.8,
+   89.9
+  ],
+  "tabs.home_again.scroll_jank.fps": [
+   59.3,
+   59.3,
+   59.3
+  ],
+  "tabs.home_again.scroll_jank.frames_over_32ms": [
+   0,
+   0,
+   0
+  ],
+  "images.movies_fast.images_reappear": [
+   true,
+   true,
+   true
+  ],
+  "images.movies_fast.jank_down.fps": [
+   59.7,
+   29.8,
+   44.2
+  ],
+  "images.movies_fast.jank_down.frame_ms_p90": [
+   23.1,
+   87.56,
+   38.76
+  ],
+  "images.movies_fast.jank_down.frames_over_32ms": [
+   0,
+   24,
+   24
+  ],
+  "images.movies_fast.jank_down.image_decodes": [
+   222,
+   210,
+   222
+  ],
+  "images.movies_fast.img_requests_scrolling_down.count": [
+   111,
+   105,
+   111
+  ],
+  "images.movies_fast.diff_before_vs_after_6s": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "images.tv.images_reappear": [
+   true,
+   true,
+   true
+  ],
+  "images.tv.jank_down.fps": [
+   60.0,
+   59.9,
+   60.0
+  ],
+  "images.tv.jank_down.frame_ms_p90": [
+   17.7,
+   17.5,
+   17.7
+  ],
+  "images.tv.jank_down.frames_over_32ms": [
+   3,
+   0,
+   0
+  ],
+  "images.tv.jank_down.image_decodes": [
+   84,
+   84,
+   84
+  ],
+  "images.tv.img_requests_scrolling_down.count": [
+   33,
+   33,
+   33
+  ],
+  "images.tv.diff_before_vs_after_6s": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "images.movies.images_reappear": [
+   true,
+   true,
+   true
+  ],
+  "images.movies.jank_down.fps": [
+   60.0,
+   60.0,
+   59.9
+  ],
+  "images.movies.jank_down.frame_ms_p90": [
+   17.6,
+   17.3,
+   17.4
+  ],
+  "images.movies.jank_down.frames_over_32ms": [
+   0,
+   0,
+   0
+  ],
+  "images.movies.jank_down.image_decodes": [
+   111,
+   111,
+   111
+  ],
+  "images.movies.img_requests_scrolling_down.count": [
+   0,
+   0,
+   0
+  ],
+  "images.movies.diff_before_vs_after_6s": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "final_js_heap_mb": [
+   67.7,
+   53.6,
+   55.4
+  ],
+  "console_summary.font_fallback_fetch_failures": [
+   15,
+   15,
+   15
+  ]
+ },
+ "safari_decode_path_images": {
+  "note": "Chromium with WebCodecs ImageDecoder hidden: Flutter decodes through <img> like Safari/iOS and Firefox",
+  "images_reappear": false,
+  "movies_fast": {
+   "images_reappear": false,
+   "diff_before_vs_after_0s": 64.89,
+   "diff_before_vs_after_6s": 64.55,
+   "img_requests_returning": {
+    "count": 6,
+    "done": 6,
+    "canceled": 0,
+    "failed": 0,
+    "pending": 0,
+    "from_cache": 0,
+    "unique_urls": 6,
+    "bytes": 138309
+   },
+   "returning_requests_for_previously_loaded_urls": 0,
+   "jank_down": {
+    "fps": 32.9,
+    "frame_ms_p90": 71.0,
+    "frames_over_32ms": 27,
+    "frames_over_100ms": 1,
+    "image_decodes": 210,
+    "image_decode_ms_p50": 48.8
+   }
+  },
+  "tv": {
+   "images_reappear": false,
+   "diff_before_vs_after_0s": 71.29,
+   "diff_before_vs_after_6s": 70.77,
+   "img_requests_returning": {
+    "count": 0,
+    "done": 0,
+    "canceled": 0,
+    "failed": 0,
+    "pending": 0,
+    "from_cache": 0,
+    "unique_urls": 0,
+    "bytes": 0
+   },
+   "returning_requests_for_previously_loaded_urls": 0,
+   "jank_down": {
+    "fps": 56.4,
+    "frame_ms_p90": 22.97,
+    "frames_over_32ms": 11,
+    "frames_over_100ms": 0,
+    "image_decodes": 102,
+    "image_decode_ms_p50": 9.8
+   }
+  },
+  "movies": {
+   "images_reappear": false,
+   "diff_before_vs_after_0s": 36.9,
+   "diff_before_vs_after_6s": 36.52,
+   "img_requests_returning": {
+    "count": 0,
+    "done": 0,
+    "canceled": 0,
+    "failed": 0,
+    "pending": 0,
+    "from_cache": 0,
+    "unique_urls": 0,
+    "bytes": 0
+   },
+   "returning_requests_for_previously_loaded_urls": 0,
+   "jank_down": {
+    "fps": 59.9,
+    "frame_ms_p90": 17.5,
+    "frames_over_32ms": 0,
+    "frames_over_100ms": 0,
+    "image_decodes": 0,
+    "image_decode_ms_p50": null
+   }
+  }
+ },
+ "profile_build_traces": {
+  "console_summary": {
+   "total": 53,
+   "errors": 30,
+   "font_fallback_fetch_failures": 15,
+   "samples": [
+    "error: Connecting to 'https://fonts.gstatic.com/s/notosanssymbols2/v24/I_uyMoGduATTei9eI8daxVHDyfisHr71-vrgfE71.woff2' violates the following Content Security Policy directive: \"connect-src 'self'\". The action has been blocked.",
+    "error: Fetch API cannot load https://fonts.gstatic.com/s/notosanssymbols2/v24/I_uyMoGduATTei9eI8daxVHDyfisHr71-vrgfE71.woff2. Refused to connect because it violates the document's Content Security Policy.",
+    "warning: Transient error (attempt 1) for Noto Sans Symbols 2 3: Flutter Web engine failed to complete HTTP request to fetch \"https://fonts.gstatic.com/s/notosanssymbols2/v24/I_uyMoGduATTei9eI8daxVHDyfisHr71-vrgfE71.woff2\": TypeError: Failed",
+    "warning: Transient error (attempt 2) for Noto Sans Symbols 2 3: Flutter Web engine failed to complete HTTP request to fetch \"https://fonts.gstatic.com/s/notosanssymbols2/v24/I_uyMoGduATTei9eI8daxVHDyfisHr71-vrgfE71.woff2\": TypeError: Failed",
+    "warning: Transient error (attempt 3) for Noto Sans Symbols 2 3: Flutter Web engine failed to complete HTTP request to fetch \"https://fonts.gstatic.com/s/notosanssymbols2/v24/I_uyMoGduATTei9eI8daxVHDyfisHr71-vrgfE71.woff2\": TypeError: Failed",
+    "warning: Font Noto Sans Symbols 2 3 at https://fonts.gstatic.com/s/notosanssymbols2/v24/I_uyMoGduATTei9eI8daxVHDyfisHr71-vrgfE71.woff2 is permanently unavailable.",
+    "error: Connecting to 'https://fonts.gstatic.com/s/notosanssc/v37/k3kCo84MPvpLmixcA63oeAL7Iqp5IZJF9bmaG9_FnYkldv7JjxkkgFsFSSOPMOkySAZ73y9ViAt3acb8NexQ2w.87.woff2' violates the following Content Security Policy directive: \"connect-src 'self'\"",
+    "error: Fetch API cannot load https://fonts.gstatic.com/s/notosanssc/v37/k3kCo84MPvpLmixcA63oeAL7Iqp5IZJF9bmaG9_FnYkldv7JjxkkgFsFSSOPMOkySAZ73y9ViAt3acb8NexQ2w.87.woff2. Refused to connect because it violates the document's Content Security ",
+    "warning: Transient error (attempt 1) for Noto Sans SC 69: Flutter Web engine failed to complete HTTP request to fetch \"https://fonts.gstatic.com/s/notosanssc/v37/k3kCo84MPvpLmixcA63oeAL7Iqp5IZJF9bmaG9_FnYkldv7JjxkkgFsFSSOPMOkySAZ73y9ViAt3ac",
+    "warning: Transient error (attempt 2) for Noto Sans SC 69: Flutter Web engine failed to complete HTTP request to fetch \"https://fonts.gstatic.com/s/notosanssc/v37/k3kCo84MPvpLmixcA63oeAL7Iqp5IZJF9bmaG9_FnYkldv7JjxkkgFsFSSOPMOkySAZ73y9ViAt3ac",
+    "warning: Transient error (attempt 3) for Noto Sans SC 69: Flutter Web engine failed to complete HTTP request to fetch \"https://fonts.gstatic.com/s/notosanssc/v37/k3kCo84MPvpLmixcA63oeAL7Iqp5IZJF9bmaG9_FnYkldv7JjxkkgFsFSSOPMOkySAZ73y9ViAt3ac",
+    "warning: Font Noto Sans SC 69 at https://fonts.gstatic.com/s/notosanssc/v37/k3kCo84MPvpLmixcA63oeAL7Iqp5IZJF9bmaG9_FnYkldv7JjxkkgFsFSSOPMOkySAZ73y9ViAt3acb8NexQ2w.87.woff2 is permanently unavailable."
+   ]
+  },
+  "trace_login_summary": {
+   "trace_span_ms": 5238.7,
+   "main_thread_busy_ms": 3215.0,
+   "main_thread_busy_pct": 61.4,
+   "main_thread_by_category_ms": {
+    "scripting": 2823.6,
+    "other": 332.6,
+    "gc": 33.5,
+    "painting": 20.4,
+    "rendering": 2.8,
+    "image_decode": 2.0
+   },
+   "main_thread_top_events_self_ms": [
+    [
+     "FunctionCall",
+     2647.5
+    ],
+    [
+     "V8.HandleInterrupts",
+     103.7
+    ],
+    [
+     "ThreadControllerImpl::RunTask",
+     38.7
+    ],
+    [
+     "CommandBufferProxyImpl::WaitForGetOffset",
+     38.6
+    ],
+    [
+     "RunTask",
+     28.1
+    ],
+    [
+     "UserTiming::Measure",
+     24.0
+    ],
+    [
+     "V8.BytecodeBudgetInterrupt",
+     20.3
+    ],
+    [
+     "Commit",
+     19.7
+    ],
+    [
+     "Blink.PrePaint.UpdateTime",
+     17.9
+    ],
+    [
+     "v8.callFunction",
+     16.3
+    ],
+    [
+     "RunMicrotasks",
+     12.4
+    ],
+    [
+     "AsyncTask Run",
+     11.7
+    ],
+    [
+     "LocalFrameView::RunStyleAndLayoutLifecyclePhases",
+     11.3
+    ],
+    [
+     "LocalFrameView::ScheduleAnimation",
+     10.3
+    ],
+    [
+     "Receive mojo message",
+     10.0
+    ],
+    [
+     "CommandBufferProxyImpl::Flush",
+     9.8
+    ],
+    [
+     "V8.StackGuard",
+     9.1
+    ],
+    [
+     "ResourceFetcher::requestResource",
+     9.0
+    ],
+    [
+     "ProxyMain::BeginMainFrame",
+     9.0
+    ],
+    [
+     "Blink.Paint.UpdateTime",
+     8.2
+    ],
+    [
+     "Document::UpdateStyleAndLayout",
+     7.1
+    ],
+    [
+     "WebFrameWidgetImpl::UpdateLifecycle",
+     7.0
+    ],
+    [
+     "LocalFrameView::UpdateStyleAndLayout",
+     6.9
+    ],
+    [
+     "V8.DeoptimizeCode",
+     6.2
+    ],
+    [
+     "CommandBuffer::OrderingBarrier",
+     5.8
+    ],
+    [
+     "WidgetBase::WillBeginMainFrame",
+     5.6
+    ],
+    [
+     "V8.GC_MC_INCREMENTAL",
+     5.6
+    ],
+    [
+     "CommandBufferProxyImpl::OrderingBarrier",
+     5.4
+    ],
+    [
+     "Blink.ForcedStyleAndLayout.UpdateTime",
+     4.5
+    ],
+    [
+     "ResponseBodyLoader::DidFinishLoadingBody",
+     4.4
+    ]
+   ],
+   "threads_busy_ms": {
+    "Renderer/CrRendererMain": {
+     "busy_ms": 3215.0,
+     "image_decode_ms": 2.0
+    },
+    "GPU Process/CrGpuMain": {
+     "busy_ms": 573.8,
+     "image_decode_ms": 9.0
+    },
+    "Renderer/ThreadPoolForegroundWorker": {
+     "busy_ms": 530.8,
+     "image_decode_ms": 2.6
+    },
+    "Renderer/Compositor": {
+     "busy_ms": 70.1,
+     "image_decode_ms": 0.0
+    },
+    "GPU Process/VizCompositorThread": {
+     "busy_ms": 28.8,
+     "image_decode_ms": 0.0
+    },
+    "GPU Process/Chrome_ChildIOThread": {
+     "busy_ms": 16.0,
+     "image_decode_ms": 0.0
+    },
+    "Renderer/Chrome_ChildIOThread": {
+     "busy_ms": 12.3,
+     "image_decode_ms": 0.0
+    },
+    "Renderer/PerfettoTrace": {
+     "busy_ms": 2.9,
+     "image_decode_ms": 0.0
+    }
+   },
+   "js_profile": {
+    "sampled_ms": 5279.8,
+    "idle_ms": 1998.1,
+    "program_ms": 343.2,
+    "js_and_native_ms": 2938.5,
+    "top_functions_self_ms": [
+     [
+      "mark  [native]",
+      219.5,
+      7.5
+     ],
+     [
+      "measure  [native]",
+      88.2,
+      3.0
+     ],
+     [
+      "(anonymous)  [canvaskit.js]",
+      62.8,
+      2.1
+     ],
+     [
+      "wasm:__memset  [canvaskit.wasm]",
+      42.5,
+      1.4
+     ],
+     [
+      "(garbage collector)  [native]",
+      39.2,
+      1.3
+     ],
+     [
+      "_isTestViaProperty  [sdk:dart-sdk/lib/_internal/js_shared/lib/rti.dart:1387]",
+      32.7,
+      1.1
+     ],
+     [
+      "getShaderParameter  [native]",
+      27.3,
+      0.9
+     ],
+     [
+      "Ab  [canvaskit.js]",
+      24.5,
+      0.8
+     ],
+     [
+      "createImageBitmap  [native]",
+      23.8,
+      0.8
+     ],
+     [
+      "_asyncStartSync  [sdk:dart-sdk/lib/_internal/js_runtime/lib/async_patch.dart:261]",
+      23.0,
+      0.8
+     ],
+     [
+      "js-to-wasm:ii:i  [canvaskit.wasm]",
+      21.4,
+      0.7
+     ],
+     [
+      "_paintWithContext$2  [flutter:rendering/object.dart:3484]",
+      19.4,
+      0.7
+     ],
+     [
+      "toWireType  [canvaskit.js]",
+      18.1,
+      0.6
+     ],
+     [
+      "paintChild$2  [flutter:rendering/object.dart:249]",
+      17.0,
+      0.6
+     ],
+     [
+      "visitPicture$1  [sdk:lib/_engine/engine/layer/layer_visitor.dart:407]",
+      16.5,
+      0.6
+     ],
+     [
+      "wasm:emscripten_builtin_malloc  [canvaskit.wasm]",
+      15.4,
+      0.5
+     ],
+     [
+      "(anonymous)  [main.dart.js]",
+      15.4,
+      0.5
+     ],
+     [
+      "updateChild$3  [flutter:widgets/framework.dart:3995]",
+      13.8,
+      0.5
+     ],
+     [
+      "layout$2$parentUsesSize  [flutter:rendering/object.dart:2810]",
+      13.8,
+      0.5
+     ],
+     [
+      "build$0  [flutter:widgets/framework.dart:5902]",
+      13.8,
+      0.5
+     ],
+     [
+      "_collection$_add$1  [sdk:dart-sdk/lib/_internal/js_runtime/lib/collection_patch.dart:730]",
+      13.5,
+      0.5
+     ],
+     [
+      "wasm-to-js  [native]",
+      13.4,
+      0.5
+     ],
+     [
+      "$index  [sdk:dart-sdk/lib/_internal/js_runtime/lib/linked_hash_map.dart:84]",
+      12.1,
+      0.4
+     ],
+     [
+      "getInterceptor$  [main.dart.js]",
+      12.0,
+      0.4
+     ],
+     [
+      "_instanceTypeFromConstructor  [sdk:dart-sdk/lib/_internal/js_shared/lib/rti.dart:986]",
+      11.8,
+      0.4
+     ],
+     [
+      "mount$2  [flutter:widgets/framework.dart:6797]",
+      10.5,
+      0.4
+     ],
+     [
+      "_generalAsCheckImplementation  [sdk:dart-sdk/lib/_internal/js_shared/lib/rti.dart:1491]",
+      10.1,
+      0.3
+     ],
+     [
+      "build$0  [flutter:widgets/framework.dart:5944]",
+      9.4,
+      0.3
+     ],
+     [
+      "(anonymous)  [pkg:dio_web_adapter-2.2.2/lib/src/adapter_impl.dart:45]",
+      9.4,
+      0.3
+     ],
+     [
+      "texSubImage2D  [native]",
+      9.3,
+      0.3
+     ]
+    ],
+    "top_files_self_ms": [
+     [
+      "canvaskit.wasm",
+      616.5,
+      21.0
+     ],
+     [
+      "native",
+      523.8,
+      17.8
+     ],
+     [
+      "canvaskit.js",
+      170.6,
+      5.8
+     ],
+     [
+      "flutter:widgets/framework.dart",
+      170.5,
+      5.8
+     ],
+     [
+      "main.dart.js",
+      153.2,
+      5.2
+     ],
+     [
+      "sdk:dart-sdk/lib/_internal/js_shared/lib/rti.dart",
+      114.4,
+      3.9
+     ],
+     [
+      "flutter:rendering/object.dart",
+      114.4,
+      3.9
+     ],
+     [
+      "sdk:dart-sdk/lib/_internal/js_runtime/lib/collection_patch.dart",
+      46.0,
+      1.6
+     ],
+     [
+      "sdk:lib/_engine/engine/layer/layer_visitor.dart",
+      41.5,
+      1.4
+     ],
+     [
+      "sdk:dart-sdk/lib/_internal/js_runtime/lib/linked_hash_map.dart",
+      40.5,
+      1.4
+     ],
+     [
+      "sdk:dart-sdk/lib/_internal/js_runtime/lib/async_patch.dart",
+      38.1,
+      1.3
+     ],
+     [
+      "flutter:rendering/layer.dart",
+      33.1,
+      1.1
+     ],
+     [
+      "flutter:rendering/proxy_box.dart",
+      18.9,
+      0.6
+     ],
+     [
+      "sdk:dart-sdk/lib/_internal/js_runtime/lib/js_array.dart",
+      18.5,
+      0.6
+     ],
+     [
+      "sdk:dart-sdk/lib/_internal/js_runtime/lib/core_patch.dart",
+      17.9,
+      0.6
+     ],
+     [
+      "sdk:dart-sdk/lib/_internal/js_runtime/lib/js_helper.dart",
+      17.8,
+      0.6
+     ],
+     [
+      "flutter:widgets/basic.dart",
+      17.2,
+      0.6
+     ],
+     [
+      "flutter:material/theme_data.dart",
+      15.0,
+      0.5
+     ],
+     [
+      "sdk:dart-sdk/lib/async/future_impl.dart",
+      13.4,
+      0.5
+     ],
+     [
+      "sdk:lib/_engine/engine/primitives/path.dart",
+      13.3,
+      0.5
+     ],
+     [
+      "flutter:rendering/box.dart",
+      13.3,
+      0.5
+     ],
+     [
+      "sdk:lib/_engine/engine/layer/layer.dart",
+      12.4,
+      0.4
+     ],
+     [
+      "sdk:lib/_engine/engine/canvaskit/canvas.dart",
+      12.1,
+      0.4
+     ],
+     [
+      "pkg:dio_web_adapter-2.2.2/lib/src/adapter_impl.dart",
+      11.9,
+      0.4
+     ],
+     [
+      "sdk:lib/_engine/engine/canvaskit/text.dart",
+      11.4,
+      0.4
+     ],
+     [
+      "pkg:flutter_riverpod-3.4.3/lib/src/core/consumer.dart",
+      11.2,
+      0.4
+     ],
+     [
+      "sdk:dart-sdk/lib/_internal/js_runtime/lib/developer_patch.dart",
+      11.2,
+      0.4
+     ],
+     [
+      "pkg:riverpod-3.4.3/lib/src/core/element.dart",
+      10.9,
+      0.4
+     ],
+     [
+      "flutter:material/material.dart",
+      10.2,
+      0.3
+     ],
+     [
+      "sdk:lib/_engine/engine/font_fallbacks.dart",
+      10.1,
+      0.3
+     ]
+    ]
+   },
+   "flutter_timeline_phases": {
+    "ImageCache.putIfAbsent": {
+     "count": 13,
+     "total_ms": 7490.7,
+     "p50_ms": 507.43,
+     "p90_ms": 1259.32,
+     "max_ms": 1311.3
+    },
+    "listener": {
+     "count": 9,
+     "total_ms": 7473.9,
+     "p50_ms": 527.98,
+     "p90_ms": 1309.76,
+     "max_ms": 1309.8
+    },
+    "Frame": {
+     "count": 140,
+     "total_ms": 2014.1,
+     "p50_ms": 5.76,
+     "p90_ms": 19.1,
+     "max_ms": 507.9
+    },
+    "BUILD": {
+     "count": 150,
+     "total_ms": 758.7,
+     "p50_ms": 0.62,
+     "p90_ms": 5.28,
+     "max_ms": 186.0
+    },
+    "LAYOUT (root)": {
+     "count": 140,
+     "total_ms": 592.7,
+     "p50_ms": 0.04,
+     "p90_ms": 0.63,
+     "max_ms": 399.6
+    },
+    "LAYOUT": {
+     "count": 140,
+     "total_ms": 574.2,
+     "p50_ms": 0.01,
+     "p90_ms": 0.53,
+     "max_ms": 399.6
+    },
+    "PAINT (root)": {
+     "count": 140,
+     "total_ms": 418.7,
+     "p50_ms": 2.26,
+     "p90_ms": 5.86,
+     "max_ms": 28.4
+    },
+    "PAINT": {
+     "count": 140,
+     "total_ms": 395.6,
+     "p50_ms": 2.09,
+     "p90_ms": 5.82,
+     "max_ms": 28.3
+    },
+    "COMPOSITING": {
+     "count": 140,
+     "total_ms": 313.2,
+     "p50_ms": 1.68,
+     "p90_ms": 4.13,
+     "max_ms": 7.7
+    },
+    "FINALIZE TREE": {
+     "count": 140,
+     "total_ms": 40.8,
+     "p50_ms": 0.01,
+     "p90_ms": 0.41,
+     "max_ms": 19.7
+    },
+    "Animate": {
+     "count": 140,
+     "total_ms": 37.6,
+     "p50_ms": 0.19,
+     "p90_ms": 0.58,
+     "max_ms": 1.3
+    },
+    "UPDATING COMPOSITING BITS (root)": {
+     "count": 140,
+     "total_ms": 26.5,
+     "p50_ms": 0.04,
+     "p90_ms": 0.52,
+     "max_ms": 2.2
+    },
+    "POST_FRAME": {
+     "count": 140,
+     "total_ms": 12.8,
+     "p50_ms": 0.01,
+     "p90_ms": 0.16,
+     "max_ms": 5.8
+    },
+    "RenderFlex intrinsics": {
+     "count": 3,
+     "total_ms": 11.1,
+     "p50_ms": 4.21,
+     "p90_ms": 4.4,
+     "max_ms": 4.4
+    },
+    "UPDATING COMPOSITING BITS": {
+     "count": 140,
+     "total_ms": 10.6,
+     "p50_ms": 0.01,
+     "p90_ms": 0.1,
+     "max_ms": 2.2
+    },
+    "checkCacheSize": {
+     "count": 9,
+     "total_ms": 3.3,
+     "p50_ms": 0.48,
+     "p90_ms": 0.8,
+     "max_ms": 0.8
+    },
+    "RenderParagraph.getDryLayout": {
+     "count": 3,
+     "total_ms": 2.8,
+     "p50_ms": 0.96,
+     "p90_ms": 1.84,
+     "max_ms": 1.8
+    },
+    "RenderRepaintBoundary.getDryBaseline": {
+     "count": 12,
+     "total_ms": 1.7,
+     "p50_ms": 0.04,
+     "p90_ms": 0.38,
+     "max_ms": 0.5
+    },
+    "RenderTransform.getDryBaseline": {
+     "count": 6,
+     "total_ms": 0.8,
+     "p50_ms": 0.02,
+     "p90_ms": 0.56,
+     "max_ms": 0.6
+    },
+    "RenderParagraph.getDryBaseline": {
+     "count": 6,
+     "total_ms": 0.7,
+     "p50_ms": 0.03,
+     "p90_ms": 0.51,
+     "max_ms": 0.5
+    },
+    "RenderAspectRatio.getDryLayout": {
+     "count": 5,
+     "total_ms": 0.3,
+     "p50_ms": 0.03,
+     "p90_ms": 0.1,
+     "max_ms": 0.1
+    },
+    "RenderConstrainedBox.getDryBaseline": {
+     "count": 8,
+     "total_ms": 0.1,
+     "p50_ms": 0.01,
+     "p90_ms": 0.03,
+     "max_ms": 0.0
+    }
+   },
+   "measurement_window": true,
+   "sourcemap": true
+  },
+  "trace_dashboard_summary": {
+   "trace_span_ms": 5743.2,
+   "main_thread_busy_ms": 4077.9,
+   "main_thread_busy_pct": 71.0,
+   "main_thread_by_category_ms": {
+    "scripting": 3538.1,
+    "other": 481.3,
+    "painting": 31.6,
+    "gc": 21.1,
+    "rendering": 5.8,
+    "image_decode": 0.0
+   },
+   "main_thread_top_events_self_ms": [
+    [
+     "FunctionCall",
+     3425.8
+    ],
+    [
+     "UserTiming::Measure",
+     57.1
+    ],
+    [
+     "LayerTreeHost::WaitForCommitCompletion",
+     49.2
+    ],
+    [
+     "V8.HandleInterrupts",
+     47.6
+    ],
+    [
+     "ThreadControllerImpl::RunTask",
+     42.4
+    ],
+    [
+     "ProxyMain::BeginMainFrame",
+     35.4
+    ],
+    [
+     "Commit",
+     31.6
+    ],
+    [
+     "Blink.PrePaint.UpdateTime",
+     27.5
+    ],
+    [
+     "v8.callFunction",
+     27.2
+    ],
+    [
+     "RunTask",
+     26.7
+    ],
+    [
+     "LocalFrameView::RunStyleAndLayoutLifecyclePhases",
+     23.2
+    ],
+    [
+     "RunMicrotasks",
+     21.8
+    ],
+    [
+     "LocalFrameView::ScheduleAnimation",
+     18.2
+    ],
+    [
+     "AsyncTask Run",
+     18.0
+    ],
+    [
+     "CommandBufferProxyImpl::Flush",
+     16.9
+    ],
+    [
+     "Blink.Paint.UpdateTime",
+     16.1
+    ],
+    [
+     "WebFrameWidgetImpl::UpdateLifecycle",
+     15.5
+    ],
+    [
+     "Document::UpdateStyleAndLayout",
+     12.7
+    ],
+    [
+     "LayerTreeHost::DoUpdateLayers",
+     10.2
+    ],
+    [
+     "AsyncTask Scheduled",
+     10.1
+    ],
+    [
+     "CommandBuffer::OrderingBarrier",
+     7.7
+    ],
+    [
+     "PageAnimator::serviceScriptedAnimations",
+     7.5
+    ],
+    [
+     "CommandBufferProxyImpl::OrderingBarrier",
+     6.9
+    ],
+    [
+     "EventDispatch",
+     6.7
+    ],
+    [
+     "LocalFrameView::UpdateStyleAndLayout",
+     6.6
+    ],
+    [
+     "CanvasNon2DResourceProvider::Snapshot",
+     6.3
+    ],
+    [
+     "Blink.ForcedStyleAndLayout.UpdateTime",
+     6.2
+    ],
+    [
+     "ProxyMain::BeginMainFrame::commit",
+     5.2
+    ],
+    [
+     "WebFrameWidgetImpl::BeginMainFrame",
+     4.6
+    ],
+    [
+     "CommandBufferHelper::Flush",
+     4.6
+    ]
+   ],
+   "threads_busy_ms": {
+    "Renderer/CrRendererMain": {
+     "busy_ms": 4077.9,
+     "image_decode_ms": 0.0
+    },
+    "GPU Process/CrGpuMain": {
+     "busy_ms": 861.8,
+     "image_decode_ms": 0.0
+    },
+    "Renderer/ThreadPoolForegroundWorker": {
+     "busy_ms": 169.3,
+     "image_decode_ms": 0.0
+    },
+    "Renderer/Compositor": {
+     "busy_ms": 133.8,
+     "image_decode_ms": 0.0
+    },
+    "GPU Process/VizCompositorThread": {
+     "busy_ms": 48.0,
+     "image_decode_ms": 0.0
+    },
+    "GPU Process/Chrome_ChildIOThread": {
+     "busy_ms": 25.3,
+     "image_decode_ms": 0.0
+    },
+    "Renderer/Chrome_ChildIOThread": {
+     "busy_ms": 15.6,
+     "image_decode_ms": 0.0
+    },
+    "Renderer/PerfettoTrace": {
+     "busy_ms": 1.2,
+     "image_decode_ms": 0.0
+    }
+   },
+   "js_profile": {
+    "sampled_ms": 5823.0,
+    "idle_ms": 1630.8,
+    "program_ms": 565.3,
+    "js_and_native_ms": 3626.8,
+    "top_functions_self_ms": [
+     [
+      "mark  [native]",
+      371.0,
+      10.2
+     ],
+     [
+      "(anonymous)  [canvaskit.js]",
+      238.7,
+      6.6
+     ],
+     [
+      "measure  [native]",
+      159.8,
+      4.4
+     ],
+     [
+      "Ab  [canvaskit.js]",
+      81.5,
+      2.2
+     ],
+     [
+      "wasm:sktext::gpu::TextBlob::Key::operator==(sktext::gpu::TextBlob::Key const&) const  [canvaskit.wasm]",
+      81.0,
+      2.2
+     ],
+     [
+      "visitPicture$1  [sdk:lib/_engine/engine/layer/layer_visitor.dart:407]",
+      74.4,
+      2.1
+     ],
+     [
+      "_ensureNativeList  [sdk:dart-sdk/lib/_internal/js_runtime/lib/native_typed_data.dart:582]",
+      58.6,
+      1.6
+     ],
+     [
+      "_isTestViaProperty  [sdk:dart-sdk/lib/_internal/js_shared/lib/rti.dart:1387]",
+      54.9,
+      1.5
+     ],
+     [
+      "createImageBitmap  [native]",
+      43.1,
+      1.2
+     ],
+     [
+      "paintChild$2  [flutter:rendering/object.dart:249]",
+      39.0,
+      1.1
+     ],
+     [
+      "defaultPaint$2  [flutter:rendering/box.dart:3386]",
+      35.4,
+      1.0
+     ],
+     [
+      "wasm:emscripten_builtin_malloc  [canvaskit.wasm]",
+      33.5,
+      0.9
+     ],
+     [
+      "_paintWithContext$2  [flutter:rendering/object.dart:3484]",
+      25.7,
+      0.7
+     ],
+     [
+      "(garbage collector)  [native]",
+      24.7,
+      0.7
+     ],
+     [
+      "toSkPaint$1$defaultBlurTileMode  [sdk:lib/_engine/engine/canvaskit/painting.dart:22]",
+      23.9,
+      0.7
+     ],
+     [
+      "_instanceTypeFromConstructor  [sdk:dart-sdk/lib/_internal/js_shared/lib/rti.dart:986]",
+      23.8,
+      0.7
+     ],
+     [
+      "requestAnimationFrame  [native]",
+      23.2,
+      0.6
+     ],
+     [
+      "l  [canvaskit.js]",
+      22.9,
+      0.6
+     ],
+     [
+      "wasm:skgpu::ganesh::Device::onDrawGlyphRunList(SkCanvas*, sktext::GlyphRunList const&, SkPaint   [canvaskit.wasm]",
+      21.9,
+      0.6
+     ],
+     [
+      "wasm:skgpu::ganesh::AtlasTextOp::onPrepareDraws(GrMeshDrawTarget*)  [canvaskit.wasm]",
+      21.4,
+      0.6
+     ],
+     [
+      "paint$2  [flutter:rendering/proxy_box.dart:138]",
+      21.0,
+      0.6
+     ],
+     [
+      "_generalAsCheckImplementation  [sdk:dart-sdk/lib/_internal/js_shared/lib/rti.dart:1491]",
+      20.5,
+      0.6
+     ],
+     [
+      "$eq$  [main.dart.js]",
+      18.1,
+      0.5
+     ],
+     [
+      "_Universe_evalInEnvironment  [sdk:dart-sdk/lib/_internal/js_shared/lib/rti.dart:2243]",
+      18.1,
+      0.5
+     ],
+     [
+      "get$widget  [flutter:widgets/framework.dart:3666]",
+      18.0,
+      0.5
+     ],
+     [
+      "internalSet$2  [sdk:dart-sdk/lib/_internal/js_runtime/lib/linked_hash_map.dart:124]",
+      16.9,
+      0.5
+     ],
+     [
+      "wasm:emscripten_builtin_free  [canvaskit.wasm]",
+      16.5,
+      0.5
+     ],
+     [
+      "updateSubtreeNeedsAddToScene$0  [flutter:rendering/layer.dart:1160]",
+      15.6,
+      0.4
+     ],
+     [
+      "computePhysicalSize$0  [sdk:lib/_engine/engine/view_embedder/dimensions_provider/full_page_dimensions_provider.dart:59]",
+      15.5,
+      0.4
+     ],
+     [
+      "wasm:SkCanvas::internalRestore()  [canvaskit.wasm]",
+      15.3,
+      0.4
+     ]
+    ],
+    "top_files_self_ms": [
+     [
+      "canvaskit.wasm",
+      928.2,
+      25.6
+     ],
+     [
+      "native",
+      743.4,
+      20.5
+     ],
+     [
+      "canvaskit.js",
+      481.3,
+      13.3
+     ],
+     [
+      "sdk:dart-sdk/lib/_internal/js_shared/lib/rti.dart",
+      163.4,
+      4.5
+     ],
+     [
+      "sdk:lib/_engine/engine/layer/layer_visitor.dart",
+      134.2,
+      3.7
+     ],
+     [
+      "flutter:rendering/object.dart",
+      101.1,
+      2.8
+     ],
+     [
+      "main.dart.js",
+      85.5,
+      2.4
+     ],
+     [
+      "flutter:widgets/framework.dart",
+      82.8,
+      2.3
+     ],
+     [
+      "flutter:rendering/layer.dart",
+      80.1,
+      2.2
+     ],
+     [
+      "sdk:dart-sdk/lib/_internal/js_runtime/lib/native_typed_data.dart",
+      58.6,
+      1.6
+     ],
+     [
+      "sdk:dart-sdk/lib/_internal/js_runtime/lib/linked_hash_map.dart",
+      44.3,
+      1.2
+     ],
+     [
+      "flutter:rendering/box.dart",
+      39.7,
+      1.1
+     ],
+     [
+      "flutter:rendering/proxy_box.dart",
+      37.6,
+      1.0
+     ],
+     [
+      "sdk:lib/_engine/engine/layer/layer.dart",
+      26.4,
+      0.7
+     ],
+     [
+      "sdk:dart-sdk/lib/_internal/js_runtime/lib/js_helper.dart",
+      26.3,
+      0.7
+     ],
+     [
+      "sdk:lib/_engine/engine/canvaskit/painting.dart",
+      25.7,
+      0.7
+     ],
+     [
+      "sdk:lib/_engine/engine/canvaskit/canvas.dart",
+      22.3,
+      0.6
+     ],
+     [
+      "sdk:dart-sdk/lib/_internal/js_runtime/lib/collection_patch.dart",
+      21.6,
+      0.6
+     ],
+     [
+      "sdk:lib/_engine/engine/primitives/path.dart",
+      18.9,
+      0.5
+     ],
+     [
+      "sdk:dart-sdk/lib/_internal/js_runtime/lib/developer_patch.dart",
+      18.4,
+      0.5
+     ],
+     [
+      "sdk:lib/_engine/engine/pointer_binding.dart",
+      16.2,
+      0.4
+     ],
+     [
+      "sdk:lib/_engine/engine/view_embedder/dimensions_provider/full_page_dimensions_provider.dart",
+      15.5,
+      0.4
+     ],
+     [
+      "flutter:gestures/binding.dart",
+      13.8,
+      0.4
+     ],
+     [
+      "sdk:dart-sdk/lib/async/future_impl.dart",
+      13.6,
+      0.4
+     ],
+     [
+      "flutter:painting/text_painter.dart",
+      12.1,
+      0.3
+     ],
+     [
+      "sdk:lib/_engine/engine/util.dart",
+      12.0,
+      0.3
+     ],
+     [
+      "flutter:material/progress_indicator.dart",
+      11.9,
+      0.3
+     ],
+     [
+      "sdk:dart-sdk/lib/_internal/js_runtime/lib/js_array.dart",
+      11.6,
+      0.3
+     ],
+     [
+      "sdk:lib/_engine/engine/canvaskit/canvaskit_api.dart",
+      11.0,
+      0.3
+     ],
+     [
+      "sdk:lib/_engine/engine/display.dart",
+      10.9,
+      0.3
+     ]
+    ]
+   },
+   "flutter_timeline_phases": {
+    "Frame": {
+     "count": 289,
+     "total_ms": 2484.4,
+     "p50_ms": 6.84,
+     "p90_ms": 11.43,
+     "max_ms": 65.1
+    },
+    "COMPOSITING": {
+     "count": 289,
+     "total_ms": 967.8,
+     "p50_ms": 3.29,
+     "p90_ms": 4.29,
+     "max_ms": 6.4
+    },
+    "PAINT (root)": {
+     "count": 289,
+     "total_ms": 851.5,
+     "p50_ms": 1.04,
+     "p90_ms": 6.29,
+     "max_ms": 8.3
+    },
+    "PAINT": {
+     "count": 289,
+     "total_ms": 807.0,
+     "p50_ms": 0.93,
+     "p90_ms": 6.11,
+     "max_ms": 8.2
+    },
+    "BUILD": {
+     "count": 215,
+     "total_ms": 302.9,
+     "p50_ms": 0.69,
+     "p90_ms": 1.47,
+     "max_ms": 36.7
+    },
+    "LAYOUT (root)": {
+     "count": 289,
+     "total_ms": 183.4,
+     "p50_ms": 0.08,
+     "p90_ms": 0.61,
+     "max_ms": 43.7
+    },
+    "LAYOUT": {
+     "count": 289,
+     "total_ms": 152.6,
+     "p50_ms": 0.05,
+     "p90_ms": 0.51,
+     "max_ms": 43.5
+    },
+    "UPDATING COMPOSITING BITS (root)": {
+     "count": 289,
+     "total_ms": 39.4,
+     "p50_ms": 0.03,
+     "p90_ms": 0.46,
+     "max_ms": 4.2
+    },
+    "Animate": {
+     "count": 289,
+     "total_ms": 21.1,
+     "p50_ms": 0.01,
+     "p90_ms": 0.32,
+     "max_ms": 0.7
+    },
+    "FINALIZE TREE": {
+     "count": 289,
+     "total_ms": 12.5,
+     "p50_ms": 0.01,
+     "p90_ms": 0.02,
+     "max_ms": 0.8
+    },
+    "POST_FRAME": {
+     "count": 289,
+     "total_ms": 10.6,
+     "p50_ms": 0.01,
+     "p90_ms": 0.01,
+     "max_ms": 0.6
+    },
+    "UPDATING COMPOSITING BITS": {
+     "count": 289,
+     "total_ms": 8.0,
+     "p50_ms": 0.01,
+     "p90_ms": 0.01,
+     "max_ms": 0.6
+    },
+    "RenderParagraph.getDryLayout": {
+     "count": 6,
+     "total_ms": 0.1,
+     "p50_ms": 0.02,
+     "p90_ms": 0.02,
+     "max_ms": 0.0
+    }
+   },
+   "measurement_window": true,
+   "sourcemap": true
+  },
+  "trace_tabs_summary": {
+   "trace_span_ms": 23786.0,
+   "main_thread_busy_ms": 10568.6,
+   "main_thread_busy_pct": 44.4,
+   "main_thread_by_category_ms": {
+    "scripting": 8828.8,
+    "other": 1568.8,
+    "painting": 105.9,
+    "gc": 37.5,
+    "rendering": 16.7,
+    "image_decode": 10.8
+   },
+   "main_thread_top_events_self_ms": [
+    [
+     "FunctionCall",
+     8417.4
+    ],
+    [
+     "ThreadControllerImpl::RunTask",
+     174.4
+    ],
+    [
+     "UserTiming::Measure",
+     157.7
+    ],
+    [
+     "V8.HandleInterrupts",
+     154.3
+    ],
+    [
+     "RunTask",
+     115.2
+    ],
+    [
+     "Commit",
+     102.7
+    ],
+    [
+     "RunMicrotasks",
+     96.9
+    ],
+    [
+     "v8.callFunction",
+     94.4
+    ],
+    [
+     "LayerTreeHost::WaitForCommitCompletion",
+     88.2
+    ],
+    [
+     "Blink.PrePaint.UpdateTime",
+     83.8
+    ],
+    [
+     "ProxyMain::BeginMainFrame",
+     80.9
+    ],
+    [
+     "ResourceFetcher::requestResource",
+     65.8
+    ],
+    [
+     "LocalFrameView::RunStyleAndLayoutLifecyclePhases",
+     58.0
+    ],
+    [
+     "CommandBufferProxyImpl::Flush",
+     53.3
+    ],
+    [
+     "AsyncTask Run",
+     53.0
+    ],
+    [
+     "Receive mojo message",
+     53.0
+    ],
+    [
+     "LocalFrameView::ScheduleAnimation",
+     48.7
+    ],
+    [
+     "WebFrameWidgetImpl::UpdateLifecycle",
+     43.4
+    ],
+    [
+     "Blink.Paint.UpdateTime",
+     41.2
+    ],
+    [
+     "Document::UpdateStyleAndLayout",
+     32.0
+    ],
+    [
+     "LocalFrameView::UpdateStyleAndLayout",
+     27.7
+    ],
+    [
+     "SimpleWatcher::OnHandleReady",
+     23.6
+    ],
+    [
+     "CommandBufferProxyImpl::WaitForGetOffset",
+     23.2
+    ],
+    [
+     "CommandBuffer::OrderingBarrier",
+     22.8
+    ],
+    [
+     "Blink.ForcedStyleAndLayout.UpdateTime",
+     21.9
+    ],
+    [
+     "AsyncTask Scheduled",
+     20.2
+    ],
+    [
+     "CommandBufferProxyImpl::OrderingBarrier",
+     19.6
+    ],
+    [
+     "ResponseBodyLoader::DidFinishLoadingBody",
+     18.5
+    ],
+    [
+     "LayerTreeHost::DoUpdateLayers",
+     17.9
+    ],
+    [
+     "CommandBufferHelper::Flush",
+     17.6
+    ]
+   ],
+   "threads_busy_ms": {
+    "Renderer/CrRendererMain": {
+     "busy_ms": 10568.6,
+     "image_decode_ms": 10.8
+    },
+    "GPU Process/CrGpuMain": {
+     "busy_ms": 2433.1,
+     "image_decode_ms": 36.3
+    },
+    "Renderer/ThreadPoolForegroundWorker": {
+     "busy_ms": 646.5,
+     "image_decode_ms": 15.9
+    },
+    "Renderer/Compositor": {
+     "busy_ms": 349.6,
+     "image_decode_ms": 0.0
+    },
+    "GPU Process/VizCompositorThread": {
+     "busy_ms": 136.9,
+     "image_decode_ms": 0.0
+    },
+    "GPU Process/Chrome_ChildIOThread": {
+     "busy_ms": 70.7,
+     "image_decode_ms": 0.0
+    },
+    "Renderer/Chrome_ChildIOThread": {
+     "busy_ms": 57.6,
+     "image_decode_ms": 0.0
+    },
+    "GPU Process/ThreadPoolForegroundWorker": {
+     "busy_ms": 17.0,
+     "image_decode_ms": 0.0
+    },
+    "Renderer/PerfettoTrace": {
+     "busy_ms": 9.3,
+     "image_decode_ms": 0.0
+    },
+    "GPU Process/PerfettoTrace": {
+     "busy_ms": 2.2,
+     "image_decode_ms": 0.0
+    }
+   },
+   "js_profile": {
+    "sampled_ms": 24056.6,
+    "idle_ms": 13147.3,
+    "program_ms": 1711.9,
+    "js_and_native_ms": 9197.3,
+    "top_functions_self_ms": [
+     [
+      "mark  [native]",
+      1081.5,
+      11.8
+     ],
+     [
+      "measure  [native]",
+      470.6,
+      5.1
+     ],
+     [
+      "(anonymous)  [canvaskit.js]",
+      301.4,
+      3.3
+     ],
+     [
+      "_isTestViaProperty  [sdk:dart-sdk/lib/_internal/js_shared/lib/rti.dart:1387]",
+      128.7,
+      1.4
+     ],
+     [
+      "_ensureNativeList  [sdk:dart-sdk/lib/_internal/js_runtime/lib/native_typed_data.dart:582]",
+      122.4,
+      1.3
+     ],
+     [
+      "createImageBitmap  [native]",
+      114.4,
+      1.2
+     ],
+     [
+      "Ab  [canvaskit.js]",
+      103.2,
+      1.1
+     ],
+     [
+      "get$widget  [flutter:widgets/framework.dart:3666]",
+      83.0,
+      0.9
+     ],
+     [
+      "visitPicture$1  [sdk:lib/_engine/engine/layer/layer_visitor.dart:407]",
+      72.9,
+      0.8
+     ],
+     [
+      "wasm:sktext::gpu::TextBlob::Key::operator==(sktext::gpu::TextBlob::Key const&) const  [canvaskit.wasm]",
+      69.5,
+      0.8
+     ],
+     [
+      "wasm:emscripten_builtin_malloc  [canvaskit.wasm]",
+      62.6,
+      0.7
+     ],
+     [
+      "(anonymous)  [main.dart.js]",
+      60.0,
+      0.7
+     ],
+     [
+      "paintChild$2  [flutter:rendering/object.dart:249]",
+      51.5,
+      0.6
+     ],
+     [
+      "_instanceTypeFromConstructor  [sdk:dart-sdk/lib/_internal/js_shared/lib/rti.dart:986]",
+      51.2,
+      0.6
+     ],
+     [
+      "_paintWithContext$2  [flutter:rendering/object.dart:3484]",
+      50.3,
+      0.5
+     ],
+     [
+      "$eq$  [main.dart.js]",
+      50.2,
+      0.5
+     ],
+     [
+      "_Universe_evalInEnvironment  [sdk:dart-sdk/lib/_internal/js_shared/lib/rti.dart:2243]",
+      48.0,
+      0.5
+     ],
+     [
+      "requestAnimationFrame  [native]",
+      45.9,
+      0.5
+     ],
+     [
+      "$index  [sdk:dart-sdk/lib/_internal/js_runtime/lib/linked_hash_map.dart:84]",
+      43.5,
+      0.5
+     ],
+     [
+      "(garbage collector)  [native]",
+      43.0,
+      0.5
+     ],
+     [
+      "l  [canvaskit.js]",
+      43.0,
+      0.5
+     ],
+     [
+      "_instanceType  [sdk:dart-sdk/lib/_internal/js_shared/lib/rti.dart:976]",
+      40.5,
+      0.4
+     ],
+     [
+      "wasm:skgpu::ganesh::AtlasTextOp::onPrepareDraws(GrMeshDrawTarget*)  [canvaskit.wasm]",
+      39.5,
+      0.4
+     ],
+     [
+      "_reportTaskEvent  [sdk:dart-sdk/lib/_internal/js_runtime/lib/developer_patch.dart:209]",
+      37.3,
+      0.4
+     ],
+     [
+      "updateChild$3  [flutter:widgets/framework.dart:3995]",
+      36.4,
+      0.4
+     ],
+     [
+      "get$hashCode$  [main.dart.js]",
+      36.2,
+      0.4
+     ],
+     [
+      "(anonymous)  [native]",
+      36.2,
+      0.4
+     ],
+     [
+      "wasm:skgpu::ganesh::Device::onDrawGlyphRunList(SkCanvas*, sktext::GlyphRunList const&, SkPaint   [canvaskit.wasm]",
+      34.7,
+      0.4
+     ],
+     [
+      "_collection$_add$1  [sdk:dart-sdk/lib/_internal/js_runtime/lib/collection_patch.dart:730]",
+      34.4,
+      0.4
+     ],
+     [
+      "internalSet$2  [sdk:dart-sdk/lib/_internal/js_runtime/lib/linked_hash_map.dart:124]",
+      34.4,
+      0.4
+     ]
+    ],
+    "top_files_self_ms": [
+     [
+      "native",
+      2268.3,
+      24.7
+     ],
+     [
+      "canvaskit.wasm",
+      1889.9,
+      20.5
+     ],
+     [
+      "canvaskit.js",
+      723.0,
+      7.9
+     ],
+     [
+      "flutter:widgets/framework.dart",
+      474.6,
+      5.2
+     ],
+     [
+      "sdk:dart-sdk/lib/_internal/js_shared/lib/rti.dart",
+      424.3,
+      4.6
+     ],
+     [
+      "main.dart.js",
+      371.4,
+      4.0
+     ],
+     [
+      "flutter:rendering/object.dart",
+      318.8,
+      3.5
+     ],
+     [
+      "sdk:lib/_engine/engine/layer/layer_visitor.dart",
+      175.1,
+      1.9
+     ],
+     [
+      "sdk:dart-sdk/lib/_internal/js_runtime/lib/linked_hash_map.dart",
+      136.6,
+      1.5
+     ],
+     [
+      "sdk:dart-sdk/lib/_internal/js_runtime/lib/collection_patch.dart",
+      128.5,
+      1.4
+     ],
+     [
+      "sdk:dart-sdk/lib/_internal/js_runtime/lib/native_typed_data.dart",
+      124.0,
+      1.3
+     ],
+     [
+      "flutter:rendering/layer.dart",
+      118.6,
+      1.3
+     ],
+     [
+      "sdk:dart-sdk/lib/_internal/js_runtime/lib/js_helper.dart",
+      83.2,
+      0.9
+     ],
+     [
+      "flutter:rendering/proxy_box.dart",
+      63.7,
+      0.7
+     ],
+     [
+      "sdk:dart-sdk/lib/_internal/js_runtime/lib/developer_patch.dart",
+      59.7,
+      0.6
+     ],
+     [
+      "flutter:rendering/box.dart",
+      59.6,
+      0.6
+     ],
+     [
+      "sdk:dart-sdk/lib/_internal/js_runtime/lib/core_patch.dart",
+      55.5,
+      0.6
+     ],
+     [
+      "flutter:widgets/basic.dart",
+      40.3,
+      0.4
+     ],
+     [
+      "sdk:dart-sdk/lib/_internal/js_runtime/lib/async_patch.dart",
+      38.4,
+      0.4
+     ],
+     [
+      "sdk:dart-sdk/lib/async/future_impl.dart",
+      37.2,
+      0.4
+     ],
+     [
+      "flutter:gestures/binding.dart",
+      33.4,
+      0.4
+     ],
+     [
+      "sdk:lib/_engine/engine/view_embedder/dimensions_provider/full_page_dimensions_provider.dart",
+      31.8,
+      0.3
+     ],
+     [
+      "sdk:lib/_engine/engine/layer/layer.dart",
+      31.7,
+      0.3
+     ],
+     [
+      "sdk:dart-sdk/lib/_internal/js_runtime/lib/js_array.dart",
+      30.2,
+      0.3
+     ],
+     [
+      "sdk:lib/_engine/engine/canvaskit/canvas.dart",
+      28.6,
+      0.3
+     ],
+     [
+      "sdk:lib/_engine/engine/display.dart",
+      26.5,
+      0.3
+     ],
+     [
+      "flutter:rendering/flex.dart",
+      25.6,
+      0.3
+     ],
+     [
+      "flutter:painting/text_painter.dart",
+      24.9,
+      0.3
+     ],
+     [
+      "sdk:lib/_engine/engine/pointer_binding/event_position_helper.dart",
+      23.7,
+      0.3
+     ],
+     [
+      "flutter:material/progress_indicator.dart",
+      23.6,
+      0.3
+     ]
+    ]
+   },
+   "flutter_timeline_phases": {
+    "ImageCache.putIfAbsent": {
+     "count": 130,
+     "total_ms": 32592.1,
+     "p50_ms": 0.12,
+     "p90_ms": 903.45,
+     "max_ms": 1456.1
+    },
+    "listener": {
+     "count": 52,
+     "total_ms": 32569.9,
+     "p50_ms": 521.41,
+     "p90_ms": 1205.5,
+     "max_ms": 1456.0
+    },
+    "Frame": {
+     "count": 689,
+     "total_ms": 6014.9,
+     "p50_ms": 5.04,
+     "p90_ms": 11.73,
+     "max_ms": 182.0
+    },
+    "BUILD": {
+     "count": 952,
+     "total_ms": 1738.1,
+     "p50_ms": 0.76,
+     "p90_ms": 2.53,
+     "max_ms": 102.0
+    },
+    "LAYOUT (root)": {
+     "count": 689,
+     "total_ms": 1688.3,
+     "p50_ms": 0.37,
+     "p90_ms": 2.2,
+     "max_ms": 154.7
+    },
+    "LAYOUT": {
+     "count": 689,
+     "total_ms": 1609.7,
+     "p50_ms": 0.08,
+     "p90_ms": 2.01,
+     "max_ms": 154.7
+    },
+    "COMPOSITING": {
+     "count": 689,
+     "total_ms": 1394.5,
+     "p50_ms": 1.91,
+     "p90_ms": 2.83,
+     "max_ms": 8.9
+    },
+    "PAINT (root)": {
+     "count": 689,
+     "total_ms": 1179.1,
+     "p50_ms": 0.75,
+     "p90_ms": 6.01,
+     "max_ms": 16.8
+    },
+    "PAINT": {
+     "count": 689,
+     "total_ms": 1087.1,
+     "p50_ms": 0.66,
+     "p90_ms": 5.92,
+     "max_ms": 16.8
+    },
+    "FINALIZE TREE": {
+     "count": 689,
+     "total_ms": 113.5,
+     "p50_ms": 0.01,
+     "p90_ms": 0.4,
+     "max_ms": 8.6
+    },
+    "UPDATING COMPOSITING BITS (root)": {
+     "count": 689,
+     "total_ms": 111.3,
+     "p50_ms": 0.03,
+     "p90_ms": 0.51,
+     "max_ms": 2.5
+    },
+    "Animate": {
+     "count": 689,
+     "total_ms": 98.6,
+     "p50_ms": 0.04,
+     "p90_ms": 0.51,
+     "max_ms": 1.9
+    },
+    "UPDATING COMPOSITING BITS": {
+     "count": 689,
+     "total_ms": 44.6,
+     "p50_ms": 0.01,
+     "p90_ms": 0.21,
+     "max_ms": 2.0
+    },
+    "POST_FRAME": {
+     "count": 689,
+     "total_ms": 39.3,
+     "p50_ms": 0.01,
+     "p90_ms": 0.22,
+     "max_ms": 1.3
+    },
+    "RenderParagraph.getDryLayout": {
+     "count": 52,
+     "total_ms": 18.8,
+     "p50_ms": 0.03,
+     "p90_ms": 0.9,
+     "max_ms": 1.5
+    },
+    "RenderAspectRatio.getDryLayout": {
+     "count": 86,
+     "total_ms": 8.9,
+     "p50_ms": 0.02,
+     "p90_ms": 0.33,
+     "max_ms": 2.6
+    },
+    "checkCacheSize": {
+     "count": 52,
+     "total_ms": 6.0,
+     "p50_ms": 0.03,
+     "p90_ms": 0.45,
+     "max_ms": 0.6
+    },
+    "RenderMergeSemantics intrinsics": {
+     "count": 8,
+     "total_ms": 4.9,
+     "p50_ms": 0.66,
+     "p90_ms": 1.82,
+     "max_ms": 1.8
+    },
+    "RenderAnimatedOpacity.getDryBaseline": {
+     "count": 12,
+     "total_ms": 1.1,
+     "p50_ms": 0.02,
+     "p90_ms": 0.24,
+     "max_ms": 0.5
+    },
+    "RenderRepaintBoundary.getDryBaseline": {
+     "count": 12,
+     "total_ms": 0.4,
+     "p50_ms": 0.04,
+     "p90_ms": 0.05,
+     "max_ms": 0.1
+    },
+    "RenderConstrainedBox.getDryBaseline": {
+     "count": 6,
+     "total_ms": 0.1,
+     "p50_ms": 0.01,
+     "p90_ms": 0.02,
+     "max_ms": 0.0
+    }
+   },
+   "measurement_window": true,
+   "sourcemap": true
+  },
+  "trace_library_summary": {
+   "trace_span_ms": 13841.6,
+   "main_thread_busy_ms": 8314.7,
+   "main_thread_busy_pct": 60.1,
+   "main_thread_by_category_ms": {
+    "scripting": 6871.3,
+    "other": 1282.6,
+    "painting": 84.2,
+    "gc": 63.8,
+    "rendering": 12.6,
+    "image_decode": 0.1
+   },
+   "main_thread_top_events_self_ms": [
+    [
+     "FunctionCall",
+     6663.3
+    ],
+    [
+     "UserTiming::Measure",
+     151.3
+    ],
+    [
+     "LayerTreeHost::WaitForCommitCompletion",
+     143.4
+    ],
+    [
+     "ThreadControllerImpl::RunTask",
+     129.3
+    ],
+    [
+     "ProxyMain::BeginMainFrame",
+     97.6
+    ],
+    [
+     "Commit",
+     84.2
+    ],
+    [
+     "v8.callFunction",
+     84.1
+    ],
+    [
+     "Blink.PrePaint.UpdateTime",
+     74.1
+    ],
+    [
+     "LocalFrameView::RunStyleAndLayoutLifecyclePhases",
+     73.3
+    ],
+    [
+     "CommandBufferProxyImpl::Flush",
+     60.3
+    ],
+    [
+     "RunTask",
+     58.9
+    ],
+    [
+     "RunMicrotasks",
+     57.4
+    ],
+    [
+     "LocalFrameView::ScheduleAnimation",
+     47.1
+    ],
+    [
+     "WebFrameWidgetImpl::UpdateLifecycle",
+     36.6
+    ],
+    [
+     "AsyncTask Run",
+     34.8
+    ],
+    [
+     "Document::UpdateStyleAndLayout",
+     34.2
+    ],
+    [
+     "CommandBuffer::OrderingBarrier",
+     33.3
+    ],
+    [
+     "Blink.Paint.UpdateTime",
+     31.8
+    ],
+    [
+     "V8.HandleInterrupts",
+     30.9
+    ],
+    [
+     "CommandBufferProxyImpl::OrderingBarrier",
+     24.3
+    ],
+    [
+     "LocalFrameView::UpdateStyleAndLayout",
+     23.1
+    ],
+    [
+     "Blink.ForcedStyleAndLayout.UpdateTime",
+     22.0
+    ],
+    [
+     "EventDispatch",
+     19.8
+    ],
+    [
+     "LayerTreeHost::DoUpdateLayers",
+     19.5
+    ],
+    [
+     "CommandBufferHelper::Flush",
+     15.6
+    ],
+    [
+     "PageAnimator::serviceScriptedAnimations",
+     13.8
+    ],
+    [
+     "FireAnimationFrame",
+     12.6
+    ],
+    [
+     "RasterImplementation::WritePixelsYUV",
+     12.0
+    ],
+    [
+     "AsyncTask Scheduled",
+     11.6
+    ],
+    [
+     "CanvasNon2DResourceProvider::Snapshot",
+     11.2
+    ]
+   ],
+   "threads_busy_ms": {
+    "Renderer/CrRendererMain": {
+     "busy_ms": 8314.7,
+     "image_decode_ms": 0.1
+    },
+    "GPU Process/CrGpuMain": {
+     "busy_ms": 2592.4,
+     "image_decode_ms": 10.3
+    },
+    "Renderer/Compositor": {
+     "busy_ms": 351.4,
+     "image_decode_ms": 0.0
+    },
+    "Renderer/ThreadPoolForegroundWorker": {
+     "busy_ms": 328.1,
+     "image_decode_ms": 0.0
+    },
+    "GPU Process/VizCompositorThread": {
+     "busy_ms": 117.0,
+     "image_decode_ms": 0.0
+    },
+    "GPU Process/Chrome_ChildIOThread": {
+     "busy_ms": 65.6,
+     "image_decode_ms": 0.0
+    },
+    "Renderer/Chrome_ChildIOThread": {
+     "busy_ms": 40.2,
+     "image_decode_ms": 0.0
+    },
+    "Renderer/PerfettoTrace": {
+     "busy_ms": 3.5,
+     "image_decode_ms": 0.0
+    },
+    "GPU Process/PerfettoTrace": {
+     "busy_ms": 1.3,
+     "image_decode_ms": 0.0
+    }
+   },
+   "js_profile": {
+    "sampled_ms": 14102.6,
+    "idle_ms": 5480.2,
+    "program_ms": 1442.3,
+    "js_and_native_ms": 7180.1,
+    "top_functions_self_ms": [
+     [
+      "mark  [native]",
+      1112.6,
+      15.5
+     ],
+     [
+      "measure  [native]",
+      449.9,
+      6.3
+     ],
+     [
+      "(anonymous)  [canvaskit.js]",
+      317.6,
+      4.4
+     ],
+     [
+      "visitPicture$1  [sdk:lib/_engine/engine/layer/layer_visitor.dart:407]",
+      152.2,
+      2.1
+     ],
+     [
+      "createImageBitmap  [native]",
+      106.8,
+      1.5
+     ],
+     [
+      "_isTestViaProperty  [sdk:dart-sdk/lib/_internal/js_shared/lib/rti.dart:1387]",
+      101.2,
+      1.4
+     ],
+     [
+      "visitTransform$1  [sdk:lib/_engine/engine/layer/layer_visitor.dart:361]",
+      94.7,
+      1.3
+     ],
+     [
+      "transform$1  [sdk:lib/_engine/engine/layer/n_way_canvas.dart:62]",
+      76.9,
+      1.1
+     ],
+     [
+      "(garbage collector)  [native]",
+      71.0,
+      1.0
+     ],
+     [
+      "_Universe_evalInEnvironment  [sdk:dart-sdk/lib/_internal/js_shared/lib/rti.dart:2243]",
+      62.4,
+      0.9
+     ],
+     [
+      "internalSet$2  [sdk:dart-sdk/lib/_internal/js_runtime/lib/linked_hash_map.dart:124]",
+      60.4,
+      0.8
+     ],
+     [
+      "get$widget  [flutter:widgets/framework.dart:3666]",
+      59.8,
+      0.8
+     ],
+     [
+      "Ab  [canvaskit.js]",
+      53.6,
+      0.7
+     ],
+     [
+      "texImage2D  [native]",
+      53.5,
+      0.7
+     ],
+     [
+      "wasm:emscripten_builtin_malloc  [canvaskit.wasm]",
+      49.4,
+      0.7
+     ],
+     [
+      "requestAnimationFrame  [native]",
+      48.5,
+      0.7
+     ],
+     [
+      "l  [canvaskit.js]",
+      45.2,
+      0.6
+     ],
+     [
+      "$eq$  [main.dart.js]",
+      44.4,
+      0.6
+     ],
+     [
+      "(anonymous)  [main.dart.js]",
+      43.1,
+      0.6
+     ],
+     [
+      "wasm:skgpu::ganesh::AtlasTextOp::onPrepareDraws(GrMeshDrawTarget*)  [canvaskit.wasm]",
+      42.5,
+      0.6
+     ],
+     [
+      "$index  [sdk:dart-sdk/lib/_internal/js_runtime/lib/linked_hash_map.dart:84]",
+      41.5,
+      0.6
+     ],
+     [
+      "wasm:skgpu::ganesh::Device::onDrawGlyphRunList(SkCanvas*, sktext::GlyphRunList const&, SkPaint   [canvaskit.wasm]",
+      39.9,
+      0.6
+     ],
+     [
+      "_reportTaskEvent  [sdk:dart-sdk/lib/_internal/js_runtime/lib/developer_patch.dart:209]",
+      37.6,
+      0.5
+     ],
+     [
+      "updateSubtreeNeedsAddToScene$0  [flutter:rendering/layer.dart:1160]",
+      37.2,
+      0.5
+     ],
+     [
+      "dispatchEvent$2  [flutter:gestures/binding.dart:477]",
+      37.0,
+      0.5
+     ],
+     [
+      "_instanceTypeFromConstructor  [sdk:dart-sdk/lib/_internal/js_shared/lib/rti.dart:986]",
+      32.6,
+      0.5
+     ],
+     [
+      "toWireType  [canvaskit.js]",
+      31.2,
+      0.4
+     ],
+     [
+      "get$hashCode$  [main.dart.js]",
+      30.2,
+      0.4
+     ],
+     [
+      "Primitives_objectHashCode  [sdk:dart-sdk/lib/_internal/js_runtime/lib/js_helper.dart:323]",
+      30.2,
+      0.4
+     ],
+     [
+      "computePhysicalSize$0  [sdk:lib/_engine/engine/view_embedder/dimensions_provider/full_page_dimensions_provider.dart:59]",
+      26.9,
+      0.4
+     ]
+    ],
+    "top_files_self_ms": [
+     [
+      "native",
+      2123.8,
+      29.6
+     ],
+     [
+      "canvaskit.wasm",
+      1467.5,
+      20.4
+     ],
+     [
+      "canvaskit.js",
+      612.1,
+      8.5
+     ],
+     [
+      "sdk:lib/_engine/engine/layer/layer_visitor.dart",
+      383.1,
+      5.3
+     ],
+     [
+      "sdk:dart-sdk/lib/_internal/js_shared/lib/rti.dart",
+      322.5,
+      4.5
+     ],
+     [
+      "flutter:widgets/framework.dart",
+      259.1,
+      3.6
+     ],
+     [
+      "main.dart.js",
+      228.1,
+      3.2
+     ],
+     [
+      "sdk:dart-sdk/lib/_internal/js_runtime/lib/linked_hash_map.dart",
+      186.3,
+      2.6
+     ],
+     [
+      "flutter:rendering/layer.dart",
+      131.9,
+      1.8
+     ],
+     [
+      "flutter:rendering/object.dart",
+      103.9,
+      1.4
+     ],
+     [
+      "sdk:lib/_engine/engine/layer/n_way_canvas.dart",
+      92.6,
+      1.3
+     ],
+     [
+      "sdk:dart-sdk/lib/_internal/js_runtime/lib/js_helper.dart",
+      81.4,
+      1.1
+     ],
+     [
+      "sdk:dart-sdk/lib/_internal/js_runtime/lib/collection_patch.dart",
+      80.0,
+      1.1
+     ],
+     [
+      "sdk:dart-sdk/lib/_internal/js_runtime/lib/developer_patch.dart",
+      58.8,
+      0.8
+     ],
+     [
+      "flutter:gestures/binding.dart",
+      52.4,
+      0.7
+     ],
+     [
+      "sdk:lib/_engine/engine/layer/layer.dart",
+      38.8,
+      0.5
+     ],
+     [
+      "sdk:lib/_engine/engine/pointer_binding.dart",
+      28.5,
+      0.4
+     ],
+     [
+      "sdk:lib/_engine/engine/view_embedder/dimensions_provider/full_page_dimensions_provider.dart",
+      26.9,
+      0.4
+     ],
+     [
+      "sdk:lib/_engine/engine/pointer_binding/event_position_helper.dart",
+      26.2,
+      0.4
+     ],
+     [
+      "sdk:lib/_engine/engine/util.dart",
+      25.1,
+      0.4
+     ],
+     [
+      "sdk:lib/_engine/engine/platform_views/embedder.dart",
+      23.0,
+      0.3
+     ],
+     [
+      "flutter:widgets/notification_listener.dart",
+      20.2,
+      0.3
+     ],
+     [
+      "flutter:rendering/proxy_box.dart",
+      20.1,
+      0.3
+     ],
+     [
+      "sdk:dart-sdk/lib/_internal/js_runtime/lib/core_patch.dart",
+      19.9,
+      0.3
+     ],
+     [
+      "sdk:dart-sdk/lib/internal/iterable.dart",
+      19.8,
+      0.3
+     ],
+     [
+      "sdk:dart-sdk/lib/_internal/js_runtime/lib/js_array.dart",
+      19.7,
+      0.3
+     ],
+     [
+      "sdk:lib/_engine/engine/dom.dart",
+      17.1,
+      0.2
+     ],
+     [
+      "flutter:rendering/box.dart",
+      16.9,
+      0.2
+     ],
+     [
+      "flutter:rendering/view.dart",
+      16.8,
+      0.2
+     ],
+     [
+      "sdk:dart-sdk/lib/_internal/js_runtime/lib/async_patch.dart",
+      15.4,
+      0.2
+     ]
+    ]
+   },
+   "flutter_timeline_phases": {
+    "Frame": {
+     "count": 738,
+     "total_ms": 4510.5,
+     "p50_ms": 4.68,
+     "p90_ms": 14.53,
+     "max_ms": 37.4
+    },
+    "COMPOSITING": {
+     "count": 738,
+     "total_ms": 1810.9,
+     "p50_ms": 2.44,
+     "p90_ms": 2.93,
+     "max_ms": 4.3
+    },
+    "LAYOUT (root)": {
+     "count": 738,
+     "total_ms": 1210.5,
+     "p50_ms": 0.45,
+     "p90_ms": 9.79,
+     "max_ms": 17.3
+    },
+    "LAYOUT": {
+     "count": 738,
+     "total_ms": 1133.6,
+     "p50_ms": 0.21,
+     "p90_ms": 9.22,
+     "max_ms": 17.3
+    },
+    "BUILD": {
+     "count": 1239,
+     "total_ms": 979.2,
+     "p50_ms": 0.68,
+     "p90_ms": 1.45,
+     "max_ms": 24.8
+    },
+    "PAINT (root)": {
+     "count": 738,
+     "total_ms": 342.7,
+     "p50_ms": 0.33,
+     "p90_ms": 1.23,
+     "max_ms": 3.5
+    },
+    "PAINT": {
+     "count": 738,
+     "total_ms": 252.8,
+     "p50_ms": 0.05,
+     "p90_ms": 1.07,
+     "max_ms": 3.1
+    },
+    "FINALIZE TREE": {
+     "count": 738,
+     "total_ms": 130.4,
+     "p50_ms": 0.01,
+     "p90_ms": 0.67,
+     "max_ms": 2.3
+    },
+    "UPDATING COMPOSITING BITS (root)": {
+     "count": 738,
+     "total_ms": 94.2,
+     "p50_ms": 0.03,
+     "p90_ms": 0.42,
+     "max_ms": 0.8
+    },
+    "Animate": {
+     "count": 738,
+     "total_ms": 48.5,
+     "p50_ms": 0.01,
+     "p90_ms": 0.29,
+     "max_ms": 0.7
+    },
+    "POST_FRAME": {
+     "count": 738,
+     "total_ms": 40.2,
+     "p50_ms": 0.01,
+     "p90_ms": 0.18,
+     "max_ms": 0.7
+    },
+    "UPDATING COMPOSITING BITS": {
+     "count": 738,
+     "total_ms": 32.5,
+     "p50_ms": 0.01,
+     "p90_ms": 0.11,
+     "max_ms": 0.7
+    },
+    "ImageCache.putIfAbsent": {
+     "count": 222,
+     "total_ms": 24.0,
+     "p50_ms": 0.02,
+     "p90_ms": 0.45,
+     "max_ms": 1.4
+    },
+    "RenderParagraph.getDryLayout": {
+     "count": 24,
+     "total_ms": 2.1,
+     "p50_ms": 0.01,
+     "p90_ms": 0.38,
+     "max_ms": 0.6
+    },
+    "RenderRepaintBoundary.getDryBaseline": {
+     "count": 8,
+     "total_ms": 0.5,
+     "p50_ms": 0.03,
+     "p90_ms": 0.4,
+     "max_ms": 0.4
+    },
+    "RenderAnimatedOpacity.getDryBaseline": {
+     "count": 8,
+     "total_ms": 0.4,
+     "p50_ms": 0.01,
+     "p90_ms": 0.31,
+     "max_ms": 0.3
+    },
+    "RenderConstrainedBox.getDryBaseline": {
+     "count": 4,
+     "total_ms": 0.1,
+     "p50_ms": 0.01,
+     "p90_ms": 0.07,
+     "max_ms": 0.1
+    }
+   },
+   "measurement_window": true,
+   "sourcemap": true
+  }
+ },
+ "profile_build_traced_jank": {
+  "dashboard_scroll_traced": {
+   "duration_ms": 5746.6,
+   "raf_frames": 334,
+   "fps": 58.1,
+   "frame_ms_p50": 16.7,
+   "frame_ms_p90": 17.9,
+   "frame_ms_p99": 26.65,
+   "frame_ms_max": 75,
+   "frames_over_32ms": 3,
+   "frames_over_50ms": 3,
+   "frames_over_100ms": 0,
+   "time_in_frames_over_32ms_ms": 210.1,
+   "flutter_frames": 289,
+   "flutter_frame_ms_p50": 7.1,
+   "flutter_frame_ms_p90": 11.7,
+   "flutter_frame_ms_p99": 28.88,
+   "flutter_frame_ms_max": 65.6,
+   "flutter_frame_ms_total": 2522.3,
+   "longtasks": 3,
+   "longtask_ms_total": 199,
+   "longtask_ms_max": 70,
+   "image_decodes": 0,
+   "image_decode_ms_p50": null,
+   "image_decode_mpix_total": 0.0
+  },
+  "images_movies_traced": {
+   "duration_ms": 13859.2,
+   "raf_frames": 826,
+   "fps": 59.6,
+   "frame_ms_p50": 16.6,
+   "frame_ms_p90": 19.05,
+   "frame_ms_p99": 25.5,
+   "frame_ms_max": 45.6,
+   "frames_over_32ms": 5,
+   "frames_over_50ms": 0,
+   "frames_over_100ms": 0,
+   "time_in_frames_over_32ms_ms": 194.5,
+   "flutter_frames": 739,
+   "flutter_frame_ms_p50": 4.8,
+   "flutter_frame_ms_p90": 14.7,
+   "flutter_frame_ms_p99": 19.69,
+   "flutter_frame_ms_max": 37.8,
+   "flutter_frame_ms_total": 4599.9,
+   "longtasks": 0,
+   "longtask_ms_total": 0,
+   "longtask_ms_max": null,
+   "image_decodes": 222,
+   "image_decode_ms_p50": 31.65,
+   "image_decode_mpix_total": 20.8
+  }
+ }
+}

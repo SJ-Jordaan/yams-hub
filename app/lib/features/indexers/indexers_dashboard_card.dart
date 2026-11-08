@@ -4,6 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:yams_hub/core/dashboard/section_decode.dart';
 import 'package:yams_hub/core/theme/theme.dart';
 import 'package:yams_hub/core/widgets/widgets.dart';
 import 'package:yams_models/yams_models.dart';
@@ -23,12 +24,10 @@ class IndexersDashboardCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final colors = StatusColors.of(context);
-    final muted = theme.textTheme.bodySmall?.copyWith(
-      color: theme.colorScheme.onSurfaceVariant,
-    );
+    final muted = theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant);
     final IndexersCard? card;
     try {
-      card = section.decode(IndexersCard.fromJson);
+      card = decodeCached(section, IndexersCard.fromJson);
     } on FormatException {
       return Text('No data', style: muted);
     }
@@ -87,22 +86,26 @@ class IndexersDashboardCard extends ConsumerWidget {
                   Icon(Icons.error_outline, size: 18, color: colors.error),
                   const SizedBox(width: 8),
                   Expanded(
-                    child: Text(
-                      f.name,
-                      overflow: TextOverflow.ellipsis,
-                      style: theme.textTheme.bodyMedium,
-                    ),
+                    child: Text(f.name, overflow: TextOverflow.ellipsis, style: theme.textTheme.bodyMedium),
                   ),
-                  if (f.disabledTill case final t?)
-                    Text('retry at ${formatRetryTime(t)}', style: muted),
+                  if (f.disabledTill case final t?) ...[
+                    const SizedBox(width: 8),
+                    // Shrinks (with an ellipsis) instead of overflowing when the retry time falls on
+                    // another day ("retry at Mon 01:15") on a narrow card.
+                    Flexible(
+                      child: Text(
+                        'retry at ${formatRetryTime(t)}',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: muted,
+                      ),
+                    ),
+                  ],
                 ],
               ),
             ),
           if (card.failing.length > _maxFailingRows)
-            Text(
-              '+${card.failing.length - _maxFailingRows} more failing',
-              style: muted,
-            ),
+            Text('+${card.failing.length - _maxFailingRows} more failing', style: muted),
         ],
       ],
     );

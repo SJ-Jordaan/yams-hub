@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:yams_hub/core/auth/token_manager.dart';
+import 'package:yams_hub/core/servers/server_connection.dart';
+import 'package:yams_hub/core/widgets/hub_image.dart';
 import 'package:yams_hub/features/library/screens/library_screen.dart';
 import 'package:yams_hub/features/library/widgets/library_tiles.dart';
 import 'package:yams_models/yams_models.dart';
 
+import '../../support/builders.dart';
 import '../../support/fake_api.dart';
 import '../../support/pump_hub_app.dart';
 import 'library_test_data.dart';
@@ -116,5 +121,36 @@ void main() {
     await tester.tap(find.text('That Time I Got Reincarnated as a Slime'));
     await settle(tester);
     expect(find.text('Seasons'), findsOneWidget);
+  });
+
+  group('unmonitored dimming', () {
+    Future<void> pumpTiles(WidgetTester tester, List<Widget> children) => tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          activeServerProvider.overrideWith(
+            () => ActiveServerController(
+              fixed: ServerConnection(status: ConnectionStatus.connected, baseUrl: testLanUrl),
+            ),
+          ),
+          accessTokenProvider.overrideWithValue('yha_access1'),
+        ],
+        child: MaterialApp(
+          home: Scaffold(body: SingleChildScrollView(child: Column(children: children))),
+        ),
+      ),
+    );
+
+    testWidgets('poster tiles and list rows dim the image, not with an Opacity layer', (tester) async {
+      await pumpTiles(tester, [
+        SizedBox(width: 150, height: 260, child: SeriesGridTile(series: buildSeries(monitored: false))),
+        SizedBox(width: 150, height: 260, child: MovieGridTile(movie: buildMovie(monitored: false))),
+        SeriesListRow(series: buildSeries(id: 2, monitored: false)),
+        MovieListRow(movie: buildMovie(id: 2, monitored: false)),
+        SeriesListRow(series: buildSeries(id: 3)),
+      ]);
+      expect(find.descendant(of: find.byType(SingleChildScrollView), matching: find.byType(Opacity)), findsNothing);
+      final opacities = [for (final i in tester.widgetList<HubImage>(find.byType(HubImage))) i.opacity];
+      expect(opacities, [.45, .45, .45, .45, 1]);
+    });
   });
 }

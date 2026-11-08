@@ -68,7 +68,8 @@ class AvailabilityBadge extends StatelessWidget {
         decoration: BoxDecoration(
           color: color,
           shape: BoxShape.circle,
-          boxShadow: const [BoxShadow(blurRadius: 4, color: Color(0x66000000))],
+          // A hairline instead of a blurred shadow: no blur pass per poster.
+          border: Border.all(color: const Color(0x66000000)),
         ),
         child: Icon(icon, size: 14, color: Colors.white, semanticLabel: availabilityLabel(availability)),
       ),

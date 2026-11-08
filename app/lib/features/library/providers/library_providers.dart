@@ -3,6 +3,7 @@ library;
 
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:yams_hub/core/refresh/auto_refresh.dart';
 import 'package:yams_hub/core/settings/app_settings.dart';
@@ -15,17 +16,46 @@ import '../data/library_api.dart';
 // Lists and header
 // ---------------------------------------------------------------------------
 
+/// Whether [a] and [b] hold the same items in the same order, compared by
+/// their JSON.
+bool sameLibraryList<T>(List<T> a, List<T> b, JsonMap Function(T) toJson) {
+  if (identical(a, b)) return true;
+  if (a.length != b.length) return false;
+  const eq = DeepCollectionEquality();
+  for (var i = 0; i < a.length; i++) {
+    if (!identical(a[i], b[i]) && !eq.equals(toJson(a[i]), toJson(b[i]))) return false;
+  }
+  return true;
+}
+
+/// A whole library list refreshed every 60 s. A refresh that changes nothing
+/// keeps the previous list instance, so the grids and the derived (filtered,
+/// sorted) lists do not rebuild.
+class LibraryListController<T> extends AsyncNotifier<List<T>> {
+  LibraryListController(this._load, this._toJson);
+
+  final Future<List<T>> Function(LibraryApi api) _load;
+  final JsonMap Function(T) _toJson;
+
+  @override
+  Future<List<T>> build() async {
+    autoRefresh(ref, RefreshIntervals.sixtySeconds);
+    final next = await _load(ref.watch(libraryApiProvider));
+    if (!ref.mounted) return next;
+    final previous = state.value;
+    return previous != null && sameLibraryList(previous, next, _toJson) ? previous : next;
+  }
+}
+
 /// Every series (the list is complete, so filters run locally). 60 s.
-final seriesListProvider = FutureProvider.autoDispose<List<SeriesSummary>>((ref) {
-  autoRefresh(ref, RefreshIntervals.sixtySeconds);
-  return ref.watch(libraryApiProvider).series();
-});
+final seriesListProvider = AsyncNotifierProvider.autoDispose<LibraryListController<SeriesSummary>, List<SeriesSummary>>(
+  () => LibraryListController((api) => api.series(), (s) => s.toJson()),
+);
 
 /// Every movie. 60 s.
-final moviesListProvider = FutureProvider.autoDispose<List<MovieSummary>>((ref) {
-  autoRefresh(ref, RefreshIntervals.sixtySeconds);
-  return ref.watch(libraryApiProvider).movies();
-});
+final moviesListProvider = AsyncNotifierProvider.autoDispose<LibraryListController<MovieSummary>, List<MovieSummary>>(
+  () => LibraryListController((api) => api.movies(), (m) => m.toJson()),
+);
 
 /// The header strip (`GET /library/summary`). 30 s.
 final librarySummaryProvider = FutureProvider.autoDispose<LibrarySummary>((ref) {

@@ -111,7 +111,15 @@ class _SessionCardState extends ConsumerState<SessionCard> {
               child: Stack(
                 fit: StackFit.expand,
                 children: [
-                  HubImage(s.backdropPath, placeholderIcon: Icons.live_tv),
+                  // Sized so native decodes at the displayed size.
+                  LayoutBuilder(
+                    builder: (context, c) => HubImage(
+                      s.backdropPath,
+                      width: c.maxWidth,
+                      height: c.maxHeight,
+                      placeholderIcon: Icons.live_tv,
+                    ),
+                  ),
                   DecoratedBox(
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
