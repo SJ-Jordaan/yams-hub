@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:yams_hub/core/auth/auth_controller.dart';
+import 'package:yams_hub/core/auth/token_manager.dart';
 import 'package:yams_hub/core/routing/paths.dart';
 import 'package:yams_hub/core/servers/server_connection.dart';
 import 'package:yams_hub/core/servers/server_profile.dart';
@@ -136,7 +137,8 @@ Future<bool> deleteServerProfile(BuildContext context, WidgetRef ref, ServerProf
 
 /// Ends this device's session on [profile]: the active profile signs out
 /// through the hub (`POST /auth/logout`); another profile only forgets its
-/// stored tokens (it is not connected, so nothing can be sent to it).
+/// stored tokens and cached user (it is not connected, so nothing can be
+/// sent to it).
 Future<void> signOutOfProfile(WidgetRef ref, ServerProfile profile, {required bool isActive}) async {
   if (isActive) {
     final auth = ref.read(authControllerProvider.notifier);
@@ -146,9 +148,12 @@ Future<void> signOutOfProfile(WidgetRef ref, ServerProfile profile, {required bo
   final instanceId = profile.instanceId;
   if (instanceId == null) return;
   final store = ref.read(profileTokenStoreProvider);
+  final tokens = ref.read(tokenManagerProvider);
   try {
     await store.delete(instanceId);
   } catch (_) {
     // Nothing stored, or storage unavailable: nothing to forget.
   }
+  // The cached name/role of that session goes with its tokens.
+  await tokens.forgetCachedUser(instanceId);
 }

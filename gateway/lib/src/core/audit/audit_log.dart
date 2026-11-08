@@ -133,7 +133,7 @@ final class AuditLog {
       final failed = response.statusCode >= 400;
       await record(
         actor: AuditActor.of(req),
-        action: action,
+        action: req.auditAction ?? action,
         target: target,
         params: params,
         outcome: failed ? AuditOutcome.error : AuditOutcome.ok,
@@ -150,7 +150,7 @@ final class AuditLog {
       if (e is! ApiException || e.status != 428) {
         await record(
           actor: AuditActor.of(req),
-          action: action,
+          action: req.auditAction ?? action,
           target: target,
           params: params,
           outcome: AuditOutcome.error,

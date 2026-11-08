@@ -34,7 +34,8 @@ for the NAS assume its login shell is bash (the UGOS default); the local parts w
 ## Before you start
 
 1. **Commit.** `deploy.sh` ships `git archive HEAD` (plus `app/build/web`), not your working tree. It refuses to run
-   when the archived paths have uncommitted changes unless you pass `--allow-dirty`.
+   while the working tree has any uncommitted or untracked change (anywhere in the repo, since the web app is built
+   from `app/` as it is on disk) and says so; `--allow-dirty` deploys HEAD anyway (`--dry-run` only warns).
 2. **The address 172.28.0.49 and port 8090 are free** (both were on 2026-11-08; check again):
 
    ```sh
@@ -140,8 +141,9 @@ deploy/deploy.sh --first-run
 3. Streams `git archive HEAD` (`packages/yams_models`, `gateway`, `updater`, `deploy`, `.dockerignore`) plus
    `app/build/web` as one tar over ssh into a `mktemp -d /tmp/yams-hub-deploy.XXXXXX` on the NAS.
 4. `docker build` of `gateway/Dockerfile` (context = the repo root) and `updater/Dockerfile` (context = `updater/`)
-   on the NAS, tagged `:latest` (the old `:latest` becomes `:previous`, the rollback image) with the git revision as
-   the `org.opencontainers.image.revision` label.
+   on the NAS, tagged `:latest` (the image the running container uses becomes `:previous`, the rollback image) with
+   the git revision as the `org.opencontainers.image.revision` label. The updater image also carries
+   `yams-hub.updater-tree`, the git tree id of `updater/`, so later deploys can tell whether it changed.
 5. **`make_hub_env.sh`** on the NAS, over `ssh -t`: creates the data dir (uid 64090, 0700), writes both secrets files
    and **asks for the hub admin password** (at least 10 characters; it is hashed by `yams-hub hash-password` inside
    the image and only the hash is stored). It ends with `yams-hub check-config`; check that every service you expect
@@ -150,6 +152,8 @@ deploy/deploy.sh --first-run
    second snapshot. **If any other container changed id, appeared or disappeared, the deploy fails loudly** and
    lists them.
 7. Waits until `yams-hub` and `yams-hub-updater` report `healthy`, pings `http://127.0.0.1:8090/api/v1/ping`.
+
+`deploy.sh` itself is tested without a NAS by `bash deploy/test/deploy_test.sh` (fake `ssh` and `docker`).
 8. **`verify.sh`** on the NAS (it asks for the admin password once for the `/health` check). All 7 checks must say
    PASS; check 7 says SKIP for the Tailscale URL until Tailscale is logged in (re-run it then, see below).
 
@@ -210,14 +214,28 @@ In Uptime Kuma (http://192.168.10.183:3001):
 ## Regular deploys
 
 ```sh
-deploy/deploy.sh                       # web + both images, restarts yams-hub (and the updater if its image changed)
+deploy/deploy.sh                       # web + hub image; the updater only if updater/ changed since its running image
 deploy/deploy.sh --skip-web            # gateway/updater change only
-deploy/deploy.sh --only yams-hub       # leave the updater container alone
-deploy/deploy.sh --pull                # also refresh the dart:3.13 / distroless base images
+deploy/deploy.sh --only yams-hub       # never builds, retags or touches the updater
+deploy/deploy.sh --only yams-hub-updater  # rebuild and recreate the updater (e.g. after editing its compose entry)
+deploy/deploy.sh --pull                # also refresh the dart:3.13 / distroless base images (rebuilds both)
 ```
 
-Compose only recreates a service whose image or configuration changed, so an unchanged `socket-proxy-hub` keeps
-running. Restarting `yams-hub` takes a few seconds of hub downtime and no downtime for any other service.
+Only the images of the services being deployed are built and retagged, so `:latest` and `:previous` always name
+images that ran. Compose only recreates a service whose image or configuration changed, so an unchanged
+`socket-proxy-hub` keeps running. Restarting `yams-hub` takes a few seconds of hub downtime and no downtime for any
+other service.
+
+Recreating the updater stops it, and it may be in the middle of a job (an admin's "Update sonarr"). Two guards keep
+that from leaving a stack service stopped half way through `compose up`:
+
+- `deploy.sh` waits (up to `UPDATER_IDLE_WAIT` seconds, default 900) while the updater runs a `docker` command, and
+  stops without restarting anything if it is still busy.
+- On SIGTERM the updater accepts no new job (503) and lets the running one reach a safe point: the current step
+  always finishes; a job that has only pulled stops there; once a recreate has started, its required follow-ups
+  (gluetun's `qbittorrent`) still run. `stop_grace_period: 17m` in the compose entry keeps Docker from killing it
+  earlier. **If your merged `docker-compose.custom.yaml` predates that line, add it to `yams-hub-updater` and run
+  `deploy/deploy.sh --skip-web --only yams-hub-updater`.**
 
 The hub never updates itself or its two helpers through Watchtower (`watchtower.enable=false` /
 `monitor-only=true`) or through the updater (deny-list); `deploy.sh` is the only way they change.
@@ -258,7 +276,8 @@ After the reset, run `--drop-bootstrap` again.
 
 ### The last deploy broke the hub
 
-`deploy.sh` keeps the image that ran before as `:previous`:
+`deploy.sh` keeps the image the container ran before the deploy as `:previous` (it only retags the images it
+deploys, so `--only yams-hub` leaves the updater's tags alone):
 
 ```sh
 ssh nas 'docker image tag yams-hub:previous yams-hub:latest &&

@@ -26,9 +26,10 @@ class HubThemes {
     final dark = useDynamic
         ? darkDynamic.completed()
         : seededScheme(settings.seed, Brightness.dark);
+    final compact = settings.listDensity == ListDensity.compact;
     return HubThemes(
-      light: buildHubTheme(light),
-      dark: buildHubTheme(dark),
+      light: buildHubTheme(light, compactLists: compact),
+      dark: buildHubTheme(dark, compactLists: compact),
       mode: settings.themeMode,
     );
   }

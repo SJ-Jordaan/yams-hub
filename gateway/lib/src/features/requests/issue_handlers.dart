@@ -46,27 +46,35 @@ final class IssueHandlers {
       max: 50,
     );
     final actor = await svc.actor(req);
-    if (!actor.isAdmin && !actor.linked) {
-      return ApiResponse.json(
-        PagedList<Issue>.of(
-          items: const [],
-          page: page,
-          pageSize: pageSize,
-          total: 0,
-        ).toJson((i) => i.toJson()),
-      );
-    }
-    final j = await _seerr.getMap(
-      '/api/v1/issue',
-      query: seerrQuery({
-        'take': pageSize,
-        'skip': (page - 1) * pageSize,
-        'filter': filter,
-        'sort': 'added',
-      }),
-      asUser: actor.asUser,
-      resourceNotFound: false,
+    Response empty() => ApiResponse.json(
+      PagedList<Issue>.of(
+        items: const [],
+        page: page,
+        pageSize: pageSize,
+        total: 0,
+      ).toJson((i) => i.toJson()),
     );
+    if (!actor.isAdmin && !actor.linked) return empty();
+    final JsonMap j;
+    try {
+      j = await _seerr.getMap(
+        '/api/v1/issue',
+        query: seerrQuery({
+          'take': pageSize,
+          'skip': (page - 1) * pageSize,
+          'filter': filter,
+          'sort': 'added',
+        }),
+        asUser: actor.asUser,
+        resourceNotFound: false,
+      );
+    } on ApiException catch (e) {
+      // Seerr's default member permissions (REQUEST only) include none of
+      // MANAGE/VIEW/CREATE_ISSUES, which `GET /issue` needs: such a member
+      // has no issues to see, which is an empty list, not an error.
+      if (!actor.isAdmin && e.code == ApiErrorCode.forbidden) return empty();
+      rethrow;
+    }
     final rows = readList(j['results'], (m) => m);
     final infos = await svc.titleInfos([
       for (final r in rows)
@@ -174,6 +182,15 @@ final class IssueHandlers {
     final reply = await _seerr.send(
       'POST',
       '/api/v1/issue',
+      onError: (e) => (e.status == 403 || e.status == 401) && !e.keyRejected
+          ? const ApiException(
+              403,
+              ApiErrorCode.forbidden,
+              'Your Seerr account may not report issues. Ask the admin to '
+              'grant "Create Issues" in Seerr.',
+              service: ServiceId.seerr,
+            )
+          : null,
       body: {
         'issueType': issueType,
         'message': message,

@@ -46,6 +46,58 @@ void main() {
     },
   );
 
+  test('GET /issues: a member without Seerr issue permissions gets an '
+      'empty list', () async {
+    // Seerr's default member permissions (32, REQUEST) fail GET /issue.
+    hub.fakes.on(
+      ServiceId.seerr,
+      'GET',
+      '/api/v1/issue',
+      (_) => FakeResponse.json({
+        'status': 403,
+        'error': 'You do not have permission to access this endpoint',
+      }, status: 403),
+    );
+    final r = await hub.get('/api/v1/issues', as: TestAs.member);
+    expect(r.status, 200, reason: r.body);
+    final page = PagedList.fromJson(r.map, Issue.fromJson);
+    expect(page.items, isEmpty);
+    expect(page.total, 0);
+    // An admin call failing the same way is still an error.
+    final admin = await hub.get('/api/v1/issues');
+    expect(admin.status, isNot(200));
+  });
+
+  test(
+    'POST /issues without CREATE_ISSUES names the missing permission',
+    () async {
+      hub.fakes.on(
+        ServiceId.seerr,
+        'POST',
+        '/api/v1/issue',
+        (_) => FakeResponse.json({
+          'status': 403,
+          'error': 'You do not have permission to access this endpoint',
+        }, status: 403),
+      );
+      final r = await hub.post(
+        '/api/v1/issues',
+        as: TestAs.member,
+        body: {
+          'mediaType': 'tv',
+          'tmdbId': 10545,
+          'type': 'audio',
+          'message': 'Audio out of sync',
+          'season': 2,
+          'episode': 5,
+        },
+      );
+      expect(r.status, 403, reason: r.body);
+      expect(r.errorCode, 'forbidden');
+      expect(readMap(r.map['error'])?['message'], contains('Create Issues'));
+    },
+  );
+
   test('GET /issues/counts maps others and closed', () async {
     hub.fakes.on(
       ServiceId.seerr,
@@ -323,9 +375,10 @@ void main() {
             'message': 'You do not have permission to modify this issue.',
           }, status: 401),
         );
+      // A member Seerr refuses the list to has no issues to see.
       final member = await hub.get('/api/v1/issues', as: TestAs.member);
-      expect(member.status, 403);
-      expect(member.errorCode, 'forbidden');
+      expect(member.status, 200, reason: member.body);
+      expect(PagedList.fromJson(member.map, Issue.fromJson).items, isEmpty);
 
       final admin = await hub.get('/api/v1/issues');
       expect(admin.status, 502);

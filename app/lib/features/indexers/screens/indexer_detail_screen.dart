@@ -115,6 +115,14 @@ class _IndexerDetailScreenState extends ConsumerState<IndexerDetailScreen> {
     }
   }
 
+  /// The test job could not be followed (expired, hub unreachable): bring
+  /// the Test button back.
+  void _onTestLost() {
+    setState(() => _testJob = null);
+    ref.invalidate(indexerDetailProvider(widget.id));
+    context.showSnack('Lost track of the test. Refresh to check the result.');
+  }
+
   @override
   Widget build(BuildContext context) {
     final value = ref.watch(indexerDetailProvider(widget.id));
@@ -211,6 +219,7 @@ class _IndexerDetailScreenState extends ConsumerState<IndexerDetailScreen> {
                             key: ValueKey(job),
                             showSnackBar: false,
                             onDone: (j) => _onTestDone(j, indexer.name),
+                            onLost: (_) => _onTestLost(),
                           ),
                         )
                       else

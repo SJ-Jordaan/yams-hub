@@ -12,9 +12,6 @@ import 'qbit_mapping.dart';
 /// The *arr services whose queues are merged.
 const queueServices = [ArrService.sonarr, ArrService.radarr];
 
-/// Records read from each *arr queue (`page=1&pageSize=200`).
-const queuePageSize = 200;
-
 /// The source status for a failure (`disabled` when not configured).
 SectionStatus sectionStatusFor(Object error, String requestId) {
   final api = apiExceptionFor(error);
@@ -39,55 +36,69 @@ ApiException apiExceptionFor(Object error) => switch (error) {
 
 /// The records of one *arr queue, or why they are missing.
 final class ArrQueueResult {
-  const ArrQueueResult(this.service, this.records, this.error, this.stale);
+  const ArrQueueResult(
+    this.service,
+    this.records,
+    this.error,
+    this.stale, {
+    this.complete = true,
+  });
 
   final ArrService service;
   final List<JsonMap> records;
   final Object? error;
   final bool stale;
 
+  /// Every queue page was read.
+  final bool complete;
+
   bool get ok => error == null || stale;
 }
 
-/// Sonarr and Radarr `GET /api/v3/queue` (cache 5 s each).
+/// Sonarr and Radarr `GET /api/v3/queue`, every page (cache 5 s each).
+///
+/// Unknown-series/movie items are included: a download the *arr could not
+/// match sits `importBlocked` in its queue and is exactly what the manual
+/// import resolves (upstream drops them unless asked).
 final class ArrQueueSources {
   ArrQueueSources(this._ctx)
-    : _cache = _ctx.caches.ttl<ArrService, List<JsonMap>>(
+    : _cache = _ctx.caches.ttl<ArrService, ArrQueueRead>(
         'activity.queue',
         const Duration(seconds: 5),
         maxStale: const Duration(minutes: 2),
       );
 
   final FeatureContext _ctx;
-  final TtlCache<ArrService, List<JsonMap>> _cache;
+  final TtlCache<ArrService, ArrQueueRead> _cache;
 
   /// The queue of [service] (throws on failure).
   Future<List<JsonMap>> records(ArrService service) async =>
+      (await read(service)).records;
+
+  /// The queue of [service] with its completeness (throws on failure).
+  Future<ArrQueueRead> read(ArrService service) async =>
       (await _cache.get(service, () => _load(service))).value;
 
-  Future<List<JsonMap>> _load(ArrService service) async {
+  Future<ArrQueueRead> _load(ArrService service) async {
     final query = <String, Object?>{
-      'page': 1,
-      'pageSize': queuePageSize,
       if (service == ArrService.sonarr) ...{
         'includeSeries': true,
         'includeEpisode': true,
-      } else
+        'includeUnknownSeriesItems': true,
+      } else ...{
         'includeMovie': true,
+        'includeUnknownMovieItems': true,
+      },
     };
-    final body = await _ctx.upstreams
-        .arr(service)
-        .getJson('/api/v3/queue', query: query);
-    final records = readMap(body)?['records'];
-    if (records is! List) {
-      throw UpstreamBadResponse(
-        service: service.serviceId,
-        method: 'GET',
-        path: '/api/v3/queue',
-        reason: 'queue has no records',
+    final read = await readArrQueue(_ctx.upstreams.arr(service), query);
+    if (!read.complete) {
+      _ctx.log.warning(
+        '${service.name} queue has ${read.total ?? 'more than '
+                '${read.records.length}'} records; only the first '
+        '${read.records.length} are merged',
       );
     }
-    return [for (final r in records) ?readMap(r)];
+    return read;
   }
 
   /// Both queues; a failing source is reported, never thrown.
@@ -97,37 +108,58 @@ final class ArrQueueSources {
   Future<ArrQueueResult> _result(ArrService s) async {
     try {
       final r = await _cache.get(s, () => _load(s));
-      return ArrQueueResult(s, r.value, r.error, r.stale);
+      return ArrQueueResult(
+        s,
+        r.value.records,
+        r.error,
+        r.stale,
+        complete: r.value.complete,
+      );
     } catch (e) {
       return ArrQueueResult(s, const [], e, false);
     }
   }
 
-  /// One record by queue id: the cached queue first, else
-  /// `GET /api/v3/queue/{id}`. Null when the record is gone.
+  /// One record by queue id: the cached queue, then a fresh read (the
+  /// *arr has no single-record GET). When even the fresh read is cut short
+  /// by the page limit, the unpaged `GET /api/v3/queue/details` is searched.
+  /// Null when the record is gone.
   Future<JsonMap?> record(ArrService service, int queueId) async {
-    try {
-      for (final r in await records(service)) {
+    JsonMap? find(Iterable<JsonMap> records) {
+      for (final r in records) {
         if (readInt(r['id']) == queueId) return r;
       }
+      return null;
+    }
+
+    try {
+      if (find(await records(service)) case final r?) return r;
     } on UpstreamNotConfigured {
       rethrow;
     } catch (_) {
-      // Fall back to the single-record call.
+      // Read it again below.
     }
-    try {
-      return readMap(
-        await _ctx.upstreams
-            .arr(service)
-            .getJson(
-              '/api/v3/queue/$queueId',
-              timeout: const Duration(seconds: 10),
-            ),
-      );
-    } on UpstreamException catch (e) {
-      if (e.isNotFound) return null;
-      rethrow;
-    }
+    invalidate(service);
+    final fresh = await read(service);
+    if (find(fresh.records) case final r?) return r;
+    if (fresh.complete) return null;
+    final details = await _ctx.upstreams
+        .arr(service)
+        .getJson(
+          '/api/v3/queue/details',
+          query: {
+            if (service == ArrService.sonarr) ...{
+              'includeSeries': true,
+              'includeEpisode': true,
+            } else
+              'includeMovie': true,
+          },
+          timeout: const Duration(seconds: 10),
+        );
+    return find([
+      for (final r in details is List ? details : const <Object?>[])
+        ?readMap(r),
+    ]);
   }
 
   void invalidate([ArrService? service]) =>
@@ -251,7 +283,11 @@ QueueArrEntry queueArrEntryOf(
   return QueueArrEntry(
     service: g.service,
     queueIds: [for (final r in g.records) ?readInt(r['id'])],
-    mediaTitle: readString(series?['title']) ?? readString(movie?['title']),
+    // Unknown-series/movie items have no series/movie: the release title.
+    mediaTitle:
+        readString(series?['title']) ??
+        readString(movie?['title']) ??
+        readString(first['title']),
     seriesId: g.service == ArrService.sonarr ? seriesId : null,
     movieId: g.service == ArrService.radarr ? movieId : null,
     episodeIds: episodeIds.toList()..sort(),

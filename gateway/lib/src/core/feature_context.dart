@@ -37,6 +37,7 @@ export 'log/redact.dart';
 export 'services/jellyfin_info.dart';
 export 'services/seerr_identity.dart';
 export 'store/json_file_store.dart';
+export 'upstream/arr_queue_reader.dart';
 export 'upstream/qbit_session.dart';
 export 'upstream/remote_fetcher.dart';
 export 'upstream/upstream_client.dart';

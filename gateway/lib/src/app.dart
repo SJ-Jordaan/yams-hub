@@ -312,7 +312,12 @@ Handler buildPipeline(HubConfig config, Handler apiRouter, Handler web) {
   }
 
   return const Pipeline()
-      .addMiddleware(requestIdMiddleware(trustProxy: config.trustProxy))
+      .addMiddleware(
+        requestIdMiddleware(
+          trustProxy: config.trustProxy,
+          trustedProxies: config.trustedProxies,
+        ),
+      )
       .addMiddleware(
         hostCheckMiddleware(
           HostAllowList(

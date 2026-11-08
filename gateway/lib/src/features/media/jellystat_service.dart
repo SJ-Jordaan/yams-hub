@@ -5,8 +5,6 @@
 /// `/api/stopTask` are never called.
 library;
 
-import 'dart:convert';
-
 import 'package:yams_hub_gateway/src/core/feature_context.dart';
 import 'package:yams_models/yams_models.dart';
 
@@ -112,32 +110,42 @@ final class JellystatService {
     return users;
   });
 
-  /// `GET /stats/getPlaybackActivity`, newest first, optionally only
-  /// [userId]'s plays (cache 30 s).
+  /// Playback history, newest first (cache 30 s).
+  ///
+  /// Everyone: `GET /stats/getPlaybackActivity`. One user: `POST
+  /// /api/getUserHistory {"userid"}`, which Jellystat scopes in SQL (its
+  /// `filters` field list has no `UserId`, so a filter there is not a
+  /// reliable scope). That answer groups repeated plays of one item; each
+  /// group row is its latest play. Rows of any other user are dropped as a
+  /// safety net, so a member never sees someone else's plays.
   Future<PagedList<PlaybackRecord>> history({
     required int page,
     required int pageSize,
     String? userId,
   }) => _history.value('${userId ?? '*'}|$page|$pageSize', () async {
+    final paging = <String, Object?>{
+      'size': pageSize,
+      'page': page,
+      'sort': 'ActivityDateInserted',
+      'desc': true,
+    };
     final body = readMap(
-      await _js.getJson(
-        '/stats/getPlaybackActivity',
-        query: {
-          'size': pageSize,
-          'page': page,
-          'sort': 'ActivityDateInserted',
-          'desc': true,
-          if (userId != null)
-            'filters': jsonEncode([
-              {'field': 'UserId', 'value': userId},
-            ]),
-        },
-      ),
+      userId == null
+          ? await _js.getJson('/stats/getPlaybackActivity', query: paging)
+          : await _js.sendJson(
+              'POST',
+              '/api/getUserHistory',
+              body: {'userid': userId},
+              query: paging,
+            ),
     );
-    final records = [
+    final rows = [
       for (final r in readList(body?['results'], (m) => m))
-        ?mapPlaybackRecord(r, _ctx.images),
+        if (userId == null ||
+            normaliseJellyfinId(readString(r['UserId'])) == userId)
+          r,
     ];
+    final records = [for (final r in rows) ?mapPlaybackRecord(r, _ctx.images)];
     final pages = readInt(body?['pages']) ?? 0;
     final total = page < pages
         ? pages * pageSize

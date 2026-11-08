@@ -241,12 +241,7 @@ final class AuthRoutes {
     }
     return audit.run(req, 'auth.password', req.user.username, null, () async {
       final user = req.userRecord;
-      final ok = await auth.hasher.verify(
-        current,
-        user.passwordHash,
-        subject: user.username,
-      );
-      if (!ok) throw ApiException.invalidCredentials();
+      await auth.verifyCurrentPassword(user, current, req.clientIp);
       final hash = await auth.hasher.hash(next);
       final fresh = auth.users.byId(user.id) ?? user;
       await auth.users.put(

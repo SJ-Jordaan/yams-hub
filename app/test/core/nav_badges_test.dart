@@ -92,7 +92,7 @@ void main() {
 
   test('More subtitles', () {
     final s = moreSubtitles(NavBadges.fromCards(cardsOf(buildDashboardJson())));
-    expect(s.values.whereType<String>(), containsAll(['6 episodes this week', '21 running', '1 failing', '111 missing']));
+    expect(s.values.whereType<String>(), containsAll(['6 releases this week', '21 running', '1 failing', '111 missing']));
     expect(moreSubtitles(const NavBadges()).values.whereType<String>(), isEmpty);
   });
 }

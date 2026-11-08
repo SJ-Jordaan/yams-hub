@@ -19,6 +19,8 @@ abstract final class SeerrPermissions {
   static const autoApproveMovie = 256;
   static const autoApproveTv = 512;
   static const manageIssues = 1048576;
+  static const viewIssues = 2097152;
+  static const createIssues = 4194304;
 
   static bool has(int permissions, int bit) =>
       (permissions & admin) != 0 || (permissions & bit) != 0;

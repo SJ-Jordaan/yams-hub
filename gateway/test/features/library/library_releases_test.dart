@@ -81,6 +81,37 @@ void main() {
       });
     });
 
+    test(
+      'episode search without mappedSeriesId reads the episode series',
+      () async {
+        final raw = [
+          for (final r
+              in syntheticJson('sonarr_release.synthetic.json') as List)
+            {...(r as JsonMap), 'mappedSeriesId': null},
+        ];
+        hub.fakes
+          ..on(
+            ServiceId.sonarr,
+            'GET',
+            '/api/v3/release',
+            (_) => FakeResponse.json(raw),
+          )
+          ..on(
+            ServiceId.sonarr,
+            'GET',
+            '/api/v3/episode/2447',
+            (_) => FakeResponse.json({'id': 2447, 'seriesId': 54}),
+          );
+        final r = await hub.get('$_base/tv/episodes/2447/releases');
+        expect(r.status, 200, reason: r.body);
+        expect(items(r).first['episodeLabels'], ['S03E01 (049)']);
+        expect(
+          callsOf(hub.fakes, ServiceId.sonarr, '/api/v3/episode/2447'),
+          hasLength(1),
+        );
+      },
+    );
+
     test('season and movie searches', () async {
       final season = await hub.get('$_base/tv/54/seasons/3/releases');
       expect(season.status, 200);

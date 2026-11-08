@@ -125,7 +125,7 @@ final class PasswordHasher {
   final VerificationGate gate;
   final VerifyFunction _verify;
   final HashFunction _hash;
-  Future<String>? _dummyHash;
+  final _dummyHashes = <int, Future<String>>{};
   Duration? _lastMeasurement;
   final _reportedBad = <String>{};
 
@@ -198,13 +198,36 @@ final class PasswordHasher {
   }
 
   /// Verifies against a fixed dummy hash (unknown user names), so the
-  /// response time does not reveal whether the user exists.
-  Future<void> verifyDummy(String password) async {
-    final dummy = await (_dummyHash ??= _hash(
-      'dummy-${randomHex(16)}',
-      _iterations,
-    ));
+  /// response time does not reveal whether the user exists. [iterations]
+  /// should match the stored hashes (the verification time grows with the
+  /// stored count, not with [iterations] of new hashes); it defaults to
+  /// [iterations] and is clamped to the parseable range.
+  Future<void> verifyDummy(String password, {int? iterations}) async {
+    final n = (iterations ?? _iterations).clamp(
+      minHashIterations,
+      maxHashIterations,
+    );
+    final pending = _dummyHashes[n] ??= _hash('dummy-${randomHex(16)}', n);
+    final String dummy;
+    try {
+      dummy = await pending;
+    } catch (_) {
+      // Do not cache a failed dummy; the next caller builds it again.
+      if (identical(_dummyHashes[n], pending)) _dummyHashes.remove(n)?.ignore();
+      rethrow;
+    }
     await gate.run(() => _verify(password, dummy));
+  }
+
+  /// The iteration count of [stored], or null when it is malformed.
+  static int? iterationsOf(String stored) => parse(stored)?.iterations;
+
+  /// Whether [stored] parses but uses another iteration count than new
+  /// hashes do (rehashed on the next successful login, so every account
+  /// converges on one count and the dummy timing matches them all).
+  bool needsRehash(String stored) {
+    final n = iterationsOf(stored);
+    return n != null && n != _iterations;
   }
 
   /// Hashes [password] with [iterations] through the gate.
@@ -231,7 +254,11 @@ final class PasswordHasher {
         '$_configuredIterations iterations; new hashes use $fallbackIterations',
       );
     }
-    _dummyHash = _hash('dummy-${randomHex(16)}', _iterations);
+    // Pre-build the dummy at the count new hashes use (the usual one).
+    _dummyHashes.putIfAbsent(
+      _iterations,
+      () => _hash('dummy-${randomHex(16)}', _iterations),
+    );
     return sw.elapsed;
   }
 }

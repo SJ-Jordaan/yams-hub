@@ -493,6 +493,30 @@ void main() {
       expect(alerts.first.id, 'raid.degraded');
     });
 
+    test('monitors from a stale Kuma cache mark the card stale', () async {
+      final hub = systemTestHub();
+      addTearDown(hub.close);
+      _kuma(hub);
+      await _twoSamples(hub);
+      var r = await hub.get('/api/v1/dashboard?cards=system');
+      var section = DashboardResponse.fromJson(r.map).cards['system']!;
+      expect(section.stale, isFalse);
+      hub.fakes.on(
+        ServiceId.uptimeKuma,
+        '*',
+        RegExp('.*'),
+        (_) => throw const SocketException('refused'),
+      );
+      hub.clock.advance(const Duration(seconds: 31));
+      writeHubHost(hub);
+      r = await hub.get('/api/v1/dashboard?cards=system');
+      section = DashboardResponse.fromJson(r.map).cards['system']!;
+      expect(section.status, SectionState.ok, reason: r.body);
+      expect(section.stale, isTrue);
+      expect(section.error, isNotNull);
+      expect(section.decode(SystemCard.fromJson)!.monitors, isNotNull);
+    });
+
     test('Kuma failing or unconfigured never breaks the card', () async {
       final hub = systemTestHub();
       addTearDown(hub.close);

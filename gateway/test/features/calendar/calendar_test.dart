@@ -238,6 +238,35 @@ void main() {
       },
     );
 
+    test('queue records past the first page still flag downloads', () async {
+      hub.fakes.on(ServiceId.sonarr, 'GET', _queue, (req) {
+        final page = int.parse(req.query['page']!.single);
+        return FakeResponse.json({
+          'page': page,
+          'pageSize': 200,
+          'totalRecords': 201,
+          'records': page == 1
+              ? [
+                  for (var i = 1; i <= 200; i++)
+                    {'id': i, 'episodeId': 100000 + i},
+                ]
+              : [
+                  {'id': 201, 'episodeId': 7958},
+                ],
+        });
+      });
+      final r = await hub.get(
+        '/api/v1/calendar?start=2026-11-07&end=2026-11-21',
+      );
+      expect(r.status, 200, reason: r.body);
+      final ramparts = _items(r).firstWhere((i) => i['episodeId'] == 7958);
+      expect(ramparts['downloading'], isTrue);
+      expect(
+        [for (final c in _calls(hub, ServiceId.sonarr, _queue)) _q(c, 'page')],
+        ['1', '2'],
+      );
+    });
+
     test('queue failures are ignored', () async {
       hub.fakes
         ..on(

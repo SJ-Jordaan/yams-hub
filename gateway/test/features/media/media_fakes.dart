@@ -174,6 +174,12 @@ extension MediaFakes on FakeUpstreams {
       '/stats/getPlaybackActivity',
       'seerr/jellystat_getPlaybackActivity.json',
     );
+    onFixture(
+      s,
+      'POST',
+      '/api/getUserHistory',
+      'seerr/jellystat_api_getHistory.json',
+    );
   }
 
   void fakeAudiobookshelf() {

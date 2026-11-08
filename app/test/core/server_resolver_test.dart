@@ -78,16 +78,54 @@ void main() {
     expect(r.failures[testLanUrl], 'Server proof failed.');
   });
 
-  test('a missing proof is unreachable; Tailscale skips the proof and wins', () async {
+  test('a missing proof is unreachable; a Tailscale URL with a valid proof wins', () async {
     client
       ..noProof(testLanUrl)
       ..hub(testTailscaleUrl, delay: const Duration(milliseconds: 50));
     final r = await resolver.resolve(buildProfile(), proof: proof, homeVerified: true);
     expect(r.url, testTailscaleUrl);
-    expect(r.proofVerified, isFalse);
+    expect(r.proofVerified, isTrue);
     final tsCall = client.calls.firstWhere((c) => c.url == testTailscaleUrl);
-    expect(tsCall.sid, isNull, reason: 'no session id is sent to Tailscale URLs');
-    expect(tsCall.nonce, isNull);
+    expect(tsCall.sid, testSessionId, reason: 'Tailscale URLs are proven like any other');
+    expect(tsCall.nonce, hasLength(24));
+  });
+
+  test('signed in: a *.ts.net impostor without the proof is never accepted', () async {
+    // Tailscale off, café DNS answers the MagicDNS name: the public ping
+    // fields (name, instance id) match, the proof does not.
+    client
+      ..noProof(testTailscaleUrl)
+      ..down(testLanUrl);
+    final r = await resolver.resolve(buildProfile(), proof: proof);
+    expect(r.ok, isFalse);
+    expect(r.failures[testTailscaleUrl], 'Server proof failed.');
+  });
+
+  test('signed in: a *.ts.net impostor with a wrong proof is never accepted', () async {
+    client
+      ..hub(testTailscaleUrl, proofKey: 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
+      ..down(testLanUrl);
+    final r = await resolver.resolve(buildProfile(), proof: proof);
+    expect(r.ok, isFalse);
+    expect(r.failures[testTailscaleUrl], 'Server proof failed.');
+  });
+
+  test('signed in: a 100.64.0.0/10 address needs the proof too', () async {
+    final cgnat = Uri.parse('http://100.101.102.103:8090');
+    client
+      ..noProof(cgnat)
+      ..down(testLanUrl);
+    final r = await resolver.resolve(buildProfile(urls: [testLanUrl, cgnat]), proof: proof);
+    expect(r.ok, isFalse);
+    expect(r.failures[cgnat], 'Server proof failed.');
+    expect(client.calls.firstWhere((c) => c.url == cgnat).sid, testSessionId);
+
+    client
+      ..calls.clear()
+      ..hub(cgnat);
+    final ok = await resolver.resolve(buildProfile(urls: [testLanUrl, cgnat]), proof: proof);
+    expect(ok.url, cgnat);
+    expect(ok.proofVerified, isTrue);
   });
 
   test('a different instance id is rejected', () async {
@@ -105,7 +143,17 @@ void main() {
       ..down(testTailscaleUrl);
     final r = await resolver.resolve(buildProfile());
     expect(r.url, testLanUrl);
+    expect(r.proofVerified, isFalse);
     expect(client.calls.every((c) => c.nonce == null && c.sid == null), isTrue);
+  });
+
+  test('before login a Tailscale URL is accepted without a proof', () async {
+    client
+      ..noProof(testTailscaleUrl)
+      ..down(testLanUrl);
+    final r = await resolver.resolve(buildProfile());
+    expect(r.url, testTailscaleUrl);
+    expect(r.proofVerified, isFalse);
   });
 
   test('happy eyeballs: the first acceptable answer wins, not the first URL', () async {

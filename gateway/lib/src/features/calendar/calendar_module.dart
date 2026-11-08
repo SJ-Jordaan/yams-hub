@@ -234,17 +234,15 @@ class CalendarModule extends FeatureModule {
   Future<Set<int>> _queueIds(ArrService svc) async {
     try {
       return await _queues.value(svc, () async {
-        final json = await ctx.upstreams
-            .arr(svc)
-            .getJson(
-              '/api/v3/queue',
-              query: {'page': 1, 'pageSize': 200},
-              timeout: _queueTimeout,
-            );
-        return CalendarMapper.queueIds(
-          json,
-          svc == ArrService.sonarr ? 'episodeId' : 'movieId',
+        // Every page: season packs add one record per episode.
+        final read = await readArrQueue(
+          ctx.upstreams.arr(svc),
+          const {},
+          timeout: _queueTimeout,
         );
+        return CalendarMapper.queueIds({
+          'records': read.records,
+        }, svc == ArrService.sonarr ? 'episodeId' : 'movieId');
       });
     } catch (e) {
       ctx.log.fine('${svc.name} queue unavailable for calendar flags: $e');

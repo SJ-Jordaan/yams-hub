@@ -83,6 +83,9 @@ final class DashboardService {
     try {
       final c = await load.timeout(cardBudget);
       if (c == null) return (null, const <Alert>[]);
+      if (c.failure case final failure?) {
+        return (_failedSection(m, req, failure, null), c.alerts);
+      }
       final section = Section.ok(
         c.data,
         fetchedAt: c.fetchedAt ?? _clock.now(),
@@ -105,24 +108,34 @@ final class DashboardService {
         const <Alert>[],
       );
     } catch (e, st) {
-      final api = switch (e) {
-        ApiException() => e,
-        UpstreamException() => e.toApiException(resourceNotFound: false),
-        FormatException() || TypeError() => const ApiException(
-          502,
-          ApiErrorCode.upstreamBadResponse,
-          'An upstream response could not be read.',
-        ),
-        _ => ApiException.internal(),
-      };
-      if (api.status == 500) {
-        _log.severe('dashboard card ${m.id} failed', e, st);
-      }
-      final error = api.toApiError(req.requestId);
-      final section = api.code == ApiErrorCode.serviceNotConfigured
-          ? Section.disabled(error, fetchedAt: _clock.now())
-          : Section.failure(error, fetchedAt: _clock.now());
-      return (section, const <Alert>[]);
+      return (_failedSection(m, req, e, st), const <Alert>[]);
     }
+  }
+
+  /// The error section of a failed card (`disabled` when the service is not
+  /// configured).
+  Section _failedSection(
+    FeatureModule m,
+    ApiRequest req,
+    Object e,
+    StackTrace? st,
+  ) {
+    final api = switch (e) {
+      ApiException() => e,
+      UpstreamException() => e.toApiException(resourceNotFound: false),
+      FormatException() || TypeError() => const ApiException(
+        502,
+        ApiErrorCode.upstreamBadResponse,
+        'An upstream response could not be read.',
+      ),
+      _ => ApiException.internal(),
+    };
+    if (api.status == 500) {
+      _log.severe('dashboard card ${m.id} failed', e, st);
+    }
+    final error = api.toApiError(req.requestId);
+    return api.code == ApiErrorCode.serviceNotConfigured
+        ? Section.disabled(error, fetchedAt: _clock.now())
+        : Section.failure(error, fetchedAt: _clock.now());
   }
 }

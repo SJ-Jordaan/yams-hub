@@ -39,6 +39,19 @@ void main() {
     expect(app.container.read(isAdminProvider), isTrue);
   });
 
+  testWidgets('a bearer login without a server proof key is refused', (tester) async {
+    final r = buildLoginResponse();
+    final json = r.toJson()..remove('serverProofKey');
+    final api = buildCoreFakeApi()..postJson('/auth/login', json);
+    final app = await pumpHubApp(tester, api: api, signedIn: false, location: '/login');
+    await tester.enterText(find.widgetWithText(TextFormField, 'Username'), 'ada');
+    await tester.enterText(find.widgetWithText(TextFormField, 'Password'), 'correct horse');
+    await tester.tap(find.text('Sign in'));
+    await settle(tester);
+    expect(app.tokens.hasSession, isFalse, reason: 'no key: no URL could ever be proven');
+    expect(location(app), '/login');
+  });
+
   testWidgets('wrong password shows the inline error', (tester) async {
     final api = buildCoreFakeApi()
       ..on('POST', '/auth/login', (_) => FakeResponse.error(401, ApiErrorCode.invalidCredentials));

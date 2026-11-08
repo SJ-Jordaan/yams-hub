@@ -30,7 +30,7 @@
     "leechers": 12,
     "protocol": "torrent",
     "edition": "",
-    "movieId": 1,
+    "mappedMovieId": 1,
     "downloadClientId": 0,
     "shouldOverride": false
   }

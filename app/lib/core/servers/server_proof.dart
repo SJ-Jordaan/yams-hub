@@ -1,8 +1,9 @@
 /// Server proof verification (ARCHITECTURE §5.4, §7.5).
 ///
 /// `GET /ping?nonce=<n>&sid=<sessionId>` answers with
-/// `proof = base64url(HMAC-SHA256(serverProofKey, nonce))`. The app sends
-/// tokens to a non-Tailscale URL only after the proof verifies.
+/// `proof = base64url(HMAC-SHA256(serverProofKey, nonce))`. Once signed in,
+/// the app sends tokens to a URL (Tailscale included) only after the proof
+/// verifies.
 ///
 /// The app's dependency list (ARCHITECTURE §2.1) has no crypto package, so
 /// SHA-256 and HMAC (FIPS 180-4, RFC 2104) are implemented here; both are

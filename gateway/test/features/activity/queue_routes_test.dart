@@ -73,11 +73,86 @@ void main() {
         'pageSize': ['200'],
         'includeSeries': ['true'],
         'includeEpisode': ['true'],
+        'includeUnknownSeriesItems': ['true'],
       });
       final radarrCall = hub.fakes
           .callsTo(_radarr)
           .firstWhere((c) => c.path == '/api/v3/queue');
       expect(radarrCall.query['includeMovie'], ['true']);
+      expect(radarrCall.query['includeUnknownMovieItems'], ['true']);
+    });
+
+    test('every queue page is read and merged', () async {
+      const packHash = 'C0FFEE0000000000000000000000000000000001';
+      hub.fakes.on(_sonarr, 'GET', '/api/v3/queue', (req) {
+        final page = int.parse(req.query['page']!.single);
+        final ids = page == 1
+            ? [for (var i = 1; i <= 200; i++) i]
+            : [for (var i = 201; i <= 230; i++) i];
+        return FakeResponse.json({
+          'page': page,
+          'pageSize': 200,
+          'totalRecords': 230,
+          'records': [
+            for (final i in ids)
+              {
+                'id': i,
+                'downloadId': i > 200 ? packHash : 'A' * 40,
+                'title': i > 200 ? 'Late pack' : 'Pack',
+                'trackedDownloadState': i > 200
+                    ? 'importBlocked'
+                    : 'downloading',
+              },
+          ],
+        });
+      });
+      final r = await hub.get('/api/v1/activity/queue');
+      expect(r.status, 200, reason: r.body);
+      final pages = [
+        for (final c in hub.fakes.callsTo(_sonarr))
+          if (c.path == '/api/v3/queue') c.query['page']!.single,
+      ];
+      expect(pages, ['1', '2']);
+      final q = QueueResponse.fromJson(r.map);
+      final late = q.items.firstWhere(
+        (i) => i.arr.any((a) => a.downloadId == packHash),
+      );
+      expect(late.arr.single.queueIds, hasLength(30));
+      expect(late.arr.single.trackedState, QueueTrackedState.importBlocked);
+    });
+
+    test('unknown-series items keep their release title', () async {
+      hub.fakes.on(
+        _sonarr,
+        'GET',
+        '/api/v3/queue',
+        (_) => FakeResponse.json({
+          'page': 1,
+          'pageSize': 200,
+          'totalRecords': 1,
+          'records': [
+            {
+              'id': 77,
+              'downloadId': 'D' * 40,
+              'title': '[Group] Unmatched Show - 01 [1080p]',
+              'trackedDownloadState': 'importBlocked',
+              'trackedDownloadStatus': 'warning',
+              'statusMessages': [
+                {'title': 'Unknown Series', 'messages': <String>[]},
+              ],
+            },
+          ],
+        }),
+      );
+      final r = await hub.get('/api/v1/activity/queue');
+      expect(r.status, 200, reason: r.body);
+      final q = QueueResponse.fromJson(r.map);
+      final entry = q.items
+          .expand((i) => i.arr)
+          .firstWhere((a) => a.queueIds.contains(77));
+      expect(entry.mediaTitle, '[Group] Unmatched Show - 01 [1080p]');
+      expect(entry.seriesId, isNull);
+      expect(entry.canManualImport, isTrue);
     });
 
     test('members get no *arr links or import actions', () async {
@@ -201,22 +276,20 @@ void main() {
       expect(call.body, '{"ids":[123456,123457]}');
     });
 
-    test('ids beyond a full queue page are still removed', () async {
+    test('ids beyond the first queue page are still removed', () async {
       hub.fakes
-        ..on(
-          _sonarr,
-          'GET',
-          '/api/v3/queue',
-          (_) => FakeResponse.json({
-            'page': 1,
+        ..on(_sonarr, 'GET', '/api/v3/queue', (req) {
+          final page = int.parse(req.query['page']!.single);
+          return FakeResponse.json({
+            'page': page,
             'pageSize': 200,
             'totalRecords': 250,
             'records': [
-              for (var i = 1; i <= 200; i++)
+              for (var i = page * 200 - 199; i <= 250 && i <= page * 200; i++)
                 {'id': i, 'downloadId': 'A' * 40, 'title': 'Pack'},
             ],
-          }),
-        )
+          });
+        })
         ..on(_sonarr, 'DELETE', '/api/v3/queue/bulk', (_) => FakeResponse(200));
       final r = await hub.post(
         '/api/v1/activity/queue/remove?confirm=true',
@@ -534,16 +607,105 @@ void main() {
       expect(r.status, 404);
     });
 
-    test('404 when the queue record is gone', () async {
+    test('404 when the queue record is gone (fresh queue read, no '
+        'single-record GET)', () async {
+      // The *arr has no GET /queue/{id}: it would answer 405.
       hub.fakes.on(
         _sonarr,
         'GET',
         '/api/v3/queue/424242',
-        (_) => FakeResponse.json({'title': 'Not Found'}, status: 404),
+        (_) =>
+            FakeResponse.json({'message': 'Method Not Allowed'}, status: 405),
       );
+      await hub.get('/api/v1/activity/queue');
+      hub.fakes.clearCalls();
       final r = await hub.get('/api/v1/activity/queue/sonarr/424242/import');
-      expect(r.status, 404);
+      expect(r.status, 404, reason: r.body);
       expect(r.errorCode, 'not_found');
+      final paths = [for (final c in hub.fakes.callsTo(_sonarr)) c.path];
+      expect(paths, contains('/api/v3/queue'), reason: 'read again');
+      expect(paths, isNot(contains('/api/v3/queue/424242')));
+    });
+
+    test(
+      'a record past the page limit is found through queue/details',
+      () async {
+        hub.fakes
+          ..on(_sonarr, 'GET', '/api/v3/queue', (req) {
+            final page = int.parse(req.query['page']!.single);
+            return FakeResponse.json({
+              'page': page,
+              'pageSize': 200,
+              'totalRecords': 5000,
+              'records': [
+                for (var i = page * 200 - 199; i <= page * 200; i++)
+                  {'id': i, 'downloadId': 'A' * 40, 'title': 'Pack'},
+              ],
+            });
+          })
+          ..on(
+            _sonarr,
+            'GET',
+            '/api/v3/queue/details',
+            (_) => FakeResponse.json([
+              {
+                'id': 4321,
+                'seriesId': 54,
+                'downloadId': 'B' * 40,
+                'title': 'Far away',
+              },
+            ]),
+          )
+          ..on(
+            _sonarr,
+            'GET',
+            '/api/v3/manualimport',
+            (_) => FakeResponse.json(<Object?>[]),
+          );
+        final r = await hub.get('/api/v1/activity/queue/sonarr/4321/import');
+        expect(r.status, 200, reason: r.body);
+        expect(r.map['title'], 'Far away');
+        final mi = hub.fakes
+            .callsTo(_sonarr)
+            .lastWhere((c) => c.path == '/api/v3/manualimport');
+        expect(mi.query['downloadId'], ['B' * 40]);
+        expect(mi.query['seriesId'], ['54']);
+      },
+    );
+
+    test('unknown-series records list candidates by download alone', () async {
+      hub.fakes
+        ..on(
+          _sonarr,
+          'GET',
+          '/api/v3/queue',
+          (_) => FakeResponse.json({
+            'page': 1,
+            'pageSize': 200,
+            'totalRecords': 1,
+            'records': [
+              {
+                'id': 77,
+                'downloadId': 'D' * 40,
+                'title': 'Unmatched',
+                'trackedDownloadState': 'importBlocked',
+              },
+            ],
+          }),
+        )
+        ..on(
+          _sonarr,
+          'GET',
+          '/api/v3/manualimport',
+          (_) => FakeResponse.json(<Object?>[]),
+        );
+      final r = await hub.get('/api/v1/activity/queue/sonarr/77/import');
+      expect(r.status, 200, reason: r.body);
+      final mi = hub.fakes
+          .callsTo(_sonarr)
+          .lastWhere((c) => c.path == '/api/v3/manualimport');
+      expect(mi.query.containsKey('seriesId'), isFalse);
+      expect(mi.query['downloadId'], ['D' * 40]);
     });
   });
 

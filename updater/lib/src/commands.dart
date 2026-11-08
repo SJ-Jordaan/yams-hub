@@ -25,7 +25,12 @@ const gluetunDependants = <String>['qbittorrent'];
 
 /// One step of a job.
 final class StepSpec {
-  const StepSpec(this.label, this.argv, {this.optional = false});
+  const StepSpec(
+    this.label,
+    this.argv, {
+    this.optional = false,
+    this.changesStack = true,
+  });
 
   /// Short human label ("Pull sonarr").
   final String label;
@@ -34,6 +39,13 @@ final class StepSpec {
   /// A failing optional step is logged but does not fail the job (used for
   /// the final image prune: the update itself already succeeded).
   final bool optional;
+
+  /// Whether the step changes running containers. A pull does not: when the
+  /// updater shuts down after a pull, the job stops there and the stack is
+  /// untouched. Once a step that changes the stack has started, the job's
+  /// remaining required steps still run during shutdown (gluetun's
+  /// dependants must follow it).
+  final bool changesStack;
 }
 
 /// Builds the compose command lines for the configured project.
@@ -83,7 +95,7 @@ final class ComposeCommands {
       throw ArgumentError.value(service, 'service', 'invalid service name');
     }
     return [
-      StepSpec('Pull $service', pull(service)),
+      StepSpec('Pull $service', pull(service), changesStack: false),
       StepSpec('Recreate $service', up(service)),
       if (service == 'gluetun')
         for (final dependant in gluetunDependants)
@@ -92,6 +104,7 @@ final class ComposeCommands {
         'Prune dangling images',
         imagePruneCommand,
         optional: true,
+        changesStack: false,
       ),
     ];
   }

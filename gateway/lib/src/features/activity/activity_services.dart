@@ -57,7 +57,12 @@ final class ActivityServices {
       ) {
     imports = ManualImportService(ctx, queues);
     history = ActivityHistory(ctx);
-    vpn = VpnStatusService(ctx, maindata, preferences);
+    vpn = VpnStatusService(
+      ctx,
+      maindata,
+      preferences,
+      () => preferences(fresh: true),
+    );
   }
 
   final FeatureContext ctx;
@@ -72,8 +77,13 @@ final class ActivityServices {
 
   UpstreamClient get qbit => ctx.upstreams.qbittorrent;
 
-  /// Whitelisted `app/preferences` (cache 10 min).
-  Future<JsonMap> preferences() => _prefs.value(0, () async {
+  /// Whitelisted `app/preferences` (cache 10 min; [fresh] reads them now).
+  Future<JsonMap> preferences({bool fresh = false}) {
+    if (fresh) _prefs.invalidate(0);
+    return _loadPreferences();
+  }
+
+  Future<JsonMap> _loadPreferences() => _prefs.value(0, () async {
     final body = readMap(await qbit.getJson('/api/v2/app/preferences'));
     return whitelistPreferences(body ?? const {});
   });

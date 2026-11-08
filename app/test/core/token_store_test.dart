@@ -109,6 +109,21 @@ void main() {
       expect(next.proofCredentials!.serverProofKey, testProofKey);
     });
 
+    test('forgetCachedUser drops another profile\'s cached user, never the active one', () async {
+      final other = manager();
+      await other.signIn(scope: 'feedfacefeedface', user: buildUser(), tokens: buildStoredTokens());
+      final tm = manager();
+      await tm.signIn(scope: testInstanceId, user: buildUser(), tokens: buildStoredTokens());
+      expect(prefs.getString('auth.user.feedfacefeedface'), isNotNull);
+
+      await tm.forgetCachedUser('feedfacefeedface');
+      expect(prefs.getString('auth.user.feedfacefeedface'), isNull);
+
+      await tm.forgetCachedUser(testInstanceId);
+      expect(prefs.getString('auth.user.$testInstanceId'), isNotNull);
+      expect(tm.user, isNotNull);
+    });
+
     test('rotation keeps the session id and proof key', () async {
       final tm = manager();
       await tm.signIn(scope: testInstanceId, user: buildUser(), tokens: buildStoredTokens());

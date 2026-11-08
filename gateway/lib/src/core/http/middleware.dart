@@ -15,6 +15,7 @@ import '../upstream/upstream_exception.dart';
 import 'api_exception.dart';
 import 'api_request.dart';
 import 'api_response.dart';
+import 'trusted_proxies.dart';
 
 final _accessLog = Logger('http.access');
 final _errorLog = Logger('http.error');
@@ -46,7 +47,10 @@ bool _isApiPath(String path) =>
 /// Reuses `X-Request-Id` when it matches `^[A-Za-z0-9-]{8,64}$`, else
 /// generates 16 hex chars; echoed in the response header. Also resolves the
 /// client IP and the scheme once for the whole pipeline.
-Middleware requestIdMiddleware({required bool trustProxy}) =>
+Middleware requestIdMiddleware({
+  required bool trustProxy,
+  TrustedProxies? trustedProxies,
+}) =>
     (inner) => (request) {
       final incoming = request.headers['x-request-id'];
       final id = incoming != null && _requestIdPattern.hasMatch(incoming)
@@ -54,7 +58,11 @@ Middleware requestIdMiddleware({required bool trustProxy}) =>
           : randomHex(16);
       final secure =
           request.requestedUri.scheme == 'https' ||
-          (trustProxy &&
+          (fromTrustedProxy(
+                request,
+                trustProxy: trustProxy,
+                proxies: trustedProxies,
+              ) &&
               request.headers['x-forwarded-proto']?.toLowerCase() == 'https');
       final r = request.change(
         context: {
@@ -62,6 +70,7 @@ Middleware requestIdMiddleware({required bool trustProxy}) =>
           ContextKeys.clientIp: resolveClientIp(
             request,
             trustProxy: trustProxy,
+            proxies: trustedProxies,
           ),
           ContextKeys.secure: secure,
         },

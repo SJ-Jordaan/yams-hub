@@ -204,6 +204,27 @@ void main() {
       expect(section.error!.code, 'upstream_error');
     });
 
+    test('Jellyfin down keeps the Kavita and Shelfmark alerts', () async {
+      final hub = TestHub(env: {'KAVITA_API_KEY': ''});
+      addTearDown(hub.close);
+      hub.fakes.fakeAllMedia();
+      hub.fakes.fakeShelfmark(stopped: true);
+      hub.fakes.on(
+        ServiceId.jellyfin,
+        'GET',
+        '/Sessions',
+        (_) => FakeResponse(500),
+      );
+      final r = await hub.get('/api/v1/dashboard?cards=media');
+      final dash = DashboardResponse.fromJson(r.map);
+      final section = dash.cards['media']!;
+      expect(section.status, SectionState.error, reason: r.body);
+      expect(section.error!.code, 'upstream_error');
+      expect([
+        for (final a in dash.alerts) a.id,
+      ], containsAll(['kavita.auth', 'shelfmark.coordinator']));
+    });
+
     test('Jellyfin not configured disables the card', () async {
       final hub = TestHub(unconfigured: {ServiceId.jellyfin});
       addTearDown(hub.close);

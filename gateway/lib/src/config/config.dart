@@ -8,6 +8,7 @@ import 'package:logging/logging.dart';
 import 'package:path/path.dart' as p;
 import 'package:yams_models/yams_models.dart';
 
+import '../core/http/trusted_proxies.dart';
 import '../core/log/log.dart';
 import 'policy.dart';
 import 'secrets_file.dart';
@@ -100,6 +101,7 @@ final class HubConfig {
     required this.recyclarrLogDir,
     required this.policyConfig,
     this.procDir = '/proc',
+    this.trustedProxies,
     this.sources = const {},
     this.secretsFileFound = false,
     this.policyFileFound = false,
@@ -120,6 +122,11 @@ final class HubConfig {
   /// Exact `scheme://host[:port]` origins allowed for CORS (dev only).
   final List<String> corsOrigins;
   final bool trustProxy;
+
+  /// `YAMS_HUB_TRUSTED_PROXIES`: the socket peers whose `X-Forwarded-For` /
+  /// `X-Forwarded-Proto` are believed when [trustProxy] is on (null:
+  /// loopback only).
+  final TrustedProxies? trustedProxies;
 
   /// Extra allowed `Host` header values (lower case, without port).
   final List<String> allowedHosts;
@@ -181,6 +188,7 @@ final class HubConfig {
     Map<ServiceId, ServiceConfig>? services,
     List<String>? corsOrigins,
     bool? trustProxy,
+    TrustedProxies? trustedProxies,
   }) => HubConfig(
     port: port,
     dataDir: dataDir ?? this.dataDir,
@@ -191,6 +199,7 @@ final class HubConfig {
     adminPasswordHash: adminPasswordHash,
     corsOrigins: corsOrigins ?? this.corsOrigins,
     trustProxy: trustProxy ?? this.trustProxy,
+    trustedProxies: trustedProxies ?? this.trustedProxies,
     allowedHosts: allowedHosts,
     logLevel: logLevel,
     tzOffset: tzOffset,
@@ -433,6 +442,16 @@ abstract final class ConfigLoader {
     if (trustProxy == null) {
       errors.add('YAMS_HUB_TRUST_PROXY must be true or false');
     }
+    final proxiesText = setting('YAMS_HUB_TRUSTED_PROXIES', '');
+    final trustedProxies = proxiesText.isEmpty
+        ? null
+        : TrustedProxies.parse(proxiesText, errors);
+    if (trustProxy == true && trustedProxies == null) {
+      warnings.add(
+        'YAMS_HUB_TRUST_PROXY is on but YAMS_HUB_TRUSTED_PROXIES is unset: '
+        'X-Forwarded-For is only believed from loopback peers',
+      );
+    }
 
     final allowedHosts = [
       for (final h in setting('YAMS_HUB_ALLOWED_HOSTS', '').split(','))
@@ -545,6 +564,7 @@ abstract final class ConfigLoader {
           : adminHash,
       corsOrigins: List.unmodifiable(corsOrigins),
       trustProxy: trustProxy!,
+      trustedProxies: trustedProxies,
       allowedHosts: List.unmodifiable(allowedHosts),
       logLevel: level!,
       tzOffset: tz!,

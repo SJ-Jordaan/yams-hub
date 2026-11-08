@@ -20,7 +20,7 @@
     "languageWeight": 0,
     "seriesTitle": "Tensei Shitara Slime Datta Ken",
     "episodeNumbers": [1],
-    "absoluteEpisodeNumbers": [49],
+    "absoluteEpisodeNumbers": [1],
     "mappedSeasonNumber": 3,
     "mappedEpisodeNumbers": [1],
     "approved": false,
@@ -48,9 +48,9 @@
     "isAbsoluteNumbering": true,
     "isPossibleSpecialEpisode": false,
     "special": false,
-    "seriesId": 54,
-    "episodeId": 2447,
-    "episodeIds": [2447],
+    "mappedSeriesId": 54,
+    "mappedAbsoluteEpisodeNumbers": [49],
+    "mappedEpisodeInfo": [{"id": 2447, "seasonNumber": 3, "episodeNumber": 1, "absoluteEpisodeNumber": 49, "title": "Episode 49"}],
     "downloadClientId": 0,
     "shouldOverride": false
   },
@@ -87,9 +87,8 @@
     "leechers": 40,
     "protocol": "torrent",
     "isAbsoluteNumbering": true,
-    "seriesId": 54,
-    "episodeId": 2447,
-    "episodeIds": [2447]
+    "mappedSeriesId": 54,
+    "mappedAbsoluteEpisodeNumbers": [49]
   },
   {
     "guid": "https://example.invalid/3",
@@ -110,6 +109,6 @@
     "customFormats": [],
     "customFormatScore": 0,
     "protocol": "usenet",
-    "seriesId": 54
+    "mappedSeriesId": 54
   }
 ]

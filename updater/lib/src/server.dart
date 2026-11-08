@@ -4,8 +4,8 @@
 /// |---|---|
 /// | `GET /healthz` | `{"status":"ok","version":"1.0.0"}` |
 /// | `GET /services` | `{"services":[...]}` (allow-list minus deny-list) |
-/// | `POST /update/{service}` | 202 `{"jobId"}`, 404 unknown/denied, 409 busy |
-/// | `POST /exec/recyclarr-sync` | 202 `{"jobId"}`, 409 busy |
+/// | `POST /update/{service}` | 202 `{"jobId"}`, 404 unknown/denied, 409 busy, 503 shutting down |
+/// | `POST /exec/recyclarr-sync` | 202 `{"jobId"}`, 409 busy, 503 shutting down |
 /// | `GET /jobs/{id}` | the job, 404 unknown/expired |
 ///
 /// Every request without the bearer token gets 401, including unknown paths,
@@ -97,6 +97,8 @@ Response _startJob(
       'message': 'Another job is running',
       'jobId': e.activeJobId,
     });
+  } on JobManagerClosedException {
+    return _error(503, 'shutting_down', 'The updater is shutting down');
   }
 }
 

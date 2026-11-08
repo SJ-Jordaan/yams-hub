@@ -1,6 +1,6 @@
 /// Picks the URL of a server profile to talk to (ARCHITECTURE §7.5):
 /// happy-eyeballs pings, instance id match, and the server proof before any
-/// token is sent to a non-Tailscale URL.
+/// token is sent to any URL (Tailscale names and addresses included).
 library;
 
 import 'dart:async';
@@ -90,8 +90,8 @@ class ResolveResult {
   final Uri? url;
   final ServerPing? ping;
 
-  /// True when [url] passed the server proof (false for Tailscale URLs and
-  /// before login, where no proof is required).
+  /// True when [url] passed the server proof (false only before login,
+  /// where there is no key to check it with).
   final bool proofVerified;
 
   /// Why each tried URL was rejected.
@@ -116,7 +116,8 @@ class ServerResolver {
 
   /// The URLs of [profile] in the order they are tried: [ServerProfile.lastGoodUrl]
   /// first, then the profile order. When the current network is not known to
-  /// be home ([preferTailscale]), Tailscale URLs move to the front.
+  /// be home ([preferTailscale]), Tailscale URLs move to the front. This is
+  /// only a preference: it never decides whether a URL is trusted.
   static List<Uri> candidateOrder(ServerProfile profile, {required bool preferTailscale}) {
     final ordered = <Uri>[];
     void add(Uri? u) {
@@ -133,8 +134,11 @@ class ServerResolver {
   }
 
   /// Pings every candidate URL, started [stagger] apart; the first acceptable
-  /// answer wins. With [proof], a non-Tailscale URL is accepted only if its
-  /// `proof` verifies; a missing or wrong proof counts as unreachable.
+  /// answer wins. With [proof] (the app holds a session for this profile),
+  /// every URL is accepted only if its `proof` verifies, whatever its host: a
+  /// `*.ts.net` name or a 100.64.0.0/10 address is not proof that the
+  /// packets go through WireGuard (Tailscale off, foreign DNS, carrier-grade
+  /// NAT). A missing or wrong proof counts as unreachable.
   Future<ResolveResult> resolve(
     ServerProfile profile, {
     ProofCredentials? proof,
@@ -149,7 +153,7 @@ class ServerResolver {
     var outstanding = candidates.length;
 
     Future<void> probe(Uri url) async {
-      final needsProof = proof != null && !isTailscaleHost(url.host);
+      final needsProof = proof != null;
       final nonce = needsProof ? generateProofNonce(_random) : null;
       try {
         final ping = await _client.ping(

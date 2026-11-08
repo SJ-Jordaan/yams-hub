@@ -115,6 +115,13 @@ class _IndexersScreenState extends ConsumerState<IndexersScreen> {
     );
   }
 
+  /// The "Test all" job could not be followed (expired, hub unreachable).
+  void _onTestAllLost(ApiException _) {
+    setState(() => _testAllJob = null);
+    ref.invalidate(indexerListProvider);
+    context.showSnack('Lost track of the test. Refresh to check the result.');
+  }
+
   Future<void> _testSelected(Set<int> ids) async {
     setState(() {
       _selected.clear();
@@ -152,6 +159,22 @@ class _IndexersScreenState extends ConsumerState<IndexersScreen> {
             valid: false,
             failures: [job.error?.message ?? 'Test failed'],
           ),
+    );
+    setState(() {});
+    if (_testJobs.isEmpty && !_launching) _finishBatch();
+  }
+
+  /// A "Test selected" job could not be followed: count it as unknown so
+  /// the batch still finishes and the buttons come back.
+  void _onTestLost(String jobId) {
+    final id = _testJobs.remove(jobId);
+    if (id == null) return;
+    _batchResults.add(
+      IndexerTestResult(
+        id: id,
+        valid: false,
+        failures: const ['Lost track of the test. Refresh to check the result.'],
+      ),
     );
     setState(() {});
     if (_testJobs.isEmpty && !_launching) _finishBatch();
@@ -297,6 +320,7 @@ class _IndexersScreenState extends ConsumerState<IndexersScreen> {
                   key: ValueKey(id),
                   showSnackBar: false,
                   onDone: _onTestAllDone,
+                  onLost: _onTestAllLost,
                 ),
               for (final id in _testJobs.keys)
                 JobChip(
@@ -304,6 +328,7 @@ class _IndexersScreenState extends ConsumerState<IndexersScreen> {
                   key: ValueKey(id),
                   showSnackBar: false,
                   onDone: _onTestDone,
+                  onLost: (_) => _onTestLost(id),
                 ),
             ],
           ),

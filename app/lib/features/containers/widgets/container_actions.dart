@@ -6,7 +6,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:yams_hub/core/api/api_exception.dart';
-import 'package:yams_hub/core/jobs/job_provider.dart';
 import 'package:yams_hub/core/widgets/widgets.dart';
 import 'package:yams_models/yams_models.dart';
 
@@ -112,81 +111,27 @@ void unawaitedSheet(Future<void> sheet) {
   sheet.ignore();
 }
 
-/// Consecutive failed job polls before the chip gives up on a job.
-const containerJobMaxPollFailures = 3;
-
 /// The chip of a job followed under [jobKey], or nothing. When the job
 /// finishes, [onDone] runs (refresh the screen) and the key is released.
 ///
-/// The core job provider stops polling after an error, so a network blip
-/// (LAN/Tailscale switch) or an expired job (404) would otherwise keep the
-/// key, and with it the disabled action buttons, forever. Failed polls are
-/// retried a few times; then the key is released with "refresh to check".
-class ContainerJobChip extends ConsumerStatefulWidget {
+/// [JobChip] retries failed polls and gives up on a lost job (404, or
+/// repeated failures after a network blip); the key, and with it the
+/// disabled action buttons, is then released too ("refresh to check").
+class ContainerJobChip extends ConsumerWidget {
   const ContainerJobChip({super.key, required this.jobKey, this.onDone});
 
   final String jobKey;
   final VoidCallback? onDone;
 
   @override
-  ConsumerState<ContainerJobChip> createState() => _ContainerJobChipState();
-}
-
-class _ContainerJobChipState extends ConsumerState<ContainerJobChip> {
-  Timer? _retry;
-  int _failures = 0;
-  String? _following;
-
-  @override
-  void dispose() {
-    _retry?.cancel();
-    super.dispose();
-  }
-
-  void _release(String id, {String? message}) {
-    _retry?.cancel();
-    ref.read(containerJobsProvider.notifier).done(widget.jobKey, id);
-    if (message != null) {
-      ScaffoldMessenger.maybeOf(context)?.showSnackBar(SnackBar(content: Text(message)));
-    }
-    widget.onDone?.call();
-  }
-
-  void _onPoll(String id, AsyncValue<Job> next) {
-    if (next.isLoading) return;
-    if (!next.hasError) {
-      _failures = 0;
-      return;
-    }
-    final e = ApiException.from(next.error!);
-    if (e.status == 404 || e.code == ApiErrorCode.notFound || ++_failures >= containerJobMaxPollFailures) {
-      _release(id, message: 'Lost track of the job. Refresh to check the result.');
-      return;
-    }
-    _retry?.cancel();
-    _retry = Timer(jobPollInterval, () {
-      if (mounted) ref.invalidate(jobProvider(id));
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final id = ref.watch(containerJobsProvider.select((m) => m[widget.jobKey]));
-    if (id != _following) {
-      _following = id;
-      _failures = 0;
-      _retry?.cancel();
-    }
+  Widget build(BuildContext context, WidgetRef ref) {
+    final id = ref.watch(containerJobsProvider.select((m) => m[jobKey]));
     if (id == null) return const SizedBox.shrink();
-    ref.listen<AsyncValue<Job>>(jobProvider(id), (_, next) => _onPoll(id, next));
-    return JobChip(
-      id,
-      key: ValueKey(id),
-      onDone: (_) {
-        _retry?.cancel();
-        ref.read(containerJobsProvider.notifier).done(widget.jobKey, id);
-        widget.onDone?.call();
-      },
-    );
+    void release() {
+      ref.read(containerJobsProvider.notifier).done(jobKey, id);
+      onDone?.call();
+    }
+
+    return JobChip(id, key: ValueKey(id), onDone: (_) => release(), onLost: (_) => release());
   }
 }

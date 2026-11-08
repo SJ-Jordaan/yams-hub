@@ -91,12 +91,18 @@ final class ManualImportService {
         'This queue item has no download to import from.',
       );
     }
+    int? positive(Object? v) => switch (readInt(v)) {
+      final n? when n > 0 => n,
+      _ => null,
+    };
+    // Unknown-series/movie items have no id: Sonarr/Radarr then list the
+    // files by download alone and the admin picks the series or movie.
     final query = <String, Object?>{
       'downloadId': downloadId,
       if (service == ArrService.sonarr)
-        'seriesId': readInt(record['seriesId'])
+        'seriesId': positive(record['seriesId'])
       else
-        'movieId': readInt(record['movieId']),
+        'movieId': positive(record['movieId']),
       'filterExistingFiles': true,
     };
     final Object? body;

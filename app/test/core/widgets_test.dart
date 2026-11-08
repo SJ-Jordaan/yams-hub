@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:yams_hub/core/api/api_client.dart';
+import 'package:yams_hub/core/api/api_exception.dart';
 import 'package:yams_hub/core/jobs/job_provider.dart';
 import 'package:yams_hub/core/theme/theme.dart';
 import 'package:yams_hub/core/widgets/widgets.dart';
@@ -47,6 +48,76 @@ void main() {
     expect(find.text('Restart sonarr: done'), findsWidgets);
     await tester.pump(const Duration(seconds: 5));
     expect(done, hasLength(1));
+  });
+
+  testWidgets('JobChip gives up on a job the hub no longer knows (404)', (tester) async {
+    final done = <Job>[];
+    final lost = <ApiException>[];
+    await tester.pumpWidget(
+      wrap(
+        JobChip('j_1', onDone: done.add, onLost: lost.add),
+        overrides: [
+          jobProvider.overrideWith(
+            (ref, id) async => throw const ApiException(status: 404, code: ApiErrorCode.notFound, message: 'Job not found or expired'),
+          ),
+        ],
+      ),
+    );
+    await tester.pump();
+    await tester.pump();
+    expect(lost, hasLength(1));
+    expect(done, isEmpty);
+    expect(find.text(jobLostMessage), findsOneWidget);
+    await tester.pump(const Duration(seconds: 10));
+    expect(lost, hasLength(1), reason: 'reported once');
+  });
+
+  testWidgets('JobChip retries failed polls and then follows the job to the end', (tester) async {
+    var polls = 0;
+    final done = <Job>[];
+    final lost = <ApiException>[];
+    await tester.pumpWidget(
+      wrap(
+        JobChip('j_1', onDone: done.add, onLost: lost.add),
+        overrides: [
+          jobProvider.overrideWith((ref, id) async {
+            polls++;
+            if (polls < jobMaxPollFailures) throw const ApiException.network();
+            return buildJob(id: id, status: JobStatus.succeeded);
+          }),
+        ],
+      ),
+    );
+    for (var i = 0; i < jobMaxPollFailures + 1; i++) {
+      await tester.pump(jobPollInterval);
+      await tester.pump();
+    }
+    expect(polls, jobMaxPollFailures);
+    expect(lost, isEmpty);
+    expect(done.single.status, JobStatus.succeeded);
+  });
+
+  testWidgets('JobChip gives up after repeated network failures', (tester) async {
+    var polls = 0;
+    final lost = <ApiException>[];
+    await tester.pumpWidget(
+      wrap(
+        JobChip('j_1', onLost: lost.add, showSnackBar: false),
+        overrides: [
+          jobProvider.overrideWith((ref, id) async {
+            polls++;
+            throw const ApiException.network();
+          }),
+        ],
+      ),
+    );
+    for (var i = 0; i < jobMaxPollFailures + 3; i++) {
+      await tester.pump(jobPollInterval);
+      await tester.pump();
+    }
+    expect(polls, jobMaxPollFailures);
+    expect(lost, hasLength(1));
+    expect(find.text(jobLostMessage), findsNothing, reason: 'no SnackBar when showSnackBar is false');
   });
 
   test('JobChip labels', () {

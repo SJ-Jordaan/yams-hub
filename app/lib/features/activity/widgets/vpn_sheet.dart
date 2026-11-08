@@ -119,6 +119,11 @@ class _VpnSheetState extends ConsumerState<VpnSheet> {
                           ..invalidate(vpnProvider)
                           ..invalidate(transferProvider);
                       },
+                      onLost: (_) {
+                        if (!mounted) return;
+                        setState(() => _jobId = null);
+                        ref.invalidate(vpnProvider);
+                      },
                     ),
                   )
                 else

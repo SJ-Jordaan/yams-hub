@@ -142,12 +142,12 @@ final class QueueRoutes {
       Set<int>? present;
       try {
         _s.queues.invalidate(service);
-        final records = await _s.queues.records(service);
-        // A full first page may not hold every record: an id missing from
-        // it is not known to be gone, so send every id.
-        present = records.length >= queuePageSize
-            ? null
-            : {for (final r in records) ?readInt(r['id'])};
+        final read = await _s.queues.read(service);
+        // A queue cut short by the page limit may not hold every record: an
+        // id missing from it is not known to be gone, so send every id.
+        present = read.complete
+            ? {for (final r in read.records) ?readInt(r['id'])}
+            : null;
       } on UpstreamNotConfigured {
         rethrow;
       } catch (_) {

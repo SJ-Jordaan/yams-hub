@@ -129,6 +129,7 @@ void main() {
       tester,
       api: serversApi(),
       location: '/settings/servers',
+      prefsValues: {'auth.user.feedfacefeedface': '{"id":"u_office","name":"Ada","role":"admin"}'},
       overrides: [profileTokenStoreProvider.overrideWithValue(tokens)],
     );
     app.container.read(serverStoreProvider.notifier).upsert(other);
@@ -144,7 +145,9 @@ void main() {
 
     expect(app.container.read(serverStoreProvider).profiles.map((p) => p.id), ['p_test']);
     expect(await tokens.read('feedfacefeedface'), isNull);
+    expect(app.prefs.getString('auth.user.feedfacefeedface'), isNull, reason: 'the cached user goes too');
     expect(app.tokens.hasSession, isTrue, reason: 'still signed in to the active server');
+    expect(app.prefs.getString('auth.user.$testInstanceId'), isNotNull, reason: 'the active user stays cached');
   });
 
   testWidgets('sign out of the active server from its editor', (tester) async {

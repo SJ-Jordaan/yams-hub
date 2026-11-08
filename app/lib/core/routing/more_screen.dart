@@ -16,8 +16,8 @@ import 'paths.dart';
 Map<int, String?> moreSubtitles(NavBadges b) => {
   Branches.calendar: switch (b.calendarNext7Days) {
     null => null,
-    1 => '1 episode this week',
-    final n => '$n episodes this week',
+    1 => '1 release this week',
+    final n => '$n releases this week',
   },
   Branches.containers: b.containersRunning == null ? null : '${b.containersRunning} running',
   Branches.indexers: switch (b.indexersFailing) {

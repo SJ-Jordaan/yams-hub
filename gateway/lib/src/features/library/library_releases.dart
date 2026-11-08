@@ -149,14 +149,31 @@ final class LibraryReleaseRoutes {
         'release',
       );
       final anime = await animeIds;
+      // The matched ids are `mappedSeriesId` / `mappedEpisodeInfo` /
+      // `mappedMovieId`; `seriesId` / `episodeIds` / `movieId` are overrides
+      // for POST /release and empty on a search. An episode search has no
+      // series id in the route: when a release lacks the mapped one, the
+      // episode's series is read once.
+      int? episodeSeries;
+      if (svc == ArrService.sonarr &&
+          seriesId == null &&
+          episodeIds.length == 1 &&
+          raw.any((r) => _seriesOf(r) == null)) {
+        episodeSeries = await _seriesOfEpisode(episodeIds.single);
+      }
       final expiresAt = data.ctx.clock.now().add(LibraryReleaseTokens.ttl);
       final choices = <ReleaseChoice>[];
       for (final r in raw) {
         final guid = readString(r['guid']);
         final indexerId = readInt(r['indexerId']);
         if (guid == null || guid.isEmpty || indexerId == null) continue;
-        final rSeries = readInt(r['seriesId']) ?? seriesId;
-        final rEpisodes = readIntList(r['episodeIds']).isNotEmpty
+        final rSeries = _seriesOf(r) ?? seriesId ?? episodeSeries;
+        final mappedEpisodes = [
+          for (final e in releaseMappedEpisodes(r)) ?positiveId(e['id']),
+        ];
+        final rEpisodes = mappedEpisodes.isNotEmpty
+            ? mappedEpisodes
+            : readIntList(r['episodeIds']).isNotEmpty
             ? readIntList(r['episodeIds'])
             : episodeIds;
         final token = tokens.put(
@@ -169,7 +186,10 @@ final class LibraryReleaseRoutes {
             expiresAt: expiresAt,
             seriesId: rSeries,
             episodeIds: rEpisodes,
-            movieId: readInt(r['movieId']) ?? movieId,
+            movieId:
+                positiveId(r['mappedMovieId']) ??
+                positiveId(r['movieId']) ??
+                movieId,
           ),
         );
         choices.add(
@@ -196,6 +216,26 @@ final class LibraryReleaseRoutes {
       );
     } finally {
       _searching.remove(userId);
+    }
+  }
+
+  static int? _seriesOf(JsonMap r) =>
+      positiveId(r['mappedSeriesId']) ?? positiveId(r['seriesId']);
+
+  /// The series of episode [id] (`GET /api/v3/episode/{id}`); null when it
+  /// cannot be read (the anime label and the detail invalidation are then
+  /// skipped, nothing else changes).
+  Future<int?> _seriesOfEpisode(int id) async {
+    try {
+      final e = readMap(
+        await data
+            .client(ArrService.sonarr)
+            .getJson('/api/v3/episode/$id', timeout: grabTimeout),
+      );
+      return positiveId(e?['seriesId']);
+    } on Object catch (e) {
+      data.ctx.log.fine('series of episode $id unavailable: ${e.runtimeType}');
+      return null;
     }
   }
 

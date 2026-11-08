@@ -119,8 +119,9 @@ StatusTone toneForJob(JobStatus status) => switch (status) {
 };
 
 /// Builds the app theme for [scheme]. Fonts are the platform defaults (the
-/// web build loads no Google Fonts).
-ThemeData buildHubTheme(ColorScheme scheme) {
+/// web build loads no Google Fonts). [compactLists] (Settings > Appearance >
+/// List density: Compact) makes every list row dense.
+ThemeData buildHubTheme(ColorScheme scheme, {bool compactLists = false}) {
   final dark = scheme.brightness == Brightness.dark;
   return ThemeData(
     useMaterial3: true,
@@ -135,7 +136,11 @@ ThemeData buildHubTheme(ColorScheme scheme) {
     ),
     snackBarTheme: const SnackBarThemeData(behavior: SnackBarBehavior.floating),
     inputDecorationTheme: const InputDecorationTheme(border: OutlineInputBorder()),
-    listTileTheme: const ListTileThemeData(contentPadding: EdgeInsets.symmetric(horizontal: 16)),
+    listTileTheme: ListTileThemeData(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+      dense: compactLists,
+      visualDensity: compactLists ? VisualDensity.compact : null,
+    ),
   );
 }
 

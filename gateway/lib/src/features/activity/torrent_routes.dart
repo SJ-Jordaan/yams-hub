@@ -242,6 +242,14 @@ final class TorrentRoutes {
   /// `POST /torrents/actions`.
   Future<Response> actions(ApiRequest req) async {
     final b = ActivityBody(await req.jsonBody());
+    // Audited as `activity.torrent.<action>` (API.md §8.4) once the action
+    // is known; an invalid action keeps the route's name.
+    final action = b.reqEnum(
+      'action',
+      TorrentAction.values,
+      unknown: TorrentAction.unknown,
+    );
+    req.auditAction = 'activity.torrent.${action.toJson()}';
     final hashes = b.optStringList('hashes') ?? const [];
     if (hashes.isEmpty || hashes.length > 200) {
       throw ApiException.invalidField('hashes', 'Select 1 to 200 torrents.');
@@ -252,11 +260,6 @@ final class TorrentRoutes {
       }
     }
     final lower = {for (final h in hashes) h.toLowerCase()}.toList();
-    final action = b.reqEnum(
-      'action',
-      TorrentAction.values,
-      unknown: TorrentAction.unknown,
-    );
     final form = <String, String>{'hashes': lower.join('|')};
     switch (action) {
       case TorrentAction.delete:
@@ -307,10 +310,45 @@ final class TorrentRoutes {
   }
 
   /// `409 managed_by_arr` when Sonarr/Radarr still track one of [hashes].
+  ///
+  /// When a queue cannot be read (the *arr is down or slow), its torrents
+  /// cannot be cleared: a torrent in that *arr's category (`tv-sonarr`,
+  /// `radarr`) is then refused as well, with `unverified: true`, unless the
+  /// delete is forced. Deleting a tracked torrent in qBittorrent makes the
+  /// *arr report a missing download or grab the release again.
   Future<void> _ensureNotManaged(List<String> hashes) async {
     final wanted = hashes.toSet();
     final items = <JsonMap>[];
-    for (final g in groupQueueRecords(await _s.queues.loadAll())) {
+    final sources = await _s.queues.loadAll();
+    final unreadable = {
+      for (final q in sources)
+        if (!q.ok && q.error is! UpstreamNotConfigured) q.service,
+    };
+    if (unreadable.isNotEmpty) {
+      QbitView? view;
+      try {
+        view = await _s.maindata.read();
+      } catch (_) {
+        view = null;
+      }
+      for (final h in wanted) {
+        final category = readString(view?.torrents[h]?['category']);
+        final service = managedByOf(category);
+        // Unknown torrent (no snapshot): every unreadable *arr may track it.
+        final suspects = view == null || view.torrents[h] == null
+            ? unreadable
+            : {?service}.intersection(unreadable);
+        for (final svc in suspects) {
+          items.add({
+            'hash': h,
+            'service': svc.name,
+            'queueIds': const <int>[],
+            'unverified': true,
+          });
+        }
+      }
+    }
+    for (final g in groupQueueRecords(sources)) {
       final hash = g.hash;
       if (hash == null || !wanted.contains(hash)) continue;
       items.add({
@@ -324,11 +362,15 @@ final class TorrentRoutes {
     final names = services
         .map((s) => s == 'sonarr' ? 'Sonarr' : 'Radarr')
         .join(' and ');
+    final unverified = items.every((i) => i['unverified'] == true);
     throw ApiException(
       409,
       ApiErrorCode.managedByArr,
-      '$names still track${services.length == 1 ? 's' : ''} this download; '
-      'remove it from the queue instead.',
+      unverified
+          ? '$names could not be checked and may still track this download; '
+                'try again, or force the delete.'
+          : '$names still track${services.length == 1 ? 's' : ''} this '
+                'download; remove it from the queue instead.',
       details: {'items': items},
     );
   }

@@ -131,6 +131,16 @@ class TokenManager extends ChangeNotifier implements AuthSession {
     if (had) notifyListeners();
   }
 
+  /// Forgets the cached user (and cookie marker) of a profile that is **not**
+  /// the active session, after its tokens were deleted (settings: sign out
+  /// of / delete another server). The active session uses [clear] instead,
+  /// so [scope] equal to the active scope is ignored.
+  Future<void> forgetCachedUser(String scope) async {
+    if (scope == _scope) return;
+    await _prefs.remove(_userKey(scope));
+    await _prefs.remove(_cookieKey(scope));
+  }
+
   // --- AuthSession -----------------------------------------------------------
 
   @override

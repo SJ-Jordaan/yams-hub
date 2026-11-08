@@ -217,6 +217,76 @@ void main() {
       expect(find.byIcon(Icons.check_circle), findsWidgets);
     });
 
+    testWidgets('a Test all job the hub forgot (404) gives the button back', (
+      tester,
+    ) async {
+      final api = _api()
+        ..postJson('/indexers/test-all', {
+          'job': buildTestJob(status: JobStatus.running).toJson(),
+        }, status: 202)
+        ..on(
+          'GET',
+          '/jobs/j_test00000001',
+          (_) => FakeResponse.error(
+            404,
+            ApiErrorCode.notFound,
+            message: 'Job not found or expired',
+          ),
+        );
+      await pumpHubApp(tester, api: api, location: '/indexers');
+
+      await tester.tap(find.byTooltip('Test all'));
+      await settle(tester, frames: 10);
+
+      expect(
+        find.text('Lost track of the test. Refresh to check the result.'),
+        findsOneWidget,
+      );
+      final button = tester.widget<IconButton>(
+        find.widgetWithIcon(IconButton, Icons.fact_check_outlined),
+      );
+      expect(button.onPressed, isNotNull);
+      expect(find.byType(Chip), findsNothing);
+    });
+
+    testWidgets('a lost Test selected job still finishes the batch', (
+      tester,
+    ) async {
+      final api = _api()
+        ..postJson('/indexers/4/test', {
+          'job': buildTestJob(
+            id: 'j_single000004',
+            kind: 'indexers.test',
+            status: JobStatus.running,
+          ).toJson(),
+        }, status: 202)
+        ..on(
+          'GET',
+          '/jobs/j_single000004',
+          (_) => FakeResponse.error(404, ApiErrorCode.notFound),
+        );
+      await pumpHubApp(tester, api: api, location: '/indexers');
+
+      await tester.longPress(find.text('1337x'));
+      await settle(tester);
+      await tester.tap(find.byTooltip('Test selected'));
+      await settle(tester, frames: 10);
+
+      expect(api.requestsTo('/indexers/4/test', method: 'POST'), hasLength(1));
+      expect(
+        find.textContaining('Lost track of the test'),
+        findsOneWidget,
+      );
+      expect(
+        tester
+            .widget<IconButton>(
+              find.widgetWithIcon(IconButton, Icons.fact_check_outlined),
+            )
+            .onPressed,
+        isNotNull,
+      );
+    });
+
     testWidgets(
       'tapping a row opens the detail; app bar opens history and search',
       (tester) async {
@@ -291,6 +361,31 @@ void main() {
       await settle(tester, frames: 10);
       expect(api.requestsTo('/indexers/15/test', method: 'POST'), hasLength(1));
       expect(find.text('Blocked by CloudFlare'), findsOneWidget);
+    });
+
+    testWidgets('a lost Test job brings the Test button back', (tester) async {
+      final api = detailApi()
+        ..postJson('/indexers/15/test', {
+          'job': buildTestJob(
+            id: 'j_single000001',
+            kind: 'indexers.test',
+            status: JobStatus.running,
+          ).toJson(),
+        }, status: 202)
+        ..on(
+          'GET',
+          '/jobs/j_single000001',
+          (_) => FakeResponse.error(404, ApiErrorCode.notFound),
+        );
+      await pumpHubApp(tester, api: api, location: '/indexers/15');
+      await tester.tap(find.text('Test'));
+      await settle(tester, frames: 10);
+      expect(
+        find.text('Lost track of the test. Refresh to check the result.'),
+        findsOneWidget,
+      );
+      expect(find.text('Test'), findsOneWidget);
+      expect(find.byType(Chip), findsNothing);
     });
 
     testWidgets('members do not see settings', (tester) async {

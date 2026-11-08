@@ -328,6 +328,92 @@ void main() {
       });
     });
 
+    test('delete fails closed when a queue cannot be read', () async {
+      // plainHash is in tv-sonarr but not in the Sonarr queue: with Sonarr
+      // down nobody can tell whether Sonarr still tracks it.
+      hub.fakes.on(
+        ServiceId.sonarr,
+        'GET',
+        '/api/v3/queue',
+        (_) => FakeResponse.text('restarting', status: 503),
+      );
+      var r = await hub.post(
+        '/api/v1/torrents/actions?confirm=true',
+        body: {
+          'hashes': [plainHash],
+          'action': 'delete',
+          'deleteFiles': true,
+        },
+      );
+      expect(r.status, 409, reason: r.body);
+      expect(r.errorCode, 'managed_by_arr');
+      final details = readMap(readMap(r.map['error'])?['details']);
+      final item = readMap((details!['items']! as List).single)!;
+      expect(item['service'], 'sonarr');
+      expect(item['unverified'], isTrue);
+      expect(
+        readMap(r.map['error'])?['message'],
+        contains('could not be checked'),
+      );
+      expect(called(hub.fakes, _q, '/api/v2/torrents/delete'), isFalse);
+
+      r = await hub.post(
+        '/api/v1/torrents/actions?confirm=true',
+        body: {
+          'hashes': [plainHash],
+          'action': 'delete',
+          'deleteFiles': true,
+          'force': true,
+        },
+      );
+      expect(r.status, 200, reason: r.body);
+    });
+
+    test('an unreadable queue of the other *arr does not block', () async {
+      hub.fakes.on(
+        ServiceId.radarr,
+        'GET',
+        '/api/v3/queue',
+        (_) => FakeResponse.text('restarting', status: 503),
+      );
+      final r = await hub.post(
+        '/api/v1/torrents/actions?confirm=true',
+        body: {
+          'hashes': [plainHash],
+          'action': 'delete',
+        },
+      );
+      expect(r.status, 200, reason: r.body);
+    });
+
+    test('actions are audited per action', () async {
+      await hub.post(
+        '/api/v1/torrents/actions',
+        body: {
+          'hashes': [plainHash],
+          'action': 'stop',
+        },
+      );
+      await hub.post(
+        '/api/v1/torrents/actions?confirm=true',
+        body: {
+          'hashes': [plainHash],
+          'action': 'delete',
+        },
+      );
+      final audit = await hub.get(
+        '/api/v1/admin/audit?action=activity.torrent',
+      );
+      final actions = [
+        for (final e in audit.map['items']! as List) (e as Map)['action'],
+      ];
+      expect(
+        actions,
+        containsAll(['activity.torrent.stop', 'activity.torrent.delete']),
+      );
+      expect(actions, isNot(contains('activity.torrent.actions')));
+    });
+
     test('delete of an untracked torrent keeps files by default', () async {
       final r = await hub.post(
         '/api/v1/torrents/actions?confirm=true',
@@ -680,6 +766,69 @@ void main() {
           'name': ['gluetun'],
         }),
       ]);
+    });
+
+    test('a new forwarded port re-reads the cached listen port', () async {
+      var listenPort = 36681;
+      var forwarded = 36681;
+      hub.fakes
+        ..on(_q, 'GET', '/api/v2/app/preferences', (_) {
+          final prefs = Map<String, Object?>.of(
+            fixture('downloads/qbittorrent_app_preferences.json')! as JsonMap,
+          );
+          prefs['listen_port'] = listenPort;
+          return FakeResponse.json(prefs);
+        })
+        ..on(
+          ServiceId.gluetun,
+          'GET',
+          '/v1/openvpn/portforwarded',
+          (_) => gluetunResponse({'port': forwarded}),
+        );
+      var v = VpnStatus.fromJson((await hub.get('/api/v1/vpn')).map);
+      expect(v.portInSync, isTrue);
+      // Gluetun reconnects; its hook updates qBittorrent at once.
+      forwarded = 41234;
+      listenPort = 41234;
+      hub.clock.advance(const Duration(seconds: 31));
+      v = VpnStatus.fromJson((await hub.get('/api/v1/vpn')).map);
+      expect(v.forwardedPort, 41234);
+      expect(v.listenPort, 41234);
+      expect(v.portInSync, isTrue);
+      expect(v.status, VpnConnectionState.connected);
+      // A real mismatch is still reported.
+      forwarded = 50000;
+      hub.clock.advance(const Duration(seconds: 31));
+      v = VpnStatus.fromJson((await hub.get('/api/v1/vpn')).map);
+      expect(v.portInSync, isFalse);
+      expect(v.status, VpnConnectionState.degraded);
+    });
+
+    test('an old maindata snapshot is read again, not reported', () async {
+      var state = 'connected';
+      hub.fakes.on(_q, 'GET', '/api/v2/sync/maindata', (_) {
+        final m = Map<String, Object?>.of(
+          fixture('downloads/qbittorrent_sync_maindata_full.json')! as JsonMap,
+        );
+        m['server_state'] = {
+          ...(m['server_state']! as JsonMap),
+          'connection_status': state,
+        };
+        return FakeResponse.json(m);
+      });
+      var v = VpnStatus.fromJson((await hub.get('/api/v1/vpn')).map);
+      expect(v.qbitConnection, 'connected');
+      // Nobody watches the torrents: the poller's lease lapses (one more
+      // scheduled tick runs, then it stops).
+      hub.clock.advance(const Duration(minutes: 5));
+      await Future<void>.delayed(const Duration(milliseconds: 1800));
+      // Later qBittorrent loses its connectivity (within the access token's
+      // lifetime of the test session).
+      hub.clock.advance(const Duration(minutes: 10));
+      state = 'firewalled';
+      v = VpnStatus.fromJson((await hub.get('/api/v1/vpn')).map);
+      expect(v.qbitConnection, 'firewalled');
+      expect(v.status, VpnConnectionState.degraded);
     });
 
     test('down while gluetun reconnects (empty public IP)', () async {

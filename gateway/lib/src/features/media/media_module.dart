@@ -252,9 +252,20 @@ class MediaModule extends FeatureModule {
         ? optional(shelfmark.status(), onError: log)
         : Future<ShelfmarkStatus?>.value();
 
-    // Now playing is the card: its failure fails the card (the optional parts
-    // keep loading and warm their caches).
-    final np = await npF;
+    // Now playing is the card: its failure fails the card, but the optional
+    // parts still load (warming their caches) and still raise their alerts.
+    final CacheResult<NowPlaying> np;
+    try {
+      np = await npF;
+    } catch (e) {
+      final books = await booksF;
+      final shelf = await shelfF;
+      await Future.wait([sharedF, absF, restartF]);
+      return DashboardContribution.failed(
+        e,
+        alerts: mediaAlerts(books: books, shelfmark: shelf),
+      );
+    }
     final shared = await sharedF;
     final abs = await absF;
     final books = await booksF;

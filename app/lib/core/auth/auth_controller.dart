@@ -105,13 +105,23 @@ class AuthController extends Notifier<AuthState> {
           message: 'The hub did not return tokens.',
         );
       }
+      // Without the key no URL could ever be checked, and tokens would go
+      // to whatever answers the ping (ARCHITECTURE §7.5).
+      final proofKey = response.serverProofKey;
+      if (proofKey == null || proofKey.isEmpty) {
+        throw const ApiException(
+          status: 0,
+          code: ClientErrorCode.badResponse,
+          message: 'The hub did not return a server proof key.',
+        );
+      }
       await tokenManager.signIn(
         scope: scope,
         user: response.user,
         tokens: StoredTokens.fromPair(
           pair,
           sessionId: response.session.id,
-          serverProofKey: response.serverProofKey,
+          serverProofKey: proofKey,
         ),
       );
       // Verify the server proof now that a key exists.

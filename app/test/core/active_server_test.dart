@@ -22,12 +22,20 @@ void main() {
   late FakeApi api;
   late ProviderContainer container;
 
-  /// [lanProofKey] is the key the LAN host signs with (an impostor's differs).
-  Future<void> start({String lanProofKey = testProofKey, bool tailscaleUp = false, bool signedIn = true}) async {
+  /// [lanProofKey] / [tailscaleProofKey] are the keys the LAN / Tailscale
+  /// hosts sign with (an impostor's differs; null: no proof at all).
+  Future<void> start({
+    String lanProofKey = testProofKey,
+    bool tailscaleUp = false,
+    String? tailscaleProofKey = testProofKey,
+    bool signedIn = true,
+  }) async {
     api = FakeApi()
       ..on('GET', '/ping', (r) {
         if (r.uri.host.endsWith('ts.net')) {
-          return tailscaleUp ? FakeResponse(buildPing().toJson()) : const FakeResponse.fail(DioExceptionType.connectionError);
+          return tailscaleUp
+              ? FakeResponse(buildPing(nonce: r.uri.queryParameters['nonce'], proofKey: tailscaleProofKey).toJson())
+              : const FakeResponse.fail(DioExceptionType.connectionError);
         }
         return FakeResponse(buildPing(nonce: r.uri.queryParameters['nonce'], proofKey: lanProofKey).toJson());
       })
@@ -75,10 +83,28 @@ void main() {
     await start(lanProofKey: 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', tailscaleUp: true);
     final c = await resolved();
     expect(c.baseUrl, testTailscaleUrl);
+    expect(c.proofVerified, isTrue);
     await container.read(dioProvider).getMap('/server');
     final sent = api.requestsTo('/server').single;
     expect(sent.uri.host, 'zenith.example.ts.net');
     expect(sent.headers['Authorization'], 'Bearer yha_access1');
+  });
+
+  test('a *.ts.net impostor without the proof is never sent a token', () async {
+    // Tailscale off, the local DNS answers the MagicDNS name: the public
+    // ping fields match, the proof does not.
+    await start(
+      lanProofKey: 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+      tailscaleUp: true,
+      tailscaleProofKey: null,
+    );
+    final c = await resolved();
+    expect(c.status, ConnectionStatus.unreachable);
+    expect(c.baseUrl, isNull);
+    final ping = api.requestsTo('/ping').firstWhere((r) => r.uri.host == 'zenith.example.ts.net');
+    expect(ping.uri.queryParameters['sid'], testSessionId);
+    await expectLater(container.read(dioProvider).getMap('/server'), throwsA(isA<ApiException>()));
+    expect(api.requestsTo('/server'), isEmpty);
   });
 
   test('nothing acceptable: unreachable, and requests do not leave the device', () async {

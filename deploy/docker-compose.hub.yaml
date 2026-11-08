@@ -68,6 +68,10 @@ services:
     image: yams-hub-updater:latest
     container_name: yams-hub-updater
     restart: unless-stopped
+    # On SIGTERM the updater lets a running job finish its current step (at most 15 min + 10 s kill grace) so a
+    # `compose up` of a stack service is never cut between "remove old" and "start new". Docker must not SIGKILL
+    # it earlier. Idle, it exits at once. Keep longer than shutdownDrainTimeout (updater/lib/src/app.dart, 16 min).
+    stop_grace_period: 17m
     environment:
       - UPDATER_TOKEN_FILE=/run/secrets/updater.env
     volumes:

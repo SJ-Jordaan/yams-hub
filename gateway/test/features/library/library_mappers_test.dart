@@ -300,5 +300,38 @@ void main() {
       expect(repack.quality.revision, 2);
       expect(repack.quality.isRepack, isTrue);
     });
+
+    test('release labels use the library (mapped) absolute numbers', () {
+      final raw = arrList(syntheticJson('sonarr_release.synthetic.json'));
+      // The title says scene absolute 1; Sonarr mapped it to library 49.
+      expect(readIntList(raw.first['absoluteEpisodeNumbers']), [1]);
+      final viaInfo = map.release(
+        ArrService.sonarr,
+        raw.first,
+        releaseId: 'rl_a',
+        anime: true,
+      );
+      expect(viaInfo.episodeLabels, ['S03E01 (049)']);
+      final viaMapped = map.release(
+        ArrService.sonarr,
+        {...raw.first, 'mappedEpisodeInfo': null},
+        releaseId: 'rl_b',
+        anime: true,
+      );
+      expect(viaMapped.episodeLabels, ['S03E01 (049)']);
+      // Only the parsed numbers: no absolute number rather than a wrong one.
+      final parsedOnly = map.release(
+        ArrService.sonarr,
+        {
+          ...raw.first,
+          'mappedEpisodeInfo': null,
+          'mappedAbsoluteEpisodeNumbers': null,
+        },
+        releaseId: 'rl_c',
+        anime: true,
+      );
+      expect(parsedOnly.episodeLabels.single, isNot(contains('001')));
+      expect(parsedOnly.episodeLabels.single, startsWith('S03E01'));
+    });
   });
 }

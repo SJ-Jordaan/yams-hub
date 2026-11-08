@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:test/test.dart';
+import 'package:yams_hub_gateway/src/core/auth/login_limiter.dart';
 import 'package:yams_hub_gateway/src/core/auth/password_hasher.dart';
 import 'package:yams_hub_gateway/src/core/auth/server_proof.dart';
 
@@ -654,7 +655,13 @@ void main() {
     );
 
     test('Secure is added behind a trusted HTTPS proxy', () async {
-      final secureHub = TestHub(env: {'YAMS_HUB_TRUST_PROXY': 'true'});
+      final secureHub = TestHub(
+        env: {
+          'YAMS_HUB_TRUST_PROXY': 'true',
+          // The test client's socket address is the proxy.
+          'YAMS_HUB_TRUSTED_PROXIES': '192.168.10.0/24',
+        },
+      );
       addTearDown(secureHub.close);
       final r = await secureHub.post(
         '/yh/api/v1/auth/login',
@@ -719,6 +726,132 @@ void main() {
         )).status,
         400,
       );
+    });
+  });
+
+  group('password timing and limits', () {
+    test(
+      'the dummy hash uses the requested (stored) iteration count',
+      () async {
+        final hashed = <int>[];
+        final hasher = PasswordHasher(
+          iterations: fallbackIterations,
+          hashFunction: (pw, it) async {
+            hashed.add(it);
+            return PasswordHasher.hashSync(pw, minHashIterations);
+          },
+          verifyFunction: (pw, stored) async => false,
+        );
+        await hasher.verifyDummy('x', iterations: 600000);
+        await hasher.verifyDummy('y', iterations: 600000);
+        await hasher.verifyDummy('z');
+        // One dummy per count, built once.
+        expect(hashed, [600000, fallbackIterations]);
+        expect(
+          hasher.needsRehash('pbkdf2-sha256\$600000\$x\$y'),
+          isFalse,
+          reason: 'malformed hashes are never re-hashed',
+        );
+        final stored = PasswordHasher.hashSync('pw', minHashIterations);
+        expect(hasher.needsRehash(stored), isTrue);
+        expect(PasswordHasher.iterationsOf(stored), minHashIterations);
+      },
+    );
+
+    test('unknown users are verified at the highest stored count', () async {
+      final dummyCounts = <int>[];
+      final hasher = PasswordHasher(
+        iterations: minHashIterations,
+        hashFunction: (pw, it) async {
+          if (pw.startsWith('dummy-')) dummyCounts.add(it);
+          return PasswordHasher.hashSync(pw, minHashIterations);
+        },
+        verifyFunction: (pw, stored) async =>
+            PasswordHasher.verifySync(pw, stored),
+      );
+      final hub = TestHub(hasher: hasher, login: false);
+      addTearDown(hub.close);
+      await hub.ready;
+      // An account created before an auto-tune fallback keeps 600 000.
+      final slowHash = PasswordHasher.hashSync(
+        'irrelevant',
+        minHashIterations,
+      ).replaceFirst('\$$minHashIterations\$', '\$600000\$');
+      await hub.hub.auth.users.put(
+        hub.member.copyWith(passwordHash: slowHash, updatedAt: hub.clock.now()),
+      );
+      expect(hub.hub.auth.dummyIterations(), 600000);
+      final r = await hub.post(
+        '/api/v1/auth/login',
+        body: _login('nosuchuser', 'whatever-password'),
+        as: TestAs.anonymous,
+      );
+      expect(r.status, 401);
+      expect(dummyCounts, [600000]);
+    });
+
+    test('a successful login re-hashes at the current count', () async {
+      const tuned = minHashIterations + 1;
+      final hub = TestHub(
+        hasher: PasswordHasher(
+          iterations: tuned,
+          hashFunction: (pw, it) async => PasswordHasher.hashSync(pw, it),
+          verifyFunction: (pw, stored) async =>
+              PasswordHasher.verifySync(pw, stored),
+        ),
+        login: false,
+      );
+      addTearDown(hub.close);
+      await hub.ready;
+      final before = hub.hub.auth.users.byUsername('member')!.passwordHash;
+      expect(PasswordHasher.iterationsOf(before), minHashIterations);
+      final r = await hub.post(
+        '/api/v1/auth/login',
+        body: _login('member', testMemberPassword),
+        as: TestAs.anonymous,
+      );
+      expect(r.status, 200, reason: r.body);
+      final after = hub.hub.auth.users.byUsername('member')!.passwordHash;
+      expect(PasswordHasher.iterationsOf(after), tuned);
+      expect(PasswordHasher.verifySync(testMemberPassword, after), isTrue);
+      final again = await hub.post(
+        '/api/v1/auth/login',
+        body: _login('member', testMemberPassword),
+        as: TestAs.anonymous,
+      );
+      expect(again.status, 200);
+      expect(hub.hub.auth.users.byUsername('member')!.passwordHash, after);
+    });
+
+    test('POST /auth/password guesses go through the login limiter', () async {
+      final hub = TestHub();
+      addTearDown(hub.close);
+      Future<TestResponse> guess(int i) => hub.post(
+        '/api/v1/auth/password',
+        body: {
+          'currentPassword': 'wrong-guess-$i',
+          'newPassword': 'attacker-chosen-password',
+        },
+        as: TestAs.member,
+      );
+      for (var i = 0; i < LoginLimiter.pairLimit; i++) {
+        expect((await guess(i)).status, 401);
+      }
+      final locked = await guess(99);
+      expect(locked.status, 429);
+      expect(locked.errorCode, 'rate_limited');
+      // Even the right password is refused while the pair is locked.
+      final right = await hub.post(
+        '/api/v1/auth/password',
+        body: {
+          'currentPassword': testMemberPassword,
+          'newPassword': 'attacker-chosen-password',
+        },
+        as: TestAs.member,
+      );
+      expect(right.status, 429);
+      final audit = await hub.get('/api/v1/admin/audit?action=auth.locked');
+      expect(audit.body, contains('auth.locked'));
     });
   });
 }

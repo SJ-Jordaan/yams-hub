@@ -258,7 +258,7 @@ final class AuthService implements RequestAuthenticator {
     final bool ok;
     try {
       if (user == null) {
-        await hasher.verifyDummy(password);
+        await hasher.verifyDummy(password, iterations: dummyIterations());
         ok = false;
       } else {
         ok = await hasher.verify(
@@ -295,6 +295,7 @@ final class AuthService implements RequestAuthenticator {
     }
 
     attempt.succeeded(user!.id);
+    if (!user.disabled) await _rehashIfNeeded(user, password);
     if (user.disabled) {
       await audit.record(
         actor: AuditActor(ip: ip, userId: user.id, username: user.username),
@@ -344,6 +345,80 @@ final class AuthService implements RequestAuthenticator {
         refreshExpiresAt: session.expiresAt,
       ),
     );
+  }
+
+  /// The iteration count unknown user names are verified at: the highest
+  /// count among the stored hashes (the bootstrap hash and accounts created
+  /// before an auto-tune keep the configured count), else the count of new
+  /// hashes. A real account's verification is then never slower than an
+  /// unknown name's.
+  int dummyIterations() {
+    var n = 0;
+    for (final u in users.all) {
+      final i = PasswordHasher.iterationsOf(u.passwordHash);
+      if (i != null && i > n) n = i;
+    }
+    return n == 0 ? hasher.iterations : n;
+  }
+
+  /// Re-hashes [password] at the current iteration count when the stored
+  /// hash uses another one, so every account converges on one count (and
+  /// on the dummy timing). Failures (busy gate) are logged and skipped.
+  Future<void> _rehashIfNeeded(UserRecord user, String password) async {
+    if (!hasher.needsRehash(user.passwordHash)) return;
+    try {
+      final hash = await hasher.hash(password);
+      final fresh = users.byId(user.id);
+      // A password change that raced this login wins.
+      if (fresh == null || fresh.passwordHash != user.passwordHash) return;
+      await users.put(
+        fresh.copyWith(passwordHash: hash, updatedAt: _clock.now()),
+      );
+      _log.info(
+        'password of "${user.username}" re-hashed at '
+        '${hasher.iterations} iterations',
+      );
+    } on Object catch (e) {
+      _log.warning('re-hashing the password of "${user.username}" failed: $e');
+    }
+  }
+
+  /// Verifies [password] as the current password of [user] (`POST
+  /// /auth/password`) through the login limiter, so a stolen access token
+  /// cannot guess it at the gate's rate: failures count against the same
+  /// `(username, ip)`, IP and username buckets as logins. Throws `401
+  /// invalid_credentials` or `429 rate_limited`.
+  Future<void> verifyCurrentPassword(
+    UserRecord user,
+    String password,
+    String ip,
+  ) async {
+    final attempt = limiter.begin(user.username, ip, userId: user.id);
+    final bool ok;
+    try {
+      ok = await hasher.verify(
+        password,
+        user.passwordHash,
+        subject: user.username,
+      );
+    } catch (_) {
+      attempt.cancel();
+      rethrow;
+    }
+    if (!ok) {
+      final locked = attempt.failed();
+      if (locked) {
+        await audit.record(
+          actor: AuditActor(ip: ip, userId: user.id, username: user.username),
+          action: 'auth.locked',
+          target: loginFailedTarget(user.username),
+          outcome: AuditOutcome.error,
+          errorCode: ApiErrorCode.rateLimited,
+        );
+      }
+      throw ApiException.invalidCredentials();
+    }
+    attempt.succeeded(user.id);
   }
 
   String _newRefreshToken(String sessionId) =>

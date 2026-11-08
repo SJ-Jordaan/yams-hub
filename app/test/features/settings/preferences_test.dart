@@ -27,6 +27,22 @@ void main() {
       expect(app.prefs.getString(AppSettingsController.storageKey), contains('"themeMode":"light"'));
     });
 
+    testWidgets('compact density makes the list rows dense', (tester) async {
+      await pumpHubApp(tester, location: '/settings/appearance');
+      ListTileThemeData tileTheme() => Theme.of(tester.element(find.text('List density'))).listTileTheme;
+      expect(tileTheme().dense, isFalse);
+      await tester.tap(find.text('Compact'));
+      await tester.pumpAndSettle();
+      expect(tileTheme().dense, isTrue);
+      expect(tileTheme().visualDensity, VisualDensity.compact);
+      final tile = find.byType(ListTile).first;
+      final denseHeight = tester.getSize(tile).height;
+      await tester.tap(find.text('Comfortable'));
+      await tester.pumpAndSettle();
+      expect(tileTheme().dense, isFalse);
+      expect(tester.getSize(tile).height, greaterThan(denseHeight));
+    });
+
     testWidgets('dynamic color switch on Android', (tester) async {
       final app = await pumpHubApp(tester, location: '/settings/appearance');
       final toggle = find.byKey(const Key('appearance-dynamic-color'));

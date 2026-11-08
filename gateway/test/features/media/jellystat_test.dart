@@ -191,16 +191,22 @@ void main() {
       expect(call.query.containsKey('filters'), isFalse);
     });
 
-    test('admins can filter by user', () async {
+    test('admins can filter by user (scoped by Jellystat)', () async {
       final r = await hub.get(
-        '/api/v1/media/stats/history?userId=4C0628AA-CEF2-4BDF-ACD4-0F946EA33EE7&pageSize=10',
+        '/api/v1/media/stats/history?userId=8BED8D8C-CCF2-4954-8EB6-A39FD6A7E54B&pageSize=10',
       );
-      expect(r.status, 200);
+      expect(r.status, 200, reason: r.body);
       final call = hub.fakes.callsTo(ServiceId.jellystat).last;
-      expect(jsonDecode(call.query['filters']!.single), [
-        {'field': 'UserId', 'value': '4c0628aacef24bdfacd40f946ea33ee7'},
-      ]);
+      expect(call.method, 'POST');
+      expect(call.path, '/api/getUserHistory');
+      expect(jsonDecode(call.body), {
+        'userid': '8bed8d8cccf249548eb6a39fd6a7e54b',
+      });
       expect(call.query['size'], ['10']);
+      expect(call.query['sort'], ['ActivityDateInserted']);
+      expect(call.query.containsKey('filters'), isFalse);
+      final page = PagedList.fromJson(r.map, PlaybackRecord.fromJson);
+      expect(page.items.single.title, 'The Story of Lucy and Jessie');
       final bad = await hub.get('/api/v1/media/stats/history?userId=nope');
       expect(bad.status, 400);
     });
@@ -212,10 +218,44 @@ void main() {
       );
       expect(r.status, 200);
       final call = hub.fakes.callsTo(ServiceId.jellystat).last;
-      expect(jsonDecode(call.query['filters']!.single), [
-        {'field': 'UserId', 'value': testMemberJellyfinId},
-      ]);
+      expect(call.path, '/api/getUserHistory');
+      expect(jsonDecode(call.body), {'userid': testMemberJellyfinId});
     });
+
+    test(
+      'rows of other users are dropped even if Jellystat sends them',
+      () async {
+        final data = jsonDecode(
+          jsonEncode(fixture('seerr/jellystat_api_getHistory.json')),
+        ) as JsonMap;
+        final own = (data['results']! as List).single as JsonMap;
+        hub.fakes.on(
+          ServiceId.jellystat,
+          'POST',
+          '/api/getUserHistory',
+          (_) => FakeResponse.json({
+            ...data,
+            'results': [
+              {
+                ...own,
+                'Id': 'someone-else',
+                'UserId': '4c0628aacef24bdfacd40f946ea33ee7',
+                'UserName': 'Paul Greyrat',
+              },
+              own,
+            ],
+          }),
+        );
+        final r = await hub.get(
+          '/api/v1/media/stats/history',
+          as: TestAs.member,
+        );
+        expect(r.status, 200, reason: r.body);
+        final page = PagedList.fromJson(r.map, PlaybackRecord.fromJson);
+        expect(page.items.map((i) => i.userName), ['Zenith Greyrat']);
+        expect(r.body, isNot(contains('Paul Greyrat')));
+      },
+    );
 
     test('unlinked members get an empty page without a call', () async {
       await hub.ready;

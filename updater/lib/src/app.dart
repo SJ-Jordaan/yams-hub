@@ -64,7 +64,19 @@ void configureLogging(Map<String, String> env) {
   });
 }
 
-/// Runs the server until SIGTERM/SIGINT. Returns the process exit code.
+/// How long `serve` waits on SIGTERM for the running job to reach a safe
+/// point (JobManager.close): one full step plus the runner's kill grace and
+/// a margin. Docker must not SIGKILL the updater earlier, or a
+/// `compose up` child dies between removing the old container and starting
+/// the new one: the compose snippet's `stop_grace_period` for
+/// `yams-hub-updater` is longer than this (a test checks it).
+Duration shutdownDrainTimeout(UpdaterConfig config) =>
+    config.stepTimeout + const Duration(minutes: 1);
+
+/// Runs the server until SIGTERM/SIGINT. On the first signal it stops
+/// accepting jobs and waits (bounded by [shutdownDrainTimeout]) for the
+/// running job to reach a safe point; the HTTP server keeps answering job
+/// status meanwhile. Returns the process exit code.
 Future<int> runServe(Map<String, String> env, {ProcessRunner? runner}) async {
   configureLogging(env);
   final config = loadConfig(env, stderr);
@@ -97,17 +109,34 @@ Future<int> runServe(Map<String, String> env, {ProcessRunner? runner}) async {
 
   final stopped = Completer<void>();
   final subs = <StreamSubscription<ProcessSignal>>[];
-  void shutdown(ProcessSignal signal) {
+  var stopping = false;
+  Future<void> shutdown(ProcessSignal signal) async {
     if (stopped.isCompleted) return;
+    if (stopping) {
+      _log.warning('${signal.name} received again; stopping now');
+      stopped.complete();
+      return;
+    }
+    stopping = true;
     _log.info('${signal.name} received; shutting down');
     allowList.stop();
     final running = jobs.active;
+    final grace = shutdownDrainTimeout(config);
     if (running != null) {
       _log.warning(
-        'job ${running.id} (${running.service}) is still running; it is abandoned',
+        'job ${running.id} (${running.service}) is still running; waiting up '
+        'to ${grace.inMinutes} min for it to reach a safe point '
+        '(a second signal stops at once)',
       );
     }
-    stopped.complete();
+    final drained = await jobs.close(timeout: grace);
+    if (!drained && running != null) {
+      _log.severe(
+        'job ${running.id} (${running.service}) did not finish within '
+        '${grace.inMinutes} min; it is abandoned',
+      );
+    }
+    if (!stopped.isCompleted) stopped.complete();
   }
 
   subs.add(ProcessSignal.sigint.watch().listen(shutdown));

@@ -102,7 +102,8 @@ class SystemModule extends FeatureModule {
     // its future cannot surface as an unhandled error while the host is read.
     final kumaFuture = _uptimeForCard();
     final host = await sampler.current();
-    final kuma = await kumaFuture;
+    final kumaResult = await kumaFuture;
+    final kuma = kumaResult?.value;
 
     final storage = host.storage.isEmpty ? null : host.storage.first;
     final raid = host.raid.isEmpty
@@ -159,9 +160,17 @@ class SystemModule extends FeatureModule {
       ),
     );
 
+    // The monitor counts may come from a cached status page after a failed
+    // refresh: the card says so.
+    final kumaStale = kumaResult != null && kumaResult.stale;
+    final kumaError = kumaResult?.error;
     return DashboardContribution(
       data: card.toJson(),
       fetchedAt: host.sampledAt,
+      stale: kumaStale,
+      error: kumaStale && kumaError != null
+          ? _apiErrorOf(kumaError, req.requestId)
+          : null,
       alerts: [
         ...hostAlerts(host, ctx.config.alerts),
         if (kuma != null) ...uptimeAlerts(kuma),
@@ -172,11 +181,10 @@ class SystemModule extends FeatureModule {
   /// The status page for the card, or null when Uptime Kuma is not
   /// configured, failing or slow: the host part of the card never waits for
   /// it longer than [_uptimeCardBudget].
-  Future<UptimeResponse?> _uptimeForCard() async {
+  Future<CacheResult<UptimeResponse>?> _uptimeForCard() async {
     if (!uptime.configured) return null;
     try {
-      final r = await uptime.get().timeout(_uptimeCardBudget);
-      return r.value;
+      return await uptime.get().timeout(_uptimeCardBudget);
     } on TimeoutException {
       return null;
     } on ApiException catch (e) {
@@ -191,6 +199,14 @@ class SystemModule extends FeatureModule {
       return null;
     }
   }
+
+  static ApiError _apiErrorOf(Object error, String requestId) =>
+      switch (error) {
+        ApiException() => error.toApiError(requestId),
+        UpstreamException() =>
+          error.toApiException(resourceNotFound: false).toApiError(requestId),
+        _ => ApiException.internal().toApiError(requestId),
+      };
 
   /// The host's name from Docker `GET /info` (`Name`, e.g. "Zenith"); the
   /// container's own hostname is its id. Retried every 10 min until known.

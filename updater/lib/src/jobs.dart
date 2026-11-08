@@ -127,6 +127,15 @@ final class JobBusyException implements Exception {
   String toString() => 'JobBusyException: job $activeJobId is running';
 }
 
+/// Thrown by [JobManager.start] after [JobManager.close] (shutting down).
+final class JobManagerClosedException implements Exception {
+  const JobManagerClosedException();
+
+  @override
+  String toString() =>
+      'JobManagerClosedException: the updater is shutting down';
+}
+
 /// Runs at most one job at a time and remembers recent ones.
 final class JobManager {
   JobManager({
@@ -151,9 +160,33 @@ final class JobManager {
   /// Insertion-ordered: oldest first.
   final _jobs = <String, UpdaterJob>{};
   UpdaterJob? _active;
+  bool _closed = false;
 
   /// The queued or running job, if any.
   UpdaterJob? get active => _active;
+
+  /// Whether [close] was called: no new job starts.
+  bool get closed => _closed;
+
+  /// Stops accepting jobs ([start] throws [JobManagerClosedException]) and
+  /// lets the active job reach a safe point: the step it is running always
+  /// finishes; a job that has not yet started a step that changes the stack
+  /// (only pulled) stops there and fails; a job that has, still runs its
+  /// remaining required steps (gluetun's dependants) and skips optional ones.
+  ///
+  /// Completes with true once no job is active, or with false after
+  /// [timeout] (the job is then abandoned by the caller's exit).
+  Future<bool> close({required Duration timeout}) async {
+    _closed = true;
+    final job = _active;
+    if (job == null || !job.active) return true;
+    try {
+      await job.done.timeout(timeout);
+      return true;
+    } on TimeoutException {
+      return false;
+    }
+  }
 
   UpdaterJob? operator [](String id) => _jobs[id];
 
@@ -165,6 +198,7 @@ final class JobManager {
     required String service,
     required List<StepSpec> plan,
   }) {
+    if (_closed) throw const JobManagerClosedException();
     final current = _active;
     if (current != null && current.active) throw JobBusyException(current.id);
     _prune();
@@ -194,7 +228,27 @@ final class JobManager {
       ..startedAt = _now();
     _log.info('job ${job.id} (${job.kind.wire} ${job.service}) started');
     try {
+      var changedStack = false;
       for (final step in job.steps) {
+        if (_closed) {
+          if (step.spec.optional) {
+            job._append(
+              '${step.spec.label} skipped: the updater is shutting down',
+            );
+            continue;
+          }
+          if (!changedStack) {
+            job
+              .._append(
+                'the updater is shutting down: stopped before '
+                '${step.spec.label} (nothing was changed)',
+              )
+              ..state = JobState.failed
+              ..error = 'updater shut down before ${step.spec.label}';
+            return;
+          }
+        }
+        changedStack = changedStack || step.spec.changesStack;
         step.startedAt = _now();
         job._append('\$ ${step.cmd}');
         _log.info('job ${job.id}: ${step.spec.label}');

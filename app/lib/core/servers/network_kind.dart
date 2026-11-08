@@ -13,7 +13,9 @@ enum NetworkKind {
 }
 
 /// `100.64.0.0/10` (CGNAT range used by Tailscale) or a MagicDNS `*.ts.net`
-/// name. Such URLs are WireGuard-authenticated and skip the server proof.
+/// name. Used for ordering, labels and the plain-HTTP warning only: the name
+/// alone does not prove the traffic goes through WireGuard, so such URLs
+/// still need the server proof once signed in.
 bool isTailscaleHost(String host) {
   final h = _normalise(host);
   if (h.endsWith('.ts.net')) return true;

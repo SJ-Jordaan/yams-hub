@@ -41,7 +41,19 @@ final class DashboardContribution {
     this.stale = false,
     this.fetchedAt,
     this.error,
-  });
+  }) : failure = null;
+
+  /// A card whose main part failed with [failure] (shown as an error, or
+  /// `disabled` for `service_not_configured`, as if `dashboard()` had thrown)
+  /// while its other parts still raise [alerts] (e.g. the media card's Kavita
+  /// and Shelfmark alerts while Jellyfin is down).
+  const DashboardContribution.failed(
+    Object this.failure, {
+    this.alerts = const [],
+  }) : data = const {},
+       stale = false,
+       fetchedAt = null,
+       error = null;
 
   /// The feature's card DTO `.toJson()`.
   final Map<String, Object?> data;
@@ -58,4 +70,7 @@ final class DashboardContribution {
 
   /// The refresh failure behind a [stale] card.
   final ApiError? error;
+
+  /// Set by [DashboardContribution.failed]: the card is an error section.
+  final Object? failure;
 }

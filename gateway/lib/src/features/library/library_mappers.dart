@@ -807,11 +807,29 @@ final class LibraryMapper {
     if (svc == ArrService.sonarr) {
       final season =
           readInt(r['mappedSeasonNumber']) ?? readInt(r['seasonNumber']);
+      final mapped = releaseMappedEpisodes(r);
       final numbers = readIntList(r['mappedEpisodeNumbers']).isNotEmpty
           ? readIntList(r['mappedEpisodeNumbers'])
           : readIntList(r['episodeNumbers']);
-      final absolute = readIntList(r['absoluteEpisodeNumbers']);
-      if (season != null) {
+      // Library absolute numbers only: `absoluteEpisodeNumbers` is what the
+      // release title says, which for anime is often the scene numbering
+      // (Slime S03E01 is library absolute 49, scene absolute 1).
+      final absolute = readIntList(r['mappedAbsoluteEpisodeNumbers']);
+      if (mapped.isNotEmpty) {
+        for (final e in mapped) {
+          final s = readInt(e['seasonNumber']) ?? season;
+          final n = readInt(e['episodeNumber']);
+          if (s == null || n == null) continue;
+          labels.add(
+            ArrEpisodeLabel.format(
+              s,
+              n,
+              absoluteEpisodeNumber: readInt(e['absoluteEpisodeNumber']),
+              anime: anime,
+            ),
+          );
+        }
+      } else if (season != null) {
         for (var i = 0; i < numbers.length; i++) {
           labels.add(
             ArrEpisodeLabel.format(
@@ -862,4 +880,20 @@ final class LibraryMapper {
       infoUrl: infoUrl == null ? null : _redact(infoUrl),
     );
   }
+}
+
+/// Sonarr's `mappedEpisodeInfo` (`[{id, seasonNumber, episodeNumber,
+/// absoluteEpisodeNumber?, title}]`): the library episodes a release matched.
+List<JsonMap> releaseMappedEpisodes(JsonMap r) => [
+  for (final e
+      in r['mappedEpisodeInfo'] is List
+          ? r['mappedEpisodeInfo'] as List
+          : const <Object?>[])
+    ?readMap(e),
+];
+
+/// A positive id, else null (Sonarr/Radarr send 0 for "none").
+int? positiveId(Object? v) {
+  final n = readInt(v);
+  return n == null || n <= 0 ? null : n;
 }

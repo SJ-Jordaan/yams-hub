@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
+import 'package:yams_hub/core/routing/nav_badges.dart';
 import 'package:yams_hub/core/routing/router.dart';
 import 'package:yams_hub/core/servers/server_connection.dart';
 import 'package:yams_hub/core/servers/server_resolver.dart';
@@ -99,7 +100,7 @@ void main() {
     await tester.tap(find.descendant(of: find.byType(NavigationBar), matching: find.text('More')));
     await settle(tester);
     expect(location(app), '/more');
-    expect(find.text('6 episodes this week'), findsOneWidget);
+    expect(find.text('6 releases this week'), findsOneWidget);
     expect(find.text('21 running'), findsOneWidget);
     expect(find.text('1 failing'), findsOneWidget);
     expect(find.text('111 missing'), findsOneWidget);
@@ -116,6 +117,59 @@ void main() {
     final polls = app.api.requestsTo('/dashboard').where((r) => r.uri.queryParameters.containsKey('cards'));
     expect(polls, isNotEmpty);
     expect(polls.first.uri.queryParameters['cards'], 'requests,activity,calendar,containers,indexers,subtitles');
+  });
+
+  group('badges while Home is visible', () {
+    /// Serves only the cards asked for; the badge poll gets [pending].
+    FakeApi filteringApi(int Function() pending) {
+      final api = buildCoreFakeApi();
+      api.on('GET', '/dashboard', (r) {
+        final keys = r.uri.queryParameters['cards']?.split(',');
+        final all = buildDashboardJson(cards: rawCards(pending: pending()));
+        final cards = (all['cards']! as Map<String, Object?>);
+        return FakeResponse({
+          ...all,
+          'cards': keys == null ? cards : {for (final k in keys) if (cards.containsKey(k)) k: cards[k]},
+        });
+      });
+      return api;
+    }
+
+    bool isBadgePoll(Uri uri) => uri.queryParameters['cards'] == NavBadges.cardKeys.join(',');
+
+    testWidgets('a hidden badge card is still polled and its badge updates', (tester) async {
+      var pending = 3;
+      final api = filteringApi(() => pending);
+      final app = await pumpHubApp(
+        tester,
+        api: api,
+        location: '/home',
+        prefsValues: {AppSettingsController.storageKey: '{"hiddenCards": ["requests"]}'},
+      );
+      await settle(tester);
+      final full = api.requestsTo('/dashboard').where((r) => !isBadgePoll(r.uri)).first;
+      expect(full.uri.queryParameters['cards'], isNot(contains('requests')));
+
+      pending = 9;
+      // Several fast (5 s) and full (15 s) dashboard refreshes seed the
+      // badges meanwhile; none of them carries the requests card.
+      for (var i = 0; i < 8; i++) {
+        await tester.pump(const Duration(seconds: 5));
+      }
+      await settle(tester);
+      expect(api.requestsTo('/dashboard').where((r) => isBadgePoll(r.uri)), isNotEmpty);
+      expect(app.container.read(navBadgesProvider).requestsPending, 9);
+    });
+
+    testWidgets('no extra badge poll when the dashboard carries every badge card', (tester) async {
+      final api = filteringApi(() => 3);
+      await pumpHubApp(tester, api: api, location: '/home');
+      for (var i = 0; i < 8; i++) {
+        await tester.pump(const Duration(seconds: 5));
+      }
+      await settle(tester);
+      expect(api.requestsTo('/dashboard').where((r) => isBadgePoll(r.uri)), isEmpty);
+    });
   });
 
   testWidgets('admin-only routes send members to the parent with "Admins only"', (tester) async {

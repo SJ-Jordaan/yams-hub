@@ -281,6 +281,33 @@ void main() {
       expect(again, 202);
     });
 
+    test(
+      '503 once the updater is shutting down; job status still answers',
+      () async {
+        final gate = Completer<void>();
+        h.runner.on(' pull ', () => FakeReply(gate: gate));
+        final (_, first) = await h.json('POST', '/update/sonarr');
+        await Future<void>.delayed(Duration.zero);
+        final closing = h.jobs.close(timeout: const Duration(seconds: 5));
+        final (status, body) = await h.json('POST', '/update/radarr');
+        expect(status, 503);
+        expect(body['error'], 'shutting_down');
+        final (syncStatus, _) = await h.json('POST', '/exec/recyclarr-sync');
+        expect(syncStatus, 503);
+        final (jobStatus, running) = await h.json(
+          'GET',
+          '/jobs/${first['jobId']}',
+        );
+        expect(jobStatus, 200);
+        expect(running['state'], 'running');
+        gate.complete();
+        expect(await closing, isTrue);
+        final (_, ended) = await h.json('GET', '/jobs/${first['jobId']}');
+        expect(ended['state'], 'failed');
+        expect(ended['error'], 'updater shut down before Recreate sonarr');
+      },
+    );
+
     test('a failed pull reports the failure and stops', () async {
       h.runner.on(
         ' pull ',

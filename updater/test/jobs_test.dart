@@ -208,6 +208,134 @@ void main() {
     expect(jobs[done[3].id], same(done[3]));
   });
 
+  group('close (SIGTERM drain)', () {
+    test('with no job it completes at once and refuses new jobs', () async {
+      final jobs = make(FakeProcessRunner());
+      expect(await jobs.close(timeout: const Duration(seconds: 1)), isTrue);
+      expect(jobs.closed, isTrue);
+      expect(
+        () => jobs.start(
+          kind: JobKind.recyclarrSync,
+          service: 'recyclarr',
+          plan: ComposeCommands.recyclarrSyncPlan,
+        ),
+        throwsA(isA<JobManagerClosedException>()),
+      );
+    });
+
+    test(
+      'during a pull: the pull finishes, the recreate never starts',
+      () async {
+        final gate = Completer<void>();
+        final runner = FakeProcessRunner()
+          ..on(' pull ', () => FakeReply(gate: gate));
+        final jobs = make(runner);
+        final job = jobs.start(
+          kind: JobKind.update,
+          service: 'sonarr',
+          plan: commands.updatePlan('sonarr'),
+        );
+        await Future<void>.delayed(Duration.zero);
+        var drained = false;
+        final closing = jobs
+            .close(timeout: const Duration(seconds: 5))
+            .then((v) => drained = v);
+        await Future<void>.delayed(const Duration(milliseconds: 20));
+        expect(drained, isFalse, reason: 'waits for the running step');
+        expect(job.active, isTrue);
+        gate.complete();
+        await closing;
+        expect(drained, isTrue);
+        expect(job.state, JobState.failed);
+        expect(job.error, 'updater shut down before Recreate sonarr');
+        expect(runner.lines, hasLength(1));
+        expect(runner.lines.single, endsWith('pull -- sonarr'));
+        expect(jobs.active, isNull);
+      },
+    );
+
+    test(
+      'during a recreate: the recreate finishes, the prune is skipped',
+      () async {
+        final gate = Completer<void>();
+        final runner = FakeProcessRunner()
+          ..on(' up ', () => FakeReply(gate: gate));
+        final jobs = make(runner);
+        final job = jobs.start(
+          kind: JobKind.update,
+          service: 'sonarr',
+          plan: commands.updatePlan('sonarr'),
+        );
+        while (runner.calls.length < 2) {
+          await Future<void>.delayed(Duration.zero);
+        }
+        final closing = jobs.close(timeout: const Duration(seconds: 5));
+        gate.complete();
+        expect(await closing, isTrue);
+        expect(job.state, JobState.succeeded);
+        expect(runner.lines, hasLength(2));
+        expect(runner.lines.last, endsWith('up -d --no-deps -- sonarr'));
+        expect(runner.lines.any((l) => l.contains('image prune')), isFalse);
+        expect(job.log.any((l) => l.contains('skipped')), isTrue);
+      },
+    );
+
+    test('after gluetun was recreated, qbittorrent still follows', () async {
+      final gate = Completer<void>();
+      final runner = FakeProcessRunner()
+        ..on('up -d --no-deps -- gluetun', () => FakeReply(gate: gate));
+      final jobs = make(runner);
+      final job = jobs.start(
+        kind: JobKind.update,
+        service: 'gluetun',
+        plan: commands.updatePlan('gluetun'),
+      );
+      while (runner.calls.length < 2) {
+        await Future<void>.delayed(Duration.zero);
+      }
+      final closing = jobs.close(timeout: const Duration(seconds: 5));
+      gate.complete();
+      expect(await closing, isTrue);
+      expect(job.state, JobState.succeeded);
+      expect(runner.lines, [
+        endsWith('pull -- gluetun'),
+        endsWith('up -d --no-deps -- gluetun'),
+        endsWith('up -d --no-deps --force-recreate -- qbittorrent'),
+      ]);
+    });
+
+    test('gives up after the timeout and reports it', () async {
+      final gate = Completer<void>();
+      final runner = FakeProcessRunner()
+        ..on(' up ', () => FakeReply(gate: gate));
+      final jobs = make(runner);
+      final job = jobs.start(
+        kind: JobKind.update,
+        service: 'sonarr',
+        plan: commands.updatePlan('sonarr'),
+      );
+      while (runner.calls.length < 2) {
+        await Future<void>.delayed(Duration.zero);
+      }
+      expect(
+        await jobs.close(timeout: const Duration(milliseconds: 20)),
+        isFalse,
+      );
+      expect(job.active, isTrue);
+      gate.complete();
+      await job.done;
+    });
+  });
+
+  test('the drain timeout covers a full step', () {
+    final config = UpdaterConfig(token: 't' * 48);
+    expect(
+      shutdownDrainTimeout(config),
+      greaterThan(config.stepTimeout + const Duration(seconds: 10)),
+      reason: 'IoProcessRunner kills a step only after timeout + killGrace',
+    );
+  });
+
   test('default ids are j_ + 16 hex characters', () {
     final jobs = JobManager(runner: FakeProcessRunner());
     final job = jobs.start(

@@ -9,10 +9,17 @@ import 'package:yams_models/yams_models.dart';
 
 import 'maindata.dart';
 
+/// The oldest maindata snapshot `/vpn` uses without a fresh read.
+const vpnSnapshotMaxAge = Duration(seconds: 10);
+
 /// Builds [VpnStatus] (cache 30 s).
 final class VpnStatusService {
-  VpnStatusService(this._ctx, this._maindata, this._preferences)
-    : _cache = _ctx.caches.ttl<int, VpnStatus>(
+  VpnStatusService(
+    this._ctx,
+    this._maindata,
+    this._preferences,
+    this._freshPreferences,
+  ) : _cache = _ctx.caches.ttl<int, VpnStatus>(
         'activity.vpn',
         const Duration(seconds: 30),
       );
@@ -22,6 +29,9 @@ final class VpnStatusService {
 
   /// Whitelisted qBittorrent preferences (cache 10 min).
   final Future<JsonMap> Function() _preferences;
+
+  /// The same preferences read now (bypassing the cache).
+  final Future<JsonMap> Function() _freshPreferences;
   final TtlCache<int, VpnStatus> _cache;
 
   Future<CacheResult<VpnStatus>> status() => _cache.get(0, _load);
@@ -45,7 +55,7 @@ final class VpnStatusService {
       attempt(() => _gluetunJson('/v1/publicip/ip')),
       attempt(() => _gluetunJson('/v1/openvpn/portforwarded')),
       attempt(_preferences),
-      attempt(() async => _maindata.peek() ?? await _maindata.read()),
+      attempt(_qbitView),
       attempt(_gluetunHealth),
     ]);
     final ip = results[0] as JsonMap?;
@@ -62,7 +72,14 @@ final class VpnStatusService {
     final publicIp = text('public_ip');
     final port = readInt(forwarded?['port']);
     final forwardedPort = port == null || port <= 0 ? null : port;
-    final listenPort = readInt(prefs?['listen_port']);
+    var listenPort = readInt(prefs?['listen_port']);
+    if (forwardedPort != null && listenPort != forwardedPort) {
+      // Gluetun's port-forwarding hook updates qBittorrent within seconds
+      // of a new port, but the preferences are cached for 10 min: read
+      // them again before reporting a mismatch.
+      final fresh = await attempt(_freshPreferences);
+      if (fresh != null) listenPort = readInt(fresh['listen_port']);
+    }
     final connection =
         readString(qbit?.serverState['connection_status']) ?? 'unknown';
     final inSync = forwardedPort != null && forwardedPort == listenPort;
@@ -88,6 +105,19 @@ final class VpnStatusService {
       gluetunHealth: health,
       checkedAt: _ctx.clock.now(),
     );
+  }
+
+  /// The qBittorrent snapshot: the poller's own when it is recent, else a
+  /// read (which restarts an idle poller and waits for a fresh tick), so an
+  /// hours-old snapshot is never reported as the current connection.
+  Future<QbitView> _qbitView() async {
+    final peeked = _maindata.peek();
+    if (peeked != null &&
+        !peeked.stale &&
+        _ctx.clock.now().difference(peeked.updatedAt) < vpnSnapshotMaxAge) {
+      return peeked;
+    }
+    return _maindata.read();
   }
 
   /// Gluetun answers JSON with a `text/plain` content type.

@@ -12,6 +12,7 @@ import 'package:yams_models/yams_models.dart';
 
 import '../auth/records.dart';
 import 'api_exception.dart';
+import 'trusted_proxies.dart';
 
 /// Request context keys set by the pipeline.
 abstract final class ContextKeys {
@@ -40,6 +41,11 @@ final class ApiRequest {
 
   Object? _body;
   bool _bodyRead = false;
+
+  /// Set by a handler to audit this request under a more specific action
+  /// than the route's (e.g. `activity.torrent.delete` for
+  /// `POST /torrents/actions`).
+  String? auditAction;
   List<int>? _rawBody;
 
   /// The authenticated user (from the user store, read for this request).
@@ -276,22 +282,61 @@ final class _InvalidJson {
   const _InvalidJson();
 }
 
-/// Resolves the client IP of a shelf request.
-String resolveClientIp(Request request, {required bool trustProxy}) {
-  if (trustProxy) {
-    final xff = request.headers['x-forwarded-for'];
-    if (xff != null) {
-      final first = xff.split(',').first.trim();
-      if (InternetAddress.tryParse(first) != null) return first;
-    }
-  }
+/// The socket peer of a shelf request (IPv4-mapped IPv6 reported as IPv4).
+String? socketPeerIp(Request request) {
   final info = request.context['shelf.io.connection_info'];
   if (info is HttpConnectionInfo) {
-    final a = info.remoteAddress;
-    // Report IPv4-mapped IPv6 addresses as IPv4.
-    final s = a.address;
+    final s = info.remoteAddress.address;
     if (s.startsWith('::ffff:') && s.contains('.')) return s.substring(7);
     return s;
   }
-  return 'unknown';
+  return null;
+}
+
+/// Whether the forwarding headers of [request] are believed: [trustProxy]
+/// is on and the socket peer is one of [proxies] (loopback when null).
+bool fromTrustedProxy(
+  Request request, {
+  required bool trustProxy,
+  TrustedProxies? proxies,
+}) =>
+    trustProxy &&
+    (proxies ?? TrustedProxies.loopback()).trusts(socketPeerIp(request));
+
+/// Resolves the client IP of a shelf request.
+///
+/// With [trustProxy], and only when the socket peer is a trusted proxy,
+/// `X-Forwarded-For` is walked from the right (each proxy appends the peer
+/// it saw) past the trusted proxies; the first other address is the client.
+/// The leftmost entries are whatever the client sent, so they are never
+/// taken while an untrusted hop sits to their right. A malformed entry ends
+/// the walk at the hop before it.
+String resolveClientIp(
+  Request request, {
+  required bool trustProxy,
+  TrustedProxies? proxies,
+}) {
+  final peer = socketPeerIp(request);
+  final trusted = proxies ?? TrustedProxies.loopback();
+  if (trustProxy && trusted.trusts(peer)) {
+    final entries = [
+      for (final h in request.headersAll['x-forwarded-for'] ?? const <String>[])
+        for (final part in h.split(','))
+          if (part.trim().isNotEmpty) part.trim(),
+    ];
+    var client = peer;
+    for (final e in entries.reversed) {
+      final a = InternetAddress.tryParse(e);
+      if (a == null) break;
+      client = a.address;
+      if (!trusted.trusts(client)) break;
+    }
+    if (client != null) {
+      if (client.startsWith('::ffff:') && client.contains('.')) {
+        return client.substring(7);
+      }
+      return client;
+    }
+  }
+  return peer ?? 'unknown';
 }

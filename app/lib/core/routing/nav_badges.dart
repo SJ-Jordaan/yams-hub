@@ -132,8 +132,9 @@ class NavBadges {
 
 /// Polls `GET /dashboard?cards=requests,activity,calendar,containers,indexers,subtitles`
 /// every 30 s (scaled by the refresh preset, paused in the background).
-/// `dashboardProvider` [seed]s it whenever it loads, and each seed restarts
-/// the timer, so no second request is made while Home is visible.
+/// `dashboardProvider` [seed]s it whenever it loads; a seed that carries
+/// every badge card restarts the timer, so no second request is made while
+/// Home shows all of those cards.
 ///
 /// Kept alive by `ShellScaffold`, which watches it.
 class NavBadgesController extends Notifier<NavBadges> {
@@ -161,11 +162,16 @@ class NavBadgesController extends Notifier<NavBadges> {
     return const NavBadges();
   }
 
-  /// Applies dashboard data fetched elsewhere and restarts the poll timer.
+  /// Applies dashboard data fetched elsewhere. The poll timer restarts only
+  /// when [response] carried every badge card: a dashboard with hidden cards
+  /// (or a fast refresh) leaves some badges stale, so the poll must still
+  /// run on time for them.
   void seed(DashboardResponse response) {
     if (!ref.mounted) return;
     state = state.merge(response.cards);
-    _schedule();
+    if (NavBadges.cardKeys.every(response.cards.containsKey) || !(_timer?.isActive ?? false)) {
+      _schedule();
+    }
   }
 
   /// Fetches the badge cards now.
