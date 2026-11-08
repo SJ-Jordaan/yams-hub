@@ -1,0 +1,263 @@
+[
+  {
+    "Name": "Dune: Part Two",
+    "ServerId": "79315eab3c4c401f8391d5c26210b6d7",
+    "Id": "4fcea1b4d58b05010e29c1cea2be02d4",
+    "DateCreated": "2026-11-06T09:05:15.8619738Z",
+    "HasSubtitles": true,
+    "Container": "mkv",
+    "PremiereDate": "2024-02-27T00:00:00.0000000Z",
+    "CriticRating": 92,
+    "OfficialRating": "PG-13",
+    "ChannelId": null,
+    "Overview": "Follow the mythic journey of Paul Atreides as he unites with Chani and the Fremen while on a path of revenge against the conspirators who destroyed his family. Facing a choice between the love of his life and the fate of the known universe, Paul endeavors to prevent a terrible future only he can foresee.",
+    "CommunityRating": 8.144,
+    "RunTimeTicks": 99489820000,
+    "ProductionYear": 2024,
+    "ProviderIds": {
+      "Imdb": "tt15239678",
+      "Tmdb": "693134",
+      "TmdbCollection": "726871"
+    },
+    "IsFolder": false,
+    "Type": "Movie",
+    "UserData": {
+      "PlaybackPositionTicks": 0,
+      "PlayCount": 0,
+      "IsFavorite": false,
+      "Played": false,
+      "Key": "4fcea1b4-d58b-0501-0e29-c1cea2be02d4",
+      "ItemId": "4fcea1b4d58b05010e29c1cea2be02d4"
+    },
+    "VideoType": "VideoFile",
+    "ImageTags": {
+      "Thumb": "99594ee8f98e4e610db17416f9fad6a7",
+      "Primary": "7f5fe64d90771c34330481f6806aa9e7"
+    },
+    "BackdropImageTags": [
+      "f40f14ce50b3be85650f5250c131e6fc"
+    ],
+    "ImageBlurHashes": {
+      "Backdrop": {
+        "f40f14ce50b3be85650f5250c131e6fc": "WfG[p0X8?as:M|xt~p-:t7t6NGaex[-:WCtQbHWW%MbHozt6ofof"
+      },
+      "Thumb": {
+        "99594ee8f98e4e610db17416f9fad6a7": "WZLdVJr[sBxEI?w_=]odS3bZV^sn=usBNJbZRmj@}VNJw_snI?fQ"
+      },
+      "Primary": {
+        "7f5fe64d90771c34330481f6806aa9e7": "doLmzwr@w{xF}qWCsooLSzsmS4WW-9o0NdWWxFR+Ncjt"
+      }
+    },
+    "LocationType": "FileSystem",
+    "MediaType": "Video",
+    "OriginalLanguage": "en"
+  },
+  {
+    "Name": "Dune",
+    "ServerId": "79315eab3c4c401f8391d5c26210b6d7",
+    "Id": "4f5731b2c357273bf4002dd8d042a856",
+    "DateCreated": "2026-11-06T05:37:10.3077537Z",
+    "HasSubtitles": true,
+    "Container": "mkv",
+    "PremiereDate": "2021-09-15T00:00:00.0000000Z",
+    "CriticRating": 83,
+    "OfficialRating": "PG-13",
+    "ChannelId": null,
+    "Overview": "Paul Atreides, a brilliant and gifted young man born into a great destiny beyond his understanding, must travel to the most dangerous planet in the universe to ensure the future of his family and his people. As malevolent forces explode into conflict over the planet's exclusive supply of the most precious resource in existence - a commodity capable of unlocking humanity's greatest potential - only those who can conquer their fear will survive.",
+    "CommunityRating": 7.786,
+    "RunTimeTicks": 93249920000,
+    "ProductionYear": 2021,
+    "ProviderIds": {
+      "Imdb": "tt1160419",
+      "Tmdb": "438631",
+      "TmdbCollection": "726871"
+    },
+    "IsFolder": false,
+    "Type": "Movie",
+    "UserData": {
+      "PlaybackPositionTicks": 0,
+      "PlayCount": 0,
+      "IsFavorite": false,
+      "Played": false,
+      "Key": "4f5731b2-c357-273b-f400-2dd8d042a856",
+      "ItemId": "4f5731b2c357273bf4002dd8d042a856"
+    },
+    "VideoType": "VideoFile",
+    "ImageTags": {
+      "Thumb": "b9dd2fb7938f41d1e536494f0f9ed7dd",
+      "Primary": "d2dfe24877d12729b40a1891dbbd2f23"
+    },
+    "BackdropImageTags": [
+      "215ac98a20597a5d178be211b1a60ea3"
+    ],
+    "ImageBlurHashes": {
+      "Backdrop": {
+        "215ac98a20597a5d178be211b1a60ea3": "WSDwdAt7tmx[t7x]*JkWo}kCkCozIAj[RPaeV@V[%#WBVsofRPaK"
+      },
+      "Thumb": {
+        "b9dd2fb7938f41d1e536494f0f9ed7dd": "WODA*@tRk?x]n$f+TdkCX7j@i_ayRjWBRia}redacted@example.com7"
+      },
+      "Primary": {
+        "d2dfe24877d12729b40a1891dbbd2f23": "d[Ka=HNcI=xE}on*azoKxYw_w_j@-Sf7R,oKxXf7R,bG"
+      }
+    },
+    "LocationType": "FileSystem",
+    "MediaType": "Video",
+    "OriginalLanguage": "en"
+  },
+  {
+    "Name": "Masters of the Universe",
+    "ServerId": "79315eab3c4c401f8391d5c26210b6d7",
+    "Id": "56678b873b6233322c65c05982fadbba",
+    "DateCreated": "2026-10-27T21:23:35.9308554Z",
+    "HasSubtitles": true,
+    "Container": "mkv",
+    "PremiereDate": "2026-06-03T00:00:00.0000000Z",
+    "OfficialRating": "ZA-13",
+    "ChannelId": null,
+    "Overview": "After being separated for 15 years, the Sword of Power leads Prince Adam back to Eternia, where he discovers his home shattered under the fiendish rule of Skeletor. To save his family and his world, Adam must join forces with his closest allies, Teela and Duncan/Man-At-Arms, and embrace his true destiny as He-Man — the most powerful man in the universe.",
+    "CommunityRating": 7.083,
+    "RunTimeTicks": 84300880000,
+    "ProductionYear": 2026,
+    "ProviderIds": {
+      "Imdb": "tt0427340",
+      "Tmdb": "454639"
+    },
+    "IsFolder": false,
+    "Type": "Movie",
+    "UserData": {
+      "PlaybackPositionTicks": 0,
+      "PlayCount": 0,
+      "IsFavorite": false,
+      "Played": false,
+      "Key": "56678b87-3b62-3332-2c65-c05982fadbba",
+      "ItemId": "56678b873b6233322c65c05982fadbba"
+    },
+    "VideoType": "VideoFile",
+    "ImageTags": {
+      "Primary": "f357c4f8f5fa680a35387819796f453d",
+      "Thumb": "f02d94e59a106b8a8f521f87a39cb4c0"
+    },
+    "BackdropImageTags": [
+      "b131d138dbf2c5f905c2f30b9c9f2f43"
+    ],
+    "ImageBlurHashes": {
+      "Backdrop": {
+        "b131d138dbf2c5f905c2f30b9c9f2f43": "W67KG3~CHs4TI..8NLNHj;xYs-RkRUe:%0xsNGE2?Ixva0ITI.kq"
+      },
+      "Primary": {
+        "f357c4f8f5fa680a35387819796f453d": "dB9sl7ogH?$k^ls;nisA0d$%t-NGIUsoO@NatmNbVss."
+      },
+      "Thumb": {
+        "f02d94e59a106b8a8f521f87a39cb4c0": "WbE_p#I;ENtRbI%2~BNII=bwS5xZ$$NbWBofa~niofIqW.s.sVWB"
+      }
+    },
+    "LocationType": "FileSystem",
+    "MediaType": "Video",
+    "OriginalLanguage": "en"
+  },
+  {
+    "Name": "Project Hail Mary",
+    "ServerId": "79315eab3c4c401f8391d5c26210b6d7",
+    "Id": "1cae16d260f2effaffbd9e8d7ad5b800",
+    "DateCreated": "2026-10-26T14:30:14.0243349Z",
+    "HasSubtitles": true,
+    "Container": "mkv",
+    "PremiereDate": "2026-03-15T00:00:00.0000000Z",
+    "CriticRating": 95,
+    "OfficialRating": "ZA-13",
+    "ChannelId": null,
+    "Overview": "Science teacher Ryland Grace wakes up on a spaceship light years from home with no recollection of who he is or how he got there. As his memory returns, he begins to uncover his mission: solve the riddle of the mysterious substance causing the sun to die out. He must call on his scientific knowledge and unorthodox ideas to save everything on Earth from extinction.",
+    "CommunityRating": 8.634,
+    "RunTimeTicks": 93824080000,
+    "ProductionYear": 2026,
+    "ProviderIds": {
+      "Imdb": "tt12042730",
+      "Tmdb": "687163"
+    },
+    "IsFolder": false,
+    "Type": "Movie",
+    "UserData": {
+      "PlaybackPositionTicks": 0,
+      "PlayCount": 0,
+      "IsFavorite": false,
+      "Played": false,
+      "Key": "1cae16d2-60f2-effa-ffbd-9e8d7ad5b800",
+      "ItemId": "1cae16d260f2effaffbd9e8d7ad5b800"
+    },
+    "VideoType": "VideoFile",
+    "ImageTags": {
+      "Primary": "9869df1d2f64059c92eeef8bb0a86a90",
+      "Thumb": "884fa4b561d2836af404980d9da9c4e6"
+    },
+    "BackdropImageTags": [
+      "6ab5a735b0bad0f809accf842ecaa5fc"
+    ],
+    "ImageBlurHashes": {
+      "Backdrop": {
+        "6ab5a735b0bad0f809accf842ecaa5fc": "WA8qHMt84pxBS2S#~pj]9as+kWS5EjRjVsbc%LV[AHR*nOt7%0RP"
+      },
+      "Primary": {
+        "9869df1d2f64059c92eeef8bb0a86a90": "dbHTUj}@NDWA-Z-XWSI.N5R;NaNF-EohI.WBnnWCW-S$"
+      },
+      "Thumb": {
+        "884fa4b561d2836af404980d9da9c4e6": "WG8;c6s9s9r?MwMxXSn#nht8Rjof0KIUS1b^x[xuxbNHX8NGxtRi"
+      }
+    },
+    "LocationType": "FileSystem",
+    "MediaType": "Video",
+    "OriginalLanguage": "en"
+  },
+  {
+    "Name": "Scoob!",
+    "ServerId": "79315eab3c4c401f8391d5c26210b6d7",
+    "Id": "0cdd43ea3dd975a5c5c111db6fc54208",
+    "DateCreated": "2026-10-25T09:33:42.9516968Z",
+    "HasSubtitles": true,
+    "Container": "mkv",
+    "PremiereDate": "2020-07-08T00:00:00.0000000Z",
+    "CriticRating": 48,
+    "OfficialRating": "PG",
+    "ChannelId": null,
+    "Overview": "In Scooby-Doo’s greatest adventure yet, see the never-before told story of how lifelong friends Scooby and Shaggy first met and how they joined forces with young detectives Fred, Velma, and Daphne to form the famous Mystery Inc. Now, with hundreds of cases solved, Scooby and the gang face their biggest, toughest mystery ever: an evil plot to unleash the ghost dog Cerberus upon the world. As they race to stop this global “dogpocalypse,” the gang discovers that Scooby has a secret legacy and an epic destiny greater than anyone ever imagined.",
+    "CommunityRating": 6.968,
+    "RunTimeTicks": 56265920000,
+    "ProductionYear": 2020,
+    "ProviderIds": {
+      "Imdb": "tt3152592",
+      "Tmdb": "385103"
+    },
+    "IsFolder": false,
+    "Type": "Movie",
+    "UserData": {
+      "PlaybackPositionTicks": 0,
+      "PlayCount": 0,
+      "IsFavorite": false,
+      "Played": false,
+      "Key": "0cdd43ea-3dd9-75a5-c5c1-11db6fc54208",
+      "ItemId": "0cdd43ea3dd975a5c5c111db6fc54208"
+    },
+    "VideoType": "VideoFile",
+    "ImageTags": {
+      "Thumb": "1a5cfebb0366ef9679ecf92eff1c13f5",
+      "Primary": "01c8a2e71046ff4ed41b6aa0997b7395"
+    },
+    "BackdropImageTags": [
+      "9174152b82f54850ec45d4cdc6513cd9"
+    ],
+    "ImageBlurHashes": {
+      "Backdrop": {
+        "9174152b82f54850ec45d4cdc6513cd9": "WiBzqvt8O[kDOZT1T#SijYs:s8s:I@oInMR-jEaeRQn#s9S5X9ay"
+      },
+      "Thumb": {
+        "1a5cfebb0366ef9679ecf92eff1c13f5": "WO9tyNS%ECsqp0xw-tjZOZXAslo#RDnikoS$n3WVY7kBm,V@WUbH"
+      },
+      "Primary": {
+        "01c8a2e71046ff4ed41b6aa0997b7395": "dCB3vm%h4zxt:ZxacYaM1NRP#5XRJVRiV?kWMfk7pFoN"
+      }
+    },
+    "LocationType": "FileSystem",
+    "MediaType": "Video",
+    "OriginalLanguage": "en"
+  }
+]

@@ -1,0 +1,65 @@
+{
+  "rid": 2,
+  "server_state": {
+    "alltime_dl": 8030115506827,
+    "alltime_ul": 7409991435409,
+    "average_time_queue": 3091,
+    "request_latency": 1149,
+    "total_buffers_size": 196608,
+    "total_peer_connections": 111,
+    "up_info_data": 1472697129,
+    "up_info_speed": 906283
+  },
+  "torrents": {
+    "8646cc75b5d2ed42a7918b081b9c9dc010d8bded": {
+      "num_leechs": 15,
+      "popularity": 0.2554224573756597,
+      "reannounce": 403,
+      "seeding_time": 4978224,
+      "time_active": 4978751
+    },
+    "9a40a56b68a0661d72f0ec03ffe7aca022099c44": {
+      "connections_count": 17,
+      "eta": 207325,
+      "last_activity": 1794127969,
+      "num_leechs": 17,
+      "popularity": 1.7876008562467545,
+      "ratio": 0.7263642223045356,
+      "reannounce": 444,
+      "seeding_time": 1064381,
+      "time_active": 1068557,
+      "uploaded": 57433718693,
+      "uploaded_session": 210065735,
+      "upspeed": 87624
+    },
+    "b3cf3baaffb64c08105d1e2152685b3b158e4ef4": {
+      "connections_count": 33,
+      "eta": 70634,
+      "last_activity": 1794127969,
+      "num_leechs": 32,
+      "popularity": 17.91206574961002,
+      "ratio": 0.8111680071713415,
+      "reannounce": 419,
+      "seeding_time": 116045,
+      "seen_complete": 1794127969,
+      "time_active": 119091,
+      "uploaded": 31598598031,
+      "uploaded_session": 158820434,
+      "upspeed": 132098
+    },
+    "e66aac4c7d8a4f813a4e5b3a63c1bb52beee342e": {
+      "connections_count": 40,
+      "eta": 32732,
+      "last_activity": 1794127969,
+      "num_leechs": 39,
+      "popularity": 30.8212746789855,
+      "ratio": 0.4380794209597125,
+      "reannounce": 399,
+      "seeding_time": 33520,
+      "time_active": 37378,
+      "uploaded": 15413602877,
+      "uploaded_session": 1103789843,
+      "upspeed": 686561
+    }
+  }
+}

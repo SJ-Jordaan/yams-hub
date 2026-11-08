@@ -1,0 +1,63 @@
+[
+  {
+    "availability": -1,
+    "index": 0,
+    "is_seed": true,
+    "name": "[SubsPlease] Tensei Shitara Slime Datta Ken S4 (01-24) (1080p) [Batch]/[SubsPlease] Tensei Shitara Slime Datta Ken S4 - 01v2 (1080p) [09A41FF2].mkv",
+    "piece_range": [
+      0,
+      1393
+    ],
+    "priority": 1,
+    "progress": 1,
+    "size": 1461367836
+  },
+  {
+    "availability": -1,
+    "index": 1,
+    "name": "[SubsPlease] Tensei Shitara Slime Datta Ken S4 (01-24) (1080p) [Batch]/[SubsPlease] Tensei Shitara Slime Datta Ken S4 - 02 (1080p) [7902C657].mkv",
+    "piece_range": [
+      1393,
+      2792
+    ],
+    "priority": 1,
+    "progress": 1,
+    "size": 1466650501
+  },
+  {
+    "availability": -1,
+    "index": 2,
+    "name": "[SubsPlease] Tensei Shitara Slime Datta Ken S4 (01-24) (1080p) [Batch]/[SubsPlease] Tensei Shitara Slime Datta Ken S4 - 03 (1080p) [30850563].mkv",
+    "piece_range": [
+      2792,
+      4186
+    ],
+    "priority": 1,
+    "progress": 1,
+    "size": 1462296256
+  },
+  {
+    "availability": -1,
+    "index": 3,
+    "name": "[SubsPlease] Tensei Shitara Slime Datta Ken S4 (01-24) (1080p) [Batch]/[SubsPlease] Tensei Shitara Slime Datta Ken S4 - 04v2 (1080p) [DA205BB7].mkv",
+    "piece_range": [
+      4186,
+      5587
+    ],
+    "priority": 1,
+    "progress": 1,
+    "size": 1468569122
+  },
+  {
+    "availability": -1,
+    "index": 4,
+    "name": "[SubsPlease] Tensei Shitara Slime Datta Ken S4 (01-24) (1080p) [Batch]/[SubsPlease] Tensei Shitara Slime Datta Ken S4 - 05 (1080p) [9B0CD532].mkv",
+    "piece_range": [
+      5587,
+      6983
+    ],
+    "priority": 1,
+    "progress": 1,
+    "size": 1464093052
+  }
+]

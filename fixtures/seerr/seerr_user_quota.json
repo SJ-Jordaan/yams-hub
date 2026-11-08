@@ -1,0 +1,12 @@
+{
+  "movie": {
+    "limit": 0,
+    "used": 0,
+    "restricted": false
+  },
+  "tv": {
+    "limit": 0,
+    "used": 0,
+    "restricted": false
+  }
+}

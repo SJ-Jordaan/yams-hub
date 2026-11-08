@@ -1,0 +1,29 @@
+{
+  "data": [
+    {
+      "name": "animesubinfo",
+      "status": "Good",
+      "retry": "-"
+    },
+    {
+      "name": "embeddedsubtitles",
+      "status": "Good",
+      "retry": "-"
+    },
+    {
+      "name": "opensubtitlescom",
+      "status": "Good",
+      "retry": "-"
+    },
+    {
+      "name": "tvsubtitles",
+      "status": "Good",
+      "retry": "-"
+    },
+    {
+      "name": "yifysubtitles",
+      "status": "Good",
+      "retry": "-"
+    }
+  ]
+}

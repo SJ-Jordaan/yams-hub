@@ -1,0 +1,10 @@
+{
+  "message": "request/query must have required property 'query'",
+  "errors": [
+    {
+      "path": "/query/query",
+      "message": "must have required property 'query'",
+      "errorCode": "required.openapi.validation"
+    }
+  ]
+}

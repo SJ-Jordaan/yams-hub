@@ -1,0 +1,155 @@
+{
+  "libraries": [
+    {
+      "Id": "4e985111ed7f570b595204d82adb02f3",
+      "Name": "Books"
+    },
+    {
+      "Id": "f137a2dd21bbc1b99aa5c0f6bf02a805",
+      "Name": "Movies"
+    },
+    {
+      "Id": "a656b907eb3a73532e40e44b968d0225",
+      "Name": "Shows"
+    },
+    {
+      "Id": "7e64e319657a9516ec78490da03edccb",
+      "Name": "Music"
+    }
+  ],
+  "stats": [
+    {
+      "Key": "Sunday",
+      "Books": {
+        "count": 0,
+        "duration": 0
+      },
+      "Movies": {
+        "count": 0,
+        "duration": 0
+      },
+      "Music": {
+        "count": 0,
+        "duration": 0
+      },
+      "Shows": {
+        "count": 1,
+        "duration": 26
+      }
+    },
+    {
+      "Key": "Monday",
+      "Books": {
+        "count": 0,
+        "duration": 0
+      },
+      "Movies": {
+        "count": 0,
+        "duration": 0
+      },
+      "Music": {
+        "count": 0,
+        "duration": 0
+      },
+      "Shows": {
+        "count": 0,
+        "duration": 0
+      }
+    },
+    {
+      "Key": "Tuesday",
+      "Books": {
+        "count": 0,
+        "duration": 0
+      },
+      "Movies": {
+        "count": 0,
+        "duration": 0
+      },
+      "Music": {
+        "count": 0,
+        "duration": 0
+      },
+      "Shows": {
+        "count": 0,
+        "duration": 0
+      }
+    },
+    {
+      "Key": "Wednesday",
+      "Books": {
+        "count": 0,
+        "duration": 0
+      },
+      "Movies": {
+        "count": 0,
+        "duration": 0
+      },
+      "Music": {
+        "count": 0,
+        "duration": 0
+      },
+      "Shows": {
+        "count": 0,
+        "duration": 0
+      }
+    },
+    {
+      "Key": "Thursday",
+      "Books": {
+        "count": 0,
+        "duration": 0
+      },
+      "Movies": {
+        "count": 0,
+        "duration": 0
+      },
+      "Music": {
+        "count": 0,
+        "duration": 0
+      },
+      "Shows": {
+        "count": 0,
+        "duration": 0
+      }
+    },
+    {
+      "Key": "Friday",
+      "Books": {
+        "count": 0,
+        "duration": 0
+      },
+      "Movies": {
+        "count": 0,
+        "duration": 0
+      },
+      "Music": {
+        "count": 0,
+        "duration": 0
+      },
+      "Shows": {
+        "count": 0,
+        "duration": 0
+      }
+    },
+    {
+      "Key": "Saturday",
+      "Books": {
+        "count": 0,
+        "duration": 0
+      },
+      "Movies": {
+        "count": 0,
+        "duration": 0
+      },
+      "Music": {
+        "count": 0,
+        "duration": 0
+      },
+      "Shows": {
+        "count": 0,
+        "duration": 0
+      }
+    }
+  ]
+}

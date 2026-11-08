@@ -1,0 +1,284 @@
+{
+  "page": 1,
+  "pageSize": 10,
+  "sortKey": "episodes.airDateUtc",
+  "sortDirection": "descending",
+  "totalRecords": 994,
+  "records": [
+    {
+      "seriesId": 159,
+      "tvdbId": 12009015,
+      "episodeFileId": 10995,
+      "seasonNumber": 3,
+      "episodeNumber": 6,
+      "title": "The Paper Village",
+      "airDate": "2026-11-06",
+      "airDateUtc": "2026-11-06T14:00:00Z",
+      "runtime": 24,
+      "overview": "Maomao needs to find someone to cover for her while she goes on a trip with Jinshi. A good candidate turns up.",
+      "hasFile": true,
+      "monitored": true,
+      "absoluteEpisodeNumber": 54,
+      "sceneAbsoluteEpisodeNumber": 6,
+      "sceneEpisodeNumber": 6,
+      "sceneSeasonNumber": 3,
+      "unverifiedSceneNumbering": false,
+      "series": {
+        "title": "The Apothecary Diaries",
+        "sortTitle": "apothecary diaries",
+        "status": "continuing",
+        "ended": false,
+        "overview": "Maomao lived a peaceful life with her apothecary father. Until one day, she’s sold as a lowly servant to the emperor’s palace. But she wasn’t meant for a compliant life among royalty. So when imperial heirs fall ill, she decides to step in and find a cure! This catches the eye of Jinshi, a handsome palace official who promotes her. Now, she’s making a name for herself solving medical mysteries!",
+        "network": "Nippon TV",
+        "airTime": "23:00",
+        "images": [
+          {
+            "coverType": "banner",
+            "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/431162/banners/674fe769e264d.jpg"
+          },
+          {
+            "coverType": "poster",
+            "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/431162/posters/64a3b5325ecc4.jpg"
+          },
+          {
+            "coverType": "fanart",
+            "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/431162/backgrounds/668a689ddc5e6.jpg"
+          }
+        ],
+        "originalLanguage": {
+          "id": 8,
+          "name": "Japanese"
+        },
+        "seasons": [
+          {
+            "seasonNumber": 0,
+            "monitored": false
+          },
+          {
+            "seasonNumber": 1,
+            "monitored": true
+          },
+          {
+            "seasonNumber": 2,
+            "monitored": true
+          }
+        ],
+        "year": 2023,
+        "path": "/data/tvshows/The Apothecary Diaries (2023) [tvdbid-431162]",
+        "qualityProfileId": 7,
+        "seasonFolder": true,
+        "monitored": true,
+        "monitorNewItems": "all",
+        "useSceneNumbering": true,
+        "runtime": 24,
+        "tvdbId": 431162,
+        "tvRageId": 0,
+        "tvMazeId": 67017,
+        "tmdbId": 220542,
+        "firstAired": "2023-10-22T00:00:00Z",
+        "lastAired": "2026-12-18T00:00:00Z",
+        "seriesType": "standard",
+        "cleanTitle": "theapothecarydiaries",
+        "imdbId": "tt26743760",
+        "titleSlug": "the-apothecary-diaries",
+        "certification": "TV-14",
+        "genres": [
+          "Animation",
+          "Anime",
+          "Drama"
+        ],
+        "tags": [],
+        "added": "2026-10-04T13:50:18Z",
+        "ratings": {
+          "votes": 29523,
+          "value": 8.6
+        },
+        "languageProfileId": 1,
+        "id": 159
+      },
+      "id": 7668
+    },
+    {
+      "seriesId": 140,
+      "tvdbId": 12013900,
+      "episodeFileId": 10966,
+      "seasonNumber": 2,
+      "episodeNumber": 6,
+      "title": "Cultural Festival",
+      "airDate": "2026-11-05",
+      "airDateUtc": "2026-11-05T14:45:00Z",
+      "runtime": 24,
+      "overview": "Summer's over and Class 2-2 takes the stage for the cultural festival. But while everyone else celebrates, Minato slowly realizes that something is off.",
+      "hasFile": true,
+      "monitored": true,
+      "absoluteEpisodeNumber": 20,
+      "sceneAbsoluteEpisodeNumber": 6,
+      "sceneEpisodeNumber": 6,
+      "sceneSeasonNumber": 2,
+      "unverifiedSceneNumbering": false,
+      "series": {
+        "title": "The Ramparts of Ice",
+        "sortTitle": "ramparts of ice",
+        "status": "continuing",
+        "ended": false,
+        "overview": "Weighed down by memories she can’t shake, high schooler Koyuki Hikawa keeps everyone at arm's length — until three schoolmates draw her out of her shell.",
+        "network": "TBS (JP)",
+        "airTime": "23:45",
+        "images": [
+          {
+            "coverType": "banner",
+            "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/459627/banners/69ce963a6b993.jpg"
+          },
+          {
+            "coverType": "poster",
+            "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/459627/posters/6963aff5c520a.jpg"
+          },
+          {
+            "coverType": "fanart",
+            "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/459627/backgrounds/6a12fb830536d.jpg"
+          }
+        ],
+        "originalLanguage": {
+          "id": 8,
+          "name": "Japanese"
+        },
+        "seasons": [
+          {
+            "seasonNumber": 1,
+            "monitored": true
+          },
+          {
+            "seasonNumber": 2,
+            "monitored": true
+          }
+        ],
+        "year": 2026,
+        "path": "/data/tvshows/The Ramparts of Ice (2026) [tvdbid-459627]",
+        "qualityProfileId": 7,
+        "seasonFolder": true,
+        "monitored": true,
+        "monitorNewItems": "all",
+        "useSceneNumbering": true,
+        "runtime": 24,
+        "tvdbId": 459627,
+        "tvRageId": 0,
+        "tvMazeId": 90251,
+        "tmdbId": 283428,
+        "firstAired": "2026-04-02T00:00:00Z",
+        "lastAired": "2026-12-03T00:00:00Z",
+        "seriesType": "anime",
+        "cleanTitle": "therampartsice",
+        "imdbId": "tt39123061",
+        "titleSlug": "the-ramparts-of-ice",
+        "certification": "12",
+        "genres": [
+          "Animation",
+          "Anime",
+          "Comedy"
+        ],
+        "tags": [],
+        "added": "2026-05-21T15:25:57Z",
+        "ratings": {
+          "votes": 3126,
+          "value": 8.1
+        },
+        "languageProfileId": 1,
+        "id": 140
+      },
+      "id": 7563
+    },
+    {
+      "seriesId": 159,
+      "tvdbId": 12009014,
+      "episodeFileId": 10948,
+      "seasonNumber": 3,
+      "episodeNumber": 5,
+      "title": "The White-Snake Immortal",
+      "airDate": "2026-10-30",
+      "airDateUtc": "2026-10-30T14:00:00Z",
+      "runtime": 24,
+      "overview": "Maomao's stepbrother Lahan takes her to a popular show that may be more than just entertainment.",
+      "hasFile": true,
+      "monitored": true,
+      "absoluteEpisodeNumber": 53,
+      "sceneAbsoluteEpisodeNumber": 5,
+      "sceneEpisodeNumber": 5,
+      "sceneSeasonNumber": 3,
+      "unverifiedSceneNumbering": false,
+      "series": {
+        "title": "The Apothecary Diaries",
+        "sortTitle": "apothecary diaries",
+        "status": "continuing",
+        "ended": false,
+        "overview": "Maomao lived a peaceful life with her apothecary father. Until one day, she’s sold as a lowly servant to the emperor’s palace. But she wasn’t meant for a compliant life among royalty. So when imperial heirs fall ill, she decides to step in and find a cure! This catches the eye of Jinshi, a handsome palace official who promotes her. Now, she’s making a name for herself solving medical mysteries!",
+        "network": "Nippon TV",
+        "airTime": "23:00",
+        "images": [
+          {
+            "coverType": "banner",
+            "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/431162/banners/674fe769e264d.jpg"
+          },
+          {
+            "coverType": "poster",
+            "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/431162/posters/64a3b5325ecc4.jpg"
+          },
+          {
+            "coverType": "fanart",
+            "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/431162/backgrounds/668a689ddc5e6.jpg"
+          }
+        ],
+        "originalLanguage": {
+          "id": 8,
+          "name": "Japanese"
+        },
+        "seasons": [
+          {
+            "seasonNumber": 0,
+            "monitored": false
+          },
+          {
+            "seasonNumber": 1,
+            "monitored": true
+          },
+          {
+            "seasonNumber": 2,
+            "monitored": true
+          }
+        ],
+        "year": 2023,
+        "path": "/data/tvshows/The Apothecary Diaries (2023) [tvdbid-431162]",
+        "qualityProfileId": 7,
+        "seasonFolder": true,
+        "monitored": true,
+        "monitorNewItems": "all",
+        "useSceneNumbering": true,
+        "runtime": 24,
+        "tvdbId": 431162,
+        "tvRageId": 0,
+        "tvMazeId": 67017,
+        "tmdbId": 220542,
+        "firstAired": "2023-10-22T00:00:00Z",
+        "lastAired": "2026-12-18T00:00:00Z",
+        "seriesType": "standard",
+        "cleanTitle": "theapothecarydiaries",
+        "imdbId": "tt26743760",
+        "titleSlug": "the-apothecary-diaries",
+        "certification": "TV-14",
+        "genres": [
+          "Animation",
+          "Anime",
+          "Drama"
+        ],
+        "tags": [],
+        "added": "2026-10-04T13:50:18Z",
+        "ratings": {
+          "votes": 29523,
+          "value": 8.6
+        },
+        "languageProfileId": 1,
+        "id": 159
+      },
+      "id": 7667
+    }
+  ]
+}

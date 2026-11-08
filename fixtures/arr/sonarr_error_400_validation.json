@@ -1,0 +1,11 @@
+{
+  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+  "title": "One or more validation errors occurred.",
+  "status": 400,
+  "traceId": "00-7f2e27224b995ef38a07d2752153c652-2b284b14ff1bb450-00",
+  "errors": {
+    "start": [
+      "The value 'garbage' is not valid."
+    ]
+  }
+}

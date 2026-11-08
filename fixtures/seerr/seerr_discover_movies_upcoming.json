@@ -1,0 +1,112 @@
+{
+  "page": 1,
+  "totalPages": 176,
+  "totalResults": 3519,
+  "results": [
+    {
+      "id": 1003596,
+      "mediaType": "movie",
+      "adult": false,
+      "genreIds": [
+        878,
+        28,
+        12
+      ],
+      "originalLanguage": "en",
+      "originalTitle": "Avengers: Doomsday",
+      "overview": "Beloved heroes from three distinct universes are set on a deadly collision course and face an existential threat unlike anything they've ever encountered.",
+      "popularity": 96.5429,
+      "releaseDate": "2026-12-16",
+      "title": "Avengers: Doomsday",
+      "video": false,
+      "voteAverage": 0,
+      "voteCount": 0,
+      "backdropPath": "/rObL4of4eFA8yWaN9pRFo9aOVNi.jpg",
+      "posterPath": "/zHTxblqPcqRpA93ex2Hj0RdpVBs.jpg"
+    },
+    {
+      "id": 1300968,
+      "mediaType": "movie",
+      "adult": false,
+      "genreIds": [
+        878,
+        28,
+        12
+      ],
+      "originalLanguage": "en",
+      "originalTitle": "The Hunger Games: Sunrise on the Reaping",
+      "overview": "Return to the world of Panem 24 years before the events of The Hunger Games, starting on the morning of the reaping of the 50th Hunger Games, also known as the Second Quarter Quell.",
+      "popularity": 37.8567,
+      "releaseDate": "2026-11-18",
+      "title": "The Hunger Games: Sunrise on the Reaping",
+      "video": false,
+      "voteAverage": 0,
+      "voteCount": 0,
+      "backdropPath": "/aqFZcr2dxSZ2UwWSo1WC6C0rwDf.jpg",
+      "posterPath": "/jNcZH8yplxttRlf0wwqfGGMKHxX.jpg"
+    },
+    {
+      "id": 1170608,
+      "mediaType": "movie",
+      "adult": false,
+      "genreIds": [
+        878,
+        12
+      ],
+      "originalLanguage": "en",
+      "originalTitle": "Dune: Part Three",
+      "overview": "Nearly two decades after he seized control of the Imperium, Paul Atreides is now a ruthless Emperor, and must face the consequences of his reign as old allies return, terrifying new threats emerge, and betrayal lurks in every shadow. Haunted by visions of Imperial collapse and the reappearance of his long-lost love, Paul is drawn into a sweeping conspiracy, with Chani at the heart of its unfolding mystery. As enemies close in, Paul must confront the true cost of power and the fate of those he loves the most.",
+      "popularity": 28.357,
+      "releaseDate": "2026-12-15",
+      "title": "Dune: Part Three",
+      "video": false,
+      "voteAverage": 0,
+      "voteCount": 0,
+      "backdropPath": "/i5E9H7Ik0u61ylDDTbmUpTL3Yw.jpg",
+      "posterPath": "/glt0v4I89rMWstDNCaFXc5SNyO1.jpg"
+    },
+    {
+      "id": 1567605,
+      "mediaType": "movie",
+      "adult": false,
+      "genreIds": [
+        14,
+        35
+      ],
+      "originalLanguage": "en",
+      "originalTitle": "Ebenezer",
+      "overview": "An elderly miser embarks on a supernatural journey after visits from the ghost of his former business partner and the Spirits of Christmas Past, Present, and Yet to Come force him to confront his past and fight for a second chance at happiness.",
+      "popularity": 24.1001,
+      "releaseDate": "2026-11-11",
+      "title": "Ebenezer",
+      "video": false,
+      "voteAverage": 4,
+      "voteCount": 1,
+      "backdropPath": "/oveb9ughaDh4GkjmVHvSgFnEzlM.jpg",
+      "posterPath": "/6H2N59jJW1hZEzn2ZdrMvJw5vNI.jpg"
+    },
+    {
+      "id": 1538497,
+      "mediaType": "movie",
+      "adult": false,
+      "genreIds": [
+        12,
+        16,
+        10751,
+        14,
+        35
+      ],
+      "originalLanguage": "en",
+      "originalTitle": "Hexed",
+      "overview": "An impulsive and unconventional teenage girl named Billie discovers secret magical abilities which, once unleashed, hurtle her into a spectacle-filled journey out of suburbia and into a vast witch realm called Hexe. Forced to team up with her cautious mother, Alice, they uncover family mysteries that could change the world of witches forever.",
+      "popularity": 17.1195,
+      "releaseDate": "2026-11-25",
+      "title": "Hexed",
+      "video": false,
+      "voteAverage": 0,
+      "voteCount": 0,
+      "backdropPath": "/wZ9Me7OndzgBOEAa8nSBNPu3Sl4.jpg",
+      "posterPath": "/yykeYKbDBM9eUMJUucaaDo2mi1p.jpg"
+    }
+  ]
+}

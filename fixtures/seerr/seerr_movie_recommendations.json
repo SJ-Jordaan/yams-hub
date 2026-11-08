@@ -1,0 +1,142 @@
+{
+  "page": 1,
+  "totalPages": 27,
+  "totalResults": 523,
+  "results": [
+    {
+      "id": 817,
+      "mediaType": "movie",
+      "adult": false,
+      "genreIds": [
+        35,
+        12,
+        80
+      ],
+      "originalLanguage": "en",
+      "originalTitle": "Austin Powers: The Spy Who Shagged Me",
+      "overview": "When diabolical genius Dr. Evil travels back in time to steal superspy Austin Powers's ‘mojo,’ Austin must return to the swingin' '60s himself - with the help of American agent, Felicity Shagwell - to stop the dastardly plan. Once there, Austin faces off against Dr. Evil's army of minions to try to save the world in his own unbelievably groovy way.",
+      "popularity": 5.8962,
+      "releaseDate": "1999-06-08",
+      "title": "Austin Powers: The Spy Who Shagged Me",
+      "video": false,
+      "voteAverage": 6.323,
+      "voteCount": 3867,
+      "backdropPath": "/xI1tAzzUk2v9nON6DLAHzcOLK42.jpg",
+      "posterPath": "/jiF7UShERJFn5RtgfBK2lIJrOTc.jpg",
+      "mediaInfo": {
+        "downloadStatus": [],
+        "downloadStatus4k": [],
+        "id": 426,
+        "mediaType": "movie",
+        "tmdbId": 817,
+        "tvdbId": null,
+        "imdbId": "tt0145660",
+        "status": 5,
+        "status4k": 1,
+        "createdAt": "2026-10-24T16:06:34.000Z",
+        "updatedAt": "2026-10-24T17:05:02.000Z",
+        "lastSeasonChange": "2026-10-24T16:06:34.000Z",
+        "mediaAddedAt": "2026-10-24T16:58:45.883Z",
+        "serviceId": 0,
+        "serviceId4k": null,
+        "externalServiceId": 262,
+        "externalServiceId4k": null,
+        "externalServiceSlug": "817",
+        "externalServiceSlug4k": null,
+        "ratingKey": null,
+        "ratingKey4k": null,
+        "jellyfinMediaId": "004634f0ae7c30a6a934e4fef522d942",
+        "jellyfinMediaId4k": null,
+        "watchlists": [],
+        "mediaUrl": "http://192.168.10.183:8096/web/index.html#!/details?id=004634f0ae7c30a6a934e4fef522d942&context=home&serverId=79315eab3c4c401f8391d5c26210b6d7",
+        "serviceUrl": "http://radarr:7878/movie/817"
+      }
+    },
+    {
+      "id": 13253,
+      "mediaType": "movie",
+      "adult": false,
+      "genreIds": [
+        16,
+        35,
+        878,
+        28,
+        14
+      ],
+      "originalLanguage": "en",
+      "originalTitle": "Futurama: Bender's Game",
+      "overview": "When Leela is insulted by a group of space-rednecks (like regular rednecks, but in space), she enters the Planet Express ship in a demolition derby. Leela emerges victorious, but when she brings the damaged ship home, and the Professor sees the fuel gauge, he's enraged by the hit he's going to take at the Dark Matter pump.  Now the crew have to find a way to break Mom's stranglehold on starship fuel, even if they have to wade through a Lord of the Rings-inspired fantasy-land to do it!",
+      "popularity": 2.0773,
+      "releaseDate": "2008-11-03",
+      "title": "Futurama: Bender's Game",
+      "video": false,
+      "voteAverage": 6.9,
+      "voteCount": 618,
+      "backdropPath": "/uZzVtRO2aV9gtFx9WHNZ2nR9z55.jpg",
+      "posterPath": "/bx8OVOBn5WP9TJJuOpRzyMCdzzb.jpg"
+    },
+    {
+      "id": 1148365,
+      "mediaType": "movie",
+      "adult": false,
+      "genreIds": [
+        28,
+        35,
+        12
+      ],
+      "originalLanguage": "en",
+      "originalTitle": "Matchbox the Movie",
+      "overview": "When a group of former childhood friends reconnect, their reunion takes a wild turn as they stumble upon a dangerous international plot—and must save the world.",
+      "popularity": 84.8307,
+      "releaseDate": "2026-10-05",
+      "title": "Matchbox the Movie",
+      "video": false,
+      "voteAverage": 7.596,
+      "voteCount": 600,
+      "backdropPath": "/jdJsnhHfkIi3J7jwfiCFT4gXNx5.jpg",
+      "posterPath": "/aHhHRz6nOpwkqJs5ASeRGAdK2dt.jpg"
+    },
+    {
+      "id": 385128,
+      "mediaType": "movie",
+      "adult": false,
+      "genreIds": [
+        28,
+        12,
+        80
+      ],
+      "originalLanguage": "en",
+      "originalTitle": "F9",
+      "overview": "Dominic Toretto and his crew battle the most skilled assassin and high-performance driver they've ever encountered: his forsaken brother.",
+      "popularity": 7.2087,
+      "releaseDate": "2021-05-19",
+      "title": "F9",
+      "video": false,
+      "voteAverage": 6.966,
+      "voteCount": 7956,
+      "backdropPath": "/xXHZeb1yhJvnSHPzZDqee0zfMb6.jpg",
+      "posterPath": "/deEmLILTPejEb6OGsXRJ5MCvyDW.jpg"
+    },
+    {
+      "id": 1035259,
+      "mediaType": "movie",
+      "adult": false,
+      "genreIds": [
+        35,
+        80,
+        28
+      ],
+      "originalLanguage": "en",
+      "originalTitle": "The Naked Gun",
+      "overview": "Only one man has the particular set of skills... to lead Police Squad and save the world: Lt. Frank Drebin Jr. Following in his father's footsteps, he must solve a murder case to prevent Police Squad from closure.",
+      "popularity": 9.4019,
+      "releaseDate": "2025-07-30",
+      "title": "The Naked Gun",
+      "video": false,
+      "voteAverage": 6.3,
+      "voteCount": 2082,
+      "backdropPath": "/1wi1hcbl6KYqARjdQ4qrBWZdiau.jpg",
+      "posterPath": "/rwla9vqzrKVVKVKiOuROTIXGsxj.jpg"
+    }
+  ]
+}

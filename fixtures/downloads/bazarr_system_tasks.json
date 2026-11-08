@@ -1,0 +1,44 @@
+{
+  "data": [
+    {
+      "interval": "every 3 hours",
+      "job_id": "update_release",
+      "job_running": false,
+      "name": "Update Release Info",
+      "next_run_in": "in 20 minutes",
+      "next_run_time": "in 20 minutes"
+    },
+    {
+      "interval": "every 60 minutes",
+      "job_id": "update_movies",
+      "job_running": false,
+      "name": "Sync with Radarr",
+      "next_run_in": "in 24 minutes",
+      "next_run_time": "in 24 minutes"
+    },
+    {
+      "interval": "every 60 minutes",
+      "job_id": "update_series",
+      "job_running": false,
+      "name": "Sync with Sonarr",
+      "next_run_in": "in 24 minutes",
+      "next_run_time": "in 24 minutes"
+    },
+    {
+      "interval": "every 6 hours",
+      "job_id": "update_announcements",
+      "job_running": false,
+      "name": "Update Announcements File",
+      "next_run_in": "in 2 hours",
+      "next_run_time": "in 2 hours"
+    },
+    {
+      "interval": "every 6 hours",
+      "job_id": "wanted_search_missing_subtitles_movies",
+      "job_running": false,
+      "name": "Search for Missing Movies Subtitles",
+      "next_run_in": "in 3 hours",
+      "next_run_time": "in 3 hours"
+    }
+  ]
+}

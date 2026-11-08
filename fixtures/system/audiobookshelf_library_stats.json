@@ -1,0 +1,107 @@
+{
+  "largestItems": [
+    {
+      "id": "1befadaa-7ed1-48f2-ad91-686469ce1cfa",
+      "title": "The Way of Kings",
+      "size": 1983304099
+    },
+    {
+      "id": "4db8ddeb-00a2-4b98-9a0e-c8fa04bbb55e",
+      "title": "Musashi",
+      "size": 1551887211
+    },
+    {
+      "id": "9a75cb92-98f5-49c0-ad72-ce16e26611c7",
+      "title": "The Beginning After the End, Vol. 08: Ascension",
+      "size": 1409076164
+    },
+    {
+      "id": "2a85d57e-39b2-4cf0-ad2e-0812109ab47a",
+      "title": "The Beginning After the End, Vol. 09: Reckoning",
+      "size": 1318241980
+    },
+    {
+      "id": "ff4bdc47-bcb9-4195-b891-59c70c2f25a1",
+      "title": "The Beginning After the End, Vol. 10: Retribution",
+      "size": 1250458116
+    }
+  ],
+  "totalAuthors": 83,
+  "authorsWithCount": [
+    {
+      "id": "c924a0a3-1c82-4590-ae7e-b16cf479b6d8",
+      "name": "Cliff Kurt",
+      "count": 26
+    },
+    {
+      "id": "64f2814b-a0c5-4d61-97c2-efa9439494f4",
+      "name": "Full Cast",
+      "count": 12
+    },
+    {
+      "id": "cbe47b4f-20e5-447a-ba00-b5bee5c30723",
+      "name": "Chris Guerrero",
+      "count": 12
+    },
+    {
+      "id": "012f2e55-e26a-4110-af3d-f2e733a73d53",
+      "name": "Bryce Papenbrook",
+      "count": 10
+    },
+    {
+      "id": "e26f77ff-82ea-4c15-8d90-d12e454f3adc",
+      "name": "B. J. Harrison",
+      "count": 10
+    }
+  ],
+  "totalGenres": 4,
+  "genresWithCount": [
+    {
+      "genre": "Audiobook",
+      "count": 238
+    },
+    {
+      "genre": "Audiobbook",
+      "count": 7
+    },
+    {
+      "genre": "Fantasy",
+      "count": 1
+    },
+    {
+      "genre": "Audiobooks",
+      "count": 1
+    }
+  ],
+  "totalItems": 247,
+  "longestItems": [
+    {
+      "id": "4db8ddeb-00a2-4b98-9a0e-c8fa04bbb55e",
+      "title": "Musashi",
+      "duration": 192309.522
+    },
+    {
+      "id": "1befadaa-7ed1-48f2-ad91-686469ce1cfa",
+      "title": "The Way of Kings",
+      "duration": 163973.60368999993
+    },
+    {
+      "id": "9a75cb92-98f5-49c0-ad72-ce16e26611c7",
+      "title": "The Beginning After the End, Vol. 08: Ascension",
+      "duration": 87482.913
+    },
+    {
+      "id": "ff4bdc47-bcb9-4195-b891-59c70c2f25a1",
+      "title": "The Beginning After the End, Vol. 10: Retribution",
+      "duration": 83249.203084
+    },
+    {
+      "id": "2a85d57e-39b2-4cf0-ad2e-0812109ab47a",
+      "title": "The Beginning After the End, Vol. 09: Reckoning",
+      "duration": 81940.641
+    }
+  ],
+  "totalSize": 116852142646,
+  "totalDuration": 7392920.516809,
+  "numAudioTracks": 284
+}

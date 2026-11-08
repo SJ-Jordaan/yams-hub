@@ -1,0 +1,385 @@
+[
+  {
+    "title": "Frieren: Beyond Journey's End",
+    "sortTitle": "frieren beyond journeys end",
+    "status": "continuing",
+    "ended": false,
+    "overview": "Decades after her party defeated the Demon King, an old friend's funeral launches the elf wizard Frieren on a journey of self-discovery.",
+    "network": "Nippon TV",
+    "airTime": "23:00",
+    "images": [
+      {
+        "coverType": "banner",
+        "url": "/MediaCover/25/banner.jpg?lastWrite=639058149733344357",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/424536/banners/651dd688bd4d5.jpg"
+      },
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/25/poster.jpg?lastWrite=639058149733504354",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/424536/posters/6516fe48e7a06.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/25/fanart.jpg?lastWrite=639096245732778300",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/424536/backgrounds/64e6cbe29d9c0.jpg"
+      },
+      {
+        "coverType": "clearlogo",
+        "url": "/MediaCover/25/clearlogo.png?lastWrite=639058149734024343",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/424536/clearlogo/65d798fbd2f61.png"
+      }
+    ],
+    "originalLanguage": {
+      "id": 8,
+      "name": "Japanese"
+    },
+    "remotePoster": "https://artworks.thetvdb.com/banners/v4/series/424536/posters/6516fe48e7a06.jpg",
+    "seasons": [
+      {
+        "seasonNumber": 0,
+        "monitored": false
+      },
+      {
+        "seasonNumber": 1,
+        "monitored": true
+      },
+      {
+        "seasonNumber": 2,
+        "monitored": true
+      }
+    ],
+    "year": 2023,
+    "path": "/data/tvshows/Frieren - Beyond Journey's End (2023) [tvdbid-424536]",
+    "qualityProfileId": 7,
+    "seasonFolder": true,
+    "monitored": true,
+    "monitorNewItems": "all",
+    "useSceneNumbering": true,
+    "runtime": 25,
+    "tvdbId": 424536,
+    "tvRageId": 0,
+    "tvMazeId": 69956,
+    "tmdbId": 209867,
+    "firstAired": "2023-09-29T00:00:00Z",
+    "lastAired": "2026-03-27T00:00:00Z",
+    "seriesType": "standard",
+    "cleanTitle": "frierenbeyondjourneysend",
+    "imdbId": "tt22248376",
+    "titleSlug": "frieren-beyond-journeys-end",
+    "folder": "Frieren - Beyond Journey's End (2023) [tvdbid-424536]",
+    "certification": "TV-14",
+    "genres": [
+      "Adventure",
+      "Animation",
+      "Anime",
+      "Drama",
+      "Fantasy"
+    ],
+    "tags": [],
+    "added": "2026-02-04T15:15:28Z",
+    "ratings": {
+      "votes": 87048,
+      "value": 8.9
+    },
+    "statistics": {
+      "seasonCount": 2,
+      "episodeFileCount": 0,
+      "episodeCount": 0,
+      "totalEpisodeCount": 0,
+      "sizeOnDisk": 0,
+      "percentOfEpisodes": 0
+    },
+    "languageProfileId": 1,
+    "id": 25
+  },
+  {
+    "title": "Labyrinth of Peace",
+    "sortTitle": "labyrinth of peace",
+    "status": "ended",
+    "ended": true,
+    "overview": "Year 1945. The war is over and neutral Switzerland has been saved from the conflict. Klara's family looks forward to the future as she cares for young Holocaust survivors. Johann hopes to save and modernize his father-in-law's textile business. And Egon, fresh from military service, takes his first steps in the Attorney General's office chasing fugitive Nazis. The three soon realize that the facade of peace is bought with the blood of war victims. Johann's career ambitions bring him closer to those who committed heinous war crimes. Klara risks her marriage as she grows closer and closer to one of the survivors, whom the locals receive with distrust. And Egon finds himself trapped in a system that voluntarily turns a blind eye to Nazi criminals for financial reasons.",
+    "network": "SRF Schweizer Radio und Fernsehen",
+    "airTime": "20:00",
+    "images": [
+      {
+        "coverType": "banner",
+        "url": "/MediaCoverProxy/5216c31703e2cc9b1165d34d9cb1fc9347fe8d16eeb0a4c479a0a31b748affe1/630cd6b56cd39.jpg",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/391612/banners/630cd6b56cd39.jpg"
+      },
+      {
+        "coverType": "poster",
+        "url": "/MediaCoverProxy/ca2d2fe94255dd7b74993e8abd4ca686196f59ea3dde7915b35cf8d1628d4b66/619a408fb5e29.jpg",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/391612/posters/619a408fb5e29.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCoverProxy/404ee969d0f8020eb9e915f79db02802f47957a44d78d05a09bbb9807d8e511b/5faae1d66af0f.jpg",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/series/391612/backgrounds/5faae1d66af0f.jpg"
+      }
+    ],
+    "originalLanguage": {
+      "id": 4,
+      "name": "German"
+    },
+    "remotePoster": "https://artworks.thetvdb.com/banners/v4/series/391612/posters/619a408fb5e29.jpg",
+    "seasons": [
+      {
+        "seasonNumber": 0,
+        "monitored": false
+      },
+      {
+        "seasonNumber": 1,
+        "monitored": true
+      }
+    ],
+    "year": 2020,
+    "qualityProfileId": 0,
+    "seasonFolder": false,
+    "monitored": true,
+    "monitorNewItems": "all",
+    "useSceneNumbering": false,
+    "runtime": 50,
+    "tvdbId": 391612,
+    "tvRageId": 0,
+    "tvMazeId": 52078,
+    "tmdbId": 112370,
+    "firstAired": "2020-11-08T00:00:00Z",
+    "lastAired": "2020-11-11T00:00:00Z",
+    "seriesType": "standard",
+    "cleanTitle": "labyrinthpeace",
+    "imdbId": "tt10639680",
+    "titleSlug": "labyrinth-of-peace",
+    "folder": "Labyrinth of Peace (2020) [tvdbid-391612]",
+    "genres": [
+      "Drama",
+      "History",
+      "Mini-Series"
+    ],
+    "tags": [],
+    "added": "0001-01-01T00:00:00Z",
+    "ratings": {
+      "votes": 461,
+      "value": 7.3
+    },
+    "statistics": {
+      "seasonCount": 1,
+      "episodeFileCount": 0,
+      "episodeCount": 0,
+      "totalEpisodeCount": 0,
+      "sizeOnDisk": 0,
+      "percentOfEpisodes": 0
+    },
+    "languageProfileId": 1
+  },
+  {
+    "title": "Pros and Cons",
+    "sortTitle": "pros and cons",
+    "status": "ended",
+    "ended": true,
+    "overview": "Officially they are a regular family. Unofficially, they are Denmark's most notorious cheaters. The question is how to deal with parenting meetings, lunch boxes and payouts at the same time as their biggest coup.",
+    "network": "Viaplay",
+    "airTime": "00:00",
+    "images": [
+      {
+        "coverType": "banner",
+        "url": "/MediaCoverProxy/004873bbc35e131d505b644ead887adcbb43d0c40b51e086f8871ed5395ea5c6/5ca2e5e6eb307.jpg",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/graphical/5ca2e5e6eb307.jpg"
+      },
+      {
+        "coverType": "poster",
+        "url": "/MediaCoverProxy/1b62ef6280a64b9bf6949e6c7c95de5445b127376e5ac369a2c6a82b1ab949fe/5bd0d5652ebb5.jpg",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/posters/5bd0d5652ebb5.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCoverProxy/03fdbb78adbd6c9e4d75ec2c853334277c8f9b4f2b28a9b4d0710bf0ed32fc66/5bd98ebe2e6e2.jpg",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/fanart/original/5bd98ebe2e6e2.jpg"
+      }
+    ],
+    "originalLanguage": {
+      "id": 6,
+      "name": "Danish"
+    },
+    "remotePoster": "https://artworks.thetvdb.com/banners/posters/5bd0d5652ebb5.jpg",
+    "seasons": [
+      {
+        "seasonNumber": 0,
+        "monitored": false
+      },
+      {
+        "seasonNumber": 1,
+        "monitored": true
+      },
+      {
+        "seasonNumber": 2,
+        "monitored": true
+      }
+    ],
+    "year": 2018,
+    "qualityProfileId": 0,
+    "seasonFolder": false,
+    "monitored": true,
+    "monitorNewItems": "all",
+    "useSceneNumbering": false,
+    "runtime": 43,
+    "tvdbId": 354458,
+    "tvRageId": 0,
+    "tvMazeId": 39314,
+    "tmdbId": 85344,
+    "firstAired": "2018-10-24T00:00:00Z",
+    "lastAired": "2021-01-03T00:00:00Z",
+    "seriesType": "standard",
+    "cleanTitle": "proscons",
+    "imdbId": "tt7694874",
+    "titleSlug": "pros-and-cons",
+    "folder": "Pros and Cons (2018) [tvdbid-354458]",
+    "genres": [
+      "Comedy",
+      "Crime",
+      "Drama"
+    ],
+    "tags": [],
+    "added": "0001-01-01T00:00:00Z",
+    "ratings": {
+      "votes": 1014,
+      "value": 7.4
+    },
+    "statistics": {
+      "seasonCount": 2,
+      "episodeFileCount": 0,
+      "episodeCount": 0,
+      "totalEpisodeCount": 0,
+      "sizeOnDisk": 0,
+      "percentOfEpisodes": 0
+    },
+    "languageProfileId": 1
+  },
+  {
+    "title": "Gooische Frieten",
+    "sortTitle": "gooische frieten",
+    "status": "ended",
+    "ended": true,
+    "network": "RTL XL",
+    "airTime": "11:00",
+    "images": [
+      {
+        "coverType": "poster",
+        "url": "/MediaCoverProxy/d99c79ec8bb0262e21c9eff2fd4a25abb19de694e282b341968557143dfc4450/336832-1.jpg",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/posters/336832-1.jpg"
+      }
+    ],
+    "originalLanguage": {
+      "id": 7,
+      "name": "Dutch"
+    },
+    "remotePoster": "https://artworks.thetvdb.com/banners/posters/336832-1.jpg",
+    "seasons": [
+      {
+        "seasonNumber": 0,
+        "monitored": false
+      },
+      {
+        "seasonNumber": 1,
+        "monitored": true
+      }
+    ],
+    "year": 2010,
+    "qualityProfileId": 0,
+    "seasonFolder": false,
+    "monitored": true,
+    "monitorNewItems": "all",
+    "useSceneNumbering": false,
+    "runtime": 5,
+    "tvdbId": 336832,
+    "tvRageId": 0,
+    "tvMazeId": 0,
+    "tmdbId": 38479,
+    "firstAired": "2010-10-29T00:00:00Z",
+    "lastAired": "2010-12-24T00:00:00Z",
+    "seriesType": "standard",
+    "cleanTitle": "gooischefrieten",
+    "titleSlug": "gooische-frieten",
+    "folder": "Gooische Frieten (2010) [tvdbid-336832]",
+    "genres": [
+      "Comedy",
+      "Mini-Series"
+    ],
+    "tags": [],
+    "added": "0001-01-01T00:00:00Z",
+    "ratings": {
+      "votes": 0,
+      "value": 0
+    },
+    "statistics": {
+      "seasonCount": 1,
+      "episodeFileCount": 0,
+      "episodeCount": 0,
+      "totalEpisodeCount": 0,
+      "sizeOnDisk": 0,
+      "percentOfEpisodes": 0
+    },
+    "languageProfileId": 1
+  },
+  {
+    "title": "Fruerne uden Filter",
+    "sortTitle": "fruerne uden filter",
+    "status": "ended",
+    "ended": true,
+    "network": "Viafree",
+    "images": [],
+    "originalLanguage": {
+      "id": 1,
+      "name": "English"
+    },
+    "seasons": [
+      {
+        "seasonNumber": 0,
+        "monitored": false
+      },
+      {
+        "seasonNumber": 1,
+        "monitored": true
+      },
+      {
+        "seasonNumber": 2,
+        "monitored": true
+      }
+    ],
+    "year": 2018,
+    "qualityProfileId": 0,
+    "seasonFolder": false,
+    "monitored": true,
+    "monitorNewItems": "all",
+    "useSceneNumbering": false,
+    "runtime": 20,
+    "tvdbId": 364715,
+    "tvRageId": 0,
+    "tvMazeId": 0,
+    "tmdbId": 0,
+    "firstAired": "2018-08-30T00:00:00Z",
+    "lastAired": "2019-05-23T00:00:00Z",
+    "seriesType": "standard",
+    "cleanTitle": "fruerneudenfilter",
+    "titleSlug": "fruerne-uden-filter",
+    "folder": "Fruerne uden Filter (2018) [tvdbid-364715]",
+    "genres": [
+      "Documentary",
+      "Family"
+    ],
+    "tags": [],
+    "added": "0001-01-01T00:00:00Z",
+    "ratings": {
+      "votes": 0,
+      "value": 0
+    },
+    "statistics": {
+      "seasonCount": 2,
+      "episodeFileCount": 0,
+      "episodeCount": 0,
+      "totalEpisodeCount": 0,
+      "sizeOnDisk": 0,
+      "percentOfEpisodes": 0
+    },
+    "languageProfileId": 1
+  }
+]

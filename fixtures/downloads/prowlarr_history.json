@@ -1,0 +1,109 @@
+{
+  "page": 1,
+  "pageSize": 5,
+  "sortKey": "date",
+  "sortDirection": "descending",
+  "totalRecords": 33088,
+  "records": [
+    {
+      "indexerId": 4,
+      "date": "2026-11-08T08:43:18Z",
+      "successful": true,
+      "eventType": "indexerRss",
+      "data": {
+        "limit": "100",
+        "offset": "0",
+        "elapsedTime": "993",
+        "query": "",
+        "queryType": "tvsearch",
+        "categories": "5000,5040,5030,5070",
+        "source": "Sonarr",
+        "host": "sonarr",
+        "queryResults": "20",
+        "url": "https://1337x.to/cat/Other/1/",
+        "cached": "0"
+      },
+      "id": 491570
+    },
+    {
+      "indexerId": 4,
+      "date": "2026-11-08T08:43:18Z",
+      "successful": true,
+      "eventType": "indexerRss",
+      "data": {
+        "limit": "100",
+        "offset": "0",
+        "elapsedTime": "207",
+        "query": "",
+        "queryType": "tvsearch",
+        "categories": "5000,5040,5030,5070",
+        "source": "Sonarr",
+        "host": "sonarr",
+        "queryResults": "20",
+        "url": "https://1337x.to/cat/Music/1/",
+        "cached": "0"
+      },
+      "id": 491569
+    },
+    {
+      "indexerId": 4,
+      "date": "2026-11-08T08:43:18Z",
+      "successful": true,
+      "eventType": "indexerRss",
+      "data": {
+        "limit": "100",
+        "offset": "0",
+        "elapsedTime": "212",
+        "query": "",
+        "queryType": "tvsearch",
+        "categories": "5000,5040,5030,5070",
+        "source": "Sonarr",
+        "host": "sonarr",
+        "queryResults": "20",
+        "url": "https://1337x.to/cat/TV/1/",
+        "cached": "0"
+      },
+      "id": 491568
+    },
+    {
+      "indexerId": 4,
+      "date": "2026-11-08T08:43:18Z",
+      "successful": true,
+      "eventType": "indexerRss",
+      "data": {
+        "limit": "100",
+        "offset": "0",
+        "elapsedTime": "405",
+        "query": "",
+        "queryType": "tvsearch",
+        "categories": "5000,5040,5030,5070",
+        "source": "Sonarr",
+        "host": "sonarr",
+        "queryResults": "20",
+        "url": "https://1337x.to/cat/Movies/1/",
+        "cached": "0"
+      },
+      "id": 491567
+    },
+    {
+      "indexerId": 11,
+      "date": "2026-11-08T08:43:14Z",
+      "successful": true,
+      "eventType": "indexerRss",
+      "data": {
+        "limit": "100",
+        "offset": "0",
+        "elapsedTime": "202",
+        "query": "",
+        "queryType": "tvsearch",
+        "categories": "5000,5030,5040",
+        "source": "Sonarr",
+        "host": "sonarr",
+        "queryResults": "100",
+        "url": "https://showrss.info/other/all.rss",
+        "cached": "0"
+      },
+      "id": 491566
+    }
+  ]
+}

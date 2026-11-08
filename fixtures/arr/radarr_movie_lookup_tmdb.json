@@ -1,0 +1,114 @@
+{
+  "title": "Dune: Part Two",
+  "originalTitle": "Dune: Part Two",
+  "originalLanguage": {
+    "id": 1,
+    "name": "English"
+  },
+  "alternateTitles": [
+    {
+      "sourceType": "tmdb",
+      "movieMetadataId": 0,
+      "title": "Dune 2"
+    },
+    {
+      "sourceType": "tmdb",
+      "movieMetadataId": 0,
+      "title": "Dune: Part 2"
+    },
+    {
+      "sourceType": "tmdb",
+      "movieMetadataId": 0,
+      "title": "デューン 砂の惑星PART2"
+    },
+    {
+      "sourceType": "tmdb",
+      "movieMetadataId": 0,
+      "title": "Duna 2"
+    },
+    {
+      "sourceType": "tmdb",
+      "movieMetadataId": 0,
+      "title": "Hành Tinh Cát 2"
+    }
+  ],
+  "secondaryYearSourceId": 0,
+  "sortTitle": "dune part two",
+  "status": "released",
+  "overview": "Follow the mythic journey of Paul Atreides as he unites with Chani and the Fremen while on a path of revenge against the conspirators who destroyed his family. Facing a choice between the love of his life and the fate of the known universe, Paul endeavors to prevent a terrible future only he can foresee.",
+  "inCinemas": "2024-02-27T00:00:00Z",
+  "physicalRelease": "2024-05-14T00:00:00Z",
+  "digitalRelease": "2024-04-15T00:00:00Z",
+  "releaseDate": "2024-02-27T00:00:00Z",
+  "images": [
+    {
+      "coverType": "poster",
+      "remoteUrl": "https://image.tmdb.org/t/p/original/6izwz7rsy95ARzTR3poZ8H6c5pp.jpg"
+    },
+    {
+      "coverType": "fanart",
+      "remoteUrl": "https://image.tmdb.org/t/p/original/eZ239CUp1d6OryZEBPnO2n87gMG.jpg"
+    }
+  ],
+  "website": "https://www.warnerbros.com/movies/dune-part-two",
+  "year": 2024,
+  "youTubeTrailerId": "U2Qp5pL3ovA",
+  "studio": "Legendary Pictures",
+  "qualityProfileId": 0,
+  "movieFileId": 0,
+  "monitored": false,
+  "minimumAvailability": "tba",
+  "isAvailable": true,
+  "folderName": "",
+  "runtime": 167,
+  "cleanTitle": "duneparttwo",
+  "imdbId": "tt15239678",
+  "tmdbId": 693134,
+  "titleSlug": "693134",
+  "certification": "PG-13",
+  "genres": [
+    "Science Fiction",
+    "Adventure"
+  ],
+  "keywords": [
+    "allegorical",
+    "ambiguous",
+    "antagonistic",
+    "based on novel or book",
+    "chosen one"
+  ],
+  "tags": [],
+  "added": "0001-01-01T00:00:00Z",
+  "ratings": {
+    "imdb": {
+      "votes": 803759,
+      "value": 8.4,
+      "type": "user"
+    },
+    "tmdb": {
+      "votes": 8914,
+      "value": 8.144,
+      "type": "user"
+    },
+    "metacritic": {
+      "votes": 0,
+      "value": 79,
+      "type": "user"
+    },
+    "rottenTomatoes": {
+      "votes": 0,
+      "value": 92,
+      "type": "user"
+    },
+    "trakt": {
+      "votes": 43102,
+      "value": 8.55313,
+      "type": "user"
+    }
+  },
+  "collection": {
+    "title": "Dune Collection",
+    "tmdbId": 726871
+  },
+  "popularity": 43.7757
+}

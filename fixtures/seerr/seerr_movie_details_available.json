@@ -1,0 +1,596 @@
+{
+  "id": 818,
+  "adult": false,
+  "budget": 63000000,
+  "genres": [
+    {
+      "id": 35,
+      "name": "Comedy"
+    },
+    {
+      "id": 80,
+      "name": "Crime"
+    }
+  ],
+  "relatedVideos": [
+    {
+      "site": "YouTube",
+      "key": "ZlnbfZ8LKWc",
+      "name": "Dr. Evil Goes To Prison",
+      "size": 1080,
+      "type": "Clip",
+      "url": "https://www.youtube.com/watch?v=ZlnbfZ8LKWc"
+    },
+    {
+      "site": "YouTube",
+      "key": "JuOVbayBr0I",
+      "name": "Austin Powers in Goldmember (2002) Original Trailer [FHD]",
+      "size": 1080,
+      "type": "Trailer",
+      "url": "https://www.youtube.com/watch?v=JuOVbayBr0I"
+    }
+  ],
+  "originalLanguage": "en",
+  "originalTitle": "Austin Powers in Goldmember",
+  "popularity": 6.2022,
+  "productionCompanies": [
+    {
+      "id": 595,
+      "name": "Eric's Boy",
+      "originCountry": "US",
+      "logoPath": null
+    },
+    {
+      "id": 12,
+      "name": "New Line Cinema",
+      "originCountry": "US",
+      "logoPath": "/2ycs64eqV5rqKYHyQK0GVoKGvfX.png"
+    },
+    {
+      "id": 598,
+      "name": "Team Todd",
+      "originCountry": "US",
+      "logoPath": null
+    },
+    {
+      "id": 52943,
+      "name": "Gratitude International",
+      "originCountry": "US",
+      "logoPath": null
+    },
+    {
+      "id": 15888,
+      "name": "Moving Pictures",
+      "originCountry": "US",
+      "logoPath": "/zXjrBipljpiBkfPCcjPWI2zYoh8.png"
+    }
+  ],
+  "productionCountries": [
+    {
+      "iso_3166_1": "US",
+      "name": "United States of America"
+    }
+  ],
+  "releaseDate": "2002-07-26",
+  "releases": {
+    "results": [
+      {
+        "iso_3166_1": "AR",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2002-09-25T00:00:00.000Z",
+            "type": 1
+          },
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2002-09-26T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "AT",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2002-10-25T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "AU",
+        "release_dates": [
+          {
+            "certification": "M",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2002-09-19T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "BE",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2002-10-23T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "BG",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2002-10-04T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      }
+    ]
+  },
+  "revenue": 296938801,
+  "spokenLanguages": [
+    {
+      "english_name": "English",
+      "iso_639_1": "en",
+      "name": "English"
+    },
+    {
+      "english_name": "Japanese",
+      "iso_639_1": "ja",
+      "name": "日本語"
+    },
+    {
+      "english_name": "German",
+      "iso_639_1": "de",
+      "name": "Deutsch"
+    },
+    {
+      "english_name": "French",
+      "iso_639_1": "fr",
+      "name": "Français"
+    }
+  ],
+  "status": "Released",
+  "title": "Austin Powers in Goldmember",
+  "video": false,
+  "voteAverage": 6.024,
+  "voteCount": 3602,
+  "backdropPath": "/kuPpElzfYnzsCye0hF8EbJSrvwo.jpg",
+  "homepage": "https://www.warnerbros.com/movies/austin-powers-goldmember",
+  "imdbId": "tt0295178",
+  "overview": "The world's most shagadelic spy continues his fight against Dr. Evil. This time, the diabolical doctor and his clone, Mini-Me, team up with a new foe—'70s kingpin Goldmember. While pursuing the team of villains to stop them from world domination, Austin gets help from his dad and an old girlfriend.",
+  "posterPath": "/n8V61f1v7idya4WJzGEJNoIp9iL.jpg",
+  "runtime": 94,
+  "tagline": "The grooviest movie of the summer has a secret, baby!",
+  "credits": {
+    "cast": [
+      {
+        "castId": 29,
+        "character": "Austin Powers / Dr. Evil / Goldmember / Fat Bastard",
+        "creditId": "52fe427bc3a36847f8022183",
+        "id": 12073,
+        "name": "Mike Myers",
+        "order": 0,
+        "gender": 2,
+        "profilePath": "/gjfDl52Kk02MPgUYFjs9bOy33OY.jpg"
+      },
+      {
+        "castId": 33,
+        "character": "Foxxy Cleopatra",
+        "creditId": "52fe427bc3a36847f8022187",
+        "id": 14386,
+        "name": "Beyoncé",
+        "order": 1,
+        "gender": 1,
+        "profilePath": "/2HbjNtiCtmbArEnELuDFU7knaVK.jpg"
+      },
+      {
+        "castId": 34,
+        "character": "Scott Evil",
+        "creditId": "52fe427bc3a36847f802218b",
+        "id": 13922,
+        "name": "Seth Green",
+        "order": 2,
+        "gender": 2,
+        "profilePath": "/l4No5Eu6j0U80hCIkaSn17AOWrj.jpg"
+      },
+      {
+        "castId": 35,
+        "character": "Basil Exposition",
+        "creditId": "52fe427bc3a36847f802218f",
+        "id": 13919,
+        "name": "Michael York",
+        "order": 3,
+        "gender": 2,
+        "profilePath": "/ha9Nh8We778sUg8QyDE1IRATzDY.jpg"
+      },
+      {
+        "castId": 45,
+        "character": "Number Two",
+        "creditId": "52fe427bc3a36847f80221bb",
+        "id": 9208,
+        "name": "Robert Wagner",
+        "order": 4,
+        "gender": 2,
+        "profilePath": "/dgIN3MrOfX8Q4pzchO58dhMgrFb.jpg"
+      }
+    ],
+    "crew": [
+      {
+        "creditId": "52fe427bc3a36847f8022143",
+        "department": "Production",
+        "id": 546,
+        "job": "Casting",
+        "name": "Jeanne McCarthy",
+        "gender": 1,
+        "profilePath": null
+      },
+      {
+        "creditId": "52fe427bc3a36847f8022119",
+        "department": "Sound",
+        "id": 9204,
+        "job": "Original Music Composer",
+        "name": "George S. Clinton",
+        "gender": 2,
+        "profilePath": "/tdJbE5zJV037lc2RwIRWv0cCJpZ.jpg"
+      },
+      {
+        "creditId": "52fe427bc3a36847f802214f",
+        "department": "Art",
+        "id": 14378,
+        "job": "Art Direction",
+        "name": "Drew Boughton",
+        "gender": 2,
+        "profilePath": null
+      },
+      {
+        "creditId": "52fe427bc3a36847f80220ef",
+        "department": "Writing",
+        "id": 12073,
+        "job": "Screenplay",
+        "name": "Mike Myers",
+        "gender": 2,
+        "profilePath": "/gjfDl52Kk02MPgUYFjs9bOy33OY.jpg"
+      },
+      {
+        "creditId": "52fe427bc3a36847f80220e9",
+        "department": "Directing",
+        "id": 6737,
+        "job": "Director",
+        "name": "Jay Roach",
+        "gender": 2,
+        "profilePath": "/48uTxNDRlnP56quVewyByotKAen.jpg"
+      }
+    ]
+  },
+  "collection": {
+    "id": 1006,
+    "name": "Austin Powers Collection",
+    "posterPath": "/1PkGnyFwRyapmbuILIOXXxiSh7Y.jpg",
+    "backdropPath": "/2YHoBMDWa2IwEssDlUs6G2qWVpR.jpg"
+  },
+  "externalIds": {
+    "facebookId": null,
+    "imdbId": "tt0295178",
+    "instagramId": null,
+    "twitterId": null
+  },
+  "mediaInfo": {
+    "downloadStatus": [],
+    "downloadStatus4k": [],
+    "id": 427,
+    "mediaType": "movie",
+    "tmdbId": 818,
+    "tvdbId": null,
+    "imdbId": "tt0295178",
+    "status": 5,
+    "status4k": 1,
+    "createdAt": "2026-10-24T16:06:38.000Z",
+    "updatedAt": "2026-10-24T17:30:00.000Z",
+    "lastSeasonChange": "2026-10-24T16:06:38.000Z",
+    "mediaAddedAt": "2026-10-24T17:27:20.359Z",
+    "serviceId": 0,
+    "serviceId4k": null,
+    "externalServiceId": 263,
+    "externalServiceId4k": null,
+    "externalServiceSlug": "818",
+    "externalServiceSlug4k": null,
+    "ratingKey": null,
+    "ratingKey4k": null,
+    "jellyfinMediaId": "2c9be43f2af318954f1dac93bc87b209",
+    "jellyfinMediaId4k": null,
+    "requests": [
+      {
+        "id": 195,
+        "status": 5,
+        "createdAt": "2026-10-24T16:06:38.000Z",
+        "updatedAt": "2026-10-24T17:30:00.000Z",
+        "type": "movie",
+        "is4k": false,
+        "serverId": null,
+        "profileId": null,
+        "rootFolder": null,
+        "languageProfileId": null,
+        "tags": null,
+        "isAutoRequest": false,
+        "ignoreQuota": false,
+        "media": {
+          "downloadStatus": [],
+          "downloadStatus4k": [],
+          "id": 427,
+          "mediaType": "movie",
+          "tmdbId": 818,
+          "tvdbId": null,
+          "imdbId": "tt0295178",
+          "status": 5,
+          "status4k": 1,
+          "createdAt": "2026-10-24T16:06:38.000Z",
+          "updatedAt": "2026-10-24T17:30:00.000Z",
+          "lastSeasonChange": "2026-10-24T16:06:38.000Z",
+          "mediaAddedAt": "2026-10-24T17:27:20.359Z",
+          "serviceId": 0,
+          "serviceId4k": null,
+          "externalServiceId": 263,
+          "externalServiceId4k": null,
+          "externalServiceSlug": "818",
+          "externalServiceSlug4k": null,
+          "ratingKey": null,
+          "ratingKey4k": null,
+          "jellyfinMediaId": "2c9be43f2af318954f1dac93bc87b209",
+          "jellyfinMediaId4k": null,
+          "mediaUrl": "http://192.168.10.183:8096/web/index.html#!/details?id=2c9be43f2af318954f1dac93bc87b209&context=home&serverId=79315eab3c4c401f8391d5c26210b6d7",
+          "serviceUrl": "http://radarr:7878/movie/818"
+        },
+        "requestedBy": {
+          "permissions": 2,
+          "warnings": [],
+          "id": 1,
+          "plexUsername": null,
+          "jellyfinUsername": "Paul Greyrat",
+          "username": null,
+          "recoveryLinkExpirationDate": null,
+          "userType": 3,
+          "jellyfinUserId": "4c0628aacef24bdfacd40f946ea33ee7",
+          "avatar": "/avatarproxy/4c0628aacef24bdfacd40f946ea33ee7?v=1791693617000",
+          "avatarETag": "16b7af80243e8107605f38a62a9fc4271e95b67189183e19d41c2cf296a373e9",
+          "avatarVersion": "1791693617000",
+          "movieQuotaLimit": null,
+          "movieQuotaDays": null,
+          "tvQuotaLimit": null,
+          "tvQuotaDays": null,
+          "createdAt": "2026-02-03T20:09:10.000Z",
+          "updatedAt": "2026-10-11T04:40:17.000Z",
+          "requestCount": 125,
+          "displayName": "Paul Greyrat"
+        },
+        "modifiedBy": {
+          "permissions": 2,
+          "warnings": [],
+          "id": 1,
+          "plexUsername": null,
+          "jellyfinUsername": "Paul Greyrat",
+          "username": null,
+          "recoveryLinkExpirationDate": null,
+          "userType": 3,
+          "jellyfinUserId": "4c0628aacef24bdfacd40f946ea33ee7",
+          "avatar": "/avatarproxy/4c0628aacef24bdfacd40f946ea33ee7?v=1791693617000",
+          "avatarETag": "16b7af80243e8107605f38a62a9fc4271e95b67189183e19d41c2cf296a373e9",
+          "avatarVersion": "1791693617000",
+          "movieQuotaLimit": null,
+          "movieQuotaDays": null,
+          "tvQuotaLimit": null,
+          "tvQuotaDays": null,
+          "createdAt": "2026-02-03T20:09:10.000Z",
+          "updatedAt": "2026-10-11T04:40:17.000Z",
+          "requestCount": 125,
+          "displayName": "Paul Greyrat"
+        },
+        "seasons": [],
+        "seasonCount": 0
+      }
+    ],
+    "issues": [],
+    "seasons": [],
+    "mediaUrl": "http://192.168.10.183:8096/web/index.html#!/details?id=2c9be43f2af318954f1dac93bc87b209&context=home&serverId=79315eab3c4c401f8391d5c26210b6d7",
+    "serviceUrl": "http://radarr:7878/movie/818"
+  },
+  "watchProviders": [
+    {
+      "iso_3166_1": "AD",
+      "link": "https://www.themoviedb.org/movie/818-austin-powers-in-goldmember/watch?locale=AD",
+      "buy": [],
+      "flatrate": [
+        {
+          "displayPriority": 2,
+          "logoPath": "/gMZdpavHmxFNnLpMHwVxfqeux2g.png",
+          "id": 119,
+          "name": "Amazon Prime Video"
+        }
+      ]
+    },
+    {
+      "iso_3166_1": "AR",
+      "link": "https://www.themoviedb.org/movie/818-austin-powers-in-goldmember/watch?locale=AR",
+      "buy": [
+        {
+          "displayPriority": 5,
+          "logoPath": "/qdEGArH3lKfFnAtYXMkSYk5wxuG.png",
+          "id": 2,
+          "name": "Apple TV Store"
+        }
+      ],
+      "flatrate": []
+    },
+    {
+      "iso_3166_1": "AT",
+      "link": "https://www.themoviedb.org/movie/818-austin-powers-in-goldmember/watch?locale=AT",
+      "buy": [
+        {
+          "displayPriority": 5,
+          "logoPath": "/jn6TLbtaTZntTRX9UYucHJvpQx1.png",
+          "id": 10,
+          "name": "Amazon Video"
+        },
+        {
+          "displayPriority": 6,
+          "logoPath": "/qdEGArH3lKfFnAtYXMkSYk5wxuG.png",
+          "id": 2,
+          "name": "Apple TV Store"
+        },
+        {
+          "displayPriority": 10,
+          "logoPath": "/872dfVu1biZISJ8rO143CZZutPR.png",
+          "id": 35,
+          "name": "Rakuten TV"
+        },
+        {
+          "displayPriority": 15,
+          "logoPath": "/mjB4eyswPoC0XeJPUd1W1oitOlh.png",
+          "id": 20,
+          "name": "maxdome Store"
+        },
+        {
+          "displayPriority": 19,
+          "logoPath": "/nNkZ1JKe6vNhzti14KiKEUWHE6H.png",
+          "id": 130,
+          "name": "Sky Store"
+        }
+      ],
+      "flatrate": [
+        {
+          "displayPriority": 150,
+          "logoPath": "/64fLWeSyZ1KQZhIdvTdy4QHeWty.png",
+          "id": 1825,
+          "name": "HBO Max Amazon Channel"
+        },
+        {
+          "displayPriority": 151,
+          "logoPath": "/skypuy7SXuugIQeYg0IglmzoKaS.png",
+          "id": 1899,
+          "name": "HBO Max"
+        }
+      ]
+    },
+    {
+      "iso_3166_1": "AU",
+      "link": "https://www.themoviedb.org/movie/818-austin-powers-in-goldmember/watch?locale=AU",
+      "buy": [
+        {
+          "displayPriority": 15,
+          "logoPath": "/qdEGArH3lKfFnAtYXMkSYk5wxuG.png",
+          "id": 2,
+          "name": "Apple TV Store"
+        },
+        {
+          "displayPriority": 16,
+          "logoPath": "/jn6TLbtaTZntTRX9UYucHJvpQx1.png",
+          "id": 10,
+          "name": "Amazon Video"
+        },
+        {
+          "displayPriority": 32,
+          "logoPath": "/hFTUerTxMwrM9RIo9z48qxCsi7z.png",
+          "id": 436,
+          "name": "Fetch TV"
+        }
+      ],
+      "flatrate": [
+        {
+          "displayPriority": 91,
+          "logoPath": "/skypuy7SXuugIQeYg0IglmzoKaS.png",
+          "id": 1899,
+          "name": "HBO Max"
+        },
+        {
+          "displayPriority": 103,
+          "logoPath": "/64fLWeSyZ1KQZhIdvTdy4QHeWty.png",
+          "id": 1825,
+          "name": "HBO Max Amazon Channel"
+        }
+      ]
+    },
+    {
+      "iso_3166_1": "BE",
+      "link": "https://www.themoviedb.org/movie/818-austin-powers-in-goldmember/watch?locale=BE",
+      "buy": [
+        {
+          "displayPriority": 8,
+          "logoPath": "/qdEGArH3lKfFnAtYXMkSYk5wxuG.png",
+          "id": 2,
+          "name": "Apple TV Store"
+        },
+        {
+          "displayPriority": 32,
+          "logoPath": "/jn6TLbtaTZntTRX9UYucHJvpQx1.png",
+          "id": 10,
+          "name": "Amazon Video"
+        }
+      ],
+      "flatrate": [
+        {
+          "displayPriority": 2,
+          "logoPath": "/gMZdpavHmxFNnLpMHwVxfqeux2g.png",
+          "id": 119,
+          "name": "Amazon Prime Video"
+        },
+        {
+          "displayPriority": 36,
+          "logoPath": "/skypuy7SXuugIQeYg0IglmzoKaS.png",
+          "id": 1899,
+          "name": "HBO Max"
+        },
+        {
+          "displayPriority": 59,
+          "logoPath": "/64fLWeSyZ1KQZhIdvTdy4QHeWty.png",
+          "id": 1825,
+          "name": "HBO Max Amazon Channel"
+        }
+      ]
+    }
+  ],
+  "keywords": [
+    {
+      "id": 1321,
+      "name": "gold"
+    },
+    {
+      "id": 720,
+      "name": "helicopter"
+    },
+    {
+      "id": 380,
+      "name": "sibling relationship"
+    },
+    {
+      "id": 83,
+      "name": "saving the world"
+    },
+    {
+      "id": 339,
+      "name": "submarine"
+    }
+  ],
+  "onUserWatchlist": false
+}

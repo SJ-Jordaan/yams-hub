@@ -1,0 +1,18 @@
+[
+  {
+    "label": "flaresolverr",
+    "notificationIds": [],
+    "indexerIds": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "indexerProxyIds": [
+      1
+    ],
+    "applicationIds": [],
+    "id": 1
+  }
+]

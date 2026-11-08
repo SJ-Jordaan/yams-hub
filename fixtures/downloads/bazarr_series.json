@@ -1,0 +1,67 @@
+{
+  "data": [
+    {
+      "alternativeTitles": [
+        "Eine himmlische Familie"
+      ],
+      "audio_language": [],
+      "created_at_timestamp": "2026-08-23 13:16:53.533260",
+      "episodeFileCount": 0,
+      "ended": true,
+      "episodeMissingCount": 0,
+      "fanart": "/images/series/MediaCover/157/fanart.jpg",
+      "imdbId": "tt0115083",
+      "lastAired": "2007-05-13",
+      "monitored": true,
+      "overview": "Reverend Eric Camden and his wife Annie have always had their hands full caring for seven children, not to mention the friends, sweethearts and spouses that continually come and go in the Camden house. As is often the case when the house is overflowing with Camdens, Eric and Annie are in for a bumpy ride as their children take landmark steps in their lives. Meanwhile, Eric and Annie continue their journey as soul mates, parents and grandparents whose love and respect for each other brings them ever closer. Through all the ups and downs, Eric and Annie have managed to keep their romance alive and their family together.",
+      "path": "/data/tvshows/7th Heaven (1996) [tvdbid-73928]",
+      "poster": "/images/series/MediaCover/157/poster-250.jpg",
+      "profileId": 1,
+      "seriesType": "standard",
+      "sonarrSeriesId": 157,
+      "tags": [],
+      "title": "7th Heaven",
+      "tvdbId": 73928,
+      "year": "1996"
+    },
+    {
+      "alternativeTitles": [
+        "Ano Hi Mita Hana no Namae o Bokutachi wa Mada Shiranai",
+        "あの日見た花の名前を僕達はまだ知らない",
+        "AnoHana",
+        "Ano Hi Mita Hana no Namae wo Bokutachi wa Mada Shiranai"
+      ],
+      "audio_language": [
+        {
+          "name": "Japanese",
+          "code2": "ja",
+          "code3": "jpn"
+        },
+        {
+          "name": "English",
+          "code2": "en",
+          "code3": "eng"
+        }
+      ],
+      "created_at_timestamp": "2026-07-01 19:46:24.987853",
+      "episodeFileCount": 11,
+      "ended": true,
+      "episodeMissingCount": 0,
+      "fanart": "/images/series/MediaCover/151/fanart.jpg",
+      "imdbId": "tt1913273",
+      "lastAired": "2011-06-24",
+      "monitored": true,
+      "overview": "Jinta Yadomi and his group of childhood friends have become estranged after a tragic accident split them apart. Now in their high school years, a sudden surprise forces each of them to confront their guilt over what happened that day and come to terms with the ghosts of their past.",
+      "path": "/data/tvshows/Anohana - The Flower We Saw That Day (2011) [tvdbid-247958]",
+      "poster": "/images/series/MediaCover/151/poster-250.jpg",
+      "profileId": 1,
+      "seriesType": "anime",
+      "sonarrSeriesId": 151,
+      "tags": [],
+      "title": "Anohana: The Flower We Saw That Day",
+      "tvdbId": 247958,
+      "year": "2011"
+    }
+  ],
+  "total": 71
+}

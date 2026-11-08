@@ -1,0 +1,108 @@
+{
+  "indexers": [
+    {
+      "indexerId": 3,
+      "indexerName": "EZTV",
+      "averageResponseTime": 884,
+      "averageGrabResponseTime": 0,
+      "numberOfQueries": 38,
+      "numberOfGrabs": 0,
+      "numberOfRssQueries": 1842,
+      "numberOfAuthQueries": 0,
+      "numberOfFailedQueries": 0,
+      "numberOfFailedGrabs": 0,
+      "numberOfFailedRssQueries": 0,
+      "numberOfFailedAuthQueries": 0
+    },
+    {
+      "indexerId": 2,
+      "indexerName": "The Pirate Bay",
+      "averageResponseTime": 244,
+      "averageGrabResponseTime": 0,
+      "numberOfQueries": 42,
+      "numberOfGrabs": 3,
+      "numberOfRssQueries": 2787,
+      "numberOfAuthQueries": 0,
+      "numberOfFailedQueries": 0,
+      "numberOfFailedGrabs": 0,
+      "numberOfFailedRssQueries": 3,
+      "numberOfFailedAuthQueries": 0
+    },
+    {
+      "indexerId": 4,
+      "indexerName": "1337x",
+      "averageResponseTime": 501,
+      "averageGrabResponseTime": 0,
+      "numberOfQueries": 605,
+      "numberOfGrabs": 8,
+      "numberOfRssQueries": 11108,
+      "numberOfAuthQueries": 0,
+      "numberOfFailedQueries": 0,
+      "numberOfFailedGrabs": 0,
+      "numberOfFailedRssQueries": 0,
+      "numberOfFailedAuthQueries": 0
+    },
+    {
+      "indexerId": 5,
+      "indexerName": "Nyaa.si",
+      "averageResponseTime": 557,
+      "averageGrabResponseTime": 0,
+      "numberOfQueries": 510,
+      "numberOfGrabs": 60,
+      "numberOfRssQueries": 5566,
+      "numberOfAuthQueries": 0,
+      "numberOfFailedQueries": 0,
+      "numberOfFailedGrabs": 0,
+      "numberOfFailedRssQueries": 0,
+      "numberOfFailedAuthQueries": 0
+    },
+    {
+      "indexerId": 8,
+      "indexerName": "Bangumi Moe",
+      "averageResponseTime": 607,
+      "averageGrabResponseTime": 0,
+      "numberOfQueries": 215,
+      "numberOfGrabs": 0,
+      "numberOfRssQueries": 2784,
+      "numberOfAuthQueries": 0,
+      "numberOfFailedQueries": 0,
+      "numberOfFailedGrabs": 0,
+      "numberOfFailedRssQueries": 4,
+      "numberOfFailedAuthQueries": 0
+    }
+  ],
+  "userAgents": [
+    {
+      "userAgent": "Sonarr",
+      "numberOfQueries": 23655,
+      "numberOfGrabs": 69
+    },
+    {
+      "userAgent": "Radarr",
+      "numberOfQueries": 9305,
+      "numberOfGrabs": 11
+    },
+    {
+      "userAgent": "Lidarr",
+      "numberOfQueries": 48,
+      "numberOfGrabs": 0
+    }
+  ],
+  "hosts": [
+    {
+      "host": "sonarr",
+      "numberOfQueries": 23655,
+      "numberOfGrabs": 69
+    },
+    {
+      "host": "radarr",
+      "numberOfQueries": 9305,
+      "numberOfGrabs": 11
+    },
+    {
+      "host": "lidarr",
+      "numberOfQueries": 48,
+      "numberOfGrabs": 0
+    }
+  ]
+}

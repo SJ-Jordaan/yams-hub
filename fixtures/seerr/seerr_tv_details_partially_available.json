@@ -1,0 +1,624 @@
+{
+  "createdBy": [
+    {
+      "id": 2152,
+      "credit_id": "525803dd19c29531db38c17a",
+      "name": "Alan Ball",
+      "original_name": "Alan Ball",
+      "gender": 2,
+      "profile_path": "/jCYOYfFa6u0mX1oehnCTeDvpIK8.jpg"
+    }
+  ],
+  "episodeRunTime": [
+    60,
+    52
+  ],
+  "firstAirDate": "2008-09-07",
+  "genres": [
+    {
+      "id": 10765,
+      "name": "Sci-Fi & Fantasy"
+    },
+    {
+      "id": 18,
+      "name": "Drama"
+    },
+    {
+      "id": 9648,
+      "name": "Mystery"
+    }
+  ],
+  "relatedVideos": [
+    {
+      "site": "YouTube",
+      "key": "3Wk3HSiX-vQ",
+      "name": "Official HBO UK Trailer",
+      "size": 1080,
+      "type": "Trailer",
+      "url": "https://www.youtube.com/watch?v=3Wk3HSiX-vQ"
+    }
+  ],
+  "homepage": "http://www.hbo.com/trueblood/",
+  "id": 10545,
+  "inProduction": false,
+  "languages": [
+    "en"
+  ],
+  "lastAirDate": "2014-08-24",
+  "name": "True Blood",
+  "networks": [
+    {
+      "id": 49,
+      "name": "HBO",
+      "originCountry": "US",
+      "logoPath": "/tuomPhY2UtuPTqqFnKMVHvSb724.png"
+    }
+  ],
+  "numberOfEpisodes": 80,
+  "numberOfSeasons": 7,
+  "originCountry": [
+    "US"
+  ],
+  "originalLanguage": "en",
+  "originalName": "True Blood",
+  "tagline": "Thou shall not crave thy neighbor.",
+  "overview": "Thanks to a Japanese scientist's invention of synthetic blood, vampires have progressed overnight from legendary monsters to fellow citizens. And while humans have been safely removed from the menu, many remain apprehensive about these creatures \"coming out of the coffin.\" Religious leaders, government officials, and vampire fundamentalists around the world have chosen their sides.  But in the small Louisiana town of Bon Temps, the jury is still out.",
+  "popularity": 47.4084,
+  "productionCompanies": [
+    {
+      "id": 25091,
+      "name": "Your Face Goes Here Entertainment",
+      "originCountry": "US",
+      "logoPath": "/o6gbtykEDlBTKXnBgo2iRI7yLXp.png"
+    },
+    {
+      "id": 3268,
+      "name": "HBO",
+      "originCountry": "US",
+      "logoPath": "/tuomPhY2UtuPTqqFnKMVHvSb724.png"
+    }
+  ],
+  "productionCountries": [
+    {
+      "iso_3166_1": "SG",
+      "name": "Singapore"
+    },
+    {
+      "iso_3166_1": "US",
+      "name": "United States of America"
+    }
+  ],
+  "contentRatings": {
+    "results": [
+      {
+        "descriptors": [],
+        "iso_3166_1": "DE",
+        "rating": "18"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "US",
+        "rating": "TV-MA"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "GB",
+        "rating": "18"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "BR",
+        "rating": "18"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "LT",
+        "rating": "S"
+      }
+    ]
+  },
+  "spokenLanguages": [
+    {
+      "englishName": "English",
+      "iso_639_1": "en",
+      "name": "English"
+    }
+  ],
+  "seasons": [
+    {
+      "airDate": "2008-06-16",
+      "episodeCount": 18,
+      "id": 20782,
+      "name": "Specials",
+      "overview": "",
+      "seasonNumber": 0,
+      "posterPath": "/fgdCMAuRSUQAJUbPv4XWuAynTAb.jpg"
+    },
+    {
+      "airDate": "2008-09-07",
+      "episodeCount": 12,
+      "id": 20777,
+      "name": "Season 1",
+      "overview": "The first season of the American television drama series True Blood premiered on September 7, 2008 and concluded on November 23, 2008. It consists of 12 episodes, each running approximately 55 minutes in length and was, for the most part, based on the novel Dead Until Dark, the first entry in The Southern Vampire Mysteries by Charlaine Harris. The story takes place in the fictional town of Bon Temps, Louisiana, two years after vampires have made their presence known to mankind, and follows telepathic waitress Sookie Stackhouse as she attempts to solve a series of murders that seem to be motivated by a hatred of vampires.\n\nHBO broadcast the first season on Sunday nights at 9:00 pm in the United States, with a repeat showing at 11:00 pm. The complete first season was released on DVD and Blu-ray on May 19, 2009.",
+      "seasonNumber": 1,
+      "posterPath": "/cqAeEBqp5MjbbNtRkqsJsQe813b.jpg"
+    },
+    {
+      "airDate": "2009-06-14",
+      "episodeCount": 12,
+      "id": 20778,
+      "name": "Season 2",
+      "overview": "The second season of the television series True Blood commenced airing in the United States on June 14, 2009, concluded on September 13, 2009, and contains 12 episodes. It is loosely based on the second novel of The Southern Vampire Mysteries, Living Dead in Dallas.\n\nThe second season explores telepath Sookie Stackhouse's relationship with her vampire lover, Bill Compton. It also introduces a number of sub-plots involving the anti-vampire Fellowship of the Sun church and Jason Stackhouse's indoctrination into the church by its leaders, Rev Steve Newlin and his wife Sarah. It also expands the role of Maryann Forrester, a powerful supernatural creature, who slowly gains control over the people of Bon Temps. Sookie and Bill travel to Dallas to help Eric find his maker, a two-thousand-year-old vampire named Godric, who has gone missing and is believed to have been kidnapped by the Fellowship of the Sun.",
+      "seasonNumber": 2,
+      "posterPath": "/30BHF9BZzIP20qBthohXrpoZdjf.jpg"
+    },
+    {
+      "airDate": "2010-06-13",
+      "episodeCount": 12,
+      "id": 20779,
+      "name": "Season 3",
+      "overview": "The third season of the television series True Blood premiered on June 13, 2010 simultaneously on HBO and HBO Canada. It concluded its run on September 12, 2010 and contained 12 episodes, bringing the series total to 36. It loosely follows the plot of the third novel of The Southern Vampire Mysteries series, Club Dead.",
+      "seasonNumber": 3,
+      "posterPath": "/cdI1mIB2OMmr7qfVsTwDdh1YJYK.jpg"
+    },
+    {
+      "airDate": "2011-06-26",
+      "episodeCount": 12,
+      "id": 20780,
+      "name": "Season 4",
+      "overview": "The fourth season of the television series True Blood contains 12 episodes, bringing the series total to 48. The season premiered on June 26, 2011. Though the storyline picks twelve and a half months after the events of season three; the season still begins immediately after final scene of \"Evil Is Going On\". It is loosely based on the fourth novel in The Southern Vampire Mysteries series, Dead to the World.",
+      "seasonNumber": 4,
+      "posterPath": "/cOlpCr4yfHlbtW61kc1pUMfZMh.jpg"
+    },
+    {
+      "airDate": "2012-06-10",
+      "episodeCount": 12,
+      "id": 20781,
+      "name": "Season 5",
+      "overview": "The fifth season of the HBO supernatural drama series True Blood premiered on June 10, 2012 and features twelve episodes, bringing the series total to 60. It picks up right after the events of season four. It is loosely based on the fifth book in The Southern Vampire Mysteries series, Dead as a Doornail, but incorporates much more of the following books than the previous seasons have.",
+      "seasonNumber": 5,
+      "posterPath": "/i2IthyxVPEtGKiADbYEho4l2io7.jpg"
+    },
+    {
+      "airDate": "2013-06-16",
+      "episodeCount": 10,
+      "id": 20783,
+      "name": "Season 6",
+      "overview": "The sixth season of the HBO supernatural drama series True Blood premiered on June 16, 2013. The season had an abbreviated run of ten episodes, as opposed to the usual twelve, partially to accommodate the pregnancy of lead actress Anna Paquin. It is also the first season not to be primarily based on the corresponding novel in The Southern Vampire Mysteries series, instead taking elements from multiple books in the series.",
+      "seasonNumber": 6,
+      "posterPath": "/lwrFcmI9FdXNUFu5htaVkB38Wr8.jpg"
+    },
+    {
+      "airDate": "2014-06-22",
+      "episodeCount": 10,
+      "id": 20784,
+      "name": "Season 7",
+      "overview": "",
+      "seasonNumber": 7,
+      "posterPath": "/lpjC9iLPr6QGorJmsZEN9f4Io6u.jpg"
+    }
+  ],
+  "status": "Ended",
+  "type": "Scripted",
+  "voteAverage": 7.604,
+  "voteCount": 2179,
+  "backdropPath": "/nGhC6P0lgcrY57NRB9nweu4nWaK.jpg",
+  "lastEpisodeToAir": {
+    "id": 989976,
+    "airDate": "2014-08-24",
+    "episodeNumber": 10,
+    "name": "Thank You",
+    "overview": "Sookie weighs a future with and without Bill. Eric and Pam struggle with their uncomfortable partnership with Mr. Gus. Sam makes a choice, while Andy comes upon an unexpected inheritance. Series Finale.",
+    "productionCode": "",
+    "seasonNumber": 7,
+    "showId": 10545,
+    "voteAverage": 5.381,
+    "voteCount": 21,
+    "stillPath": "/sLlG9aFpgKFFznFvEayLq8e9I2j.jpg"
+  },
+  "posterPath": "/ktEp6fzL4xzCWsSVtrcH8JaQNQy.jpg",
+  "credits": {
+    "cast": [
+      {
+        "character": "Sookie Stackhouse",
+        "creditId": "525803d719c29531db38b974",
+        "id": 10690,
+        "name": "Anna Paquin",
+        "order": 0,
+        "gender": 1,
+        "profilePath": "/5FjBCsn3kujldP8LizoCrc3hsHp.jpg"
+      },
+      {
+        "character": "Bill Compton",
+        "creditId": "525803d719c29531db38b9aa",
+        "id": 32203,
+        "name": "Stephen Moyer",
+        "order": 1,
+        "gender": 2,
+        "profilePath": "/rQDODAKYgDGSXAShNHMmGGOJI35.jpg"
+      },
+      {
+        "character": "Eric Northman",
+        "creditId": "525803d719c29531db38ba4e",
+        "id": 28846,
+        "name": "Alexander Skarsgård",
+        "order": 2,
+        "gender": 2,
+        "profilePath": "/6VNNddrSrIVgdzhXr4Zg89gmOzY.jpg"
+      },
+      {
+        "character": "Sam Merlotte",
+        "creditId": "525803d719c29531db38b9e0",
+        "id": 131006,
+        "name": "Sam Trammell",
+        "order": 3,
+        "gender": 2,
+        "profilePath": "/nt4uogoUsX3gR3kUcxuEZzsonep.jpg"
+      },
+      {
+        "character": "Jason Stackhouse",
+        "creditId": "525803d719c29531db38ba16",
+        "id": 133212,
+        "name": "Ryan Kwanten",
+        "order": 4,
+        "gender": 2,
+        "profilePath": "/vvbEabUWIeaHMBA2wrUChiLTjch.jpg"
+      }
+    ],
+    "crew": [
+      {
+        "creditId": "69decf1388be2ad9c8012431",
+        "department": "Production",
+        "id": 1215784,
+        "job": "Executive Producer",
+        "name": "Brian Buckner",
+        "gender": 2,
+        "profilePath": null
+      },
+      {
+        "creditId": "525803e019c29531db38c350",
+        "department": "Production",
+        "id": 15802,
+        "job": "Executive Producer",
+        "name": "Gregg Fienberg",
+        "gender": 2,
+        "profilePath": null
+      },
+      {
+        "creditId": "6a977164064d8040bfccec14",
+        "department": "Sound",
+        "id": 1619480,
+        "job": "Music Supervisor",
+        "name": "Gary Calamar",
+        "gender": 2,
+        "profilePath": null
+      },
+      {
+        "creditId": "525803e019c29531db38c2da",
+        "department": "Production",
+        "id": 2152,
+        "job": "Executive Producer",
+        "name": "Alan Ball",
+        "gender": 2,
+        "profilePath": "/jCYOYfFa6u0mX1oehnCTeDvpIK8.jpg"
+      },
+      {
+        "creditId": "55701531c3a3680187000ffe",
+        "department": "Art",
+        "id": 1473799,
+        "job": "Production Design",
+        "name": "Suzuki Ingerslev",
+        "gender": 1,
+        "profilePath": null
+      }
+    ]
+  },
+  "externalIds": {
+    "facebookId": "TrueBlood",
+    "freebaseId": "/en/true_blood",
+    "freebaseMid": "/m/02pqs8l",
+    "imdbId": "tt0844441",
+    "instagramId": "truebloodhbo",
+    "tvdbId": 82283,
+    "tvrageId": 12662,
+    "twitterId": "TrueBloodHBO"
+  },
+  "keywords": [
+    {
+      "id": 818,
+      "name": "based on novel or book"
+    },
+    {
+      "id": 1415,
+      "name": "small town"
+    },
+    {
+      "id": 2710,
+      "name": "fairy"
+    },
+    {
+      "id": 3133,
+      "name": "vampire"
+    },
+    {
+      "id": 3134,
+      "name": "louisiana"
+    }
+  ],
+  "mediaInfo": {
+    "downloadStatus": [],
+    "downloadStatus4k": [],
+    "id": 409,
+    "mediaType": "tv",
+    "tmdbId": 10545,
+    "tvdbId": 82283,
+    "imdbId": null,
+    "status": 4,
+    "status4k": 1,
+    "createdAt": "2026-07-01T19:35:25.000Z",
+    "updatedAt": "2026-11-08T03:00:21.000Z",
+    "lastSeasonChange": "2026-11-08T03:00:21.978Z",
+    "mediaAddedAt": "2026-07-02T04:33:27.138Z",
+    "serviceId": 0,
+    "serviceId4k": null,
+    "externalServiceId": 150,
+    "externalServiceId4k": null,
+    "externalServiceSlug": "true-blood",
+    "externalServiceSlug4k": null,
+    "ratingKey": null,
+    "ratingKey4k": null,
+    "jellyfinMediaId": "200b383421c40878351cc2d112449158",
+    "jellyfinMediaId4k": null,
+    "requests": [
+      {
+        "id": 178,
+        "status": 5,
+        "createdAt": "2026-07-01T19:35:25.000Z",
+        "updatedAt": "2026-07-02T05:30:15.000Z",
+        "type": "tv",
+        "is4k": false,
+        "serverId": 0,
+        "profileId": 6,
+        "rootFolder": "/data/tvshows",
+        "languageProfileId": null,
+        "tags": [],
+        "isAutoRequest": false,
+        "ignoreQuota": false,
+        "media": {
+          "downloadStatus": [],
+          "downloadStatus4k": [],
+          "id": 409,
+          "mediaType": "tv",
+          "tmdbId": 10545,
+          "tvdbId": 82283,
+          "imdbId": null,
+          "status": 4,
+          "status4k": 1,
+          "createdAt": "2026-07-01T19:35:25.000Z",
+          "updatedAt": "2026-11-08T03:00:21.000Z",
+          "lastSeasonChange": "2026-11-08T03:00:21.978Z",
+          "mediaAddedAt": "2026-07-02T04:33:27.138Z",
+          "serviceId": 0,
+          "serviceId4k": null,
+          "externalServiceId": 150,
+          "externalServiceId4k": null,
+          "externalServiceSlug": "true-blood",
+          "externalServiceSlug4k": null,
+          "ratingKey": null,
+          "ratingKey4k": null,
+          "jellyfinMediaId": "200b383421c40878351cc2d112449158",
+          "jellyfinMediaId4k": null,
+          "mediaUrl": "http://192.168.10.183:8096/web/index.html#!/details?id=200b383421c40878351cc2d112449158&context=home&serverId=79315eab3c4c401f8391d5c26210b6d7",
+          "serviceUrl": "http://sonarr:8989/series/true-blood"
+        },
+        "requestedBy": {
+          "permissions": 2,
+          "warnings": [],
+          "id": 1,
+          "plexUsername": null,
+          "jellyfinUsername": "Paul Greyrat",
+          "username": null,
+          "recoveryLinkExpirationDate": null,
+          "userType": 3,
+          "jellyfinUserId": "4c0628aacef24bdfacd40f946ea33ee7",
+          "avatar": "/avatarproxy/4c0628aacef24bdfacd40f946ea33ee7?v=1791693617000",
+          "avatarETag": "16b7af80243e8107605f38a62a9fc4271e95b67189183e19d41c2cf296a373e9",
+          "avatarVersion": "1791693617000",
+          "movieQuotaLimit": null,
+          "movieQuotaDays": null,
+          "tvQuotaLimit": null,
+          "tvQuotaDays": null,
+          "createdAt": "2026-02-03T20:09:10.000Z",
+          "updatedAt": "2026-10-11T04:40:17.000Z",
+          "requestCount": 125,
+          "displayName": "Paul Greyrat"
+        },
+        "modifiedBy": {
+          "permissions": 2,
+          "warnings": [],
+          "id": 1,
+          "plexUsername": null,
+          "jellyfinUsername": "Paul Greyrat",
+          "username": null,
+          "recoveryLinkExpirationDate": null,
+          "userType": 3,
+          "jellyfinUserId": "4c0628aacef24bdfacd40f946ea33ee7",
+          "avatar": "/avatarproxy/4c0628aacef24bdfacd40f946ea33ee7?v=1791693617000",
+          "avatarETag": "16b7af80243e8107605f38a62a9fc4271e95b67189183e19d41c2cf296a373e9",
+          "avatarVersion": "1791693617000",
+          "movieQuotaLimit": null,
+          "movieQuotaDays": null,
+          "tvQuotaLimit": null,
+          "tvQuotaDays": null,
+          "createdAt": "2026-02-03T20:09:10.000Z",
+          "updatedAt": "2026-10-11T04:40:17.000Z",
+          "requestCount": 125,
+          "displayName": "Paul Greyrat"
+        },
+        "seasons": [
+          {
+            "id": 258,
+            "seasonNumber": 1,
+            "status": 5,
+            "createdAt": "2026-07-01T19:35:25.000Z",
+            "updatedAt": "2026-07-02T05:30:15.000Z"
+          }
+        ],
+        "seasonCount": 1
+      }
+    ],
+    "issues": [],
+    "seasons": [
+      {
+        "id": 328,
+        "seasonNumber": 1,
+        "status": 5,
+        "status4k": 1,
+        "createdAt": "2026-07-02T04:51:20.000Z",
+        "updatedAt": "2026-07-02T05:30:15.000Z"
+      },
+      {
+        "id": 329,
+        "seasonNumber": 2,
+        "status": 5,
+        "status4k": 1,
+        "createdAt": "2026-07-02T04:51:21.000Z",
+        "updatedAt": "2026-07-08T21:50:46.000Z"
+      },
+      {
+        "id": 330,
+        "seasonNumber": 3,
+        "status": 3,
+        "status4k": 1,
+        "createdAt": "2026-07-02T04:51:21.000Z",
+        "updatedAt": "2026-11-08T02:30:05.000Z"
+      },
+      {
+        "id": 331,
+        "seasonNumber": 4,
+        "status": 1,
+        "status4k": 1,
+        "createdAt": "2026-07-02T04:51:21.000Z",
+        "updatedAt": "2026-07-02T04:51:21.000Z"
+      },
+      {
+        "id": 332,
+        "seasonNumber": 5,
+        "status": 1,
+        "status4k": 1,
+        "createdAt": "2026-07-02T04:51:21.000Z",
+        "updatedAt": "2026-07-02T04:51:21.000Z"
+      },
+      {
+        "id": 333,
+        "seasonNumber": 6,
+        "status": 1,
+        "status4k": 1,
+        "createdAt": "2026-07-02T04:51:21.000Z",
+        "updatedAt": "2026-07-02T04:51:21.000Z"
+      },
+      {
+        "id": 334,
+        "seasonNumber": 7,
+        "status": 1,
+        "status4k": 1,
+        "createdAt": "2026-07-02T04:51:21.000Z",
+        "updatedAt": "2026-07-02T04:51:21.000Z"
+      }
+    ],
+    "mediaUrl": "http://192.168.10.183:8096/web/index.html#!/details?id=200b383421c40878351cc2d112449158&context=home&serverId=79315eab3c4c401f8391d5c26210b6d7",
+    "serviceUrl": "http://sonarr:8989/series/true-blood"
+  },
+  "watchProviders": [
+    {
+      "iso_3166_1": "AD",
+      "link": "https://www.themoviedb.org/tv/10545-true-blood/watch?locale=AD",
+      "buy": [],
+      "flatrate": [
+        {
+          "displayPriority": 2,
+          "logoPath": "/gMZdpavHmxFNnLpMHwVxfqeux2g.png",
+          "id": 119,
+          "name": "Amazon Prime Video"
+        },
+        {
+          "displayPriority": 25,
+          "logoPath": "/skypuy7SXuugIQeYg0IglmzoKaS.png",
+          "id": 1899,
+          "name": "HBO Max"
+        }
+      ]
+    },
+    {
+      "iso_3166_1": "AE",
+      "link": "https://www.themoviedb.org/tv/10545-true-blood/watch?locale=AE",
+      "buy": [],
+      "flatrate": [
+        {
+          "displayPriority": 8,
+          "logoPath": "/3Gfphgh5Uvcvb3IgbwUn79CT8Un.png",
+          "id": 629,
+          "name": "OSN+"
+        }
+      ]
+    },
+    {
+      "iso_3166_1": "AG",
+      "link": "https://www.themoviedb.org/tv/10545-true-blood/watch?locale=AG",
+      "buy": [],
+      "flatrate": [
+        {
+          "displayPriority": 2,
+          "logoPath": "/gMZdpavHmxFNnLpMHwVxfqeux2g.png",
+          "id": 119,
+          "name": "Amazon Prime Video"
+        },
+        {
+          "displayPriority": 11,
+          "logoPath": "/skypuy7SXuugIQeYg0IglmzoKaS.png",
+          "id": 1899,
+          "name": "HBO Max"
+        }
+      ]
+    },
+    {
+      "iso_3166_1": "AL",
+      "link": "https://www.themoviedb.org/tv/10545-true-blood/watch?locale=AL",
+      "buy": [],
+      "flatrate": [
+        {
+          "displayPriority": 2,
+          "logoPath": "/gMZdpavHmxFNnLpMHwVxfqeux2g.png",
+          "id": 119,
+          "name": "Amazon Prime Video"
+        },
+        {
+          "displayPriority": 35,
+          "logoPath": "/skypuy7SXuugIQeYg0IglmzoKaS.png",
+          "id": 1899,
+          "name": "HBO Max"
+        }
+      ]
+    },
+    {
+      "iso_3166_1": "AR",
+      "link": "https://www.themoviedb.org/tv/10545-true-blood/watch?locale=AR",
+      "buy": [],
+      "flatrate": [
+        {
+          "displayPriority": 2,
+          "logoPath": "/gMZdpavHmxFNnLpMHwVxfqeux2g.png",
+          "id": 119,
+          "name": "Amazon Prime Video"
+        },
+        {
+          "displayPriority": 34,
+          "logoPath": "/skypuy7SXuugIQeYg0IglmzoKaS.png",
+          "id": 1899,
+          "name": "HBO Max"
+        }
+      ]
+    }
+  ],
+  "onUserWatchlist": false
+}

@@ -1,0 +1,147 @@
+{
+  "_note": "Wire format of GET /events is NDJSON (one JSON object per line, streamed). This fixture is those lines collected into an array. Real sample (healthcheck exec events); container start/die/health_status events share the same shape (die adds Actor.Attributes.exitCode).",
+  "events": [
+    {
+      "Type": "container",
+      "Action": "exec_create: /bin/sh -c /gluetun-entrypoint healthcheck",
+      "Actor": {
+        "ID": "1b55eec72010d6b642b5dd6fb9dd7d7c66da3eb56941c8a82e0d92b22d5c4208",
+        "Attributes": {
+          "com.docker.compose.config-hash": "6857cbc3c40a096945aec8645459e3618b46bef9eb2e0a95a414cfd0e3a00e5d",
+          "com.docker.compose.container-number": "1",
+          "com.docker.compose.depends_on": "",
+          "com.docker.compose.image": "sha256:5bf014748996266f47e04cc019bde17eaef9deddd0e1288f87ac39268dc54d18",
+          "com.docker.compose.oneoff": "False",
+          "com.docker.compose.project": "yams",
+          "com.docker.compose.project.config_files": "/opt/yams/docker-compose.yaml,/opt/yams/docker-compose.custom.yaml",
+          "com.docker.compose.project.working_dir": "/opt/yams",
+          "com.docker.compose.replace": "gluetun",
+          "com.docker.compose.service": "gluetun",
+          "com.docker.compose.version": "5.1.3",
+          "execID": "f22ccc93d58fd12f2bba3cf0c108eb440efca0a7f306be7efe47e7d4b0e0b98d",
+          "image": "qmcgaw/gluetun:v3.40.0",
+          "name": "gluetun",
+          "org.opencontainers.image.authors": "quentin.mcgaw@gmail.com",
+          "org.opencontainers.image.created": "2024-12-25T22:01:25.675Z",
+          "org.opencontainers.image.description": "VPN client in a thin Docker container for multiple VPN providers, written in Go, and using OpenVPN or Wireguard, DNS over TLS, with a few proxy servers built-in.",
+          "org.opencontainers.image.documentation": "https://github.com/qdm12/gluetun",
+          "org.opencontainers.image.licenses": "MIT",
+          "org.opencontainers.image.revision": "e890c50da6ccf4eeac63b9705f40cead351b9995",
+          "org.opencontainers.image.source": "https://github.com/qdm12/gluetun",
+          "org.opencontainers.image.title": "gluetun",
+          "org.opencontainers.image.url": "https://github.com/qdm12/gluetun",
+          "org.opencontainers.image.version": "v3.40.0"
+        }
+      },
+      "scope": "local",
+      "time": 1794128700,
+      "timeNano": 1794128700047344385
+    },
+    {
+      "Type": "container",
+      "Action": "exec_start: /bin/sh -c /gluetun-entrypoint healthcheck",
+      "Actor": {
+        "ID": "1b55eec72010d6b642b5dd6fb9dd7d7c66da3eb56941c8a82e0d92b22d5c4208",
+        "Attributes": {
+          "com.docker.compose.config-hash": "6857cbc3c40a096945aec8645459e3618b46bef9eb2e0a95a414cfd0e3a00e5d",
+          "com.docker.compose.container-number": "1",
+          "com.docker.compose.depends_on": "",
+          "com.docker.compose.image": "sha256:5bf014748996266f47e04cc019bde17eaef9deddd0e1288f87ac39268dc54d18",
+          "com.docker.compose.oneoff": "False",
+          "com.docker.compose.project": "yams",
+          "com.docker.compose.project.config_files": "/opt/yams/docker-compose.yaml,/opt/yams/docker-compose.custom.yaml",
+          "com.docker.compose.project.working_dir": "/opt/yams",
+          "com.docker.compose.replace": "gluetun",
+          "com.docker.compose.service": "gluetun",
+          "com.docker.compose.version": "5.1.3",
+          "execID": "f22ccc93d58fd12f2bba3cf0c108eb440efca0a7f306be7efe47e7d4b0e0b98d",
+          "image": "qmcgaw/gluetun:v3.40.0",
+          "name": "gluetun",
+          "org.opencontainers.image.authors": "quentin.mcgaw@gmail.com",
+          "org.opencontainers.image.created": "2024-12-25T22:01:25.675Z",
+          "org.opencontainers.image.description": "VPN client in a thin Docker container for multiple VPN providers, written in Go, and using OpenVPN or Wireguard, DNS over TLS, with a few proxy servers built-in.",
+          "org.opencontainers.image.documentation": "https://github.com/qdm12/gluetun",
+          "org.opencontainers.image.licenses": "MIT",
+          "org.opencontainers.image.revision": "e890c50da6ccf4eeac63b9705f40cead351b9995",
+          "org.opencontainers.image.source": "https://github.com/qdm12/gluetun",
+          "org.opencontainers.image.title": "gluetun",
+          "org.opencontainers.image.url": "https://github.com/qdm12/gluetun",
+          "org.opencontainers.image.version": "v3.40.0"
+        }
+      },
+      "scope": "local",
+      "time": 1794128700,
+      "timeNano": 1794128700047437896
+    },
+    {
+      "Type": "container",
+      "Action": "exec_die",
+      "Actor": {
+        "ID": "1b55eec72010d6b642b5dd6fb9dd7d7c66da3eb56941c8a82e0d92b22d5c4208",
+        "Attributes": {
+          "com.docker.compose.config-hash": "6857cbc3c40a096945aec8645459e3618b46bef9eb2e0a95a414cfd0e3a00e5d",
+          "com.docker.compose.container-number": "1",
+          "com.docker.compose.depends_on": "",
+          "com.docker.compose.image": "sha256:5bf014748996266f47e04cc019bde17eaef9deddd0e1288f87ac39268dc54d18",
+          "com.docker.compose.oneoff": "False",
+          "com.docker.compose.project": "yams",
+          "com.docker.compose.project.config_files": "/opt/yams/docker-compose.yaml,/opt/yams/docker-compose.custom.yaml",
+          "com.docker.compose.project.working_dir": "/opt/yams",
+          "com.docker.compose.replace": "gluetun",
+          "com.docker.compose.service": "gluetun",
+          "com.docker.compose.version": "5.1.3",
+          "execID": "f22ccc93d58fd12f2bba3cf0c108eb440efca0a7f306be7efe47e7d4b0e0b98d",
+          "exitCode": "0",
+          "image": "qmcgaw/gluetun:v3.40.0",
+          "name": "gluetun",
+          "org.opencontainers.image.authors": "quentin.mcgaw@gmail.com",
+          "org.opencontainers.image.created": "2024-12-25T22:01:25.675Z",
+          "org.opencontainers.image.description": "VPN client in a thin Docker container for multiple VPN providers, written in Go, and using OpenVPN or Wireguard, DNS over TLS, with a few proxy servers built-in.",
+          "org.opencontainers.image.documentation": "https://github.com/qdm12/gluetun",
+          "org.opencontainers.image.licenses": "MIT",
+          "org.opencontainers.image.revision": "e890c50da6ccf4eeac63b9705f40cead351b9995",
+          "org.opencontainers.image.source": "https://github.com/qdm12/gluetun",
+          "org.opencontainers.image.title": "gluetun",
+          "org.opencontainers.image.url": "https://github.com/qdm12/gluetun",
+          "org.opencontainers.image.version": "v3.40.0"
+        }
+      },
+      "scope": "local",
+      "time": 1794128700,
+      "timeNano": 1794128700157226307
+    },
+    {
+      "Type": "container",
+      "Action": "exec_create: /bin/sh -c wget --no-verbose --tries=1 --spider http://localhost:5055/api/v1/status || exit 1",
+      "Actor": {
+        "ID": "8a41b9289d32a548f54e9313f58aba9202a443e6d19dc38a6d1ecabd78cf3a86",
+        "Attributes": {
+          "com.docker.compose.config-hash": "ccaf5e70ed76e9ee266457db6ceda51cc231bb15667ee042168d263be426ad1c",
+          "com.docker.compose.container-number": "1",
+          "com.docker.compose.depends_on": "",
+          "com.docker.compose.image": "sha256:61f6fa0cf472caa95736d00fa624aea848f687b2ac899c2370a509de93e8abba",
+          "com.docker.compose.oneoff": "False",
+          "com.docker.compose.project": "yams",
+          "com.docker.compose.project.config_files": "/opt/yams/docker-compose.yaml,/opt/yams/docker-compose.custom.yaml",
+          "com.docker.compose.project.working_dir": "/opt/yams",
+          "com.docker.compose.service": "seerr",
+          "com.docker.compose.version": "5.1.3",
+          "execID": "366bd3210f16600fb7e4d862e1fe65219258c9a2230fee82e540d771abbe1fd7",
+          "image": "ghcr.io/seerr-team/seerr:latest",
+          "name": "seerr",
+          "org.opencontainers.image.created": "1792597213",
+          "org.opencontainers.image.description": "Open-source media request and discovery manager for Jellyfin, Plex, and Emby.",
+          "org.opencontainers.image.licenses": "MIT",
+          "org.opencontainers.image.revision": "564bfb08b54caa374bddaf820abfd226e5e69151",
+          "org.opencontainers.image.source": "https://github.com/seerr-team/seerr",
+          "org.opencontainers.image.title": "seerr",
+          "org.opencontainers.image.url": "https://github.com/seerr-team/seerr",
+          "org.opencontainers.image.version": "v3.5.1"
+        }
+      },
+      "scope": "local",
+      "time": 1794128702,
+      "timeNano": 1794128702893779280
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "libraryItems": [
+    {
+      "id": "2b3a26fa-c8ab-4553-bd96-34a74440485e",
+      "ino": "187107777",
+      "oldLibraryItemId": null,
+      "libraryId": "5bbbf8b6-d60d-4ffa-837e-aaecb77d2995",
+      "folderId": "39b4df00-1e03-45aa-8783-96d8523e8621",
+      "path": "/audiobooks/(Mizuki Tsujimura)/Lonely Castle in the Mirror {Sarah Skaer}",
+      "relPath": "(Mizuki Tsujimura)/Lonely Castle in the Mirror {Sarah Skaer}",
+      "isFile": false,
+      "mtimeMs": 1770209177304,
+      "ctimeMs": 1770209177304,
+      "birthtimeMs": 1770209113678,
+      "addedAt": 1794126276784,
+      "updatedAt": 1794126276784,
+      "isMissing": false,
+      "isInvalid": false,
+      "mediaType": "book",
+      "media": {
+        "id": "b6a90d1d-a8b5-4a61-93ac-192240345dd9",
+        "metadata": {
+          "title": "Lonely Castle in the Mirror",
+          "titleIgnorePrefix": "Lonely Castle in the Mirror",
+          "subtitle": null,
+          "authorName": "Sarah Skaer",
+          "authorNameLF": "Skaer, Sarah",
+          "narratorName": "Mizuki Tsujimura",
+          "seriesName": "",
+          "genres": [
+            "Audiobook"
+          ],
+          "publishedYear": "2017 (04-25-23)",
+          "publishedDate": null,
+          "publisher": "Tantor Audio",
+          "description": "Phantom",
+          "isbn": null,
+          "asin": "B0C37THGFQ",
+          "language": null,
+          "explicit": false,
+          "abridged": false
+        },
+        "coverPath": "/audiobooks/(Mizuki Tsujimura)/Lonely Castle in the Mirror {Sarah Skaer}/cover-adb-large.png",
+        "tags": [],
+        "numTracks": 1,
+        "numAudioFiles": 1,
+        "numChapters": 21,
+        "duration": 45112.361678,
+        "size": 717330970
+      },
+      "numFiles": 5,
+      "size": 731240472,
+      "progressLastUpdate": 1794127736949
+    },
+    {
+      "id": "2b3a26fa-c8ab-4553-bd96-34a74440485e",
+      "ino": "187107777",
+      "oldLibraryItemId": null,
+      "libraryId": "5bbbf8b6-d60d-4ffa-837e-aaecb77d2995",
+      "folderId": "39b4df00-1e03-45aa-8783-96d8523e8621",
+      "path": "/audiobooks/(Mizuki Tsujimura)/Lonely Castle in the Mirror {Sarah Skaer}",
+      "relPath": "(Mizuki Tsujimura)/Lonely Castle in the Mirror {Sarah Skaer}",
+      "isFile": false,
+      "mtimeMs": 1770209177304,
+      "ctimeMs": 1770209177304,
+      "birthtimeMs": 1770209113678,
+      "addedAt": 1794126276784,
+      "updatedAt": 1794126276784,
+      "isMissing": false,
+      "isInvalid": false,
+      "mediaType": "book",
+      "media": {
+        "id": "b6a90d1d-a8b5-4a61-93ac-192240345dd9",
+        "metadata": {
+          "title": "Lonely Castle in the Mirror",
+          "titleIgnorePrefix": "Lonely Castle in the Mirror",
+          "subtitle": null,
+          "authorName": "Sarah Skaer",
+          "authorNameLF": "Skaer, Sarah",
+          "narratorName": "Mizuki Tsujimura",
+          "seriesName": "",
+          "genres": [
+            "Audiobook"
+          ],
+          "publishedYear": "2017 (04-25-23)",
+          "publishedDate": null,
+          "publisher": "Tantor Audio",
+          "description": "Phantom",
+          "isbn": null,
+          "asin": "B0C37THGFQ",
+          "language": null,
+          "explicit": false,
+          "abridged": false
+        },
+        "coverPath": "/audiobooks/(Mizuki Tsujimura)/Lonely Castle in the Mirror {Sarah Skaer}/cover-adb-large.png",
+        "tags": [],
+        "numTracks": 1,
+        "numAudioFiles": 1,
+        "numChapters": 21,
+        "duration": 45112.361678,
+        "size": 717330970
+      },
+      "numFiles": 5,
+      "size": 731240472,
+      "progressLastUpdate": 1794127736947
+    }
+  ]
+}

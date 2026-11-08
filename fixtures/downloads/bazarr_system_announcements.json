@@ -1,0 +1,20 @@
+{
+  "data": [
+    {
+      "text": "Animetosho is shutting down for all users. If you’re still using it, you should consider disabling it, as currently there is no other anime dedicated provider. It will be removed from future Bazarr releases.",
+      "link": "https://animetosho.org/about/shutdown2",
+      "hash": "d3ea79acc9dff1ffa6f50ba043f2957d1dd567bff9658d0862082f0beb5111ab",
+      "dismissible": true,
+      "timestamp": "6 months ago",
+      "enabled": true
+    },
+    {
+      "text": "Starting with Bazarr 1.6.3-beta.16, you can now create enhanced languages profiles to handle complex logic. Be aware that you cannot create basic languages profiles anymore, and we'll be upgrading your existing basic languages profiles soon.",
+      "link": "",
+      "dismissible": true,
+      "timestamp": "3 weeks ago",
+      "enabled": true,
+      "hash": "4401c356ffc860c19e4be78d4ed7cded1da4a76a75ff71fded498bf81457d925"
+    }
+  ]
+}

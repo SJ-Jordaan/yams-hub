@@ -1,0 +1,56 @@
+{
+  "page": 1,
+  "totalPages": 1,
+  "totalResults": 3,
+  "results": [
+    {
+      "id": 603,
+      "mediaType": "movie",
+      "adult": false,
+      "genreIds": [
+        28,
+        878
+      ],
+      "originalLanguage": "en",
+      "originalTitle": "The Matrix",
+      "overview": "Set in the 22nd century, The Matrix tells the story of a computer hacker who joins a group of underground insurgents fighting the vast and powerful computers who now rule the earth.",
+      "popularity": 38.2774,
+      "releaseDate": "1999-03-31",
+      "title": "The Matrix",
+      "video": false,
+      "voteAverage": 8.263,
+      "voteCount": 29186,
+      "backdropPath": "/tlm8UkiQsitc8rSuIAscQDCnP8d.jpg",
+      "posterPath": "/dXNAPwY7VrqMAo51EKhhCJfaGb5.jpg"
+    },
+    {
+      "id": 603,
+      "firstAirDate": "1997-09-25",
+      "genreIds": [
+        35
+      ],
+      "mediaType": "tv",
+      "name": "Veronica's Closet",
+      "originCountry": [
+        "US"
+      ],
+      "originalLanguage": "en",
+      "originalName": "Veronica's Closet",
+      "overview": "Veronica 'Ronnie' Chase is the 'Queen of Romance.' Founder of a successful lingerie empire, and best-selling author of self-help romance books, Ronnie has it all ... money, success, sex appeal and a philandering husband. How she will find true happiness without jeopardizing her business will be her biggest challenge yet. ",
+      "popularity": 12.4773,
+      "voteAverage": 5.4,
+      "voteCount": 17,
+      "backdropPath": "/khveUylm0fqlLGuUHLg74tKozdy.jpg",
+      "posterPath": "/pORo0C7IFMiefK2dpgrSWpPSUha.jpg"
+    },
+    {
+      "id": 603,
+      "name": "Leslie McCarthy-Frankenheimer",
+      "popularity": 0.3623,
+      "adult": false,
+      "mediaType": "person",
+      "profilePath": null,
+      "knownFor": []
+    }
+  ]
+}

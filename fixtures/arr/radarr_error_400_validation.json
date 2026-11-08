@@ -1,0 +1,11 @@
+{
+  "type": "https://tools.ietf.org/html/rfc9110#section-15.5.1",
+  "title": "One or more validation errors occurred.",
+  "status": 400,
+  "errors": {
+    "movieId": [
+      "The value '1x' is not valid."
+    ]
+  },
+  "traceId": "00-0e96a1336c03b9a51cfeec44b12115ee-c67ac95e6e182803-00"
+}

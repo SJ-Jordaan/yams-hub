@@ -1,0 +1,19 @@
+[
+  {
+    "Id": "9efa4240a1af422beff21712c58c218d",
+    "EpisodeId": "cde3668a5433ba3171ff466f1693e2f3",
+    "Name": "Desperate Housewives",
+    "EpisodeName": "The Story of Lucy and Jessie",
+    "SeasonNumber": 5,
+    "EpisodeNumber": 17,
+    "PrimaryImageHash": "dbGu8w=|x[xu_MxuxtoztQxZR*oJsAxFM|j[I=R*NHWY",
+    "UserId": "8bed8d8cccf249548eb6a39fd6a7e54b",
+    "UserName": "Zenith Greyrat",
+    "archived": false,
+    "LastPlayed": {
+      "minutes": 5,
+      "seconds": 12,
+      "milliseconds": 747.664
+    }
+  }
+]

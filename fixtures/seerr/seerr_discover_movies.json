@@ -1,0 +1,140 @@
+{
+  "page": 1,
+  "totalPages": 1001,
+  "totalResults": 20001,
+  "keywords": [],
+  "results": [
+    {
+      "id": 687163,
+      "mediaType": "movie",
+      "adult": false,
+      "genreIds": [
+        878,
+        12
+      ],
+      "originalLanguage": "en",
+      "originalTitle": "Project Hail Mary",
+      "overview": "Science teacher Ryland Grace wakes up on a spaceship light years from home with no recollection of who he is or how he got there. As his memory returns, he begins to uncover his mission: solve the riddle of the mysterious substance causing the sun to die out. He must call on his scientific knowledge and unorthodox ideas to save everything on Earth from extinction.",
+      "popularity": 2005.2215,
+      "releaseDate": "2026-03-15",
+      "title": "Project Hail Mary",
+      "video": false,
+      "voteAverage": 8.63,
+      "voteCount": 8722,
+      "backdropPath": "/8Tfys3mDZVp4tNoH2ktm06a0Tau.jpg",
+      "posterPath": "/iOb2fjXLbpJgyQXe46n1WtGCnaa.jpg",
+      "mediaInfo": {
+        "downloadStatus": [],
+        "downloadStatus4k": [],
+        "id": 370,
+        "mediaType": "movie",
+        "tmdbId": 687163,
+        "tvdbId": null,
+        "imdbId": "tt12042730",
+        "status": 5,
+        "status4k": 1,
+        "createdAt": "2026-03-30T13:28:44.000Z",
+        "updatedAt": "2026-10-26T14:35:00.000Z",
+        "lastSeasonChange": "2026-03-30T13:28:44.000Z",
+        "mediaAddedAt": "2026-10-26T14:30:14.024Z",
+        "serviceId": 0,
+        "serviceId4k": null,
+        "externalServiceId": 234,
+        "externalServiceId4k": null,
+        "externalServiceSlug": "687163",
+        "externalServiceSlug4k": null,
+        "ratingKey": null,
+        "ratingKey4k": null,
+        "jellyfinMediaId": "1cae16d260f2effaffbd9e8d7ad5b800",
+        "jellyfinMediaId4k": null,
+        "watchlists": [],
+        "mediaUrl": "http://192.168.10.183:8096/web/index.html#!/details?id=1cae16d260f2effaffbd9e8d7ad5b800&context=home&serverId=79315eab3c4c401f8391d5c26210b6d7",
+        "serviceUrl": "http://radarr:7878/movie/687163"
+      }
+    },
+    {
+      "id": 155,
+      "mediaType": "movie",
+      "adult": false,
+      "genreIds": [
+        28,
+        53,
+        80
+      ],
+      "originalLanguage": "en",
+      "originalTitle": "The Dark Knight",
+      "overview": "Batman raises the stakes in his war on crime. With the help of Lt. Jim Gordon and District Attorney Harvey Dent, Batman sets out to dismantle the remaining criminal organizations that plague the streets. The partnership proves to be effective, but they soon find themselves prey to a reign of chaos unleashed by a rising criminal mastermind known to the terrified citizens of Gotham as the Joker.",
+      "popularity": 1112.4836,
+      "releaseDate": "2008-07-16",
+      "title": "The Dark Knight",
+      "video": false,
+      "voteAverage": 8.54,
+      "voteCount": 37264,
+      "backdropPath": "/cfT29Im5VDvjE0RpyKOSdCKZal7.jpg",
+      "posterPath": "/qJ2tW6WMUDux911r6m7haRef0WH.jpg"
+    },
+    {
+      "id": 1423191,
+      "mediaType": "movie",
+      "adult": false,
+      "genreIds": [
+        27,
+        878,
+        12
+      ],
+      "originalLanguage": "en",
+      "originalTitle": "Resident Evil",
+      "overview": "Medical courier Bryan unwittingly finds himself fighting for survival as one fateful, horrifying night collapses around him in chaos.",
+      "popularity": 584.1726,
+      "releaseDate": "2026-09-16",
+      "title": "Resident Evil",
+      "video": false,
+      "voteAverage": 7.444,
+      "voteCount": 1710,
+      "backdropPath": "/3icyRAqgakNcQn6aDVz9libFmBA.jpg",
+      "posterPath": "/gAgWJhUSQWCgtKR8170nMkYlBda.jpg"
+    },
+    {
+      "id": 791523,
+      "mediaType": "movie",
+      "adult": false,
+      "genreIds": [
+        16,
+        12,
+        14
+      ],
+      "originalLanguage": "en",
+      "originalTitle": "Wildwood",
+      "overview": "Prue and her classmate Curtis are drawn into a magical forest filled with enchanted creatures, loyal allies, and formidable adversaries as they embark on a desperate quest to rescue Prue's abducted baby brother from a murder of crows led by a mysterious woman named Alexandra.",
+      "popularity": 303.6913,
+      "releaseDate": "2026-10-19",
+      "title": "Wildwood",
+      "video": false,
+      "voteAverage": 8.5,
+      "voteCount": 222,
+      "backdropPath": "/sl5NJ1vtyhP9Vr88bB4blULsJYp.jpg",
+      "posterPath": "/snFM00mpNAfUzUtkdEW0uDEvXA0.jpg"
+    },
+    {
+      "id": 1507696,
+      "mediaType": "movie",
+      "adult": false,
+      "genreIds": [
+        28,
+        53,
+        27
+      ],
+      "originalLanguage": "es",
+      "originalTitle": "Apocalipsis Z: Nuevo mundo",
+      "overview": "The Canary Islands have become Europe’s last refuge following the outbreak of the TSJ virus. When a special mission sets out for the mainland in search of vital supplies, Roberto joins the team with questionable intentions. The dangerous operation turns into a desperate race for survival, and Roberto and his companions find themselves caught between hordes of infected and divided loyalties.",
+      "popularity": 392.0758,
+      "releaseDate": "2026-10-09",
+      "title": "Apocalypse Z: New World",
+      "video": false,
+      "voteAverage": 6.007,
+      "voteCount": 142,
+      "backdropPath": "/o3XwuDUj0n8qnK91p6q8LKfr6rj.jpg",
+      "posterPath": "/wXln4DUrwcyjcFPwgQxFPYTlG1Z.jpg"
+    }
+  ]
+}

@@ -1,0 +1,149 @@
+{
+  "config": {
+    "slug": "zenith",
+    "title": "Zenith",
+    "description": "Media server status",
+    "icon": "/icon.svg",
+    "autoRefreshInterval": 60,
+    "theme": "dark",
+    "published": true,
+    "showTags": false,
+    "customCSS": "",
+    "footerText": "",
+    "showPoweredBy": false,
+    "analyticsId": null,
+    "analyticsScriptUrl": null,
+    "analyticsType": null,
+    "showCertificateExpiry": false,
+    "showOnlyLastHeartbeat": false,
+    "rssTitle": ""
+  },
+  "incidents": [],
+  "publicGroupList": [
+    {
+      "id": 5,
+      "name": "Media",
+      "weight": 1,
+      "monitorList": [
+        {
+          "id": 2,
+          "name": "jellyfin",
+          "sendUrl": 0,
+          "type": "docker"
+        },
+        {
+          "id": 3,
+          "name": "seerr",
+          "sendUrl": 0,
+          "type": "docker"
+        },
+        {
+          "id": 4,
+          "name": "shelfmark",
+          "sendUrl": 0,
+          "type": "docker"
+        },
+        {
+          "id": 5,
+          "name": "jellyfin web",
+          "sendUrl": 0,
+          "type": "http"
+        },
+        {
+          "id": 24,
+          "name": "audiobookshelf",
+          "sendUrl": 0,
+          "type": "docker"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Automation",
+      "weight": 2,
+      "monitorList": [
+        {
+          "id": 7,
+          "name": "sonarr",
+          "sendUrl": 0,
+          "type": "docker"
+        },
+        {
+          "id": 8,
+          "name": "radarr",
+          "sendUrl": 0,
+          "type": "docker"
+        },
+        {
+          "id": 10,
+          "name": "bazarr",
+          "sendUrl": 0,
+          "type": "docker"
+        },
+        {
+          "id": 11,
+          "name": "prowlarr",
+          "sendUrl": 0,
+          "type": "docker"
+        },
+        {
+          "id": 12,
+          "name": "flaresolverr",
+          "sendUrl": 0,
+          "type": "docker"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Downloads",
+      "weight": 3,
+      "monitorList": [
+        {
+          "id": 14,
+          "name": "gluetun (VPN)",
+          "sendUrl": 0,
+          "type": "docker"
+        },
+        {
+          "id": 15,
+          "name": "qbittorrent",
+          "sendUrl": 0,
+          "type": "docker"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "name": "System",
+      "weight": 4,
+      "monitorList": [
+        {
+          "id": 18,
+          "name": "homepage",
+          "sendUrl": 0,
+          "type": "docker"
+        },
+        {
+          "id": 19,
+          "name": "portainer",
+          "sendUrl": 0,
+          "type": "docker"
+        },
+        {
+          "id": 20,
+          "name": "watchtower",
+          "sendUrl": 0,
+          "type": "docker"
+        },
+        {
+          "id": 21,
+          "name": "socket-proxy",
+          "sendUrl": 0,
+          "type": "docker"
+        }
+      ]
+    }
+  ],
+  "maintenanceList": []
+}

@@ -1,0 +1,45 @@
+{
+  "libraries": [
+    {
+      "id": "5bbbf8b6-d60d-4ffa-837e-aaecb77d2995",
+      "name": "Audiobooks",
+      "folders": [
+        {
+          "id": "39b4df00-1e03-45aa-8783-96d8523e8621",
+          "fullPath": "/audiobooks",
+          "libraryId": "5bbbf8b6-d60d-4ffa-837e-aaecb77d2995",
+          "addedAt": 1794126274628
+        }
+      ],
+      "displayOrder": 1,
+      "icon": "audiobookshelf",
+      "mediaType": "book",
+      "provider": "audible",
+      "settings": {
+        "coverAspectRatio": 1,
+        "disableWatcher": false,
+        "autoScanCronExpression": "0 */6 * * *",
+        "skipMatchingMediaWithAsin": false,
+        "skipMatchingMediaWithIsbn": false,
+        "audiobooksOnly": false,
+        "epubsAllowScriptedContent": false,
+        "hideSingleBookSeries": false,
+        "onlyShowLaterBooksInContinueSeries": false,
+        "metadataPrecedence": [
+          "folderStructure",
+          "audioMetatags",
+          "nfoFile",
+          "txtFiles",
+          "opfFile",
+          "absMetadata"
+        ],
+        "markAsFinishedPercentComplete": null,
+        "markAsFinishedTimeRemaining": 10
+      },
+      "lastScan": 1794126371544,
+      "lastScanVersion": "2.37.2",
+      "createdAt": 1794126274621,
+      "lastUpdate": 1794126371544
+    }
+  ]
+}

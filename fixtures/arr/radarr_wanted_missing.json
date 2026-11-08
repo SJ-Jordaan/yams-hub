@@ -1,0 +1,259 @@
+{
+  "page": 1,
+  "pageSize": 10,
+  "sortKey": "movieMetadata.sortTitle",
+  "sortDirection": "descending",
+  "totalRecords": 78,
+  "records": [
+    {
+      "title": "Winnie the Pooh: Seasons of Giving",
+      "originalTitle": "Winnie the Pooh: Seasons of Giving",
+      "originalLanguage": {
+        "id": 1,
+        "name": "English"
+      },
+      "alternateTitles": [],
+      "secondaryYearSourceId": 0,
+      "sortTitle": "winnie the pooh seasons of giving",
+      "sizeOnDisk": 0,
+      "status": "released",
+      "overview": "A collection of Winnie the Pooh's memorable holiday adventures, as Winnie, Piglet, and Tigger set out to find the right ingredients for Winter, Rabbit learns how to manage a complicated Thanksgiving dinner, and everyone gets a special visit from a new friend. Featuring a number of delightful songs for singing along, this movie is sure to become a favorite holiday classic.",
+      "inCinemas": "1999-11-08T00:00:00Z",
+      "physicalRelease": "2004-12-02T00:00:00Z",
+      "digitalRelease": "1999-11-08T00:00:00Z",
+      "releaseDate": "1999-11-08T00:00:00Z",
+      "images": [
+        {
+          "coverType": "poster",
+          "url": "/MediaCover/227/poster.jpg?h=9960a42d282215350074",
+          "remoteUrl": "https://image.tmdb.org/t/p/original/x3XpdngNOIHSdGEwqav6PLyWjMz.jpg"
+        },
+        {
+          "coverType": "fanart",
+          "url": "/MediaCover/227/fanart.jpg?h=dcbab65d36edf7cddc19",
+          "remoteUrl": "https://image.tmdb.org/t/p/original/2zpQBibD3FVcpxOkbJ6JUoWgCQ0.jpg"
+        }
+      ],
+      "website": "https://winniethepooh.disney.com/",
+      "year": 1999,
+      "youTubeTrailerId": "z9CvZau1tdI",
+      "studio": "Walt Disney Studios Home Entertainment",
+      "path": "/data/movies/Winnie the Pooh Seasons of Giving (1999) [tmdbid-261339]",
+      "qualityProfileId": 7,
+      "hasFile": false,
+      "movieFileId": 0,
+      "monitored": true,
+      "minimumAvailability": "released",
+      "isAvailable": true,
+      "folderName": "/data/movies/Winnie the Pooh Seasons of Giving (1999) [tmdbid-261339]",
+      "runtime": 70,
+      "cleanTitle": "winniepoohseasonsgiving",
+      "imdbId": "tt0240219",
+      "tmdbId": 261339,
+      "titleSlug": "261339",
+      "certification": "G",
+      "genres": [
+        "Animation",
+        "Family"
+      ],
+      "keywords": [
+        "cartoon",
+        "cartoon donkey",
+        "cartoon pig"
+      ],
+      "tags": [],
+      "added": "2026-03-01T17:44:07Z",
+      "ratings": {
+        "imdb": {
+          "votes": 1884,
+          "value": 6.7,
+          "type": "user"
+        },
+        "tmdb": {
+          "votes": 102,
+          "value": 6.6,
+          "type": "user"
+        },
+        "trakt": {
+          "votes": 122,
+          "value": 6.35246,
+          "type": "user"
+        }
+      },
+      "popularity": 2.8001,
+      "statistics": {
+        "movieFileCount": 0,
+        "sizeOnDisk": 0,
+        "releaseGroups": [],
+        "movieFileQualities": []
+      },
+      "id": 227
+    },
+    {
+      "title": "Winnie the Pooh: A Very Merry Pooh Year",
+      "originalTitle": "Winnie the Pooh: A Very Merry Pooh Year",
+      "originalLanguage": {
+        "id": 1,
+        "name": "English"
+      },
+      "alternateTitles": [],
+      "secondaryYearSourceId": 0,
+      "sortTitle": "winnie the pooh a very merry pooh year",
+      "sizeOnDisk": 0,
+      "status": "released",
+      "overview": "It's Christmastime in the Hundred Acre Wood and all of the gang is getting ready with presents and decorations. The gang makes a list of what they want for Christmas and send it to Santa Claus - except that Pooh forgot to ask for something. So he heads out to retrieve the letter and get it to Santa by Christmas...which happens to be tomorrow!",
+      "inCinemas": "2002-11-12T00:00:00Z",
+      "physicalRelease": "2002-11-12T00:00:00Z",
+      "digitalRelease": "2003-12-19T00:00:00Z",
+      "releaseDate": "2002-11-12T00:00:00Z",
+      "images": [
+        {
+          "coverType": "poster",
+          "url": "/MediaCover/226/poster.jpg?h=c12c19c8c5fbd222d8a7",
+          "remoteUrl": "https://image.tmdb.org/t/p/original/1Xfh2PPZsjEwFyLqp6bisrbdxZs.jpg"
+        },
+        {
+          "coverType": "fanart",
+          "url": "/MediaCover/226/fanart.jpg?h=9ad7f3343845e3dee846",
+          "remoteUrl": "https://image.tmdb.org/t/p/original/s0boUVTZ4mTDuLlITizK6Ps1tS5.jpg"
+        }
+      ],
+      "website": "",
+      "year": 2002,
+      "youTubeTrailerId": "k2OiS7A8sWg",
+      "studio": "Disney Television Animation",
+      "path": "/data/movies/Winnie the Pooh A Very Merry Pooh Year (2002) [tmdbid-13706]",
+      "qualityProfileId": 7,
+      "hasFile": false,
+      "movieFileId": 0,
+      "monitored": true,
+      "minimumAvailability": "released",
+      "isAvailable": true,
+      "folderName": "/data/movies/Winnie the Pooh A Very Merry Pooh Year (2002) [tmdbid-13706]",
+      "runtime": 65,
+      "cleanTitle": "winniepoohverymerrypoohyear",
+      "imdbId": "tt0324572",
+      "tmdbId": 13706,
+      "titleSlug": "13706",
+      "certification": "G",
+      "genres": [
+        "Animation",
+        "Family"
+      ],
+      "keywords": [
+        "cartoon",
+        "christmas",
+        "rabbit"
+      ],
+      "tags": [],
+      "added": "2026-03-01T17:44:07Z",
+      "ratings": {
+        "imdb": {
+          "votes": 3630,
+          "value": 6.6,
+          "type": "user"
+        },
+        "tmdb": {
+          "votes": 223,
+          "value": 6.996,
+          "type": "user"
+        },
+        "trakt": {
+          "votes": 364,
+          "value": 6.60165,
+          "type": "user"
+        }
+      },
+      "popularity": 3.8741,
+      "statistics": {
+        "movieFileCount": 0,
+        "sizeOnDisk": 0,
+        "releaseGroups": [],
+        "movieFileQualities": []
+      },
+      "id": 226
+    },
+    {
+      "title": "Victory Through Air Power",
+      "originalTitle": "Victory Through Air Power",
+      "originalLanguage": {
+        "id": 1,
+        "name": "English"
+      },
+      "alternateTitles": [],
+      "secondaryYearSourceId": 0,
+      "sortTitle": "victory through air power",
+      "sizeOnDisk": 0,
+      "status": "released",
+      "overview": "Based on the book by Major Alexander de Seversky's about his theories of the practical uses of long range strategic bombing. Using a combination of animation humorously telling about the development of air warfare, the film shows de Seversky illustrating his ideas of how air power could win World War II for the Allies.",
+      "inCinemas": "1943-07-17T00:00:00Z",
+      "releaseDate": "1943-10-15T00:00:00Z",
+      "images": [
+        {
+          "coverType": "poster",
+          "url": "/MediaCover/183/poster.jpg?h=d4453aa7aaa74cbe42a1",
+          "remoteUrl": "https://image.tmdb.org/t/p/original/7uHtN8sAlVsSbTZOvhGV8iTEfGk.jpg"
+        },
+        {
+          "coverType": "fanart",
+          "url": "/MediaCover/183/fanart.jpg?h=c095988108943febcf20",
+          "remoteUrl": "https://image.tmdb.org/t/p/original/e8xNmmkolNOc8FBKWha19Q6eL4u.jpg"
+        }
+      ],
+      "website": "",
+      "year": 1943,
+      "youTubeTrailerId": "",
+      "studio": "Walt Disney Productions",
+      "path": "/data/movies/Victory Through Air Power (1943) [tmdbid-22779]",
+      "qualityProfileId": 7,
+      "hasFile": false,
+      "movieFileId": 0,
+      "monitored": true,
+      "minimumAvailability": "released",
+      "isAvailable": true,
+      "folderName": "/data/movies/Victory Through Air Power (1943) [tmdbid-22779]",
+      "runtime": 65,
+      "cleanTitle": "victorythroughairpower",
+      "imdbId": "tt0036497",
+      "tmdbId": 22779,
+      "titleSlug": "22779",
+      "certification": "NR",
+      "genres": [
+        "Animation",
+        "War",
+        "Documentary"
+      ],
+      "keywords": [
+        "propaganda"
+      ],
+      "tags": [],
+      "added": "2026-02-04T15:31:53Z",
+      "ratings": {
+        "imdb": {
+          "votes": 1432,
+          "value": 6.4,
+          "type": "user"
+        },
+        "tmdb": {
+          "votes": 53,
+          "value": 5.7,
+          "type": "user"
+        },
+        "trakt": {
+          "votes": 98,
+          "value": 5.80612,
+          "type": "user"
+        }
+      },
+      "popularity": 1.6388,
+      "lastSearchTime": "2026-02-04T19:25:15Z",
+      "statistics": {
+        "movieFileCount": 0,
+        "sizeOnDisk": 0,
+        "releaseGroups": [],
+        "movieFileQualities": []
+      },
+      "id": 183
+    }
+  ]
+}

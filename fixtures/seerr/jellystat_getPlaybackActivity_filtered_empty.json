@@ -1,0 +1,14 @@
+{
+  "current_page": 1,
+  "pages": 0,
+  "size": 3,
+  "sort": "ActivityDateInserted",
+  "desc": true,
+  "results": [],
+  "filters": [
+    {
+      "field": "PlayMethod",
+      "value": "Transcode"
+    }
+  ]
+}

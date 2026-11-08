@@ -1,0 +1,128 @@
+[
+  {
+    "version": "2.7.0.5723",
+    "branch": "master",
+    "releaseDate": "2026-10-27T18:19:55Z",
+    "fileName": "Prowlarr.master.2.7.0.5723.linux-musl-core-x64.tar.gz",
+    "url": "https://github.com/Prowlarr/Prowlarr/releases/download/v2.7.0.5723/Prowlarr.master.2.7.0.5723.linux-musl-core-x64.tar.gz",
+    "installed": true,
+    "installedOn": "2026-10-28T19:20:37Z",
+    "installable": false,
+    "latest": true,
+    "changes": {
+      "new": [],
+      "fixed": [
+        "Wildcard IP addresses in Allowed Hosts",
+        "Increase AvistaZ indexer rate limit to 6.1 seconds",
+        "(BroadcasTheNet) Add imdb search support"
+      ]
+    },
+    "hash": "a587dda90510faba852ed5b92c7ae23a064cd44d462e1b7bbfad0f3b2be42bc0"
+  },
+  {
+    "version": "2.6.5.5623",
+    "branch": "master",
+    "releaseDate": "2026-09-16T18:13:53Z",
+    "fileName": "Prowlarr.master.2.6.5.5623.linux-musl-core-x64.tar.gz",
+    "url": "https://github.com/Prowlarr/Prowlarr/releases/download/v2.6.5.5623/Prowlarr.master.2.6.5.5623.linux-musl-core-x64.tar.gz",
+    "installed": false,
+    "installedOn": "2026-09-23T17:49:40Z",
+    "installable": false,
+    "latest": false,
+    "changes": {
+      "new": [
+        "Add Trusted Networks setting",
+        "Add hostname validation",
+        "Show indexer specific categories in search"
+      ],
+      "fixed": [
+        "Update help text for Allowed Hosts",
+        "Improve logging for 'Allowed Hosts' and 'Trusted Networks'",
+        "Treat invalid contents as unavailable releases",
+        "Handle 307 and 308 redirects for indexer download requests",
+        "Prevent paths with multiple slashes causing backups to fail"
+      ]
+    },
+    "hash": "3a7390f98aff1c5b9d850a036741de90c973ee9a8dedffcb63130cefb692cc76"
+  },
+  {
+    "version": "2.5.2.5491",
+    "branch": "master",
+    "releaseDate": "2026-07-22T11:54:42Z",
+    "fileName": "Prowlarr.master.2.5.2.5491.linux-musl-core-x64.tar.gz",
+    "url": "https://github.com/Prowlarr/Prowlarr/releases/download/v2.5.2.5491/Prowlarr.master.2.5.2.5491.linux-musl-core-x64.tar.gz",
+    "installed": false,
+    "installedOn": "2026-08-24T14:13:28Z",
+    "installable": false,
+    "latest": false,
+    "changes": {
+      "new": [
+        "(Indexer) DesiGaane",
+        "(IPTorrents) Add sorting by leechers, snatches, size and name",
+        "(IPTorrents) Add Sort by Seeders option (#2716)",
+        "(Indexer) Usenet NZBIndex (#2713)"
+      ],
+      "fixed": [
+        "(Indexers) Improve size precision for parsing bytes",
+        "(FileList) Update categories",
+        "(PreToMe) Add missing categories",
+        "(M-Team - TP) Categories update",
+        "(MyAnonamouse) Author names not being decoded"
+      ]
+    },
+    "hash": "08515cacd944ba801bc7d1a2d932aeac6a08cdcdadfb6065b93a6762abf74c85"
+  },
+  {
+    "version": "2.4.0.5397",
+    "branch": "master",
+    "releaseDate": "2026-06-09T19:31:50Z",
+    "fileName": "Prowlarr.master.2.4.0.5397.linux-musl-core-x64.tar.gz",
+    "url": "https://github.com/Prowlarr/Prowlarr/releases/download/v2.4.0.5397/Prowlarr.master.2.4.0.5397.linux-musl-core-x64.tar.gz",
+    "installed": false,
+    "installedOn": "2026-06-30T15:05:43Z",
+    "installable": false,
+    "latest": false,
+    "changes": {
+      "new": [
+        "(MyAnonamouse) Switch to downloading without session cookies",
+        "Postgres Connection String option",
+        "Bump .NET to 8.0.27",
+        "Basic Auth support for sync applications (#2677)",
+        "API key support for qBittorrent"
+      ],
+      "fixed": [
+        "Basic auth for qBittorrent",
+        "(SecretCinema) Use release titles from API",
+        "(SecretCinema) Improve release titles",
+        "(MyAnonamouse) Refactor freeleech wedge handling",
+        "Login with credentials on Qbittorrent 5.2"
+      ]
+    },
+    "hash": "f44948bc22ed431171fb004a03bf7b87055037990f68ea981a2f08cfb77ec83d"
+  },
+  {
+    "version": "2.3.5.5327",
+    "branch": "master",
+    "releaseDate": "2026-04-04T18:43:20Z",
+    "fileName": "Prowlarr.master.2.3.5.5327.linux-musl-core-x64.tar.gz",
+    "url": "https://github.com/Prowlarr/Prowlarr/releases/download/v2.3.5.5327/Prowlarr.master.2.3.5.5327.linux-musl-core-x64.tar.gz",
+    "installed": false,
+    "installedOn": "2026-05-22T15:10:19Z",
+    "installable": false,
+    "latest": false,
+    "changes": {
+      "new": [
+        "Use instance name in PWA manifest",
+        "Add AnimeZ"
+      ],
+      "fixed": [
+        "Downloading backups when path contains a trailing slash",
+        "PWA Manifest with URL base",
+        "(SceneTime) Update layout selectors",
+        "Loading native libraries on FreeBSD and Linux",
+        "Parsing URLs on some systems due to Locale"
+      ]
+    },
+    "hash": "bc2be028202d581a6dcf14aadeb2152fdbdbdd1c2c6a89899a120d87f9a18145"
+  }
+]

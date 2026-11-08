@@ -1,0 +1,16 @@
+{
+  "_comment": "qBittorrent endpoints that answer text/plain (not JSON). Values are the exact raw bodies.",
+  "GET /api/v2/app/version": "v5.3.0",
+  "GET /api/v2/app/webapiVersion": "2.16.2",
+  "GET /api/v2/transfer/speedLimitsMode": "1",
+  "GET /api/v2/transfer/downloadLimit": "10240000",
+  "GET /api/v2/transfer/uploadLimit": "10240000",
+  "GET /api/v2/torrents/count": "22",
+  "POST /api/v2/auth/login (ok) -> 204": "",
+  "POST /api/v2/auth/login (bad creds) -> 401": "Unauthorized",
+  "GET /api/v2/torrents/info?sort=nosuch -> 400": "'sort' parameter is invalid",
+  "GET /api/v2/torrents/properties (no hash) -> 400": "Missing required parameters: hash",
+  "GET /api/v2/torrents/properties?hash=<unknown> -> 404": "Not Found",
+  "GET /api/v2/torrents/downloadLimit (no hashes) -> 400": "Missing required parameters: hashes",
+  "GET any endpoint without/expired cookie -> 403": "Forbidden"
+}

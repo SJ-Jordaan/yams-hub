@@ -1,0 +1,51 @@
+{
+  "Items": [
+    {
+      "Id": 5221,
+      "Name": "Zenith Greyrat is playing Desperate Housewives - A Spark. To Pierce the Dark. on Xiaomi TV Box",
+      "Type": "VideoPlayback",
+      "ItemId": "d078a144bb4719f0e6babd8d90ba0b11",
+      "Date": "2026-11-08T08:53:23.4007529Z",
+      "UserId": "8bed8d8cccf249548eb6a39fd6a7e54b",
+      "Severity": "Information"
+    },
+    {
+      "Id": 5220,
+      "Name": "Zenith Greyrat has finished playing Desperate Housewives - The Story of Lucy and Jessie on Xiaomi TV Box",
+      "Type": "VideoPlaybackStopped",
+      "ItemId": "cde3668a5433ba3171ff466f1693e2f3",
+      "Date": "2026-11-08T08:53:14.2264682Z",
+      "UserId": "8bed8d8cccf249548eb6a39fd6a7e54b",
+      "Severity": "Information"
+    },
+    {
+      "Id": 5219,
+      "Name": "Zenith Greyrat is online from Safari",
+      "ShortOverview": "IP address: 192.168.10.31",
+      "Type": "SessionStarted",
+      "Date": "2026-11-08T08:45:44.7683467Z",
+      "UserId": "8bed8d8cccf249548eb6a39fd6a7e54b",
+      "Severity": "Information"
+    },
+    {
+      "Id": 5218,
+      "Name": "Zenith Greyrat has disconnected from Safari",
+      "ShortOverview": "IP address: 192.168.10.31",
+      "Type": "SessionEnded",
+      "Date": "2026-11-08T08:26:42.2549386Z",
+      "UserId": "8bed8d8cccf249548eb6a39fd6a7e54b",
+      "Severity": "Information"
+    },
+    {
+      "Id": 5217,
+      "Name": "Paul Greyrat successfully authenticated",
+      "ShortOverview": "IP address: 172.28.0.1",
+      "Type": "AuthenticationSucceeded",
+      "Date": "2026-11-08T08:11:11.1997053Z",
+      "UserId": "4c0628aacef24bdfacd40f946ea33ee7",
+      "Severity": "Information"
+    }
+  ],
+  "TotalRecordCount": 5221,
+  "StartIndex": 0
+}

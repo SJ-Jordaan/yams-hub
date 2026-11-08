@@ -1,0 +1,327 @@
+[
+  {
+    "PlayState": {
+      "PositionTicks": 1659450000,
+      "CanSeek": true,
+      "IsPaused": false,
+      "IsMuted": false,
+      "AudioStreamIndex": 3,
+      "SubtitleStreamIndex": 0,
+      "MediaSourceId": "d078a144bb4719f0e6babd8d90ba0b11",
+      "PlayMethod": "DirectPlay",
+      "RepeatMode": "RepeatNone",
+      "PlaybackOrder": "Default"
+    },
+    "AdditionalUsers": [],
+    "Capabilities": {
+      "PlayableMediaTypes": [
+        "Video",
+        "Audio"
+      ],
+      "SupportedCommands": [
+        "DisplayContent",
+        "SetSubtitleStreamIndex",
+        "SetAudioStreamIndex",
+        "DisplayMessage",
+        "SendString"
+      ],
+      "SupportsMediaControl": true,
+      "SupportsPersistentIdentifier": true
+    },
+    "RemoteEndPoint": "192.168.10.160",
+    "PlayableMediaTypes": [
+      "Video",
+      "Audio"
+    ],
+    "Id": "eb96632f72ed3854021c5466f350a158",
+    "UserId": "8bed8d8cccf249548eb6a39fd6a7e54b",
+    "UserName": "Zenith Greyrat",
+    "Client": "Jellyfin Android TV",
+    "LastActivityDate": "2026-11-08T08:56:09.4422181Z",
+    "LastPlaybackCheckIn": "2026-11-08T08:56:08.432138Z",
+    "DeviceName": "Xiaomi TV Box",
+    "NowPlayingItem": {
+      "Name": "A Spark. To Pierce the Dark.",
+      "ServerId": "79315eab3c4c401f8391d5c26210b6d7",
+      "Id": "d078a144bb4719f0e6babd8d90ba0b11",
+      "DateCreated": "2026-08-23T16:47:39.6748444Z",
+      "HasSubtitles": true,
+      "Container": "mov,mp4,m4a,3gp,3g2,mj2",
+      "PremiereDate": "2009-03-22T00:00:00.0000000Z",
+      "ExternalUrls": [
+        {
+          "Name": "IMDb",
+          "Url": "https://www.imdb.com/title/tt1263195"
+        },
+        {
+          "Name": "TMDB",
+          "Url": "https://www.themoviedb.org/tv/693/season/5/episode/18"
+        }
+      ],
+      "Path": "/data/tvshows/Desperate Housewives (2004) [tvdbid-73800]/Season 05/Desperate Housewives (2004) - S05E18 - A Spark. To Pierce the Dark [WEBRip-1080p][AAC 5.1][x265]-KONTRAST.mp4",
+      "EnableMediaSourceDisplay": true,
+      "ChannelId": null,
+      "Overview": "Bree contemplates selling her business in order to revive her marriage. Meanwhile, Lynette is threatened at work; Katherine is caught in an unforseen circumstance; and Edie's worst fear begins to come true.",
+      "Taglines": [],
+      "Genres": [
+        "Comedy",
+        "Drama",
+        "Mystery"
+      ],
+      "CommunityRating": 8.9,
+      "RunTimeTicks": 25835840000,
+      "ProductionYear": 2009,
+      "IndexNumber": 18,
+      "ParentIndexNumber": 5,
+      "ProviderIds": {
+        "Imdb": "tt1263195",
+        "TvRage": "0",
+        "Tvdb": "440668"
+      },
+      "IsHD": true,
+      "IsFolder": false,
+      "ParentId": "2ad5f434028bf16ce9cec4da7c05cb96",
+      "Type": "Episode",
+      "Studios": [],
+      "GenreItems": [
+        {
+          "Name": "Comedy",
+          "Id": "08d31605d366d63a7a924f944b4417f1"
+        },
+        {
+          "Name": "Drama",
+          "Id": "090eac6e9de4fe1fbc194e5b96691277"
+        },
+        {
+          "Name": "Mystery",
+          "Id": "d3a0ead52489743e5a68704142092c71"
+        }
+      ],
+      "ParentLogoItemId": "9efa4240a1af422beff21712c58c218d",
+      "ParentBackdropItemId": "9efa4240a1af422beff21712c58c218d",
+      "ParentBackdropImageTags": [
+        "85a8d8ae988a8a06176772f211d781d5"
+      ],
+      "LocalTrailerCount": 0,
+      "SeriesName": "Desperate Housewives",
+      "SeriesId": "9efa4240a1af422beff21712c58c218d",
+      "SeasonId": "2ad5f434028bf16ce9cec4da7c05cb96",
+      "SpecialFeatureCount": 0,
+      "PrimaryImageAspectRatio": 1.7777777777777777,
+      "SeriesPrimaryImageTag": "0a65d366de64b25cc004faf719a6e6a7",
+      "SeasonName": "Season 5",
+      "MediaStreams": [
+        {
+          "Codec": "subrip",
+          "Language": "eng",
+          "TimeBase": "1/1000",
+          "VideoRange": "Unknown",
+          "VideoRangeType": "Unknown",
+          "AudioSpatialFormat": "None",
+          "LocalizedUndefined": "Undefined",
+          "LocalizedDefault": "Default",
+          "LocalizedForced": "Forced",
+          "LocalizedExternal": "External",
+          "LocalizedHearingImpaired": "Hearing Impaired",
+          "LocalizedLanguage": "English",
+          "DisplayTitle": "English - SUBRIP - External",
+          "IsInterlaced": false,
+          "IsAVC": false,
+          "IsDefault": false,
+          "IsForced": false,
+          "IsHearingImpaired": false,
+          "IsOriginal": false,
+          "Height": 0,
+          "Width": 0,
+          "Type": "Subtitle",
+          "Index": 0,
+          "IsExternal": true,
+          "IsTextSubtitleStream": true,
+          "SupportsExternalStream": true,
+          "Path": "/data/tvshows/Desperate Housewives (2004) [tvdbid-73800]/Season 05/Desperate Housewives (2004) - S05E18 - A Spark. To Pierce the Dark [WEBRip-1080p][AAC 5.1][x265]-KONTRAST.en.srt",
+          "Level": 0
+        },
+        {
+          "Codec": "subrip",
+          "TimeBase": "1/1000",
+          "VideoRange": "Unknown",
+          "VideoRangeType": "Unknown",
+          "AudioSpatialFormat": "None",
+          "LocalizedUndefined": "Undefined",
+          "LocalizedDefault": "Default",
+          "LocalizedForced": "Forced",
+          "LocalizedExternal": "External",
+          "LocalizedHearingImpaired": "Hearing Impaired",
+          "DisplayTitle": "Undefined - SUBRIP - External",
+          "IsInterlaced": false,
+          "IsAVC": false,
+          "IsDefault": false,
+          "IsForced": false,
+          "IsHearingImpaired": false,
+          "IsOriginal": false,
+          "Height": 0,
+          "Width": 0,
+          "Type": "Subtitle",
+          "Index": 1,
+          "IsExternal": true,
+          "IsTextSubtitleStream": true,
+          "SupportsExternalStream": true,
+          "Path": "/data/tvshows/Desperate Housewives (2004) [tvdbid-73800]/Season 05/Desperate Housewives (2004) - S05E18 - A Spark. To Pierce the Dark [WEBRip-1080p][AAC 5.1][x265]-KONTRAST.srt",
+          "Level": 0
+        },
+        {
+          "Codec": "hevc",
+          "CodecTag": "hvc1",
+          "Language": "eng",
+          "ColorSpace": "bt709",
+          "ColorTransfer": "bt709",
+          "ColorPrimaries": "bt709",
+          "TimeBase": "1/24000",
+          "VideoRange": "SDR",
+          "VideoRangeType": "SDR",
+          "AudioSpatialFormat": "None",
+          "DisplayTitle": "1080p HEVC SDR",
+          "IsInterlaced": false,
+          "IsAVC": false,
+          "BitRate": 2500774,
+          "BitDepth": 8,
+          "RefFrames": 1,
+          "IsDefault": true,
+          "IsForced": false,
+          "IsHearingImpaired": false,
+          "IsOriginal": false,
+          "Height": 1080,
+          "Width": 1920,
+          "AverageFrameRate": 23.976025,
+          "RealFrameRate": 23.976025,
+          "ReferenceFrameRate": 23.976025,
+          "Profile": "Main",
+          "Type": "Video",
+          "AspectRatio": "16:9",
+          "Index": 2,
+          "IsExternal": false,
+          "IsTextSubtitleStream": false,
+          "SupportsExternalStream": false,
+          "PixelFormat": "yuv420p",
+          "Level": 120,
+          "IsAnamorphic": false
+        },
+        {
+          "Codec": "aac",
+          "CodecTag": "mp4a",
+          "Language": "eng",
+          "TimeBase": "1/48000",
+          "VideoRange": "Unknown",
+          "VideoRangeType": "Unknown",
+          "AudioSpatialFormat": "None",
+          "LocalizedDefault": "Default",
+          "LocalizedExternal": "External",
+          "LocalizedLanguage": "English",
+          "LocalizedOriginal": "Original",
+          "DisplayTitle": "English - AAC - 5.1 - Default",
+          "IsInterlaced": false,
+          "IsAVC": false,
+          "ChannelLayout": "5.1",
+          "BitRate": 224000,
+          "Channels": 6,
+          "SampleRate": 48000,
+          "IsDefault": true,
+          "IsForced": false,
+          "IsHearingImpaired": false,
+          "IsOriginal": false,
+          "Profile": "LC",
+          "Type": "Audio",
+          "Index": 3,
+          "IsExternal": false,
+          "IsTextSubtitleStream": false,
+          "SupportsExternalStream": false,
+          "Level": 0
+        }
+      ],
+      "VideoType": "VideoFile",
+      "ImageTags": {
+        "Primary": "dbb58187fd3e6443369f536fb7a75908"
+      },
+      "BackdropImageTags": [],
+      "ParentLogoImageTag": "830c852eb3d9fdc426aad0764ed4b2b1",
+      "ImageBlurHashes": {
+        "Primary": {
+          "dbb58187fd3e6443369f536fb7a75908": "WKFFW.~Vxa_MJBS4-:xutSNGM{RjSgtR%2MxRjt7xuoft6ofWCRk",
+          "0a65d366de64b25cc004faf719a6e6a7": "dbGu8w=|x[xu_MxuxtoztQxZR*oJsAxFM|j[I=R*NHWY",
+          "bfb3987655370ecce078f58cc67dee2f": "d~M%As%2oL%1~qt7oet7yEWCWCR-xba#ofa~xaoeofoL"
+        },
+        "Logo": {
+          "830c852eb3d9fdc426aad0764ed4b2b1": "HeLV{|s:kCxaofofj[nioL*KjFWVWBWBjZaysoj["
+        },
+        "Thumb": {
+          "c359d6a6ae603d8275965ac85ce56548": "W~P=]5xa%g%MkCtS_Nj]kWt7WooznPWWNFWBoJoI%1s:tRayf+W="
+        },
+        "Backdrop": {
+          "85a8d8ae988a8a06176772f211d781d5": "WbMGYC-:RPozM|xa_Mxawd%L%1%2cDs.IVt7xZoz-:xZRQkCD*Io"
+        }
+      },
+      "SeriesStudio": "ABC",
+      "ParentThumbItemId": "9efa4240a1af422beff21712c58c218d",
+      "ParentThumbImageTag": "c359d6a6ae603d8275965ac85ce56548",
+      "ParentPrimaryImageItemId": "2ad5f434028bf16ce9cec4da7c05cb96",
+      "ParentPrimaryImageTag": "bfb3987655370ecce078f58cc67dee2f",
+      "Chapters": [],
+      "Trickplay": {},
+      "LocationType": "FileSystem",
+      "MediaType": "Video",
+      "Width": 1920,
+      "Height": 1080
+    },
+    "DeviceId": "36ee0c38c96267211fc848dbe46913546b75a4e7",
+    "ApplicationVersion": "0.19.10",
+    "IsActive": true,
+    "SupportsMediaControl": true,
+    "SupportsRemoteControl": true,
+    "NowPlayingQueue": [],
+    "HasCustomDeviceName": false,
+    "ServerId": "79315eab3c4c401f8391d5c26210b6d7",
+    "UserPrimaryImageTag": "3c0b29d9ed1bdf303020adb869978510",
+    "SupportedCommands": [
+      "DisplayContent",
+      "SetSubtitleStreamIndex",
+      "SetAudioStreamIndex",
+      "DisplayMessage",
+      "SendString"
+    ]
+  },
+  {
+    "PlayState": {
+      "CanSeek": false,
+      "IsPaused": false,
+      "IsMuted": false,
+      "RepeatMode": "RepeatNone",
+      "PlaybackOrder": "Default"
+    },
+    "AdditionalUsers": [],
+    "Capabilities": {
+      "PlayableMediaTypes": [],
+      "SupportedCommands": [],
+      "SupportsMediaControl": false,
+      "SupportsPersistentIdentifier": true
+    },
+    "RemoteEndPoint": "192.168.10.31",
+    "PlayableMediaTypes": [],
+    "Id": "6c2b22f258dbe6e06789427d30a72d0d",
+    "UserId": "8bed8d8cccf249548eb6a39fd6a7e54b",
+    "UserName": "Zenith Greyrat",
+    "Client": "Jellyfin Web",
+    "LastActivityDate": "2026-11-08T08:45:44.7682895Z",
+    "LastPlaybackCheckIn": "0001-01-01T00:00:00.0000000Z",
+    "DeviceName": "Safari",
+    "DeviceId": "TW96aWxsYS81LjAgKE1hY2ludG9zaDsgSW50ZWwgTWFjIE9TIFggMTBfMTVfNykgQXBwbGVXZWJLaXQvNjA1LjEuMTUgKEtIVE1MLCBsaWtlIEdlY2tvKSBWZXJzaW9uLzI2LjIgU2FmYXJpLzYwNS4xLjE1fDE3NzA1MzkyMjk4NDM1",
+    "ApplicationVersion": "12.4.0",
+    "IsActive": false,
+    "SupportsMediaControl": false,
+    "SupportsRemoteControl": false,
+    "NowPlayingQueue": [],
+    "HasCustomDeviceName": false,
+    "ServerId": "79315eab3c4c401f8391d5c26210b6d7",
+    "UserPrimaryImageTag": "3c0b29d9ed1bdf303020adb869978510",
+    "SupportedCommands": []
+  }
+]

@@ -1,0 +1,507 @@
+{
+  "createdBy": [
+    {
+      "id": 58321,
+      "credit_id": "5258a609760ee3466169e96c",
+      "name": "Eric Kripke",
+      "original_name": "Eric Kripke",
+      "gender": 2,
+      "profile_path": "/dd7EgfOEKPqQxWtBfAvjYZahbSc.jpg"
+    }
+  ],
+  "episodeRunTime": [
+    25
+  ],
+  "firstAirDate": "2011-01-12",
+  "genres": [
+    {
+      "id": 16,
+      "name": "Animation"
+    },
+    {
+      "id": 18,
+      "name": "Drama"
+    },
+    {
+      "id": 9648,
+      "name": "Mystery"
+    },
+    {
+      "id": 10765,
+      "name": "Sci-Fi & Fantasy"
+    },
+    {
+      "id": 10759,
+      "name": "Action & Adventure"
+    }
+  ],
+  "relatedVideos": [
+    {
+      "site": "YouTube",
+      "key": "VMXEvxY7ZI0",
+      "name": "Remember The Supernatural Anime?",
+      "size": 1080,
+      "type": "Featurette",
+      "url": "https://www.youtube.com/watch?v=VMXEvxY7ZI0"
+    },
+    {
+      "site": "YouTube",
+      "key": "je8lQJ0GYKk",
+      "name": "Supernatural, The Anime Series - Trailer",
+      "size": 1080,
+      "type": "Trailer",
+      "url": "https://www.youtube.com/watch?v=je8lQJ0GYKk"
+    }
+  ],
+  "homepage": "https://wwws.warnerbros.co.jp/supernatural/sm/",
+  "id": 32871,
+  "inProduction": false,
+  "languages": [
+    "en",
+    "ja"
+  ],
+  "lastAirDate": "2011-04-06",
+  "name": "Supernatural: The Anime Series",
+  "networks": [],
+  "numberOfEpisodes": 22,
+  "numberOfSeasons": 1,
+  "originCountry": [
+    "JP"
+  ],
+  "originalLanguage": "ja",
+  "originalName": "SUPERNATURAL：THE ANIMATION",
+  "tagline": "",
+  "overview": "The anime re-imagining of the original live-action series follows the Winchester brothers Sam and Dean as they hunt creatures and other supernatural phenomena in the American countryside. The storyline covers the first two seasons of the live-action version, as well as original episodes.",
+  "popularity": 4.8994,
+  "productionCompanies": [
+    {
+      "id": 3464,
+      "name": "Madhouse",
+      "originCountry": "JP",
+      "logoPath": "/9k0nr75nwnNeT2MHerf1OXJN0hj.png"
+    },
+    {
+      "id": 3627,
+      "name": "Warner Bros. Japan",
+      "originCountry": "JP",
+      "logoPath": "/pBfPYpzg5o3EoBPfrFKzTRi8MGr.png"
+    }
+  ],
+  "productionCountries": [
+    {
+      "iso_3166_1": "JP",
+      "name": "Japan"
+    },
+    {
+      "iso_3166_1": "US",
+      "name": "United States of America"
+    }
+  ],
+  "contentRatings": {
+    "results": [
+      {
+        "descriptors": [],
+        "iso_3166_1": "TR",
+        "rating": "13+"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "AU",
+        "rating": "M"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "FR",
+        "rating": "12"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "ES",
+        "rating": "13"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "BR",
+        "rating": "14"
+      }
+    ]
+  },
+  "spokenLanguages": [
+    {
+      "englishName": "English",
+      "iso_639_1": "en",
+      "name": "English"
+    },
+    {
+      "englishName": "Japanese",
+      "iso_639_1": "ja",
+      "name": "日本語"
+    }
+  ],
+  "seasons": [
+    {
+      "airDate": "2011-01-12",
+      "episodeCount": 22,
+      "id": 63341,
+      "name": "Season 1",
+      "overview": "",
+      "seasonNumber": 1,
+      "posterPath": "/sTyE358LGwf23CNJnELinhNviYv.jpg"
+    }
+  ],
+  "status": "Ended",
+  "type": "Video",
+  "voteAverage": 7.9,
+  "voteCount": 270,
+  "backdropPath": "/sVoc8UkF2a0SJOsMDGad0Kv8p4m.jpg",
+  "lastEpisodeToAir": {
+    "id": 1014775,
+    "airDate": "2011-04-06",
+    "episodeNumber": 22,
+    "name": "All Hell Breaks Loose (2)",
+    "overview": "In a surprise ending, Jake stabs Sam and kills him. Devastated by grief, Dean makes a deal with the crossroad demon to bring Sam back; as a trade-off, Dean gets one more year to live, after that -- his soul is toast.",
+    "productionCode": "",
+    "seasonNumber": 1,
+    "showId": 32871,
+    "voteAverage": 9.5,
+    "voteCount": 2,
+    "stillPath": "/eaKakO4FtR4c0eHMEyDRLy9hX7k.jpg"
+  },
+  "posterPath": "/4dHiX4cui1Zk0d6nwONSx3jQ8Zf.jpg",
+  "credits": {
+    "cast": [
+      {
+        "character": "Dean Winchester (voice)",
+        "creditId": "61683c3a8fdda9008dcf228d",
+        "id": 89832,
+        "name": "Hiroki Touchi",
+        "order": 0,
+        "gender": 2,
+        "profilePath": "/bU2vogWmnTWiQEwUADWlnBqAPhJ.jpg"
+      },
+      {
+        "character": "Sam Winchester (voice)",
+        "creditId": "61683c4b158c850096b70cd5",
+        "id": 1252998,
+        "name": "Yuuya Uchida",
+        "order": 1,
+        "gender": 2,
+        "profilePath": "/4xLLQGEDWtmLWUapo0UnfvCdsXp.jpg"
+      },
+      {
+        "character": "Bobby Singer (voice)",
+        "creditId": "67702eedbf10ff198461a90c",
+        "id": 1241742,
+        "name": "Takashi Taniguchi",
+        "order": 2,
+        "gender": 2,
+        "profilePath": "/jsbQVWrhc0ulJqjVI6AeDfOwC52.jpg"
+      },
+      {
+        "character": "John Winchester (voice)",
+        "creditId": "67702f1d5f1c4fa473613064",
+        "id": 111373,
+        "name": "Takaya Hashi",
+        "order": 3,
+        "gender": 2,
+        "profilePath": "/qHt0Q7755oez1yvtShBalcXDv2h.jpg"
+      },
+      {
+        "character": "Azazel (voice)",
+        "creditId": "67702f421efc2434cf12e8a1",
+        "id": 224462,
+        "name": "Naoya Uchida",
+        "order": 4,
+        "gender": 2,
+        "profilePath": "/i1Vl4QbiEsyATmX2HSH2rIEyzeS.jpg"
+      }
+    ],
+    "crew": [
+      {
+        "creditId": "603136365c3247003fdc0039",
+        "department": "Camera",
+        "id": 2555979,
+        "job": "Director of Photography",
+        "name": "Kohei Tanada",
+        "gender": 2,
+        "profilePath": null
+      },
+      {
+        "creditId": "60b53171a06645002a54d0f4",
+        "department": "Art",
+        "id": 552050,
+        "job": "Prop Designer",
+        "name": "Masahiro Kimura",
+        "gender": 2,
+        "profilePath": null
+      },
+      {
+        "creditId": "61683a7653866e0048ac63ca",
+        "department": "Directing",
+        "id": 1133664,
+        "job": "Director",
+        "name": "Shigeyuki Miya",
+        "gender": 2,
+        "profilePath": "/uUuE49cGYG2L6b4Pm3mNqYo8qdO.jpg"
+      },
+      {
+        "creditId": "61683a84e004a6002c445c47",
+        "department": "Directing",
+        "id": 1324582,
+        "job": "Director",
+        "name": "Atsuko Ishizuka",
+        "gender": 1,
+        "profilePath": "/yGQNKilpHpGrL2SDDf7kIncnqzP.jpg"
+      },
+      {
+        "creditId": "61683aa83a99370043efc1bd",
+        "department": "Visual Effects",
+        "id": 1170786,
+        "job": "Character Designer",
+        "name": "Takahiro Yoshimatsu",
+        "gender": 2,
+        "profilePath": "/yEaSje9wNrTzkeHUsXRuVhgDZtc.jpg"
+      }
+    ]
+  },
+  "externalIds": {
+    "facebookId": "",
+    "freebaseId": null,
+    "freebaseMid": "/m/0c0bg68",
+    "imdbId": "tt1679482",
+    "instagramId": null,
+    "tvdbId": 197001,
+    "tvrageId": null,
+    "twitterId": null
+  },
+  "keywords": [
+    {
+      "id": 6152,
+      "name": "supernatural"
+    },
+    {
+      "id": 15291,
+      "name": "on the road"
+    },
+    {
+      "id": 162846,
+      "name": "ghost"
+    },
+    {
+      "id": 186425,
+      "name": "demon hunter"
+    },
+    {
+      "id": 210024,
+      "name": "anime"
+    }
+  ],
+  "mediaInfo": {
+    "downloadStatus": [],
+    "downloadStatus4k": [],
+    "id": 420,
+    "mediaType": "tv",
+    "tmdbId": 32871,
+    "tvdbId": 197001,
+    "imdbId": null,
+    "status": 3,
+    "status4k": 1,
+    "createdAt": "2026-09-15T05:37:15.000Z",
+    "updatedAt": "2026-10-24T16:06:00.000Z",
+    "lastSeasonChange": "2026-09-15T05:37:15.000Z",
+    "mediaAddedAt": "2026-09-15T05:37:15.000Z",
+    "serviceId": 0,
+    "serviceId4k": null,
+    "externalServiceId": 162,
+    "externalServiceId4k": null,
+    "externalServiceSlug": "supernatural-the-anime-series",
+    "externalServiceSlug4k": null,
+    "ratingKey": null,
+    "ratingKey4k": null,
+    "jellyfinMediaId": null,
+    "jellyfinMediaId4k": null,
+    "requests": [
+      {
+        "id": 187,
+        "status": 2,
+        "createdAt": "2026-09-15T05:37:15.000Z",
+        "updatedAt": "2026-10-24T16:05:56.000Z",
+        "type": "tv",
+        "is4k": false,
+        "serverId": null,
+        "profileId": null,
+        "rootFolder": null,
+        "languageProfileId": null,
+        "tags": null,
+        "isAutoRequest": false,
+        "ignoreQuota": false,
+        "media": {
+          "downloadStatus": [],
+          "downloadStatus4k": [],
+          "id": 420,
+          "mediaType": "tv",
+          "tmdbId": 32871,
+          "tvdbId": 197001,
+          "imdbId": null,
+          "status": 3,
+          "status4k": 1,
+          "createdAt": "2026-09-15T05:37:15.000Z",
+          "updatedAt": "2026-10-24T16:06:00.000Z",
+          "lastSeasonChange": "2026-09-15T05:37:15.000Z",
+          "mediaAddedAt": "2026-09-15T05:37:15.000Z",
+          "serviceId": 0,
+          "serviceId4k": null,
+          "externalServiceId": 162,
+          "externalServiceId4k": null,
+          "externalServiceSlug": "supernatural-the-anime-series",
+          "externalServiceSlug4k": null,
+          "ratingKey": null,
+          "ratingKey4k": null,
+          "jellyfinMediaId": null,
+          "jellyfinMediaId4k": null,
+          "serviceUrl": "http://sonarr:8989/series/supernatural-the-anime-series"
+        },
+        "requestedBy": {
+          "permissions": 32,
+          "warnings": [],
+          "id": 2,
+          "plexUsername": null,
+          "jellyfinUsername": "Zenith Greyrat",
+          "username": null,
+          "recoveryLinkExpirationDate": null,
+          "userType": 3,
+          "jellyfinUserId": "8bed8d8cccf249548eb6a39fd6a7e54b",
+          "avatar": "/avatarproxy/8bed8d8cccf249548eb6a39fd6a7e54b?v=1783334055000",
+          "avatarETag": "05fe9030e3f3b48428e056a08b566635f40d51541eda759b26c1b7440ef6ef59",
+          "avatarVersion": "1783334055000",
+          "movieQuotaLimit": null,
+          "movieQuotaDays": null,
+          "tvQuotaLimit": null,
+          "tvQuotaDays": null,
+          "createdAt": "2026-08-23T12:26:42.000Z",
+          "updatedAt": "2026-08-23T12:26:42.000Z",
+          "requestCount": 2,
+          "displayName": "Zenith Greyrat"
+        },
+        "modifiedBy": {
+          "permissions": 2,
+          "warnings": [],
+          "id": 1,
+          "plexUsername": null,
+          "jellyfinUsername": "Paul Greyrat",
+          "username": null,
+          "recoveryLinkExpirationDate": null,
+          "userType": 3,
+          "jellyfinUserId": "4c0628aacef24bdfacd40f946ea33ee7",
+          "avatar": "/avatarproxy/4c0628aacef24bdfacd40f946ea33ee7?v=1791693617000",
+          "avatarETag": "16b7af80243e8107605f38a62a9fc4271e95b67189183e19d41c2cf296a373e9",
+          "avatarVersion": "1791693617000",
+          "movieQuotaLimit": null,
+          "movieQuotaDays": null,
+          "tvQuotaLimit": null,
+          "tvQuotaDays": null,
+          "createdAt": "2026-02-03T20:09:10.000Z",
+          "updatedAt": "2026-10-11T04:40:17.000Z",
+          "requestCount": 125,
+          "displayName": "Paul Greyrat"
+        },
+        "seasons": [
+          {
+            "id": 271,
+            "seasonNumber": 1,
+            "status": 2,
+            "createdAt": "2026-09-15T05:37:15.000Z",
+            "updatedAt": "2026-10-24T16:05:56.000Z"
+          }
+        ],
+        "seasonCount": 1
+      }
+    ],
+    "issues": [],
+    "seasons": [
+      {
+        "id": 391,
+        "seasonNumber": 1,
+        "status": 3,
+        "status4k": 1,
+        "createdAt": "2026-10-25T02:30:05.000Z",
+        "updatedAt": "2026-10-25T02:30:05.000Z"
+      }
+    ],
+    "serviceUrl": "http://sonarr:8989/series/supernatural-the-anime-series"
+  },
+  "watchProviders": [
+    {
+      "iso_3166_1": "AU",
+      "link": "https://www.themoviedb.org/tv/32871-supernatural-the-animation/watch?locale=AU",
+      "buy": [
+        {
+          "displayPriority": 15,
+          "logoPath": "/qdEGArH3lKfFnAtYXMkSYk5wxuG.png",
+          "id": 2,
+          "name": "Apple TV Store"
+        }
+      ],
+      "flatrate": []
+    },
+    {
+      "iso_3166_1": "CA",
+      "link": "https://www.themoviedb.org/tv/32871-supernatural-the-animation/watch?locale=CA",
+      "buy": [
+        {
+          "displayPriority": 7,
+          "logoPath": "/qdEGArH3lKfFnAtYXMkSYk5wxuG.png",
+          "id": 2,
+          "name": "Apple TV Store"
+        }
+      ],
+      "flatrate": []
+    },
+    {
+      "iso_3166_1": "GB",
+      "link": "https://www.themoviedb.org/tv/32871-supernatural-the-animation/watch?locale=GB",
+      "buy": [
+        {
+          "displayPriority": 6,
+          "logoPath": "/qdEGArH3lKfFnAtYXMkSYk5wxuG.png",
+          "id": 2,
+          "name": "Apple TV Store"
+        },
+        {
+          "displayPriority": 10,
+          "logoPath": "/jn6TLbtaTZntTRX9UYucHJvpQx1.png",
+          "id": 10,
+          "name": "Amazon Video"
+        }
+      ],
+      "flatrate": []
+    },
+    {
+      "iso_3166_1": "GG",
+      "link": "https://www.themoviedb.org/tv/32871-supernatural-the-animation/watch?locale=GG",
+      "buy": [
+        {
+          "displayPriority": 81,
+          "logoPath": "/jn6TLbtaTZntTRX9UYucHJvpQx1.png",
+          "id": 10,
+          "name": "Amazon Video"
+        }
+      ],
+      "flatrate": []
+    },
+    {
+      "iso_3166_1": "JP",
+      "link": "https://www.themoviedb.org/tv/32871-supernatural-the-animation/watch?locale=JP",
+      "buy": [
+        {
+          "displayPriority": 7,
+          "logoPath": "/jn6TLbtaTZntTRX9UYucHJvpQx1.png",
+          "id": 10,
+          "name": "Amazon Video"
+        }
+      ],
+      "flatrate": []
+    }
+  ],
+  "onUserWatchlist": false
+}

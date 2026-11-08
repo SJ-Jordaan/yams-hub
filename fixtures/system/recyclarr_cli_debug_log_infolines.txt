@@ -1,0 +1,19 @@
+[07:45:43 INF] Initializing provider: official (type: trash-guides)
+[07:45:46 INF] Initializing provider: official (type: config-templates)
+[07:45:48 INF] hd-bluray-web: Processing Radarr server hd-bluray-web
+[07:45:48 INF] hd-bluray-web: Created 41 New Custom Formats
+[07:45:48 INF] hd-bluray-web: Total of 41 custom formats were synced
+[07:46:05 INF] hd-bluray-web: Total of 14 sizes were synced for quality definition movie
+[07:46:06 INF] hd-bluray-web: Created 1 Profiles: ["HD Bluray + WEB"]
+[07:46:06 INF] hd-bluray-web: A total of 1 profiles were synced. 0 contain quality changes and 0 contain updated scores
+[07:46:06 INF] hd-bluray-web: Completed at 11/08/2026 07:46:06
+[07:46:06 INF] web-1080p: Processing Sonarr server web-1080p
+[07:46:06 WRN] web-1080p: 7 custom format(s) already existed in the service and were replaced by Recyclarr: WEB Tier 01, WEB Tier 02, WEB Tier 03, AMZN, DSNP, NF, AV1
+[07:46:06 INF] web-1080p: Created 30 New Custom Formats
+[07:46:06 INF] web-1080p: Updated 2 Existing Custom Formats
+[07:46:06 INF] web-1080p: Skipped 5 Custom Formats that did not change
+[07:46:06 INF] web-1080p: Total of 32 custom formats were synced
+[07:46:15 INF] web-1080p: All sizes for quality definition series are already up to date!
+[07:46:15 INF] web-1080p: Created 1 Profiles: ["WEB-1080p"]
+[07:46:15 INF] web-1080p: A total of 1 profiles were synced. 0 contain quality changes and 0 contain updated scores
+[07:46:15 INF] web-1080p: Completed at 11/08/2026 07:46:15

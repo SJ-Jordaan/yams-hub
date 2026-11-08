@@ -1,0 +1,431 @@
+[
+  {
+    "Id": "2ed2c746477376a112c265efe83c687714ba4df57f6e808692d0a374d4b317f7",
+    "Names": [
+      "/homepage"
+    ],
+    "Image": "ghcr.io/gethomepage/homepage:latest",
+    "ImageID": "sha256:0193309878fc07a9016fc8bb36a54206bc1b1d17226049d7e0250bceef2d4078",
+    "Command": "docker-entrypoint.sh node server.js",
+    "Created": 1794126433,
+    "Ports": [
+      {
+        "IP": "0.0.0.0",
+        "PrivatePort": 3000,
+        "PublicPort": 3000,
+        "Type": "tcp"
+      },
+      {
+        "IP": "::",
+        "PrivatePort": 3000,
+        "PublicPort": 3000,
+        "Type": "tcp"
+      }
+    ],
+    "Labels": {
+      "com.centurylinklabs.watchtower.monitor-only": "false",
+      "com.docker.compose.config-hash": "73ef6f04330d7effa71fb5274b6c24abb1abde0fddbc19ad83ee04330b864a33",
+      "com.docker.compose.container-number": "1",
+      "com.docker.compose.depends_on": "",
+      "com.docker.compose.image": "sha256:0193309878fc07a9016fc8bb36a54206bc1b1d17226049d7e0250bceef2d4078",
+      "com.docker.compose.oneoff": "False",
+      "com.docker.compose.project": "yams",
+      "com.docker.compose.project.config_files": "/opt/yams/docker-compose.yaml,/opt/yams/docker-compose.custom.yaml",
+      "com.docker.compose.project.working_dir": "/opt/yams",
+      "com.docker.compose.replace": "homepage",
+      "com.docker.compose.service": "homepage",
+      "com.docker.compose.version": "5.1.3",
+      "org.opencontainers.image.created": "2026-10-23T15:10:48.129Z",
+      "org.opencontainers.image.description": "A highly customizable homepage (or startpage / application dashboard) with Docker and service API integrations.",
+      "org.opencontainers.image.documentation": "https://github.com/gethomepage/homepage/wiki",
+      "org.opencontainers.image.licenses": "GPL-3.0",
+      "org.opencontainers.image.revision": "2e5f10134ae3961bb936d3e7c441f9a1f4a4bf4f",
+      "org.opencontainers.image.source": "https://github.com/gethomepage/homepage",
+      "org.opencontainers.image.title": "homepage",
+      "org.opencontainers.image.url": "https://github.com/gethomepage/homepage",
+      "org.opencontainers.image.version": "v2.7.0"
+    },
+    "State": "running",
+    "Status": "Up 25 minutes (healthy)",
+    "HostConfig": {
+      "NetworkMode": "yams_network"
+    },
+    "Health": {
+      "Status": "healthy",
+      "FailingStreak": 0
+    },
+    "NetworkSettings": {
+      "Networks": {
+        "yams_network": {
+          "IPAMConfig": {
+            "IPv4Address": "172.28.0.41"
+          },
+          "Links": null,
+          "Aliases": null,
+          "DriverOpts": null,
+          "GwPriority": 0,
+          "NetworkID": "c2d51ddeb5f43670880a4789e88278bc90ddfe0532c698a15209684c3e515dde",
+          "EndpointID": "f1429d32a1c6c2182fcf7660d9b853544bdc5f19ee09b3d782aa4256a709623c",
+          "Gateway": "172.28.0.1",
+          "IPAddress": "172.28.0.41",
+          "MacAddress": "96:56:a5:a5:87:07",
+          "IPPrefixLen": 24,
+          "IPv6Gateway": "",
+          "GlobalIPv6Address": "",
+          "GlobalIPv6PrefixLen": 0,
+          "DNSNames": null
+        }
+      }
+    },
+    "Mounts": [
+      {
+        "Type": "bind",
+        "Source": "/volume1/mediashare/config/homepage",
+        "Destination": "/app/config",
+        "Mode": "rw",
+        "RW": true,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/volume1/mediashare/config/homepage/images",
+        "Destination": "/app/public/images",
+        "Mode": "ro",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/volume1/mediashare",
+        "Destination": "/mnt/media",
+        "Mode": "ro",
+        "RW": false,
+        "Propagation": "rprivate"
+      }
+    ]
+  },
+  {
+    "Id": "1194e394dd8c790cb55d61009e103917ddd51b915f8e7a7b8ddbfc54da7cc547",
+    "Names": [
+      "/qbittorrent"
+    ],
+    "Image": "lscr.io/linuxserver/qbittorrent:5.3.0",
+    "ImageID": "sha256:c1234ff88e1ced694f878f0737907923cfbe4252c40d21f31cee737ed89e533c",
+    "Command": "/init",
+    "Created": 1794125706,
+    "Ports": [],
+    "Labels": {
+      "build_version": "Linuxserver.io version:- 5.3.0_v2.1.2-ls486 Build-date:- 2026-11-01T13:50:58+00:00",
+      "com.docker.compose.config-hash": "9a82cd630c169bbd519d661a1ba4e99bbd7a2f8009558e483339094eb85ff153",
+      "com.docker.compose.container-number": "1",
+      "com.docker.compose.depends_on": "gluetun:service_started:true",
+      "com.docker.compose.image": "sha256:c1234ff88e1ced694f878f0737907923cfbe4252c40d21f31cee737ed89e533c",
+      "com.docker.compose.oneoff": "False",
+      "com.docker.compose.project": "yams",
+      "com.docker.compose.project.config_files": "/opt/yams/docker-compose.yaml,/opt/yams/docker-compose.custom.yaml",
+      "com.docker.compose.project.working_dir": "/opt/yams",
+      "com.docker.compose.replace": "qbittorrent",
+      "com.docker.compose.service": "qbittorrent",
+      "com.docker.compose.version": "5.1.3",
+      "maintainer": "thespad",
+      "org.opencontainers.image.authors": "linuxserver.io",
+      "org.opencontainers.image.created": "2026-11-01T13:50:58+00:00",
+      "org.opencontainers.image.description": "The [Qbittorrent](https://www.qbittorrent.org/) is a bittorrent client programmed in C++ / Qt that uses libtorrent (sometimes called libtorrent-rasterbar) by Arvid Norberg.",
+      "org.opencontainers.image.documentation": "https://docs.linuxserver.io/images/docker-qbittorrent",
+      "org.opencontainers.image.licenses": "GPL-3.0-only",
+      "org.opencontainers.image.ref.name": "294d698304dee62c9b8e5d6c233a65f5d15bb1ee",
+      "org.opencontainers.image.revision": "294d698304dee62c9b8e5d6c233a65f5d15bb1ee",
+      "org.opencontainers.image.source": "https://github.com/linuxserver/docker-qbittorrent",
+      "org.opencontainers.image.title": "Qbittorrent",
+      "org.opencontainers.image.url": "https://github.com/linuxserver/docker-qbittorrent/packages",
+      "org.opencontainers.image.vendor": "linuxserver.io",
+      "org.opencontainers.image.version": "5.3.0_v2.1.2-ls486"
+    },
+    "State": "running",
+    "Status": "Up 37 minutes",
+    "HostConfig": {
+      "NetworkMode": "container:1b55eec72010d6b642b5dd6fb9dd7d7c66da3eb56941c8a82e0d92b22d5c4208"
+    },
+    "Health": {
+      "Status": "none",
+      "FailingStreak": 0
+    },
+    "NetworkSettings": {
+      "Networks": {}
+    },
+    "Mounts": [
+      {
+        "Type": "bind",
+        "Source": "/etc/localtime",
+        "Destination": "/etc/localtime",
+        "Mode": "ro",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/volume1/mediashare/config/qbittorrent",
+        "Destination": "/config",
+        "Mode": "rw",
+        "RW": true,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/volume1/mediashare",
+        "Destination": "/data",
+        "Mode": "rw",
+        "RW": true,
+        "Propagation": "rprivate"
+      }
+    ]
+  },
+  {
+    "Id": "55f9b232e16ea362338151d2f65c72540ad078edb127e42e73a1c97f4e511d9b",
+    "Names": [
+      "/jellystat-db"
+    ],
+    "Image": "postgres:16-alpine",
+    "ImageID": "sha256:4278d7b1e3deb3193ddc803158f6532963f059fc25a2eefaee4b5a9e71741873",
+    "Command": "docker-entrypoint.sh postgres",
+    "Created": 1794124378,
+    "Ports": [
+      {
+        "IP": "",
+        "PrivatePort": 5432,
+        "Type": "tcp"
+      }
+    ],
+    "Labels": {
+      "com.docker.compose.config-hash": "126dd5238929cca94d18c14fa97cb98ec3420d5e77a0d1809e78c2145d0e93ff",
+      "com.docker.compose.container-number": "1",
+      "com.docker.compose.depends_on": "",
+      "com.docker.compose.image": "sha256:4278d7b1e3deb3193ddc803158f6532963f059fc25a2eefaee4b5a9e71741873",
+      "com.docker.compose.oneoff": "False",
+      "com.docker.compose.project": "yams",
+      "com.docker.compose.project.config_files": "/opt/yams/docker-compose.yaml,/opt/yams/docker-compose.custom.yaml",
+      "com.docker.compose.project.working_dir": "/opt/yams",
+      "com.docker.compose.service": "jellystat-db",
+      "com.docker.compose.version": "5.1.3"
+    },
+    "State": "running",
+    "Status": "Up 59 minutes (healthy)",
+    "HostConfig": {
+      "NetworkMode": "yams_network"
+    },
+    "Health": {
+      "Status": "healthy",
+      "FailingStreak": 0
+    },
+    "NetworkSettings": {
+      "Networks": {
+        "yams_network": {
+          "IPAMConfig": {
+            "IPv4Address": "172.28.0.46"
+          },
+          "Links": null,
+          "Aliases": null,
+          "DriverOpts": null,
+          "GwPriority": 0,
+          "NetworkID": "c2d51ddeb5f43670880a4789e88278bc90ddfe0532c698a15209684c3e515dde",
+          "EndpointID": "1af55dc490180d74dd8d7a9be12dc9218588e35a80c2109b17a79fda168a0152",
+          "Gateway": "172.28.0.1",
+          "IPAddress": "172.28.0.46",
+          "MacAddress": "fa:a4:45:3d:7d:45",
+          "IPPrefixLen": 24,
+          "IPv6Gateway": "",
+          "GlobalIPv6Address": "",
+          "GlobalIPv6PrefixLen": 0,
+          "DNSNames": null
+        }
+      }
+    },
+    "Mounts": [
+      {
+        "Type": "bind",
+        "Source": "/volume1/mediashare/config/jellystat/db",
+        "Destination": "/var/lib/postgresql/data",
+        "Mode": "rw",
+        "RW": true,
+        "Propagation": "rprivate"
+      }
+    ]
+  },
+  {
+    "Id": "12b09751a39b256429d586a69112bf0e4f4e5577c7f33aa587608c9d74d99725",
+    "Names": [
+      "/decluttarr"
+    ],
+    "Image": "ghcr.io/manimatter/decluttarr:latest",
+    "ImageID": "sha256:3bcea2d9b0761946d0b2e8a2881600875dbd32031ec8fa5dc21e31efb8292c13",
+    "Command": "python main.py",
+    "Created": 1794124378,
+    "Ports": [],
+    "Labels": {
+      "com.centurylinklabs.watchtower.monitor-only": "false",
+      "com.decluttarr.commit": "1937250",
+      "com.decluttarr.version": "v2.2.0",
+      "com.docker.compose.config-hash": "bfab51707bb13af4c01e143e14e3d0e95b99884c82d75fbc411285a101ec166d",
+      "com.docker.compose.container-number": "1",
+      "com.docker.compose.depends_on": "",
+      "com.docker.compose.image": "sha256:3bcea2d9b0761946d0b2e8a2881600875dbd32031ec8fa5dc21e31efb8292c13",
+      "com.docker.compose.oneoff": "False",
+      "com.docker.compose.project": "yams",
+      "com.docker.compose.project.config_files": "/opt/yams/docker-compose.yaml,/opt/yams/docker-compose.custom.yaml",
+      "com.docker.compose.project.working_dir": "/opt/yams",
+      "com.docker.compose.service": "decluttarr",
+      "com.docker.compose.version": "5.1.3",
+      "org.opencontainers.image.source": "https://github.com/ManiMatter/decluttarr"
+    },
+    "State": "running",
+    "Status": "Up 35 minutes (healthy)",
+    "HostConfig": {
+      "NetworkMode": "yams_network"
+    },
+    "Health": {
+      "Status": "healthy",
+      "FailingStreak": 0
+    },
+    "NetworkSettings": {
+      "Networks": {
+        "yams_network": {
+          "IPAMConfig": {
+            "IPv4Address": "172.28.0.44"
+          },
+          "Links": null,
+          "Aliases": null,
+          "DriverOpts": null,
+          "GwPriority": 0,
+          "NetworkID": "c2d51ddeb5f43670880a4789e88278bc90ddfe0532c698a15209684c3e515dde",
+          "EndpointID": "b8008d402758b5c511e15613837d89baa0fcb4b44974d218d84d40c7afa3a681",
+          "Gateway": "172.28.0.1",
+          "IPAddress": "172.28.0.44",
+          "MacAddress": "56:64:4a:4a:a2:a3",
+          "IPPrefixLen": 24,
+          "IPv6Gateway": "",
+          "GlobalIPv6Address": "",
+          "GlobalIPv6PrefixLen": 0,
+          "DNSNames": null
+        }
+      }
+    },
+    "Mounts": [
+      {
+        "Type": "bind",
+        "Source": "/volume1/mediashare/config/decluttarr/config.yaml",
+        "Destination": "/app/config/config.yaml",
+        "Mode": "ro",
+        "RW": false,
+        "Propagation": "rprivate"
+      }
+    ]
+  },
+  {
+    "Id": "a51cd2e6d6ebafb929c742f581b8f3bafaebefb5a9643fd360e05c04f17e033a",
+    "Names": [
+      "/sonarr"
+    ],
+    "Image": "lscr.io/linuxserver/sonarr:latest",
+    "ImageID": "sha256:ae55f56fa15cd639e4114104ddd7d292660ec259eab68d2d07d663b13a5066b5",
+    "Command": "/init",
+    "Created": 1793474452,
+    "Ports": [
+      {
+        "IP": "0.0.0.0",
+        "PrivatePort": 8989,
+        "PublicPort": 8989,
+        "Type": "tcp"
+      },
+      {
+        "IP": "::",
+        "PrivatePort": 8989,
+        "PublicPort": 8989,
+        "Type": "tcp"
+      }
+    ],
+    "Labels": {
+      "build_version": "Linuxserver.io version:- 4.0.20.3014-ls2 Build-date:- 2026-10-31T02:34:29+00:00",
+      "com.docker.compose.config-hash": "01544b56f5a3cb7964ec0985d13bbb0be1b5cb2ccb2ee0dbcd36cb36a6fd4fa1",
+      "com.docker.compose.container-number": "1",
+      "com.docker.compose.depends_on": "",
+      "com.docker.compose.image": "sha256:ae55f56fa15cd639e4114104ddd7d292660ec259eab68d2d07d663b13a5066b5",
+      "com.docker.compose.oneoff": "False",
+      "com.docker.compose.project": "yams",
+      "com.docker.compose.project.config_files": "/opt/yams/docker-compose.yaml,/opt/yams/docker-compose.custom.yaml",
+      "com.docker.compose.project.working_dir": "/opt/yams",
+      "com.docker.compose.service": "sonarr",
+      "com.docker.compose.version": "5.1.3",
+      "maintainer": "thespad",
+      "org.opencontainers.image.authors": "linuxserver.io",
+      "org.opencontainers.image.created": "2026-10-31T02:34:29+00:00",
+      "org.opencontainers.image.description": "[Sonarr](https://sonarr.tv/) (formerly NZBdrone) is a PVR for usenet and bittorrent users. It can monitor multiple RSS feeds for new episodes of your favorite shows and will grab, sort and rename them. It can also be configured to automatically upgrade the quality of files already downloaded when a better quality format becomes available.  ",
+      "org.opencontainers.image.documentation": "https://docs.linuxserver.io/images/docker-sonarr",
+      "org.opencontainers.image.licenses": "GPL-3.0-only",
+      "org.opencontainers.image.ref.name": "4a84583f0e819d7fa986715ce4ed4e971adce61c",
+      "org.opencontainers.image.revision": "4a84583f0e819d7fa986715ce4ed4e971adce61c",
+      "org.opencontainers.image.source": "https://github.com/linuxserver/docker-sonarr",
+      "org.opencontainers.image.title": "Sonarr",
+      "org.opencontainers.image.url": "https://github.com/linuxserver/docker-sonarr/packages",
+      "org.opencontainers.image.vendor": "linuxserver.io",
+      "org.opencontainers.image.version": "4.0.20.3014-ls2"
+    },
+    "State": "running",
+    "Status": "Up 3 hours",
+    "HostConfig": {
+      "NetworkMode": "yams_network"
+    },
+    "Health": {
+      "Status": "none",
+      "FailingStreak": 0
+    },
+    "NetworkSettings": {
+      "Networks": {
+        "yams_network": {
+          "IPAMConfig": {
+            "IPv4Address": "172.28.0.13"
+          },
+          "Links": null,
+          "Aliases": null,
+          "DriverOpts": null,
+          "GwPriority": 0,
+          "NetworkID": "c2d51ddeb5f43670880a4789e88278bc90ddfe0532c698a15209684c3e515dde",
+          "EndpointID": "65a5664dc8a87f72be468b59ba226ec13d62e0e40e37a3e4be218233d5b0c622",
+          "Gateway": "172.28.0.1",
+          "IPAddress": "172.28.0.13",
+          "MacAddress": "52:ff:bb:a9:65:74",
+          "IPPrefixLen": 24,
+          "IPv6Gateway": "",
+          "GlobalIPv6Address": "",
+          "GlobalIPv6PrefixLen": 0,
+          "DNSNames": null
+        }
+      }
+    },
+    "Mounts": [
+      {
+        "Type": "bind",
+        "Source": "/volume1/mediashare/config/sonarr",
+        "Destination": "/config",
+        "Mode": "rw",
+        "RW": true,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/volume1/mediashare",
+        "Destination": "/data",
+        "Mode": "rw",
+        "RW": true,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/etc/localtime",
+        "Destination": "/etc/localtime",
+        "Mode": "ro",
+        "RW": false,
+        "Propagation": "rprivate"
+      }
+    ]
+  }
+]

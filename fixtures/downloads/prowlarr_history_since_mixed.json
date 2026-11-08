@@ -1,0 +1,84 @@
+[
+  {
+    "indexerId": 5,
+    "date": "2026-11-07T10:32:54Z",
+    "successful": true,
+    "eventType": "releaseGrabbed",
+    "data": {
+      "source": "Sonarr",
+      "host": "sonarr",
+      "grabMethod": "Proxy",
+      "grabTitle": "[SubsPlease] Tensei Shitara Slime Datta Ken S01 (49-72) (1080p) [Batch]",
+      "url": "magnet:?xt=urn:btih:b3cf3baaffb64c08105d1e2152685b3b158e4ef4&dn=%5BSubsPlease%5D Tensei Shitara Slime Datta Ken %2849-72%29 %281080p%29 %5BBatch%5D&tr=http%3A%2F%2Fnyaa.tracker.wf%3A7777%2Fannounce&tr=udp%3A%2F%2Fopen.stealth.si%3A80%2Fannounce&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce&tr=udp%3A%2F%2Fexodus.desync.com%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.torrent.eu.org%3A451%2Fannounce"
+    },
+    "id": 490049
+  },
+  {
+    "indexerId": 5,
+    "date": "2026-11-07T10:32:55Z",
+    "successful": true,
+    "eventType": "releaseGrabbed",
+    "data": {
+      "source": "Sonarr",
+      "host": "sonarr",
+      "grabMethod": "Proxy",
+      "grabTitle": "[SubsPlease] Tensei Shitara Slime Datta Ken S01 (49-72) (720p) [Batch]",
+      "url": "magnet:?xt=urn:btih:22d2f87e0457958f7a2dab2cc969224a718da7c5&dn=%5BSubsPlease%5D Tensei Shitara Slime Datta Ken %2849-72%29 %28720p%29 %5BBatch%5D&tr=http%3A%2F%2Fnyaa.tracker.wf%3A7777%2Fannounce&tr=udp%3A%2F%2Fopen.stealth.si%3A80%2Fannounce&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce&tr=udp%3A%2F%2Fexodus.desync.com%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.torrent.eu.org%3A451%2Fannounce"
+    },
+    "id": 490050
+  },
+  {
+    "indexerId": 5,
+    "date": "2026-11-07T10:48:29Z",
+    "successful": true,
+    "eventType": "releaseGrabbed",
+    "data": {
+      "source": "Sonarr",
+      "host": "sonarr",
+      "grabMethod": "Proxy",
+      "grabTitle": "[SubsPlease] Tensei Shitara Slime Datta Ken S01 (49-72) (1080p) [Batch]",
+      "url": "magnet:?xt=urn:btih:b3cf3baaffb64c08105d1e2152685b3b158e4ef4&dn=%5BSubsPlease%5D Tensei Shitara Slime Datta Ken %2849-72%29 %281080p%29 %5BBatch%5D&tr=http%3A%2F%2Fnyaa.tracker.wf%3A7777%2Fannounce&tr=udp%3A%2F%2Fopen.stealth.si%3A80%2Fannounce&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce&tr=udp%3A%2F%2Fexodus.desync.com%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.torrent.eu.org%3A451%2Fannounce"
+    },
+    "id": 490063
+  },
+  {
+    "indexerId": 12,
+    "date": "2026-11-07T13:56:17Z",
+    "successful": false,
+    "eventType": "indexerRss",
+    "data": {
+      "limit": "100",
+      "offset": "0",
+      "elapsedTime": "19623",
+      "query": "",
+      "queryType": "tvsearch",
+      "categories": "5000,5070",
+      "source": "Sonarr",
+      "host": "sonarr",
+      "queryResults": "0",
+      "url": "https://www.tokyotosho.info/index.php?cat=0",
+      "cached": "0"
+    },
+    "id": 490288
+  },
+  {
+    "indexerId": 2,
+    "date": "2026-11-07T00:06:48Z",
+    "successful": true,
+    "eventType": "indexerRss",
+    "data": {
+      "limit": "100",
+      "offset": "0",
+      "elapsedTime": "51",
+      "query": "",
+      "queryType": "movie",
+      "categories": "2000,2020,2040,2060,2030,2045",
+      "source": "Radarr",
+      "host": "radarr",
+      "queryResults": "50",
+      "url": "https://apibay.org/precompiled/data_top100_recent.json",
+      "cached": "0"
+    },
+    "id": 489347
+  }
+]

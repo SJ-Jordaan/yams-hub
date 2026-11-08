@@ -1,0 +1,129 @@
+{
+  "page": 1,
+  "pageSize": 3,
+  "sortKey": "date",
+  "sortDirection": "descending",
+  "totalRecords": 2546,
+  "records": [
+    {
+      "episodeId": 5580,
+      "seriesId": 54,
+      "sourceTitle": "[SubsPlease] Tensei Shitara Slime Datta Ken S4 (01-24) (1080p) [Batch]",
+      "languages": [
+        {
+          "id": 8,
+          "name": "Japanese"
+        }
+      ],
+      "quality": {
+        "quality": {
+          "id": 9,
+          "name": "HDTV-1080p",
+          "source": "television",
+          "resolution": 1080
+        },
+        "revision": {
+          "version": 1,
+          "real": 0,
+          "isRepack": false
+        }
+      },
+      "customFormats": [
+        {
+          "id": 13,
+          "name": "Anime Web Tier 05"
+        }
+      ],
+      "customFormatScore": 200,
+      "qualityCutoffNotMet": true,
+      "date": "2026-11-07T21:57:00Z",
+      "downloadId": "E66AAC4C7D8A4F813A4E5B3A63C1BB52BEEE342E",
+      "eventType": "grabbed",
+      "data": {
+        "indexer": "Nyaa.si (Prowlarr)",
+        "nzbInfoUrl": "https://nyaa.si/view/2183642",
+        "releaseGroup": "SubsPlease",
+        "age": "0",
+        "ageHours": "0.10002097347222222",
+        "ageMinutes": "6.001258508333334",
+        "publishedDate": "2026-11-07T21:51:00Z",
+        "downloadClient": "qBittorrent",
+        "downloadClientName": "qBittorrent",
+        "size": "35111357644",
+        "downloadUrl": "http://prowlarr:9696/5/download?apikey=REDACTED&link=TStqbmhtQkRGMFRaekcyV2lXd0RJMXdaOTBPaG81SVBpUEZEL0lKYStZUXk2V2I4K1o0ZkJEM1ovRFY3TXVrcTV0ZHVua25VMUVkbDlwS3BjWXlTbmRBTHU2VEMwTGhwYXp5cmI3elNtdlk4K3NEUFRYbUltWkg4bkgvaVUrMVZqRzNaN1lxRmhiL2VjcXRyRjQ3bVFFNjdBOVRIaTQ5bEdtY1E2UURSVTYrbWtUWFFrTG9XZmFIWUt1RlRBSThoUVNRd3QxLy9jcnh5WndXQWdYdTkvMG5TV0FGQ2Y1WHpZMUVhM3BsNGFCRndCQUZwOC91Zm01QWhNKzZrRVNLdmpuNWV6YjVhU1BUNTFhU0w1N0ZFeTFVU0I2Y2w0MnNxQytNejJOdHU4T3pVcHpKWlZEcEZYb0ZSNURMYmNaR3NFQzkvVWlvb0liNjRXZWpqQ2NIZWdCTlFMWVdsTXdRd0tGbzhlRFZVUjZydklOOXRWSjFwTWticVovNTJYRjFNT2cvNkxac1JBQlR3YlIrKzNZY0xnOHovRU1kczlDcjB6dU04Tmp0WG56NVRUOXdKU0RXOUdRRi9jaUFURjdzUExpNm15cTU3MXRBaWZJS3NzUFlCdno0aDgvTG8xd2p3UDV2S2xPeGpGK0hIQmhHb29PaHFBRmxqNlYwZCtQSzMveDM3S2lMcy9HUS9NaUdzQzdMTXI1OFptcWlpR3h3c2s3aGZrRFRmWUw5eDl5TE5CQUVmbVV1NU90YVBFczVl&file=%5BSubsPlease%5D+Tensei+Shitara+Slime+Datta+Ken+S4+(01-24)+(1080p)+%5BBatch%5D",
+        "guid": "magnet:?xt=urn:btih:e66aac4c7d8a4f813a4e5b3a63c1bb52beee342e&dn=%5BSubsPlease%5D%20Tensei%20Shitara%20Slime%20Datta%20Ken%20S4%20%2801-24%29%20%281080p%29%20%5BBatch%5D&tr=http%3A%2F%2Fnyaa.tracker.wf%3A7777%2Fannounce&tr=udp%3A%2F%2Fopen.stealth.si%3A80%2Fannounce&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce&tr=udp%3A%2F%2Fexodus.desync.com%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.torrent.eu.org%3A451%2Fannounce",
+        "tvdbId": "0",
+        "tvRageId": "0",
+        "imdbId": null,
+        "protocol": "2",
+        "customFormatScore": "200",
+        "seriesMatchType": "Alias",
+        "releaseSource": "Rss",
+        "indexerFlags": "Freeleech",
+        "releaseType": "SeasonPack",
+        "torrentInfoHash": "e66aac4c7d8a4f813a4e5b3a63c1bb52beee342e"
+      },
+      "id": 13662
+    },
+    {
+      "episodeId": 5579,
+      "seriesId": 54,
+      "sourceTitle": "[SubsPlease] Tensei Shitara Slime Datta Ken S4 (01-24) (1080p) [Batch]",
+      "languages": [
+        {
+          "id": 8,
+          "name": "Japanese"
+        }
+      ],
+      "quality": {
+        "quality": {
+          "id": 9,
+          "name": "HDTV-1080p",
+          "source": "television",
+          "resolution": 1080
+        },
+        "revision": {
+          "version": 1,
+          "real": 0,
+          "isRepack": false
+        }
+      },
+      "customFormats": [
+        {
+          "id": 13,
+          "name": "Anime Web Tier 05"
+        }
+      ],
+      "customFormatScore": 200,
+      "qualityCutoffNotMet": true,
+      "date": "2026-11-07T21:57:00Z",
+      "downloadId": "E66AAC4C7D8A4F813A4E5B3A63C1BB52BEEE342E",
+      "eventType": "grabbed",
+      "data": {
+        "indexer": "Nyaa.si (Prowlarr)",
+        "nzbInfoUrl": "https://nyaa.si/view/2183642",
+        "releaseGroup": "SubsPlease",
+        "age": "0",
+        "ageHours": "0.10002003297222223",
+        "ageMinutes": "6.001202086666667",
+        "publishedDate": "2026-11-07T21:51:00Z",
+        "downloadClient": "qBittorrent",
+        "downloadClientName": "qBittorrent",
+        "size": "35111357644",
+        "downloadUrl": "http://prowlarr:9696/5/download?apikey=REDACTED&link=TStqbmhtQkRGMFRaekcyV2lXd0RJMXdaOTBPaG81SVBpUEZEL0lKYStZUXk2V2I4K1o0ZkJEM1ovRFY3TXVrcTV0ZHVua25VMUVkbDlwS3BjWXlTbmRBTHU2VEMwTGhwYXp5cmI3elNtdlk4K3NEUFRYbUltWkg4bkgvaVUrMVZqRzNaN1lxRmhiL2VjcXRyRjQ3bVFFNjdBOVRIaTQ5bEdtY1E2UURSVTYrbWtUWFFrTG9XZmFIWUt1RlRBSThoUVNRd3QxLy9jcnh5WndXQWdYdTkvMG5TV0FGQ2Y1WHpZMUVhM3BsNGFCRndCQUZwOC91Zm01QWhNKzZrRVNLdmpuNWV6YjVhU1BUNTFhU0w1N0ZFeTFVU0I2Y2w0MnNxQytNejJOdHU4T3pVcHpKWlZEcEZYb0ZSNURMYmNaR3NFQzkvVWlvb0liNjRXZWpqQ2NIZWdCTlFMWVdsTXdRd0tGbzhlRFZVUjZydklOOXRWSjFwTWticVovNTJYRjFNT2cvNkxac1JBQlR3YlIrKzNZY0xnOHovRU1kczlDcjB6dU04Tmp0WG56NVRUOXdKU0RXOUdRRi9jaUFURjdzUExpNm15cTU3MXRBaWZJS3NzUFlCdno0aDgvTG8xd2p3UDV2S2xPeGpGK0hIQmhHb29PaHFBRmxqNlYwZCtQSzMveDM3S2lMcy9HUS9NaUdzQzdMTXI1OFptcWlpR3h3c2s3aGZrRFRmWUw5eDl5TE5CQUVmbVV1NU90YVBFczVl&file=%5BSubsPlease%5D+Tensei+Shitara+Slime+Datta+Ken+S4+(01-24)+(1080p)+%5BBatch%5D",
+        "guid": "magnet:?xt=urn:btih:e66aac4c7d8a4f813a4e5b3a63c1bb52beee342e&dn=%5BSubsPlease%5D%20Tensei%20Shitara%20Slime%20Datta%20Ken%20S4%20%2801-24%29%20%281080p%29%20%5BBatch%5D&tr=http%3A%2F%2Fnyaa.tracker.wf%3A7777%2Fannounce&tr=udp%3A%2F%2Fopen.stealth.si%3A80%2Fannounce&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce&tr=udp%3A%2F%2Fexodus.desync.com%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.torrent.eu.org%3A451%2Fannounce",
+        "tvdbId": "0",
+        "tvRageId": "0",
+        "imdbId": null,
+        "protocol": "2",
+        "customFormatScore": "200",
+        "seriesMatchType": "Alias",
+        "releaseSource": "Rss",
+        "indexerFlags": "Freeleech",
+        "releaseType": "SeasonPack",
+        "torrentInfoHash": "e66aac4c7d8a4f813a4e5b3a63c1bb52beee342e"
+      },
+      "id": 13661
+    }
+  ]
+}

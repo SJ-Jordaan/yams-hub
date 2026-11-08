@@ -1,0 +1,317 @@
+[
+  {
+    "Name": "New Days",
+    "ServerId": "79315eab3c4c401f8391d5c26210b6d7",
+    "Id": "8cc4087914ab29d21af24e25a9b1a987",
+    "DateCreated": "2026-11-07T23:01:18.7659737Z",
+    "HasSubtitles": true,
+    "Container": "mkv",
+    "PremiereDate": "2026-04-03T00:00:00.0000000Z",
+    "ChannelId": null,
+    "CommunityRating": 3.64,
+    "RunTimeTicks": 14404100000,
+    "ProductionYear": 2026,
+    "IndexNumber": 1,
+    "ParentIndexNumber": 4,
+    "IsFolder": false,
+    "Type": "Episode",
+    "ParentLogoItemId": "71fb0b620791c8c3ea2ad7ba6ca6e787",
+    "ParentBackdropItemId": "71fb0b620791c8c3ea2ad7ba6ca6e787",
+    "ParentBackdropImageTags": [
+      "2b7a6175faa900259193f371fc793555"
+    ],
+    "UserData": {
+      "PlaybackPositionTicks": 0,
+      "PlayCount": 0,
+      "IsFavorite": false,
+      "Played": false,
+      "Key": "352408004001",
+      "ItemId": "8cc4087914ab29d21af24e25a9b1a987"
+    },
+    "SeriesName": "That Time I Got Reincarnated as a Slime",
+    "SeriesId": "71fb0b620791c8c3ea2ad7ba6ca6e787",
+    "SeasonId": "33baa3e2b72f6c83f0a49bed76115a47",
+    "SeriesPrimaryImageTag": "0117d4ba7a3021bd0ea63089ab9a796e",
+    "SeasonName": "That Time I Got Reincarnated as a Slime (2026)",
+    "VideoType": "VideoFile",
+    "ImageTags": {
+      "Primary": "9e549dfdae4e7b6be7b0d40024c57431"
+    },
+    "BackdropImageTags": [],
+    "ParentLogoImageTag": "140a4f8ac529b007fdc19cf0a83dad65",
+    "ImageBlurHashes": {
+      "Primary": {
+        "9e549dfdae4e7b6be7b0d40024c57431": "W~NTm;%0ng%Nt8%L~qs-xZx]WXxZt3oee-RjRkt2$_oIM_WBoeW9",
+        "0117d4ba7a3021bd0ea63089ab9a796e": "dvH.pgt7$$t8yGe:oIkDT2jGt6R.WZozogM}WsWqS5Rn",
+        "cd6f32e7daf7cc5d2233314c108a75f6": "dPDAJ*-TD~D%.TtQi^M{sqV@XSa#f,ROkCX9NGIUjvjt"
+      },
+      "Logo": {
+        "140a4f8ac529b007fdc19cf0a83dad65": "OL6^;}jFjEo~aJoeVCrAadkDo#bIjEbwU[bIWEZ~f,bdo}"
+      },
+      "Thumb": {
+        "e1d2dc99e3cdad25889edeed209ee5c7": "WtF?uII|Ivo#xBbL%jROj@a%jXkDkZM{WVoMxXkBtTRpNIs:xYWE"
+      },
+      "Backdrop": {
+        "2b7a6175faa900259193f371fc793555": "WbGSl=njT1tlS%o~TOtSM{ohacV[nnoMt7oMr=bdo#WEt6W-S5xu"
+      }
+    },
+    "ParentThumbItemId": "71fb0b620791c8c3ea2ad7ba6ca6e787",
+    "ParentThumbImageTag": "e1d2dc99e3cdad25889edeed209ee5c7",
+    "ParentPrimaryImageItemId": "33baa3e2b72f6c83f0a49bed76115a47",
+    "ParentPrimaryImageTag": "cd6f32e7daf7cc5d2233314c108a75f6",
+    "LocationType": "FileSystem",
+    "MediaType": "Video"
+  },
+  {
+    "Name": "The Mastermind's Identity",
+    "ServerId": "79315eab3c4c401f8391d5c26210b6d7",
+    "Id": "991c6818c7ba3461a1fb9a1e26e53bac",
+    "DateCreated": "2026-11-07T23:01:11.8941199Z",
+    "HasSubtitles": true,
+    "Container": "mkv",
+    "PremiereDate": "2026-05-22T00:00:00.0000000Z",
+    "ChannelId": null,
+    "CommunityRating": 9.45,
+    "RunTimeTicks": 14400780000,
+    "ProductionYear": 2026,
+    "IndexNumber": 7,
+    "ParentIndexNumber": 4,
+    "IsFolder": false,
+    "Type": "Episode",
+    "ParentLogoItemId": "71fb0b620791c8c3ea2ad7ba6ca6e787",
+    "ParentBackdropItemId": "71fb0b620791c8c3ea2ad7ba6ca6e787",
+    "ParentBackdropImageTags": [
+      "2b7a6175faa900259193f371fc793555"
+    ],
+    "UserData": {
+      "PlaybackPositionTicks": 0,
+      "PlayCount": 0,
+      "IsFavorite": false,
+      "Played": false,
+      "Key": "352408004007",
+      "ItemId": "991c6818c7ba3461a1fb9a1e26e53bac"
+    },
+    "SeriesName": "That Time I Got Reincarnated as a Slime",
+    "SeriesId": "71fb0b620791c8c3ea2ad7ba6ca6e787",
+    "SeasonId": "33baa3e2b72f6c83f0a49bed76115a47",
+    "SeriesPrimaryImageTag": "0117d4ba7a3021bd0ea63089ab9a796e",
+    "SeasonName": "That Time I Got Reincarnated as a Slime (2026)",
+    "VideoType": "VideoFile",
+    "ImageTags": {
+      "Primary": "2d24f1da7f8909e0181f176a5ddce3ad"
+    },
+    "BackdropImageTags": [],
+    "ParentLogoImageTag": "140a4f8ac529b007fdc19cf0a83dad65",
+    "ImageBlurHashes": {
+      "Primary": {
+        "2d24f1da7f8909e0181f176a5ddce3ad": "WzJ72LxtIV$4a0xZ~VbaM{xZi_t6x]WUV@kpWAfkxuoJV@s:V[j[",
+        "0117d4ba7a3021bd0ea63089ab9a796e": "dvH.pgt7$$t8yGe:oIkDT2jGt6R.WZozogM}WsWqS5Rn",
+        "cd6f32e7daf7cc5d2233314c108a75f6": "dPDAJ*-TD~D%.TtQi^M{sqV@XSa#f,ROkCX9NGIUjvjt"
+      },
+      "Logo": {
+        "140a4f8ac529b007fdc19cf0a83dad65": "OL6^;}jFjEo~aJoeVCrAadkDo#bIjEbwU[bIWEZ~f,bdo}"
+      },
+      "Thumb": {
+        "e1d2dc99e3cdad25889edeed209ee5c7": "WtF?uII|Ivo#xBbL%jROj@a%jXkDkZM{WVoMxXkBtTRpNIs:xYWE"
+      },
+      "Backdrop": {
+        "2b7a6175faa900259193f371fc793555": "WbGSl=njT1tlS%o~TOtSM{ohacV[nnoMt7oMr=bdo#WEt6W-S5xu"
+      }
+    },
+    "ParentThumbItemId": "71fb0b620791c8c3ea2ad7ba6ca6e787",
+    "ParentThumbImageTag": "e1d2dc99e3cdad25889edeed209ee5c7",
+    "ParentPrimaryImageItemId": "33baa3e2b72f6c83f0a49bed76115a47",
+    "ParentPrimaryImageTag": "cd6f32e7daf7cc5d2233314c108a75f6",
+    "LocationType": "FileSystem",
+    "MediaType": "Video"
+  },
+  {
+    "Name": "Lubelius, the Point of Convergence",
+    "ServerId": "79315eab3c4c401f8391d5c26210b6d7",
+    "Id": "77e3c591fea4b7dc270af61518abab6d",
+    "DateCreated": "2026-11-07T23:01:10.1381572Z",
+    "HasSubtitles": true,
+    "Container": "mkv",
+    "PremiereDate": "2026-08-07T00:00:00.0000000Z",
+    "ChannelId": null,
+    "CommunityRating": 7.02,
+    "RunTimeTicks": 14400320000,
+    "ProductionYear": 2026,
+    "IndexNumber": 17,
+    "ParentIndexNumber": 4,
+    "IsFolder": false,
+    "Type": "Episode",
+    "ParentLogoItemId": "71fb0b620791c8c3ea2ad7ba6ca6e787",
+    "ParentBackdropItemId": "71fb0b620791c8c3ea2ad7ba6ca6e787",
+    "ParentBackdropImageTags": [
+      "2b7a6175faa900259193f371fc793555"
+    ],
+    "UserData": {
+      "PlaybackPositionTicks": 0,
+      "PlayCount": 0,
+      "IsFavorite": false,
+      "Played": false,
+      "Key": "352408004017",
+      "ItemId": "77e3c591fea4b7dc270af61518abab6d"
+    },
+    "SeriesName": "That Time I Got Reincarnated as a Slime",
+    "SeriesId": "71fb0b620791c8c3ea2ad7ba6ca6e787",
+    "SeasonId": "33baa3e2b72f6c83f0a49bed76115a47",
+    "SeriesPrimaryImageTag": "0117d4ba7a3021bd0ea63089ab9a796e",
+    "SeasonName": "That Time I Got Reincarnated as a Slime (2026)",
+    "VideoType": "VideoFile",
+    "ImageTags": {
+      "Primary": "4c2f7dbf978c883cee5fa2dc617da5a5"
+    },
+    "BackdropImageTags": [],
+    "ParentLogoImageTag": "140a4f8ac529b007fdc19cf0a83dad65",
+    "ImageBlurHashes": {
+      "Primary": {
+        "4c2f7dbf978c883cee5fa2dc617da5a5": "WDD+_8RjMd=|IU%g^%-;M_RP%Moz4T%LtSNGxaaexbITtStSITRP",
+        "0117d4ba7a3021bd0ea63089ab9a796e": "dvH.pgt7$$t8yGe:oIkDT2jGt6R.WZozogM}WsWqS5Rn",
+        "cd6f32e7daf7cc5d2233314c108a75f6": "dPDAJ*-TD~D%.TtQi^M{sqV@XSa#f,ROkCX9NGIUjvjt"
+      },
+      "Logo": {
+        "140a4f8ac529b007fdc19cf0a83dad65": "OL6^;}jFjEo~aJoeVCrAadkDo#bIjEbwU[bIWEZ~f,bdo}"
+      },
+      "Thumb": {
+        "e1d2dc99e3cdad25889edeed209ee5c7": "WtF?uII|Ivo#xBbL%jROj@a%jXkDkZM{WVoMxXkBtTRpNIs:xYWE"
+      },
+      "Backdrop": {
+        "2b7a6175faa900259193f371fc793555": "WbGSl=njT1tlS%o~TOtSM{ohacV[nnoMt7oMr=bdo#WEt6W-S5xu"
+      }
+    },
+    "ParentThumbItemId": "71fb0b620791c8c3ea2ad7ba6ca6e787",
+    "ParentThumbImageTag": "e1d2dc99e3cdad25889edeed209ee5c7",
+    "ParentPrimaryImageItemId": "33baa3e2b72f6c83f0a49bed76115a47",
+    "ParentPrimaryImageTag": "cd6f32e7daf7cc5d2233314c108a75f6",
+    "LocationType": "FileSystem",
+    "MediaType": "Video"
+  },
+  {
+    "Name": "The Dungeon Evolves",
+    "ServerId": "79315eab3c4c401f8391d5c26210b6d7",
+    "Id": "0b02d3580bbd11674679279a86c33290",
+    "DateCreated": "2026-11-07T23:01:08.6341892Z",
+    "HasSubtitles": true,
+    "Container": "mkv",
+    "PremiereDate": "2026-04-10T00:00:00.0000000Z",
+    "ChannelId": null,
+    "CommunityRating": 4.29,
+    "RunTimeTicks": 14405000000,
+    "ProductionYear": 2026,
+    "IndexNumber": 2,
+    "ParentIndexNumber": 4,
+    "IsFolder": false,
+    "Type": "Episode",
+    "ParentLogoItemId": "71fb0b620791c8c3ea2ad7ba6ca6e787",
+    "ParentBackdropItemId": "71fb0b620791c8c3ea2ad7ba6ca6e787",
+    "ParentBackdropImageTags": [
+      "2b7a6175faa900259193f371fc793555"
+    ],
+    "UserData": {
+      "PlaybackPositionTicks": 0,
+      "PlayCount": 0,
+      "IsFavorite": false,
+      "Played": false,
+      "Key": "352408004002",
+      "ItemId": "0b02d3580bbd11674679279a86c33290"
+    },
+    "SeriesName": "That Time I Got Reincarnated as a Slime",
+    "SeriesId": "71fb0b620791c8c3ea2ad7ba6ca6e787",
+    "SeasonId": "33baa3e2b72f6c83f0a49bed76115a47",
+    "SeriesPrimaryImageTag": "0117d4ba7a3021bd0ea63089ab9a796e",
+    "SeasonName": "That Time I Got Reincarnated as a Slime (2026)",
+    "VideoType": "VideoFile",
+    "ImageTags": {
+      "Primary": "79ddb6f7cb4e449b1abe3926a6abff59"
+    },
+    "BackdropImageTags": [],
+    "ParentLogoImageTag": "140a4f8ac529b007fdc19cf0a83dad65",
+    "ImageBlurHashes": {
+      "Primary": {
+        "79ddb6f7cb4e449b1abe3926a6abff59": "W~K1aMV@Rjt6f+b0~Vf5RkofbIof%Mt5WBa#a$t6tRt6j=ahofoL",
+        "0117d4ba7a3021bd0ea63089ab9a796e": "dvH.pgt7$$t8yGe:oIkDT2jGt6R.WZozogM}WsWqS5Rn",
+        "cd6f32e7daf7cc5d2233314c108a75f6": "dPDAJ*-TD~D%.TtQi^M{sqV@XSa#f,ROkCX9NGIUjvjt"
+      },
+      "Logo": {
+        "140a4f8ac529b007fdc19cf0a83dad65": "OL6^;}jFjEo~aJoeVCrAadkDo#bIjEbwU[bIWEZ~f,bdo}"
+      },
+      "Thumb": {
+        "e1d2dc99e3cdad25889edeed209ee5c7": "WtF?uII|Ivo#xBbL%jROj@a%jXkDkZM{WVoMxXkBtTRpNIs:xYWE"
+      },
+      "Backdrop": {
+        "2b7a6175faa900259193f371fc793555": "WbGSl=njT1tlS%o~TOtSM{ohacV[nnoMt7oMr=bdo#WEt6W-S5xu"
+      }
+    },
+    "ParentThumbItemId": "71fb0b620791c8c3ea2ad7ba6ca6e787",
+    "ParentThumbImageTag": "e1d2dc99e3cdad25889edeed209ee5c7",
+    "ParentPrimaryImageItemId": "33baa3e2b72f6c83f0a49bed76115a47",
+    "ParentPrimaryImageTag": "cd6f32e7daf7cc5d2233314c108a75f6",
+    "LocationType": "FileSystem",
+    "MediaType": "Video"
+  },
+  {
+    "Name": "The First Step",
+    "ServerId": "79315eab3c4c401f8391d5c26210b6d7",
+    "Id": "f6a46a8a0e0d68f10a664528d4fb57cd",
+    "DateCreated": "2026-11-07T23:01:07.2742181Z",
+    "HasSubtitles": true,
+    "Container": "mkv",
+    "PremiereDate": "2026-05-08T00:00:00.0000000Z",
+    "ChannelId": null,
+    "CommunityRating": 7.02,
+    "RunTimeTicks": 14399849999,
+    "ProductionYear": 2026,
+    "IndexNumber": 5,
+    "ParentIndexNumber": 4,
+    "IsFolder": false,
+    "Type": "Episode",
+    "ParentLogoItemId": "71fb0b620791c8c3ea2ad7ba6ca6e787",
+    "ParentBackdropItemId": "71fb0b620791c8c3ea2ad7ba6ca6e787",
+    "ParentBackdropImageTags": [
+      "2b7a6175faa900259193f371fc793555"
+    ],
+    "UserData": {
+      "PlaybackPositionTicks": 0,
+      "PlayCount": 0,
+      "IsFavorite": false,
+      "Played": false,
+      "Key": "352408004005",
+      "ItemId": "f6a46a8a0e0d68f10a664528d4fb57cd"
+    },
+    "SeriesName": "That Time I Got Reincarnated as a Slime",
+    "SeriesId": "71fb0b620791c8c3ea2ad7ba6ca6e787",
+    "SeasonId": "33baa3e2b72f6c83f0a49bed76115a47",
+    "SeriesPrimaryImageTag": "0117d4ba7a3021bd0ea63089ab9a796e",
+    "SeasonName": "That Time I Got Reincarnated as a Slime (2026)",
+    "VideoType": "VideoFile",
+    "ImageTags": {
+      "Primary": "38625d14e894131c8a1678bbe56feb7e"
+    },
+    "BackdropImageTags": [],
+    "ParentLogoImageTag": "140a4f8ac529b007fdc19cf0a83dad65",
+    "ImageBlurHashes": {
+      "Primary": {
+        "38625d14e894131c8a1678bbe56feb7e": "W@JRzGZ~obS$Rit7.TenV@bIoekCo}W?V@V@bHRkxuWXoJRjazt7",
+        "0117d4ba7a3021bd0ea63089ab9a796e": "dvH.pgt7$$t8yGe:oIkDT2jGt6R.WZozogM}WsWqS5Rn",
+        "cd6f32e7daf7cc5d2233314c108a75f6": "dPDAJ*-TD~D%.TtQi^M{sqV@XSa#f,ROkCX9NGIUjvjt"
+      },
+      "Logo": {
+        "140a4f8ac529b007fdc19cf0a83dad65": "OL6^;}jFjEo~aJoeVCrAadkDo#bIjEbwU[bIWEZ~f,bdo}"
+      },
+      "Thumb": {
+        "e1d2dc99e3cdad25889edeed209ee5c7": "WtF?uII|Ivo#xBbL%jROj@a%jXkDkZM{WVoMxXkBtTRpNIs:xYWE"
+      },
+      "Backdrop": {
+        "2b7a6175faa900259193f371fc793555": "WbGSl=njT1tlS%o~TOtSM{ohacV[nnoMt7oMr=bdo#WEt6W-S5xu"
+      }
+    },
+    "ParentThumbItemId": "71fb0b620791c8c3ea2ad7ba6ca6e787",
+    "ParentThumbImageTag": "e1d2dc99e3cdad25889edeed209ee5c7",
+    "ParentPrimaryImageItemId": "33baa3e2b72f6c83f0a49bed76115a47",
+    "ParentPrimaryImageTag": "cd6f32e7daf7cc5d2233314c108a75f6",
+    "LocationType": "FileSystem",
+    "MediaType": "Video"
+  }
+]

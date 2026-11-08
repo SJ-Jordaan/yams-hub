@@ -1,0 +1,9 @@
+{
+  "LocalAddress": "http://172.28.0.3:8096",
+  "ServerName": "Zenith",
+  "Version": "12.4.0",
+  "ProductName": "Jellyfin Server",
+  "OperatingSystem": "",
+  "Id": "79315eab3c4c401f8391d5c26210b6d7",
+  "StartupWizardCompleted": true
+}

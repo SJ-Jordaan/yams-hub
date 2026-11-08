@@ -1,0 +1,109 @@
+{
+  "page": 1,
+  "pageSize": 5,
+  "sortKey": "date",
+  "sortDirection": "descending",
+  "totalRecords": 78,
+  "records": [
+    {
+      "indexerId": 15,
+      "date": "2026-11-07T19:06:18Z",
+      "successful": false,
+      "eventType": "indexerRss",
+      "data": {
+        "limit": "100",
+        "offset": "0",
+        "elapsedTime": "113",
+        "query": "",
+        "queryType": "tvsearch",
+        "categories": "5000,5070",
+        "source": "Sonarr",
+        "host": "sonarr",
+        "queryResults": "0",
+        "url": "https://uindex.org/search.php?search=&c=0",
+        "cached": "0"
+      },
+      "id": 490631
+    },
+    {
+      "indexerId": 12,
+      "date": "2026-11-07T13:56:17Z",
+      "successful": false,
+      "eventType": "indexerRss",
+      "data": {
+        "limit": "100",
+        "offset": "0",
+        "elapsedTime": "19623",
+        "query": "",
+        "queryType": "tvsearch",
+        "categories": "5000,5070",
+        "source": "Sonarr",
+        "host": "sonarr",
+        "queryResults": "0",
+        "url": "https://www.tokyotosho.info/index.php?cat=0",
+        "cached": "0"
+      },
+      "id": 490288
+    },
+    {
+      "indexerId": 15,
+      "date": "2026-11-06T19:00:38Z",
+      "successful": false,
+      "eventType": "indexerRss",
+      "data": {
+        "limit": "100",
+        "offset": "0",
+        "elapsedTime": "162",
+        "query": "",
+        "queryType": "tvsearch",
+        "categories": "5000,5070",
+        "source": "Sonarr",
+        "host": "sonarr",
+        "queryResults": "0",
+        "url": "https://uindex.org/search.php?search=&c=0",
+        "cached": "0"
+      },
+      "id": 489005
+    },
+    {
+      "indexerId": 15,
+      "date": "2026-11-05T18:54:47Z",
+      "successful": false,
+      "eventType": "indexerRss",
+      "data": {
+        "limit": "100",
+        "offset": "0",
+        "elapsedTime": "328",
+        "query": "",
+        "queryType": "tvsearch",
+        "categories": "5000,5070",
+        "source": "Sonarr",
+        "host": "sonarr",
+        "queryResults": "0",
+        "url": "https://uindex.org/search.php?search=&c=0",
+        "cached": "0"
+      },
+      "id": 487415
+    },
+    {
+      "indexerId": 15,
+      "date": "2026-11-04T18:52:36Z",
+      "successful": false,
+      "eventType": "indexerRss",
+      "data": {
+        "limit": "100",
+        "offset": "0",
+        "elapsedTime": "95",
+        "query": "",
+        "queryType": "tvsearch",
+        "categories": "5000,5070",
+        "source": "Sonarr",
+        "host": "sonarr",
+        "queryResults": "0",
+        "url": "https://uindex.org/search.php?search=&c=0",
+        "cached": "0"
+      },
+      "id": 485820
+    }
+  ]
+}

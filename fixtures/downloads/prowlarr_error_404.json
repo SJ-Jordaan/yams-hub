@@ -1,0 +1,4 @@
+{
+  "message": "IndexerDefinition with ID 999999 does not exist",
+  "description": "NzbDrone.Core.Datastore.ModelNotFoundException: IndexerDefinition with ID 999999 does not exist\n   at ... (stack trace trimmed)"
+}

@@ -1,0 +1,195 @@
+{
+  "title": "Zootopia 2",
+  "originalTitle": "Zootopia 2",
+  "originalLanguage": {
+    "id": 1,
+    "name": "English"
+  },
+  "alternateTitles": [
+    {
+      "sourceType": "tmdb",
+      "movieMetadataId": 1,
+      "title": "زوتروبوليس ٢",
+      "id": 1
+    },
+    {
+      "sourceType": "tmdb",
+      "movieMetadataId": 1,
+      "title": "زوتروبوليس 2",
+      "id": 2
+    },
+    {
+      "sourceType": "tmdb",
+      "movieMetadataId": 1,
+      "title": "นครสัตว์มหาสนุก 2",
+      "id": 3
+    },
+    {
+      "sourceType": "tmdb",
+      "movieMetadataId": 1,
+      "title": "Zootropolis 2",
+      "id": 4
+    },
+    {
+      "sourceType": "tmdb",
+      "movieMetadataId": 1,
+      "title": "زوتوپیا 2",
+      "id": 5
+    }
+  ],
+  "secondaryYearSourceId": 0,
+  "sortTitle": "zootopia 2",
+  "sizeOnDisk": 2561322154,
+  "status": "released",
+  "overview": "After cracking the biggest case in Zootopia's history, rookie cops Judy Hopps and Nick Wilde find themselves on the twisting trail of a great mystery when Gary De'Snake arrives and turns the animal metropolis upside down. To crack the case, Judy and Nick must go undercover to unexpected new parts of town, where their growing partnership is tested like never before.",
+  "inCinemas": "2025-11-26T00:00:00Z",
+  "physicalRelease": "2026-03-03T00:00:00Z",
+  "digitalRelease": "2026-01-26T00:00:00Z",
+  "releaseDate": "2026-01-26T00:00:00Z",
+  "images": [
+    {
+      "coverType": "poster",
+      "url": "/MediaCover/1/poster.jpg?h=ee00d06d64cb9c44727a",
+      "remoteUrl": "https://image.tmdb.org/t/p/original/oJ7g2CifqpStmoYQyaLQgEU32qO.jpg"
+    },
+    {
+      "coverType": "fanart",
+      "url": "/MediaCover/1/fanart.jpg?h=4ad69aed35c9a2d9804e",
+      "remoteUrl": "https://image.tmdb.org/t/p/original/lgotja3xMoJZbynwHfcQcJAEMWH.jpg"
+    }
+  ],
+  "website": "https://movies.disney.com/zootopia-2",
+  "year": 2025,
+  "youTubeTrailerId": "sEgPQ7HKoBA",
+  "studio": "Walt Disney Animation Studios",
+  "path": "/data/movies/Zootopia 2 (2025) [tmdbid-1084242]",
+  "qualityProfileId": 7,
+  "hasFile": true,
+  "movieFileId": 947,
+  "monitored": true,
+  "minimumAvailability": "released",
+  "isAvailable": true,
+  "folderName": "/data/movies/Zootopia 2 (2025) [tmdbid-1084242]",
+  "runtime": 108,
+  "cleanTitle": "zootopia2",
+  "imdbId": "tt26443597",
+  "tmdbId": 1084242,
+  "titleSlug": "1084242",
+  "rootFolderPath": "/data/movies",
+  "certification": "PG",
+  "genres": [
+    "Animation",
+    "Adventure",
+    "Comedy",
+    "Mystery",
+    "Family"
+  ],
+  "keywords": [
+    "3d animation",
+    "animals",
+    "anthropomorphism",
+    "buddy comedy",
+    "buddy cop"
+  ],
+  "tags": [],
+  "added": "2026-02-03T20:25:53Z",
+  "ratings": {
+    "imdb": {
+      "votes": 158917,
+      "value": 7.3,
+      "type": "user"
+    },
+    "tmdb": {
+      "votes": 3650,
+      "value": 7.667,
+      "type": "user"
+    },
+    "metacritic": {
+      "votes": 0,
+      "value": 73,
+      "type": "user"
+    },
+    "rottenTomatoes": {
+      "votes": 0,
+      "value": 92,
+      "type": "user"
+    },
+    "trakt": {
+      "votes": 17098,
+      "value": 8.14452,
+      "type": "user"
+    }
+  },
+  "movieFile": {
+    "movieId": 1,
+    "relativePath": "Zootopia 2 (2025) [imdbid-tt26443597] - [WEBRip-1080p][AAC 5.1][x265]-DH.mkv",
+    "path": "/data/movies/Zootopia 2 (2025) [tmdbid-1084242]/Zootopia 2 (2025) [imdbid-tt26443597] - [WEBRip-1080p][AAC 5.1][x265]-DH.mkv",
+    "size": 2561322154,
+    "dateAdded": "2026-03-01T17:36:27Z",
+    "releaseGroup": "DH",
+    "edition": "",
+    "languages": [
+      {
+        "id": 1,
+        "name": "English"
+      }
+    ],
+    "quality": {
+      "quality": {
+        "id": 15,
+        "name": "WEBRip-1080p",
+        "source": "webrip",
+        "resolution": 1080,
+        "modifier": "none"
+      },
+      "revision": {
+        "version": 1,
+        "real": 0,
+        "isRepack": false
+      }
+    },
+    "indexerFlags": 0,
+    "mediaInfo": {
+      "audioBitrate": 388613,
+      "audioChannels": 5.1,
+      "audioCodec": "AAC",
+      "audioLanguages": "eng",
+      "audioStreamCount": 1,
+      "videoBitDepth": 10,
+      "videoBitrate": 2781378,
+      "videoCodec": "h265",
+      "videoFps": 24,
+      "videoDynamicRange": "",
+      "videoDynamicRangeType": "",
+      "resolution": "1920x804",
+      "runTime": "1:47:38",
+      "scanType": "Progressive",
+      "subtitles": "eng/eng"
+    },
+    "qualityCutoffNotMet": true,
+    "id": 947
+  },
+  "collection": {
+    "title": "Zootopia Collection",
+    "tmdbId": 1084247
+  },
+  "popularity": 43.7588,
+  "lastSearchTime": "2026-02-03T20:26:09Z",
+  "statistics": {
+    "movieFileCount": 1,
+    "sizeOnDisk": 2561322154,
+    "releaseGroups": [
+      "DH"
+    ],
+    "movieFileQualities": [
+      {
+        "id": 15,
+        "name": "WEBRip-1080p",
+        "source": "webrip",
+        "resolution": 1080,
+        "modifier": "none"
+      }
+    ]
+  },
+  "id": 1
+}

@@ -1,0 +1,136 @@
+{
+  "page": 1,
+  "totalPages": 500,
+  "totalResults": 10000,
+  "results": [
+    {
+      "id": 1368337,
+      "mediaType": "movie",
+      "adult": false,
+      "genreIds": [
+        12,
+        28,
+        14
+      ],
+      "originalLanguage": "en",
+      "originalTitle": "The Odyssey",
+      "overview": "Odysseus, the legendary King of Ithaca, embarks on a long and perilous journey home following the Trojan War. Throughout his voyage, he is forced to confront the whims of gods, mythological monsters, and trials that stretch both his cunning and his humanity to the breaking point.",
+      "popularity": 328.2263,
+      "releaseDate": "2026-07-15",
+      "title": "The Odyssey",
+      "video": false,
+      "voteAverage": 8,
+      "voteCount": 4403,
+      "backdropPath": "/iDiTY1wA35YWzTmXLTtqaxtN6tc.jpg",
+      "posterPath": "/5rhTDKUhPYvpdQIijFIs5VoWsON.jpg",
+      "mediaInfo": {
+        "downloadStatus": [],
+        "downloadStatus4k": [],
+        "id": 393,
+        "mediaType": "movie",
+        "tmdbId": 1368337,
+        "tvdbId": null,
+        "imdbId": null,
+        "status": 3,
+        "status4k": 1,
+        "createdAt": "2026-06-05T19:57:39.000Z",
+        "updatedAt": "2026-10-24T02:00:16.000Z",
+        "lastSeasonChange": "2026-06-05T19:57:39.000Z",
+        "mediaAddedAt": "2026-06-05T19:57:39.000Z",
+        "serviceId": 0,
+        "serviceId4k": null,
+        "externalServiceId": 246,
+        "externalServiceId4k": null,
+        "externalServiceSlug": "1368337",
+        "externalServiceSlug4k": null,
+        "ratingKey": null,
+        "ratingKey4k": null,
+        "jellyfinMediaId": null,
+        "jellyfinMediaId4k": null,
+        "watchlists": [],
+        "serviceUrl": "http://radarr:7878/movie/1368337"
+      }
+    },
+    {
+      "id": 1263337,
+      "mediaType": "movie",
+      "adult": false,
+      "genreIds": [
+        12,
+        53
+      ],
+      "originalLanguage": "en",
+      "originalTitle": "Heart of the Beast",
+      "overview": "After a harrowing plane crash, Special Forces officer James Belmont and his combat dog, Odin, find themselves stranded deep in the Alaskan wilderness. Together, they are forced into a brutal fight for survival against the elements.",
+      "popularity": 301.412,
+      "releaseDate": "2026-09-19",
+      "title": "Heart of the Beast",
+      "video": false,
+      "voteAverage": 7.318,
+      "voteCount": 478,
+      "backdropPath": "/kpqsljPQtWqPKJBTAEtoXtQZ9Ko.jpg",
+      "posterPath": "/6sYemVUn79UPKz1ZsSG6kPU4RVy.jpg"
+    },
+    {
+      "id": 1792170,
+      "mediaType": "movie",
+      "adult": false,
+      "genreIds": [
+        80,
+        878,
+        53
+      ],
+      "originalLanguage": "en",
+      "originalTitle": "Model Citizen",
+      "overview": "With his memories gone and his past a blur, ex-cop Steven Bay seeks treatment for his amnesia while working on an isolated farm. Instead, he's met with rising hostility, strange surveillance, and instincts he can’t fully control. When the pressure becomes unbearable, Bay begins a desperate hunt for the truth behind his fractured reality.",
+      "popularity": 42.1148,
+      "releaseDate": "2026-11-03",
+      "title": "Model Citizen",
+      "video": false,
+      "voteAverage": 6.529,
+      "voteCount": 17,
+      "backdropPath": "/5MBdRdiGv3AKzZDGbni88xc6JFi.jpg",
+      "posterPath": "/7SE0LBwgqiqZzkm9gKVbBAbcNQL.jpg"
+    },
+    {
+      "id": 1423191,
+      "mediaType": "movie",
+      "adult": false,
+      "genreIds": [
+        27,
+        878,
+        12
+      ],
+      "originalLanguage": "en",
+      "originalTitle": "Resident Evil",
+      "overview": "Medical courier Bryan unwittingly finds himself fighting for survival as one fateful, horrifying night collapses around him in chaos.",
+      "popularity": 584.1726,
+      "releaseDate": "2026-09-16",
+      "title": "Resident Evil",
+      "video": false,
+      "voteAverage": 7.437,
+      "voteCount": 1727,
+      "backdropPath": "/3icyRAqgakNcQn6aDVz9libFmBA.jpg",
+      "posterPath": "/gAgWJhUSQWCgtKR8170nMkYlBda.jpg"
+    },
+    {
+      "id": 1483525,
+      "mediaType": "movie",
+      "adult": false,
+      "genreIds": [
+        18
+      ],
+      "originalLanguage": "ko",
+      "originalTitle": "가능한 사랑",
+      "overview": "A laid-off worker and his wife cross paths with a documentary filmmaker and her spouse and confront their hidden desires.",
+      "popularity": 57.4055,
+      "releaseDate": "2026-09-23",
+      "title": "Possible Love",
+      "video": false,
+      "voteAverage": 7.6,
+      "voteCount": 29,
+      "backdropPath": "/k0BY5D4Ya6NHhsvNYMmaabpvUtS.jpg",
+      "posterPath": "/1ERGPNiKtnEcsvJS1ywsmqmcIDO.jpg"
+    }
+  ]
+}

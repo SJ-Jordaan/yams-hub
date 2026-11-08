@@ -1,0 +1,14 @@
+[
+  {
+    "source": "AllowedHostsCheck",
+    "type": "warning",
+    "message": "Allowed Hosts is not configured, Prowlarr will accept requests for any hostname or IP address. Set Allowed Hosts in General settings to restrict which hostnames can be used to reach Prowlarr.",
+    "wikiUrl": "https://wiki.servarr.com/prowlarr/system#allowed-hosts-not-configured"
+  },
+  {
+    "source": "IndexerLongTermStatusCheck",
+    "type": "warning",
+    "message": "Indexers unavailable due to failures for more than 6 hours: Uindex",
+    "wikiUrl": "https://wiki.servarr.com/prowlarr/system#indexers-are-unavailable-due-to-failures"
+  }
+]

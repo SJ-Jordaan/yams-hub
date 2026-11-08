@@ -1,0 +1,150 @@
+{
+  "data": [
+    {
+      "action": 1,
+      "title": "Dune: Part Two",
+      "timestamp": "yesterday",
+      "description": "English subtitles downloaded from embeddedsubtitles with a score of 100.0%.",
+      "radarrId": 9,
+      "monitored": true,
+      "path": null,
+      "language": {
+        "name": "English",
+        "code2": "en",
+        "code3": "eng",
+        "forced": false,
+        "hi": false
+      },
+      "tags": [],
+      "score": "100.0%",
+      "subs_id": "/data/movies/Dune Part Two (2024) [tmdbid-693134]/Dune Part Two (2024) [imdbid-tt15239678] - [WEBRip-2160p][TrueHD Atmos 7.1][h265].mkv_3",
+      "provider": "embeddedsubtitles",
+      "subtitles_path": "/data/movies/Dune Part Two (2024) [tmdbid-693134]/Dune Part Two (2024) [imdbid-tt15239678] - [WEBRip-2160p][TrueHD Atmos 7.1][h265].en.srt",
+      "upgradable": false,
+      "parsed_timestamp": "11/06/26 09:26:08",
+      "blacklisted": false,
+      "matches": [
+        "hearing_impaired",
+        "hash"
+      ],
+      "dont_matches": []
+    },
+    {
+      "action": 1,
+      "title": "Dune",
+      "timestamp": "day before",
+      "description": "English subtitles downloaded from embeddedsubtitles with a score of 100.0%.",
+      "radarrId": 8,
+      "monitored": true,
+      "path": null,
+      "language": {
+        "name": "English",
+        "code2": "en",
+        "code3": "eng",
+        "forced": false,
+        "hi": false
+      },
+      "tags": [],
+      "score": "100.0%",
+      "subs_id": "/data/movies/Dune (2021) [tmdbid-438631]/Dune (2021) [imdbid-tt1160419] - [WEBRip-2160p][EAC3 Atmos 5.1][h265].mkv_2",
+      "provider": "embeddedsubtitles",
+      "subtitles_path": "/data/movies/Dune (2021) [tmdbid-438631]/Dune (2021) [imdbid-tt1160419] - [WEBRip-2160p][EAC3 Atmos 5.1][h265].en.srt",
+      "upgradable": false,
+      "parsed_timestamp": "11/06/26 06:13:28",
+      "blacklisted": false,
+      "matches": [
+        "hearing_impaired",
+        "hash"
+      ],
+      "dont_matches": []
+    },
+    {
+      "action": 1,
+      "title": "Masters of the Universe",
+      "timestamp": "last week",
+      "description": "English subtitles downloaded from embeddedsubtitles with a score of 100.0%.",
+      "radarrId": 196,
+      "monitored": true,
+      "path": null,
+      "language": {
+        "name": "English",
+        "code2": "en",
+        "code3": "eng",
+        "forced": false,
+        "hi": false
+      },
+      "tags": [],
+      "score": "100.0%",
+      "subs_id": "/data/movies/Masters of the Universe (2026) [tmdbid-454639]/Masters of the Universe (2026) [imdbid-tt0427340] - [Remux-1080p][TrueHD Atmos 7.1][h264]-BTM.mkv_12",
+      "provider": "embeddedsubtitles",
+      "subtitles_path": "/data/movies/Masters of the Universe (2026) [tmdbid-454639]/Masters of the Universe (2026) [imdbid-tt0427340] - [Remux-1080p][TrueHD Atmos 7.1][h264]-BTM.en.srt",
+      "upgradable": false,
+      "parsed_timestamp": "10/27/26 21:34:02",
+      "blacklisted": false,
+      "matches": [
+        "hash",
+        "hearing_impaired"
+      ],
+      "dont_matches": []
+    },
+    {
+      "action": 1,
+      "title": "Project Hail Mary",
+      "timestamp": "last week",
+      "description": "English subtitles downloaded from embeddedsubtitles with a score of 100.0%.",
+      "radarrId": 234,
+      "monitored": true,
+      "path": null,
+      "language": {
+        "name": "English",
+        "code2": "en",
+        "code3": "eng",
+        "forced": false,
+        "hi": false
+      },
+      "tags": [],
+      "score": "100.0%",
+      "subs_id": "/data/movies/Project Hail Mary (2026) [tmdbid-687163]/Project Hail Mary (2026) [imdbid-tt12042730] - [WEBDL-1080p][Opus 5.1][AV1].mkv_2",
+      "provider": "embeddedsubtitles",
+      "subtitles_path": "/data/movies/Project Hail Mary (2026) [tmdbid-687163]/Project Hail Mary (2026) [imdbid-tt12042730] - [WEBDL-1080p][Opus 5.1][AV1].en.srt",
+      "upgradable": false,
+      "parsed_timestamp": "10/26/26 14:31:20",
+      "blacklisted": false,
+      "matches": [
+        "hash",
+        "hearing_impaired"
+      ],
+      "dont_matches": []
+    },
+    {
+      "action": 1,
+      "title": "Scoob!",
+      "timestamp": "last week",
+      "description": "English subtitles downloaded from embeddedsubtitles with a score of 100.0%.",
+      "radarrId": 132,
+      "monitored": true,
+      "path": null,
+      "language": {
+        "name": "English",
+        "code2": "en",
+        "code3": "eng",
+        "forced": false,
+        "hi": false
+      },
+      "tags": [],
+      "score": "100.0%",
+      "subs_id": "/data/movies/Scoob! (2020) [tmdbid-385103]/Scoob! (2020) [imdbid-tt3152592] - [Bluray-1080p][EAC3 5.1][x264]-iFT.mkv_11",
+      "provider": "embeddedsubtitles",
+      "subtitles_path": "/data/movies/Scoob! (2020) [tmdbid-385103]/Scoob! (2020) [imdbid-tt3152592] - [Bluray-1080p][EAC3 5.1][x264]-iFT.en.srt",
+      "upgradable": false,
+      "parsed_timestamp": "10/25/26 09:38:02",
+      "blacklisted": false,
+      "matches": [
+        "hash",
+        "hearing_impaired"
+      ],
+      "dont_matches": []
+    }
+  ],
+  "total": 435
+}

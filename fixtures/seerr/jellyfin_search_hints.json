@@ -1,0 +1,59 @@
+{
+  "SearchHints": [
+    {
+      "ItemId": "13862ca9f6a6796424bb490f0bea18ac",
+      "Id": "13862ca9f6a6796424bb490f0bea18ac",
+      "Name": "Austin's Troubles | A Normal Mixer | Moon Landing",
+      "IndexNumber": 10,
+      "ProductionYear": 2025,
+      "ParentIndexNumber": 3,
+      "PrimaryImageTag": "8a5473669126d93ec82c2f76aa388909",
+      "ThumbImageTag": "48917a8f178f952932ab50b23a614561",
+      "ThumbImageItemId": "51f766da55adb538e51c3ae11445f240",
+      "BackdropImageTag": "69fa9cce29a0d7f1d7068bbd4f2c1a20",
+      "BackdropImageItemId": "51f766da55adb538e51c3ae11445f240",
+      "Type": "Episode",
+      "RunTimeTicks": 14219670000,
+      "MediaType": "Video",
+      "Series": "SPY x FAMILY",
+      "Artists": [],
+      "ChannelId": null,
+      "PrimaryImageAspectRatio": 1.7777777777777777
+    },
+    {
+      "ItemId": "2c9be43f2af318954f1dac93bc87b209",
+      "Id": "2c9be43f2af318954f1dac93bc87b209",
+      "Name": "Austin Powers in Goldmember",
+      "ProductionYear": 2002,
+      "PrimaryImageTag": "53a970d963a05e7e4443777690c6171b",
+      "ThumbImageTag": "350f6b07e1924df18024407156f3907e",
+      "ThumbImageItemId": "2c9be43f2af318954f1dac93bc87b209",
+      "BackdropImageTag": "0bd9c31cff2059ae539b65a2a1bd7a1d",
+      "BackdropImageItemId": "2c9be43f2af318954f1dac93bc87b209",
+      "Type": "Movie",
+      "RunTimeTicks": 56717070000,
+      "MediaType": "Video",
+      "Artists": [],
+      "ChannelId": null,
+      "PrimaryImageAspectRatio": 0.6666666666666666
+    },
+    {
+      "ItemId": "004634f0ae7c30a6a934e4fef522d942",
+      "Id": "004634f0ae7c30a6a934e4fef522d942",
+      "Name": "Austin Powers: The Spy Who Shagged Me",
+      "ProductionYear": 1999,
+      "PrimaryImageTag": "1a46d08296c95b34dcd93c359e1dd504",
+      "ThumbImageTag": "efeb131b2c3c88b8e206af0481bb0cfc",
+      "ThumbImageItemId": "004634f0ae7c30a6a934e4fef522d942",
+      "BackdropImageTag": "359b2576d4d240dce7cc85e504c5efe8",
+      "BackdropImageItemId": "004634f0ae7c30a6a934e4fef522d942",
+      "Type": "Movie",
+      "RunTimeTicks": 57027389999,
+      "MediaType": "Video",
+      "Artists": [],
+      "ChannelId": null,
+      "PrimaryImageAspectRatio": 0.6666666666666666
+    }
+  ],
+  "TotalRecordCount": 3
+}

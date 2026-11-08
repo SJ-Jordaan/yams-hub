@@ -1,0 +1,192 @@
+{
+  "Items": [
+    {
+      "Name": "\"Wuthering Heights\"",
+      "ServerId": "79315eab3c4c401f8391d5c26210b6d7",
+      "Id": "74bba899f87701f3e593cebef0f96acc",
+      "DateCreated": "2026-03-30T00:11:36.5491442Z",
+      "HasSubtitles": true,
+      "Container": "mkv",
+      "PremiereDate": "2026-02-11T00:00:00.0000000Z",
+      "OfficialRating": "ZA-16",
+      "ChannelId": null,
+      "Genres": [
+        "Romance",
+        "Drama"
+      ],
+      "CommunityRating": 6.4,
+      "RunTimeTicks": 81921490000,
+      "ProductionYear": 2026,
+      "ProviderIds": {
+        "Imdb": "tt32897959",
+        "Tmdb": "1316092"
+      },
+      "IsFolder": false,
+      "Type": "Movie",
+      "GenreItems": [
+        {
+          "Name": "Romance",
+          "Id": "1ffc72e19987e5fa4047c6a6870646cf"
+        },
+        {
+          "Name": "Drama",
+          "Id": "090eac6e9de4fe1fbc194e5b96691277"
+        }
+      ],
+      "VideoType": "VideoFile",
+      "ImageTags": {
+        "Thumb": "fd246f94612aec8ece22e8806deec93f",
+        "Primary": "20e3f3c81abdae64eac678ce74d01422",
+        "Logo": "92d7df91582f73490ae6940348ae8a60"
+      },
+      "BackdropImageTags": [
+        "75131a29a2e4a1667b7e37ea4ac58eef"
+      ],
+      "ImageBlurHashes": {
+        "Backdrop": {
+          "75131a29a2e4a1667b7e37ea4ac58eef": "WlOzGH-;_3xvD%%M~qt7%MRjIU%MWWWBRPaekCbH?bjtj[xuWBRj"
+        },
+        "Thumb": {
+          "fd246f94612aec8ece22e8806deec93f": "WgP6jf~W%ME1?b%g^+%2RjNa%gWBbcRPadjbaeof_3ozxaRPaexu"
+        },
+        "Primary": {
+          "20e3f3c81abdae64eac678ce74d01422": "dlNw1b?H?vx]~q%MkVt7?HD%E1t7-poLW;WVbHxuR*ae"
+        },
+        "Logo": {
+          "92d7df91582f73490ae6940348ae8a60": "VhNIHkkn.moypbH=MwIAXRWA.8R5jcW=Vs%MaLtRjbo#"
+        }
+      },
+      "LocationType": "FileSystem",
+      "MediaType": "Video"
+    },
+    {
+      "Name": "3 Men and a Baby",
+      "ServerId": "79315eab3c4c401f8391d5c26210b6d7",
+      "Id": "da6a42772e206f7537ae6c4b78aae7cb",
+      "DateCreated": "2026-02-28T19:18:33.5733384Z",
+      "HasSubtitles": true,
+      "Container": "mkv",
+      "PremiereDate": "1987-11-27T00:00:00.0000000Z",
+      "CriticRating": 67,
+      "OfficialRating": "PG",
+      "ChannelId": null,
+      "Genres": [
+        "Comedy"
+      ],
+      "CommunityRating": 6.199,
+      "RunTimeTicks": 62357540000,
+      "ProductionYear": 1987,
+      "ProviderIds": {
+        "Imdb": "tt0094137",
+        "Tmdb": "12154",
+        "TmdbCollection": "107688"
+      },
+      "IsFolder": false,
+      "Type": "Movie",
+      "GenreItems": [
+        {
+          "Name": "Comedy",
+          "Id": "08d31605d366d63a7a924f944b4417f1"
+        }
+      ],
+      "VideoType": "VideoFile",
+      "ImageTags": {
+        "Primary": "304d7aad0618470c1ae7dc0a30c38c50",
+        "Thumb": "a327d87cceb62197a7252aa0021a5f00",
+        "Logo": "e17841586941ae4720dd6ce30a2a8c72"
+      },
+      "BackdropImageTags": [
+        "aa80f54740f11b07b592d5931eea8990"
+      ],
+      "ImageBlurHashes": {
+        "Backdrop": {
+          "aa80f54740f11b07b592d5931eea8990": "W~Pi^$~qt7V?f,%M-;ayofWVj[j[tRV@aebHofj[-;ofWBofjtkC"
+        },
+        "Primary": {
+          "304d7aad0618470c1ae7dc0a30c38c50": "d?L;8HxuNaxZ_NkCt6t8%hkDayW=-;t7R*jYaxjFfkkC"
+        },
+        "Thumb": {
+          "a327d87cceb62197a7252aa0021a5f00": "W~P6v{_Nt7aKoz%M-;ayofWCj[j[x[f5axWVn+ay-;ofaeozoLkC"
+        },
+        "Logo": {
+          "e17841586941ae4720dd6ce30a2a8c72": "V3TSUA?bfQ?bfQ~qj[fQj[fQfQfQfQfQfQ~qj[fQj[fQ"
+        }
+      },
+      "LocationType": "FileSystem",
+      "MediaType": "Video"
+    },
+    {
+      "Name": "101 Dalmatians II: Patch's London Adventure",
+      "ServerId": "79315eab3c4c401f8391d5c26210b6d7",
+      "Id": "7b4ed532793f3c8888c0dd852b8d6691",
+      "DateCreated": "2026-02-04T21:01:20.4828729Z",
+      "HasSubtitles": true,
+      "Container": "mkv",
+      "PremiereDate": "2003-03-02T00:00:00.0000000Z",
+      "CriticRating": 67,
+      "OfficialRating": "G",
+      "ChannelId": null,
+      "Genres": [
+        "Family",
+        "Animation",
+        "Adventure",
+        "Comedy"
+      ],
+      "CommunityRating": 6,
+      "RunTimeTicks": 44364480000,
+      "ProductionYear": 2003,
+      "ProviderIds": {
+        "Imdb": "tt0324941",
+        "Tmdb": "13654",
+        "TmdbCollection": "100693"
+      },
+      "IsFolder": false,
+      "Type": "Movie",
+      "GenreItems": [
+        {
+          "Name": "Family",
+          "Id": "ccbd8d9008aab2b5e749e1cc4bc458a4"
+        },
+        {
+          "Name": "Animation",
+          "Id": "074229225b7254292f131f9f49f8dcd6"
+        },
+        {
+          "Name": "Adventure",
+          "Id": "51cec9645b896084d12b259acd05ccb1"
+        },
+        {
+          "Name": "Comedy",
+          "Id": "08d31605d366d63a7a924f944b4417f1"
+        }
+      ],
+      "VideoType": "VideoFile",
+      "ImageTags": {
+        "Thumb": "ccd8a01771745bd40aa5ac03d3cf3877",
+        "Primary": "d8e01fa32bb704bd11e09e150716976c",
+        "Logo": "796cf8899fd12f541a52ba49c3c0d255"
+      },
+      "BackdropImageTags": [
+        "c9ce633dba60b510ccf68237bf80d452"
+      ],
+      "ImageBlurHashes": {
+        "Backdrop": {
+          "c9ce633dba60b510ccf68237bf80d452": "WPA.QA0kve$zI=oMtoS%n2adX9ng0i?GRONeogslpeWAaJt8R.s,"
+        },
+        "Thumb": {
+          "ccd8a01771745bd40aa5ac03d3cf3877": "WXC@Q}57MHslXT$#A0%1v|o#IqV@kXsRV?W?kDWr%3azayM{t7oz"
+        },
+        "Primary": {
+          "d8e01fa32bb704bd11e09e150716976c": "dWK12X-oR5%1xwt7v|rq0pa~%2a#JZWFofbdIrkBM}Ir"
+        },
+        "Logo": {
+          "796cf8899fd12f541a52ba49c3c0d255": "WNG9gAWU0Kj@s:t7ImWUE1j[t7oLITof%Mj[WAR%D%oM-;WVoLay"
+        }
+      },
+      "LocationType": "FileSystem",
+      "MediaType": "Video"
+    }
+  ],
+  "TotalRecordCount": 179,
+  "StartIndex": 0
+}

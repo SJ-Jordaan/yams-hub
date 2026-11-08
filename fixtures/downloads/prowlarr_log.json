@@ -1,0 +1,44 @@
+{
+  "page": 1,
+  "pageSize": 5,
+  "sortKey": "time",
+  "sortDirection": "descending",
+  "totalRecords": 8769,
+  "records": [
+    {
+      "time": "2026-11-08T08:43:08Z",
+      "level": "info",
+      "logger": "ReleaseSearchService",
+      "message": "Searching indexer(s): [TorrentDownload] for Term: [] for Season / Episode:[], Offset: 0, Limit: 100, Categories: [5000, 5050, 5070]",
+      "id": 397747
+    },
+    {
+      "time": "2026-11-08T08:43:08Z",
+      "level": "info",
+      "logger": "ReleaseSearchService",
+      "message": "Searching indexer(s): [Tokyo Toshokan] for Term: [] for Season / Episode:[], Offset: 0, Limit: 100, Categories: [5000, 5070]",
+      "id": 397746
+    },
+    {
+      "time": "2026-11-08T08:43:08Z",
+      "level": "info",
+      "logger": "ReleaseSearchService",
+      "message": "Searching indexer(s): [showRSS] for Term: [] for Season / Episode:[], Offset: 0, Limit: 100, Categories: [5000, 5030, 5040]",
+      "id": 397745
+    },
+    {
+      "time": "2026-11-08T08:43:08Z",
+      "level": "info",
+      "logger": "ReleaseSearchService",
+      "message": "Searching indexer(s): [Nyaa.si] for Term: [] for Season / Episode:[], Offset: 0, Limit: 100, Categories: [5000, 5070]",
+      "id": 397744
+    },
+    {
+      "time": "2026-11-08T08:43:08Z",
+      "level": "info",
+      "logger": "ReleaseSearchService",
+      "message": "Searching indexer(s): [Bangumi Moe] for Term: [] for Season / Episode:[], Offset: 0, Limit: 100, Categories: [5000, 5070]",
+      "id": 397743
+    }
+  ]
+}

@@ -1,0 +1,195 @@
+{
+  "id": "a51cd2e6d6ebafb929c742f581b8f3bafaebefb5a9643fd360e05c04f17e033a",
+  "name": "/sonarr",
+  "os_type": "linux",
+  "read": "2026-11-08T08:53:00.458570327Z",
+  "cpu_stats": {
+    "cpu_usage": {
+      "total_usage": 946601970000,
+      "usage_in_kernelmode": 225455480000,
+      "usage_in_usermode": 721146490000
+    },
+    "system_cpu_usage": 39066290000000,
+    "online_cpus": 4,
+    "throttling_data": {
+      "periods": 0,
+      "throttled_periods": 0,
+      "throttled_time": 0
+    }
+  },
+  "memory_stats": {
+    "usage": 271958016,
+    "stats": {
+      "active_anon": 80699392,
+      "active_file": 37961728,
+      "anon": 193249280,
+      "anon_thp": 113246208,
+      "file": 78389248,
+      "file_dirty": 73728,
+      "file_mapped": 36794368,
+      "file_writeback": 0,
+      "inactive_anon": 112549888,
+      "inactive_file": 40427520,
+      "kernel_stack": 0,
+      "pgactivate": 724390,
+      "pgdeactivate": 806267,
+      "pgfault": 115539244,
+      "pglazyfree": 0,
+      "pglazyfreed": 0,
+      "pgmajfault": 16929,
+      "pgrefill": 873286,
+      "pgscan": 715483,
+      "pgsteal": 366262,
+      "shmem": 0,
+      "slab": 0,
+      "slab_reclaimable": 0,
+      "slab_unreclaimable": 0,
+      "sock": 0,
+      "thp_collapse_alloc": 78,
+      "thp_fault_alloc": 13957,
+      "unevictable": 0,
+      "workingset_activate": 0,
+      "workingset_nodereclaim": 0,
+      "workingset_refault": 0
+    },
+    "limit": 8059052032
+  },
+  "networks": {
+    "eth0": {
+      "rx_bytes": 21318180,
+      "rx_packets": 31075,
+      "rx_errors": 0,
+      "rx_dropped": 0,
+      "tx_bytes": 72919244,
+      "tx_packets": 28393,
+      "tx_errors": 0,
+      "tx_dropped": 0
+    }
+  },
+  "pids_stats": {
+    "current": 29,
+    "limit": 9141
+  },
+  "blkio_stats": {
+    "io_service_bytes_recursive": [
+      {
+        "major": 252,
+        "minor": 0,
+        "op": "read",
+        "value": 11706368
+      },
+      {
+        "major": 252,
+        "minor": 0,
+        "op": "write",
+        "value": 16900096
+      },
+      {
+        "major": 252,
+        "minor": 2,
+        "op": "read",
+        "value": 17313792
+      },
+      {
+        "major": 252,
+        "minor": 2,
+        "op": "write",
+        "value": 22167552
+      },
+      {
+        "major": 252,
+        "minor": 1,
+        "op": "read",
+        "value": 9662464
+      },
+      {
+        "major": 252,
+        "minor": 1,
+        "op": "write",
+        "value": 14180352
+      },
+      {
+        "major": 252,
+        "minor": 3,
+        "op": "read",
+        "value": 17145856
+      },
+      {
+        "major": 252,
+        "minor": 3,
+        "op": "write",
+        "value": 20971520
+      },
+      {
+        "major": 8,
+        "minor": 16,
+        "op": "read",
+        "value": 772308992
+      },
+      {
+        "major": 8,
+        "minor": 16,
+        "op": "write",
+        "value": 96534528
+      },
+      {
+        "major": 8,
+        "minor": 0,
+        "op": "read",
+        "value": 778797056
+      },
+      {
+        "major": 8,
+        "minor": 0,
+        "op": "write",
+        "value": 98910208
+      },
+      {
+        "major": 9,
+        "minor": 1,
+        "op": "read",
+        "value": 1551106048
+      },
+      {
+        "major": 9,
+        "minor": 1,
+        "op": "write",
+        "value": 195444736
+      },
+      {
+        "major": 253,
+        "minor": 0,
+        "op": "read",
+        "value": 1551106048
+      },
+      {
+        "major": 253,
+        "minor": 0,
+        "op": "write",
+        "value": 195444736
+      }
+    ],
+    "io_serviced_recursive": null,
+    "io_queue_recursive": null,
+    "io_service_time_recursive": null,
+    "io_wait_time_recursive": null,
+    "io_merged_recursive": null,
+    "io_time_recursive": null,
+    "sectors_recursive": null
+  },
+  "num_procs": 0,
+  "storage_stats": {},
+  "preread": "0001-01-01T00:00:00Z",
+  "precpu_stats": {
+    "cpu_usage": {
+      "total_usage": 0,
+      "usage_in_kernelmode": 0,
+      "usage_in_usermode": 0
+    },
+    "throttling_data": {
+      "periods": 0,
+      "throttled_periods": 0,
+      "throttled_time": 0
+    }
+  }
+}

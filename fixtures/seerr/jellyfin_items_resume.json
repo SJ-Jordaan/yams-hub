@@ -1,0 +1,187 @@
+{
+  "Items": [
+    {
+      "Name": "Insect Controlling Wizard",
+      "ServerId": "79315eab3c4c401f8391d5c26210b6d7",
+      "Id": "dd63a9d25cc63db2481640b2db34c937",
+      "HasSubtitles": true,
+      "Container": "mkv",
+      "PremiereDate": "2025-08-06T00:00:00.0000000Z",
+      "ChannelId": null,
+      "CommunityRating": 7.75,
+      "RunTimeTicks": 14210970000,
+      "ProductionYear": 2025,
+      "IndexNumber": 6,
+      "ParentIndexNumber": 1,
+      "IsFolder": false,
+      "Type": "Episode",
+      "ParentLogoItemId": "8333708745b725b410b5fc52678cdd5d",
+      "ParentBackdropItemId": "8333708745b725b410b5fc52678cdd5d",
+      "ParentBackdropImageTags": [
+        "68409bb176b2e3ada1700ad7b4971146"
+      ],
+      "UserData": {
+        "PlayedPercentage": 49.136476961108215,
+        "PlaybackPositionTicks": 6982770000,
+        "PlayCount": 2,
+        "IsFavorite": false,
+        "LastPlayedDate": "2026-10-19T06:26:53.4849486Z",
+        "Played": false,
+        "Key": "451793001006",
+        "ItemId": "dd63a9d25cc63db2481640b2db34c937"
+      },
+      "SeriesName": "Clevatess",
+      "SeriesId": "8333708745b725b410b5fc52678cdd5d",
+      "SeasonId": "84fbc2adf3c9587da710ad5f8096b395",
+      "SeriesPrimaryImageTag": "898bead4c3266c7c7df8bd872cf2a4ef",
+      "SeasonName": "Season 1",
+      "VideoType": "VideoFile",
+      "ImageTags": {
+        "Primary": "526c0674bc1ae5f70a7e16584f04477b"
+      },
+      "BackdropImageTags": [],
+      "ParentLogoImageTag": "83d15532582551bc4ada197a1db8cfb0",
+      "ImageBlurHashes": {
+        "Primary": {
+          "526c0674bc1ae5f70a7e16584f04477b": "WUGlYODj5p%f%Nx^?^nit7pJnhx[Nfoc$Ko#xWxYo$WAf*xa%0jr",
+          "898bead4c3266c7c7df8bd872cf2a4ef": "dNIW.rR7KO-;PUxtxHX8Tdt7-osp~Be:ofxtD%NZXSae",
+          "d2ad21cc85452310bc492b81739024b4": "dNIW.rR7KO-;PUxtxHX8Tdt7-osp~Be:ofxtD%NZXSae"
+        },
+        "Logo": {
+          "83d15532582551bc4ada197a1db8cfb0": "OGGuOHf500aeofofbH7ekCD%bGxuWBs:vMoft7jut7a|Rj"
+        },
+        "Thumb": {
+          "74857b9b5f21f3238beb5120ae029db9": "W7973IJA9avi9Y?b${M_oL%2Iosk0yVs$%tlj?s:rzI=b]%MS2NI"
+        },
+        "Backdrop": {
+          "68409bb176b2e3ada1700ad7b4971146": "WPE_zDIT0zxuIUM{yXWBr?WCRjof$|t8RQR*RkR+xsbvNGniRkof"
+        }
+      },
+      "ParentThumbItemId": "8333708745b725b410b5fc52678cdd5d",
+      "ParentThumbImageTag": "74857b9b5f21f3238beb5120ae029db9",
+      "ParentPrimaryImageItemId": "84fbc2adf3c9587da710ad5f8096b395",
+      "ParentPrimaryImageTag": "d2ad21cc85452310bc492b81739024b4",
+      "LocationType": "FileSystem",
+      "MediaType": "Video"
+    },
+    {
+      "Name": "This Self-Proclaimed Goddess and Reincarnation in Another World!",
+      "ServerId": "79315eab3c4c401f8391d5c26210b6d7",
+      "Id": "e49924c58603e8ae6cf4f4e15e115af0",
+      "HasSubtitles": true,
+      "Container": "mkv",
+      "PremiereDate": "2016-01-14T00:00:00.0000000Z",
+      "ChannelId": null,
+      "CommunityRating": 6.6,
+      "RunTimeTicks": 15132159999,
+      "ProductionYear": 2016,
+      "IndexNumber": 1,
+      "ParentIndexNumber": 1,
+      "IsFolder": false,
+      "Type": "Episode",
+      "ParentLogoItemId": "87ab03eb3f7743174dd3d4291202f0e5",
+      "ParentBackdropItemId": "87ab03eb3f7743174dd3d4291202f0e5",
+      "ParentBackdropImageTags": [
+        "d5e2c85995fb491af52646059dcfd9cb"
+      ],
+      "UserData": {
+        "PlayedPercentage": 25.580882043646174,
+        "PlaybackPositionTicks": 3870940000,
+        "PlayCount": 5,
+        "IsFavorite": false,
+        "LastPlayedDate": "2026-07-10T19:07:01.897328Z",
+        "Played": false,
+        "Key": "303867001001",
+        "ItemId": "e49924c58603e8ae6cf4f4e15e115af0"
+      },
+      "SeriesName": "KONOSUBA - God's blessing on this wonderful world!",
+      "SeriesId": "87ab03eb3f7743174dd3d4291202f0e5",
+      "SeasonId": "67c56789c44391e466f076d39ed2943f",
+      "SeriesPrimaryImageTag": "da3d607f99053f1fb2e46c02ddfd8038",
+      "SeasonName": "Season 1",
+      "VideoType": "VideoFile",
+      "ImageTags": {
+        "Primary": "fb3dda546bd266f700f4a4d520db06f3"
+      },
+      "BackdropImageTags": [],
+      "ParentLogoImageTag": "1a532204bdc94e129c42fb2114a0ac27",
+      "ImageBlurHashes": {
+        "Primary": {
+          "fb3dda546bd266f700f4a4d520db06f3": "W98;V=SjITtSMx-o%NS$RjW?NHkW00W=?bjYxuRPWAbwxuoJxaad",
+          "da3d607f99053f1fb2e46c02ddfd8038": "dZK^%2.8I:-lB@%gs;ahK9aJtRNL%%%0%1tR9%og%1%L",
+          "1acc160a6486349ab0c44135cffe1184": "dZK^%2.8I:-lB@%gs;ahK9aJtRNL%%xs%1tR9%og%1%L"
+        },
+        "Logo": {
+          "1a532204bdc94e129c42fb2114a0ac27": "HLN+YIof0fbF57R*9uM{IpL$WqxuRj%MoJxbWnxb"
+        },
+        "Thumb": {
+          "eef09179587ec202d3bc92aa923bfae3": "WgMGuC#$9Zs*TIo}ETV?jIs:%3R.K*o{skX7i_V_~Ds9RjoINGof"
+        },
+        "Backdrop": {
+          "d5e2c85995fb491af52646059dcfd9cb": "WiK1ai-UPBcaT1-p~pxbOGXCR:oeoat8bvI;NLoy-mw{WXNKogtR"
+        }
+      },
+      "ParentThumbItemId": "87ab03eb3f7743174dd3d4291202f0e5",
+      "ParentThumbImageTag": "eef09179587ec202d3bc92aa923bfae3",
+      "ParentPrimaryImageItemId": "67c56789c44391e466f076d39ed2943f",
+      "ParentPrimaryImageTag": "1acc160a6486349ab0c44135cffe1184",
+      "LocationType": "FileSystem",
+      "MediaType": "Video"
+    },
+    {
+      "Name": "Season 1",
+      "ServerId": "79315eab3c4c401f8391d5c26210b6d7",
+      "Id": "3952602a6a714243a929379a46d31cbf",
+      "PremiereDate": "2021-04-12T00:00:00.0000000Z",
+      "ChannelId": null,
+      "ProductionYear": 2021,
+      "IndexNumber": 1,
+      "IsFolder": true,
+      "Type": "Season",
+      "ParentLogoItemId": "d181a4e7034db8d1a8d97ea595bfe1d6",
+      "ParentBackdropItemId": "d181a4e7034db8d1a8d97ea595bfe1d6",
+      "ParentBackdropImageTags": [
+        "f2f1cd13f77511b7d971d5c5b88e7978"
+      ],
+      "UserData": {
+        "PlayedPercentage": 10,
+        "UnplayedItemCount": 18,
+        "PlaybackPositionTicks": 0,
+        "PlayCount": 0,
+        "IsFavorite": false,
+        "Played": false,
+        "Key": "375271001",
+        "ItemId": "3952602a6a714243a929379a46d31cbf"
+      },
+      "SeriesName": "To Your Eternity",
+      "SeriesId": "d181a4e7034db8d1a8d97ea595bfe1d6",
+      "SeriesPrimaryImageTag": "4df48f8b2688c81941cf2295abb8f88e",
+      "ImageTags": {
+        "Primary": "5518a668291aa14f616c6a5882aa97ce"
+      },
+      "BackdropImageTags": [],
+      "ParentLogoImageTag": "4ec9afb4f1b44149497708b73b49913d",
+      "ImageBlurHashes": {
+        "Primary": {
+          "5518a668291aa14f616c6a5882aa97ce": "dVFrYLbJ0Knhn-RkxuoN4mWB%Mt6oskVIUW9DkS1xtof",
+          "4df48f8b2688c81941cf2295abb8f88e": "dVFrYLbJ0Knhn-RkxuoN4mWB%Mt6oskVIUW9DkS1xtof"
+        },
+        "Logo": {
+          "4ec9afb4f1b44149497708b73b49913d": "N5TSUA-;fQ-;fQ-;~qj[fQj[fQj[fQfQfQfQfQfQ"
+        },
+        "Thumb": {
+          "bec51a8dacb8b49b165f33322d4a73ae": "NVCGAB~p%LRjD%D$%MtRWXNGIVIUD%IVNHfSt7xa"
+        },
+        "Backdrop": {
+          "f2f1cd13f77511b7d971d5c5b88e7978": "WlKVgIknj0?bi_r^*HtP%2bbkVj]cEM|M|M{kUtR%eS4RlaKRPV["
+        }
+      },
+      "ParentThumbItemId": "d181a4e7034db8d1a8d97ea595bfe1d6",
+      "ParentThumbImageTag": "bec51a8dacb8b49b165f33322d4a73ae",
+      "LocationType": "FileSystem",
+      "MediaType": "Unknown"
+    }
+  ],
+  "TotalRecordCount": 39,
+  "StartIndex": 0
+}

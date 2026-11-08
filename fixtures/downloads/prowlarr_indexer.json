@@ -1,0 +1,774 @@
+[
+  {
+    "indexerUrls": [
+      "https://1337x.to/",
+      "https://1337x.st/",
+      "https://x1337x.ws/",
+      "https://x1337x.eu/",
+      "https://x1337x.cc/"
+    ],
+    "legacyUrls": [
+      "https://1337x.is/",
+      "https://1337x.gd/",
+      "https://1337x.mrunblock.bond/",
+      "https://1337x.abcproxy.org/",
+      "https://1337x.so/"
+    ],
+    "definitionName": "1337x",
+    "description": "1337x is a Public torrent site that offers verified torrent downloads",
+    "language": "en-US",
+    "encoding": "Unicode (UTF-8)",
+    "enable": true,
+    "redirect": false,
+    "supportsRss": true,
+    "supportsSearch": true,
+    "supportsRedirect": false,
+    "supportsPagination": false,
+    "appProfileId": 1,
+    "protocol": "torrent",
+    "privacy": "public",
+    "capabilities": {
+      "limitsMax": 100,
+      "limitsDefault": 100,
+      "categories": [
+        {
+          "id": 5000,
+          "name": "TV",
+          "subCategories": [
+            {
+              "id": 5070,
+              "name": "TV/Anime",
+              "subCategories": []
+            },
+            {
+              "id": 5040,
+              "name": "TV/HD",
+              "subCategories": []
+            },
+            {
+              "id": 5030,
+              "name": "TV/SD",
+              "subCategories": []
+            },
+            {
+              "id": 5080,
+              "name": "TV/Documentary",
+              "subCategories": []
+            }
+          ]
+        },
+        {
+          "id": 100028,
+          "name": "Anime/Anime",
+          "subCategories": []
+        },
+        {
+          "id": 100078,
+          "name": "Anime/Dual Audio",
+          "subCategories": []
+        },
+        {
+          "id": 100079,
+          "name": "Anime/Dubbed",
+          "subCategories": []
+        },
+        {
+          "id": 100080,
+          "name": "Anime/Subbed",
+          "subCategories": []
+        }
+      ],
+      "supportsRawSearch": true,
+      "searchParams": [
+        "q",
+        "q"
+      ],
+      "tvSearchParams": [
+        "q",
+        "season",
+        "ep"
+      ],
+      "movieSearchParams": [
+        "q"
+      ],
+      "musicSearchParams": [
+        "q"
+      ],
+      "bookSearchParams": [
+        "q"
+      ]
+    },
+    "priority": 25,
+    "downloadClientId": 0,
+    "added": "2026-02-03T19:46:40Z",
+    "sortName": "1337x",
+    "name": "1337x",
+    "fields": [
+      {
+        "order": 0,
+        "name": "definitionFile",
+        "value": "1337x",
+        "type": "textbox",
+        "advanced": false,
+        "hidden": "hidden",
+        "privacy": "normal",
+        "isFloat": false
+      },
+      {
+        "order": 1,
+        "name": "baseUrl",
+        "label": "Base Url",
+        "helpText": "Select which base url Prowlarr will use for requests to the site",
+        "value": "https://1337x.to/",
+        "type": "select",
+        "advanced": false,
+        "selectOptionsProviderAction": "getUrls",
+        "privacy": "normal",
+        "isFloat": false
+      },
+      {
+        "order": 2,
+        "name": "baseSettings.queryLimit",
+        "label": "Query Limit",
+        "helpText": "The number of max queries as specified by the respective unit that Prowlarr will allow to the site",
+        "type": "number",
+        "advanced": true,
+        "privacy": "normal",
+        "isFloat": false
+      },
+      {
+        "order": 3,
+        "name": "baseSettings.grabLimit",
+        "label": "Grab Limit",
+        "helpText": "The number of max grabs as specified by the respective unit that Prowlarr will allow to the site",
+        "type": "number",
+        "advanced": true,
+        "privacy": "normal",
+        "isFloat": false
+      },
+      {
+        "order": 4,
+        "name": "baseSettings.limitsUnit",
+        "label": "Limits Unit",
+        "helpText": "The unit of time for counting limits per indexer",
+        "value": 0,
+        "type": "select",
+        "advanced": true,
+        "selectOptions": [
+          {
+            "value": 0,
+            "name": "Day",
+            "order": 0,
+            "hint": "(0)"
+          },
+          {
+            "value": 1,
+            "name": "Hour",
+            "order": 1,
+            "hint": "(1)"
+          }
+        ],
+        "privacy": "normal",
+        "isFloat": false
+      }
+    ],
+    "implementationName": "Cardigann",
+    "implementation": "Cardigann",
+    "configContract": "CardigannSettings",
+    "infoLink": "https://wiki.servarr.com/prowlarr/supported-indexers#1337x",
+    "tags": [
+      1
+    ],
+    "id": 4
+  },
+  {
+    "indexerUrls": [
+      "https://bangumi.moe/"
+    ],
+    "legacyUrls": [],
+    "definitionName": "bangumi-moe",
+    "description": "Bangumi Moe is a Public torrent site for ANIME",
+    "language": "en-US",
+    "encoding": "Unicode (UTF-8)",
+    "enable": true,
+    "redirect": false,
+    "supportsRss": true,
+    "supportsSearch": true,
+    "supportsRedirect": false,
+    "supportsPagination": false,
+    "appProfileId": 1,
+    "protocol": "torrent",
+    "privacy": "public",
+    "capabilities": {
+      "limitsMax": 100,
+      "limitsDefault": 100,
+      "categories": [
+        {
+          "id": 5000,
+          "name": "TV",
+          "subCategories": [
+            {
+              "id": 5070,
+              "name": "TV/Anime",
+              "subCategories": []
+            }
+          ]
+        },
+        {
+          "id": 121599,
+          "name": "Anime",
+          "subCategories": []
+        },
+        {
+          "id": 152717,
+          "name": "Anime Pack",
+          "subCategories": []
+        },
+        {
+          "id": 2000,
+          "name": "Movies",
+          "subCategories": []
+        },
+        {
+          "id": 129757,
+          "name": "Anime Movie",
+          "subCategories": []
+        }
+      ],
+      "supportsRawSearch": false,
+      "searchParams": [
+        "q",
+        "q"
+      ],
+      "tvSearchParams": [
+        "q",
+        "season",
+        "ep"
+      ],
+      "movieSearchParams": [
+        "q"
+      ],
+      "musicSearchParams": [
+        "q"
+      ],
+      "bookSearchParams": [
+        "q"
+      ]
+    },
+    "priority": 25,
+    "downloadClientId": 0,
+    "added": "2026-02-04T19:05:30Z",
+    "sortName": "bangumi moe",
+    "name": "Bangumi Moe",
+    "fields": [
+      {
+        "order": 0,
+        "name": "definitionFile",
+        "value": "bangumi-moe",
+        "type": "textbox",
+        "advanced": false,
+        "hidden": "hidden",
+        "privacy": "normal",
+        "isFloat": false
+      },
+      {
+        "order": 1,
+        "name": "baseUrl",
+        "label": "Base Url",
+        "helpText": "Select which base url Prowlarr will use for requests to the site",
+        "value": "https://bangumi.moe/",
+        "type": "select",
+        "advanced": false,
+        "selectOptionsProviderAction": "getUrls",
+        "privacy": "normal",
+        "isFloat": false
+      },
+      {
+        "order": 2,
+        "name": "baseSettings.queryLimit",
+        "label": "Query Limit",
+        "helpText": "The number of max queries as specified by the respective unit that Prowlarr will allow to the site",
+        "type": "number",
+        "advanced": true,
+        "privacy": "normal",
+        "isFloat": false
+      },
+      {
+        "order": 3,
+        "name": "baseSettings.grabLimit",
+        "label": "Grab Limit",
+        "helpText": "The number of max grabs as specified by the respective unit that Prowlarr will allow to the site",
+        "type": "number",
+        "advanced": true,
+        "privacy": "normal",
+        "isFloat": false
+      },
+      {
+        "order": 4,
+        "name": "baseSettings.limitsUnit",
+        "label": "Limits Unit",
+        "helpText": "The unit of time for counting limits per indexer",
+        "value": 0,
+        "type": "select",
+        "advanced": true,
+        "selectOptions": [
+          {
+            "value": 0,
+            "name": "Day",
+            "order": 0,
+            "hint": "(0)"
+          },
+          {
+            "value": 1,
+            "name": "Hour",
+            "order": 1,
+            "hint": "(1)"
+          }
+        ],
+        "privacy": "normal",
+        "isFloat": false
+      }
+    ],
+    "implementationName": "Cardigann",
+    "implementation": "Cardigann",
+    "configContract": "CardigannSettings",
+    "infoLink": "https://wiki.servarr.com/prowlarr/supported-indexers#bangumi-moe",
+    "tags": [],
+    "id": 8
+  },
+  {
+    "indexerUrls": [
+      "https://eztvx.to/",
+      "https://eztv.wf/",
+      "https://eztv.tf/",
+      "https://eztv.yt/",
+      "https://eztv1.xyz/"
+    ],
+    "legacyUrls": [
+      "https://eztv.ag/",
+      "https://eztv.it/",
+      "https://eztv.ch/",
+      "https://eztv.io/",
+      "https://eztv.re/"
+    ],
+    "definitionName": "eztv",
+    "description": "EZTV is a Public torrent site for TV shows",
+    "language": "en-US",
+    "encoding": "Unicode (UTF-8)",
+    "enable": true,
+    "redirect": false,
+    "supportsRss": true,
+    "supportsSearch": true,
+    "supportsRedirect": false,
+    "supportsPagination": false,
+    "appProfileId": 1,
+    "protocol": "torrent",
+    "privacy": "public",
+    "capabilities": {
+      "limitsMax": 100,
+      "limitsDefault": 100,
+      "categories": [
+        {
+          "id": 5000,
+          "name": "TV",
+          "subCategories": []
+        }
+      ],
+      "supportsRawSearch": false,
+      "searchParams": [
+        "q",
+        "q"
+      ],
+      "tvSearchParams": [
+        "q",
+        "season",
+        "ep"
+      ],
+      "movieSearchParams": [],
+      "musicSearchParams": [],
+      "bookSearchParams": []
+    },
+    "priority": 25,
+    "downloadClientId": 0,
+    "added": "2026-02-03T19:22:59Z",
+    "sortName": "eztv",
+    "name": "EZTV",
+    "fields": [
+      {
+        "order": 0,
+        "name": "definitionFile",
+        "value": "eztv",
+        "type": "textbox",
+        "advanced": false,
+        "hidden": "hidden",
+        "privacy": "normal",
+        "isFloat": false
+      },
+      {
+        "order": 1,
+        "name": "baseUrl",
+        "label": "Base Url",
+        "helpText": "Select which base url Prowlarr will use for requests to the site",
+        "value": "https://eztvx.to/",
+        "type": "select",
+        "advanced": false,
+        "selectOptionsProviderAction": "getUrls",
+        "privacy": "normal",
+        "isFloat": false
+      },
+      {
+        "order": 2,
+        "name": "baseSettings.queryLimit",
+        "label": "Query Limit",
+        "helpText": "The number of max queries as specified by the respective unit that Prowlarr will allow to the site",
+        "type": "number",
+        "advanced": true,
+        "privacy": "normal",
+        "isFloat": false
+      },
+      {
+        "order": 3,
+        "name": "baseSettings.grabLimit",
+        "label": "Grab Limit",
+        "helpText": "The number of max grabs as specified by the respective unit that Prowlarr will allow to the site",
+        "type": "number",
+        "advanced": true,
+        "privacy": "normal",
+        "isFloat": false
+      },
+      {
+        "order": 4,
+        "name": "baseSettings.limitsUnit",
+        "label": "Limits Unit",
+        "helpText": "The unit of time for counting limits per indexer",
+        "value": 0,
+        "type": "select",
+        "advanced": true,
+        "selectOptions": [
+          {
+            "value": 0,
+            "name": "Day",
+            "order": 0,
+            "hint": "(0)"
+          },
+          {
+            "value": 1,
+            "name": "Hour",
+            "order": 1,
+            "hint": "(1)"
+          }
+        ],
+        "privacy": "normal",
+        "isFloat": false
+      }
+    ],
+    "implementationName": "Cardigann",
+    "implementation": "Cardigann",
+    "configContract": "CardigannSettings",
+    "infoLink": "https://wiki.servarr.com/prowlarr/supported-indexers#eztv",
+    "tags": [
+      1
+    ],
+    "id": 3
+  },
+  {
+    "indexerUrls": [
+      "https://nyaa.si/",
+      "https://nyaa.iss.ink/",
+      "https://nyaa.land/",
+      "https://nyaa.mom/",
+      "https://nyaa.media/"
+    ],
+    "legacyUrls": [
+      "https://nyaa.black-mirror.xyz/",
+      "https://nyaa.unblocked.casa/",
+      "https://nyaa.proxyportal.fun/",
+      "https://nyaa.uk-unblock.xyz/",
+      "https://nyaa.ind-unblock.xyz/"
+    ],
+    "definitionName": "nyaasi",
+    "description": "Nyaa is a Public torrent site focused on Eastern ASIAN media including anime, manga, literature and music",
+    "language": "en-US",
+    "encoding": "Unicode (UTF-8)",
+    "enable": true,
+    "redirect": false,
+    "supportsRss": true,
+    "supportsSearch": true,
+    "supportsRedirect": false,
+    "supportsPagination": false,
+    "appProfileId": 1,
+    "protocol": "torrent",
+    "privacy": "public",
+    "capabilities": {
+      "limitsMax": 100,
+      "limitsDefault": 100,
+      "categories": [
+        {
+          "id": 5000,
+          "name": "TV",
+          "subCategories": [
+            {
+              "id": 5070,
+              "name": "TV/Anime",
+              "subCategories": []
+            }
+          ]
+        },
+        {
+          "id": 140679,
+          "name": "Anime",
+          "subCategories": []
+        },
+        {
+          "id": 125996,
+          "name": "Anime - Anime Music Video",
+          "subCategories": []
+        },
+        {
+          "id": 127720,
+          "name": "Anime - English-translated",
+          "subCategories": []
+        },
+        {
+          "id": 131088,
+          "name": "Anime - Non-English-translated",
+          "subCategories": []
+        }
+      ],
+      "supportsRawSearch": true,
+      "searchParams": [
+        "q",
+        "q"
+      ],
+      "tvSearchParams": [
+        "q",
+        "season",
+        "ep"
+      ],
+      "movieSearchParams": [
+        "q"
+      ],
+      "musicSearchParams": [
+        "q"
+      ],
+      "bookSearchParams": [
+        "q"
+      ]
+    },
+    "priority": 25,
+    "downloadClientId": 0,
+    "added": "2026-02-03T19:48:31Z",
+    "sortName": "nyaa si",
+    "name": "Nyaa.si",
+    "fields": [
+      {
+        "order": 0,
+        "name": "definitionFile",
+        "value": "nyaasi",
+        "type": "textbox",
+        "advanced": false,
+        "hidden": "hidden",
+        "privacy": "normal",
+        "isFloat": false
+      },
+      {
+        "order": 1,
+        "name": "baseUrl",
+        "label": "Base Url",
+        "helpText": "Select which base url Prowlarr will use for requests to the site",
+        "value": "https://nyaa.si/",
+        "type": "select",
+        "advanced": false,
+        "selectOptionsProviderAction": "getUrls",
+        "privacy": "normal",
+        "isFloat": false
+      },
+      {
+        "order": 2,
+        "name": "baseSettings.queryLimit",
+        "label": "Query Limit",
+        "helpText": "The number of max queries as specified by the respective unit that Prowlarr will allow to the site",
+        "type": "number",
+        "advanced": true,
+        "privacy": "normal",
+        "isFloat": false
+      },
+      {
+        "order": 3,
+        "name": "baseSettings.grabLimit",
+        "label": "Grab Limit",
+        "helpText": "The number of max grabs as specified by the respective unit that Prowlarr will allow to the site",
+        "type": "number",
+        "advanced": true,
+        "privacy": "normal",
+        "isFloat": false
+      },
+      {
+        "order": 4,
+        "name": "baseSettings.limitsUnit",
+        "label": "Limits Unit",
+        "helpText": "The unit of time for counting limits per indexer",
+        "value": 0,
+        "type": "select",
+        "advanced": true,
+        "selectOptions": [
+          {
+            "value": 0,
+            "name": "Day",
+            "order": 0,
+            "hint": "(0)"
+          },
+          {
+            "value": 1,
+            "name": "Hour",
+            "order": 1,
+            "hint": "(1)"
+          }
+        ],
+        "privacy": "normal",
+        "isFloat": false
+      }
+    ],
+    "implementationName": "Cardigann",
+    "implementation": "Cardigann",
+    "configContract": "CardigannSettings",
+    "infoLink": "https://wiki.servarr.com/prowlarr/supported-indexers#nyaasi",
+    "tags": [
+      1
+    ],
+    "id": 5
+  },
+  {
+    "indexerUrls": [
+      "https://showrss.info/"
+    ],
+    "legacyUrls": [],
+    "definitionName": "showrss",
+    "description": "showRSS is a service that allows you to keep track of your favorite TV shows",
+    "language": "en-US",
+    "encoding": "Unicode (UTF-8)",
+    "enable": true,
+    "redirect": false,
+    "supportsRss": true,
+    "supportsSearch": true,
+    "supportsRedirect": false,
+    "supportsPagination": false,
+    "appProfileId": 1,
+    "protocol": "torrent",
+    "privacy": "public",
+    "capabilities": {
+      "limitsMax": 100,
+      "limitsDefault": 100,
+      "categories": [
+        {
+          "id": 5000,
+          "name": "TV",
+          "subCategories": [
+            {
+              "id": 5030,
+              "name": "TV/SD",
+              "subCategories": []
+            },
+            {
+              "id": 5040,
+              "name": "TV/HD",
+              "subCategories": []
+            }
+          ]
+        }
+      ],
+      "supportsRawSearch": false,
+      "searchParams": [
+        "q",
+        "q"
+      ],
+      "tvSearchParams": [
+        "q",
+        "season",
+        "ep"
+      ],
+      "movieSearchParams": [],
+      "musicSearchParams": [],
+      "bookSearchParams": []
+    },
+    "priority": 25,
+    "downloadClientId": 0,
+    "added": "2026-02-04T19:10:50Z",
+    "sortName": "showrss",
+    "name": "showRSS",
+    "fields": [
+      {
+        "order": 0,
+        "name": "definitionFile",
+        "value": "showrss",
+        "type": "textbox",
+        "advanced": false,
+        "hidden": "hidden",
+        "privacy": "normal",
+        "isFloat": false
+      },
+      {
+        "order": 1,
+        "name": "baseUrl",
+        "label": "Base Url",
+        "helpText": "Select which base url Prowlarr will use for requests to the site",
+        "type": "select",
+        "advanced": false,
+        "selectOptionsProviderAction": "getUrls",
+        "privacy": "normal",
+        "isFloat": false
+      },
+      {
+        "order": 2,
+        "name": "baseSettings.queryLimit",
+        "label": "Query Limit",
+        "helpText": "The number of max queries as specified by the respective unit that Prowlarr will allow to the site",
+        "type": "number",
+        "advanced": true,
+        "privacy": "normal",
+        "isFloat": false
+      },
+      {
+        "order": 3,
+        "name": "baseSettings.grabLimit",
+        "label": "Grab Limit",
+        "helpText": "The number of max grabs as specified by the respective unit that Prowlarr will allow to the site",
+        "type": "number",
+        "advanced": true,
+        "privacy": "normal",
+        "isFloat": false
+      },
+      {
+        "order": 4,
+        "name": "baseSettings.limitsUnit",
+        "label": "Limits Unit",
+        "helpText": "The unit of time for counting limits per indexer",
+        "value": 0,
+        "type": "select",
+        "advanced": true,
+        "selectOptions": [
+          {
+            "value": 0,
+            "name": "Day",
+            "order": 0,
+            "hint": "(0)"
+          },
+          {
+            "value": 1,
+            "name": "Hour",
+            "order": 1,
+            "hint": "(1)"
+          }
+        ],
+        "privacy": "normal",
+        "isFloat": false
+      }
+    ],
+    "implementationName": "Cardigann",
+    "implementation": "Cardigann",
+    "configContract": "CardigannSettings",
+    "infoLink": "https://wiki.servarr.com/prowlarr/supported-indexers#showrss",
+    "tags": [],
+    "id": 11
+  }
+]

@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Application Indexer Sync",
+    "taskName": "ApplicationIndexerSync",
+    "interval": 360,
+    "lastExecution": "2026-11-08T06:53:07Z",
+    "lastStartTime": "2026-11-08T06:52:14Z",
+    "nextExecution": "2026-11-08T12:53:07Z",
+    "lastDuration": "00:00:52.9898209",
+    "id": 7
+  },
+  {
+    "name": "Application Update Check",
+    "taskName": "ApplicationUpdateCheck",
+    "interval": 360,
+    "lastExecution": "2026-11-08T05:35:06Z",
+    "lastStartTime": "2026-11-08T05:35:05Z",
+    "nextExecution": "2026-11-08T11:35:06Z",
+    "lastDuration": "00:00:00.8211498",
+    "id": 2
+  },
+  {
+    "name": "Backup",
+    "taskName": "Backup",
+    "interval": 10080,
+    "lastExecution": "2026-11-05T17:30:09Z",
+    "lastStartTime": "2026-11-05T17:30:06Z",
+    "nextExecution": "2026-11-12T17:30:09Z",
+    "lastDuration": "00:00:02.6136430",
+    "id": 8
+  },
+  {
+    "name": "Check Health",
+    "taskName": "CheckHealth",
+    "interval": 360,
+    "lastExecution": "2026-11-08T06:22:27Z",
+    "lastStartTime": "2026-11-08T06:22:26Z",
+    "nextExecution": "2026-11-08T12:22:27Z",
+    "lastDuration": "00:00:00.3522509",
+    "id": 3
+  },
+  {
+    "name": "Clean Up History",
+    "taskName": "CleanUpHistory",
+    "interval": 1440,
+    "lastExecution": "2026-11-07T17:32:26Z",
+    "lastStartTime": "2026-11-07T17:32:25Z",
+    "nextExecution": "2026-11-08T17:32:26Z",
+    "lastDuration": "00:00:00.6759925",
+    "id": 5
+  }
+]

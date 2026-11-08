@@ -1,0 +1,157 @@
+[
+  {
+    "id": 1000,
+    "name": "Console",
+    "subCategories": [
+      {
+        "id": 1010,
+        "name": "Console/NDS",
+        "subCategories": []
+      },
+      {
+        "id": 1020,
+        "name": "Console/PSP",
+        "subCategories": []
+      },
+      {
+        "id": 1030,
+        "name": "Console/Wii",
+        "subCategories": []
+      },
+      {
+        "id": 1040,
+        "name": "Console/XBox",
+        "subCategories": []
+      },
+      {
+        "id": 1050,
+        "name": "Console/XBox 360",
+        "subCategories": []
+      }
+    ]
+  },
+  {
+    "id": 2000,
+    "name": "Movies",
+    "subCategories": [
+      {
+        "id": 2010,
+        "name": "Movies/Foreign",
+        "subCategories": []
+      },
+      {
+        "id": 2020,
+        "name": "Movies/Other",
+        "subCategories": []
+      },
+      {
+        "id": 2030,
+        "name": "Movies/SD",
+        "subCategories": []
+      },
+      {
+        "id": 2040,
+        "name": "Movies/HD",
+        "subCategories": []
+      },
+      {
+        "id": 2045,
+        "name": "Movies/UHD",
+        "subCategories": []
+      }
+    ]
+  },
+  {
+    "id": 3000,
+    "name": "Audio",
+    "subCategories": [
+      {
+        "id": 3010,
+        "name": "Audio/MP3",
+        "subCategories": []
+      },
+      {
+        "id": 3020,
+        "name": "Audio/Video",
+        "subCategories": []
+      },
+      {
+        "id": 3030,
+        "name": "Audio/Audiobook",
+        "subCategories": []
+      },
+      {
+        "id": 3040,
+        "name": "Audio/Lossless",
+        "subCategories": []
+      },
+      {
+        "id": 3050,
+        "name": "Audio/Other",
+        "subCategories": []
+      }
+    ]
+  },
+  {
+    "id": 4000,
+    "name": "PC",
+    "subCategories": [
+      {
+        "id": 4010,
+        "name": "PC/0day",
+        "subCategories": []
+      },
+      {
+        "id": 4020,
+        "name": "PC/ISO",
+        "subCategories": []
+      },
+      {
+        "id": 4030,
+        "name": "PC/Mac",
+        "subCategories": []
+      },
+      {
+        "id": 4040,
+        "name": "PC/Mobile-Other",
+        "subCategories": []
+      },
+      {
+        "id": 4050,
+        "name": "PC/Games",
+        "subCategories": []
+      }
+    ]
+  },
+  {
+    "id": 5000,
+    "name": "TV",
+    "subCategories": [
+      {
+        "id": 5010,
+        "name": "TV/WEB-DL",
+        "subCategories": []
+      },
+      {
+        "id": 5020,
+        "name": "TV/Foreign",
+        "subCategories": []
+      },
+      {
+        "id": 5030,
+        "name": "TV/SD",
+        "subCategories": []
+      },
+      {
+        "id": 5040,
+        "name": "TV/HD",
+        "subCategories": []
+      },
+      {
+        "id": 5045,
+        "name": "TV/UHD",
+        "subCategories": []
+      }
+    ]
+  }
+]

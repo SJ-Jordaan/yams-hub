@@ -1,0 +1,114 @@
+{
+  "page": 1,
+  "totalPages": 500,
+  "totalResults": 10000,
+  "results": [
+    {
+      "id": 279246,
+      "firstAirDate": "2026-11-03",
+      "genreIds": [
+        18,
+        10765
+      ],
+      "mediaType": "tv",
+      "name": "The Remarried Empress",
+      "originCountry": [
+        "KR"
+      ],
+      "originalLanguage": "ko",
+      "originalName": "재혼 황후",
+      "overview": "Beloved Empress Navier rules the Eastern Empire alongside Emperor Sovieshu. But when Sovieshu falls for a runaway slave and demands a divorce, Navier will agree on one condition: that she's given approval to remarry rival Prince Heinrey of the Western Kingdom.",
+      "popularity": 196.3614,
+      "voteAverage": 8.389,
+      "voteCount": 18,
+      "backdropPath": "/1ptukf8gx19U1HcBv3aRzzlXuyJ.jpg",
+      "posterPath": "/zn3IXZzGavH3qle3o3g1r32eXDy.jpg"
+    },
+    {
+      "id": 225385,
+      "firstAirDate": "2024-12-05",
+      "genreIds": [
+        10759,
+        9648,
+        80
+      ],
+      "mediaType": "tv",
+      "name": "Black Doves",
+      "originCountry": [
+        "GB"
+      ],
+      "originalLanguage": "en",
+      "originalName": "Black Doves",
+      "overview": "When a spy posing as a politician's wife learns her lover has been murdered, an old assassin friend joins her on a quest for truth — and vengeance.",
+      "popularity": 86.0683,
+      "voteAverage": 7.045,
+      "voteCount": 475,
+      "backdropPath": "/uyL0MH8gtDlChQKpfpkVoUP41VY.jpg",
+      "posterPath": "/srlsyEfIBz2MNWBndVc3opOaNGS.jpg"
+    },
+    {
+      "id": 213375,
+      "firstAirDate": "2026-10-13",
+      "genreIds": [
+        10765,
+        18
+      ],
+      "mediaType": "tv",
+      "name": "VisionQuest",
+      "originCountry": [
+        "US"
+      ],
+      "originalLanguage": "en",
+      "originalName": "VisionQuest",
+      "overview": "With a bounty on his head, Vision must confront his nature and resist Ultron's influence to survive.",
+      "popularity": 223.4395,
+      "voteAverage": 8.633,
+      "voteCount": 270,
+      "backdropPath": "/31o1Ufd7bStD5dGEcpzapOjwaqx.jpg",
+      "posterPath": "/WGyAyBPncfuu8MZhLY9RtfZPM0.jpg"
+    },
+    {
+      "id": 289517,
+      "firstAirDate": "2026-10-30",
+      "genreIds": [
+        9648,
+        18
+      ],
+      "mediaType": "tv",
+      "name": "Dead-End Job",
+      "originCountry": [
+        "KR"
+      ],
+      "originalLanguage": "ko",
+      "originalName": "꿀알바",
+      "overview": "Drowning in debt, a young man takes lucrative part-time jobs from a mysterious agency — only to find his hustle for more money turning nightmarish.",
+      "popularity": 121.0989,
+      "voteAverage": 7.6,
+      "voteCount": 59,
+      "backdropPath": "/gWedDgBsZkuOho2qe3q2sTQmbpO.jpg",
+      "posterPath": "/wUvzMC7EToPgci31ZZRCeqCmQ6d.jpg"
+    },
+    {
+      "id": 247718,
+      "firstAirDate": "2025-03-30",
+      "genreIds": [
+        80,
+        18
+      ],
+      "mediaType": "tv",
+      "name": "MobLand",
+      "originCountry": [
+        "GB",
+        "US"
+      ],
+      "originalLanguage": "en",
+      "originalName": "MobLand",
+      "overview": "Two mob families clash in a war that threatens to topple empires and lives.",
+      "popularity": 394.5645,
+      "voteAverage": 8.618,
+      "voteCount": 1173,
+      "backdropPath": "/h0OC7ouop8YLwbAVfS3UUE2Lw4T.jpg",
+      "posterPath": "/5Xc7WpWsgflfgEMoBlf9TmWhfbH.jpg"
+    }
+  ]
+}

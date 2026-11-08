@@ -1,0 +1,264 @@
+[
+  {
+    "Name": "That Time I Got Reincarnated as a Slime",
+    "ServerId": "79315eab3c4c401f8391d5c26210b6d7",
+    "Id": "71fb0b620791c8c3ea2ad7ba6ca6e787",
+    "DateCreated": "2026-11-06T23:35:57.2614162Z",
+    "PremiereDate": "2018-10-02T00:00:00.0000000Z",
+    "OfficialRating": "TV-14",
+    "ChannelId": null,
+    "CommunityRating": 7.3,
+    "RunTimeTicks": 14400000000,
+    "ProductionYear": 2018,
+    "IsFolder": true,
+    "Type": "Series",
+    "UserData": {
+      "PlayedPercentage": 0,
+      "UnplayedItemCount": 48,
+      "PlaybackPositionTicks": 0,
+      "PlayCount": 0,
+      "IsFavorite": false,
+      "Played": false,
+      "Key": "71fb0b62-0791-c8c3-ea2a-d7ba6ca6e787",
+      "ItemId": "71fb0b620791c8c3ea2ad7ba6ca6e787"
+    },
+    "Status": "Continuing",
+    "AirDays": [],
+    "ImageTags": {
+      "Thumb": "e1d2dc99e3cdad25889edeed209ee5c7",
+      "Primary": "0117d4ba7a3021bd0ea63089ab9a796e",
+      "Logo": "140a4f8ac529b007fdc19cf0a83dad65"
+    },
+    "BackdropImageTags": [
+      "2b7a6175faa900259193f371fc793555"
+    ],
+    "ImageBlurHashes": {
+      "Backdrop": {
+        "2b7a6175faa900259193f371fc793555": "WbGSl=njT1tlS%o~TOtSM{ohacV[nnoMt7oMr=bdo#WEt6W-S5xu"
+      },
+      "Thumb": {
+        "e1d2dc99e3cdad25889edeed209ee5c7": "WtF?uII|Ivo#xBbL%jROj@a%jXkDkZM{WVoMxXkBtTRpNIs:xYWE"
+      },
+      "Primary": {
+        "0117d4ba7a3021bd0ea63089ab9a796e": "dvH.pgt7$$t8yGe:oIkDT2jGt6R.WZozogM}WsWqS5Rn"
+      },
+      "Logo": {
+        "140a4f8ac529b007fdc19cf0a83dad65": "OL6^;}jFjEo~aJoeVCrAadkDo#bIjEbwU[bIWEZ~f,bdo}"
+      }
+    },
+    "LocationType": "FileSystem",
+    "MediaType": "Unknown",
+    "EndDate": "2019-03-19T00:00:00.0000000Z",
+    "OriginalLanguage": "ja"
+  },
+  {
+    "Name": "The Apothecary Diaries",
+    "ServerId": "79315eab3c4c401f8391d5c26210b6d7",
+    "Id": "237c9e0888b1307a2317f5875a52663c",
+    "DateCreated": "2026-10-04T14:04:08.3215785Z",
+    "PremiereDate": "2023-10-22T00:00:00.0000000Z",
+    "OfficialRating": "TV-14",
+    "ChannelId": null,
+    "CommunityRating": 9.4,
+    "RunTimeTicks": 13800000000,
+    "ProductionYear": 2023,
+    "IsFolder": true,
+    "Type": "Series",
+    "UserData": {
+      "PlayedPercentage": 0,
+      "UnplayedItemCount": 6,
+      "PlaybackPositionTicks": 0,
+      "PlayCount": 0,
+      "IsFavorite": false,
+      "Played": false,
+      "Key": "237c9e08-88b1-307a-2317-f5875a52663c",
+      "ItemId": "237c9e0888b1307a2317f5875a52663c"
+    },
+    "Status": "Continuing",
+    "AirDays": [],
+    "ImageTags": {
+      "Thumb": "762fa1db053666e0107d7d9049d04892",
+      "Primary": "186b23f3f6fa99b5acdea57693e50d06",
+      "Logo": "f7e339db9dd9751622dec309610f9006"
+    },
+    "BackdropImageTags": [
+      "1a60e1613358533065a354540f726194"
+    ],
+    "ImageBlurHashes": {
+      "Backdrop": {
+        "1a60e1613358533065a354540f726194": "WC7^x#s:0LbI-TW.o~aeemX9RkxCa$V@f5tRbbM}JCbG$zspI@NH"
+      },
+      "Thumb": {
+        "762fa1db053666e0107d7d9049d04892": "WA8gQ,$k0LsX=xj?O[NZRhOYNGxDR-V@n$tRX7M}NMs.=aw|I[NH"
+      },
+      "Primary": {
+        "186b23f3f6fa99b5acdea57693e50d06": "dJExV4M{0g%1J6n#-oS20hJP%2rt$%V[IVSd#9s,ozR+"
+      },
+      "Logo": {
+        "f7e339db9dd9751622dec309610f9006": "NGN7vg.Razi{MeR5HsRQWBaekBj[8woetRozozWB"
+      }
+    },
+    "LocationType": "FileSystem",
+    "MediaType": "Unknown",
+    "EndDate": "2024-03-24T00:00:00.0000000Z",
+    "OriginalLanguage": "ja"
+  },
+  {
+    "Name": "Season 2",
+    "ServerId": "79315eab3c4c401f8391d5c26210b6d7",
+    "Id": "b657a859963706d52f029b163ca7dacc",
+    "DateCreated": "2026-10-01T20:38:35.2648117Z",
+    "PremiereDate": "2026-10-01T00:00:00.0000000Z",
+    "ChannelId": null,
+    "ProductionYear": 2026,
+    "IndexNumber": 2,
+    "IsFolder": true,
+    "Type": "Season",
+    "ParentLogoItemId": "de6053f3796143e2bfddb904e20e43ad",
+    "ParentBackdropItemId": "de6053f3796143e2bfddb904e20e43ad",
+    "ParentBackdropImageTags": [
+      "928ec03b85c7f346c0872386c48b685f"
+    ],
+    "UserData": {
+      "PlayedPercentage": 0,
+      "UnplayedItemCount": 6,
+      "PlaybackPositionTicks": 0,
+      "PlayCount": 0,
+      "IsFavorite": false,
+      "Played": false,
+      "Key": "459627002",
+      "ItemId": "b657a859963706d52f029b163ca7dacc"
+    },
+    "SeriesName": "The Ramparts of Ice",
+    "SeriesId": "de6053f3796143e2bfddb904e20e43ad",
+    "SeriesPrimaryImageTag": "0be78d883edd0acf4b0082b6a3585dca",
+    "ImageTags": {
+      "Primary": "9595c0c837a830320277520ac514de3b"
+    },
+    "BackdropImageTags": [],
+    "ParentLogoImageTag": "614d18f7cab6464888b39a628552da36",
+    "ImageBlurHashes": {
+      "Primary": {
+        "9595c0c837a830320277520ac514de3b": "dMGb@-~p-;_3Fdoyn4NLSx%gE1Mx%~I.agRiM]D%V|S0",
+        "0be78d883edd0acf4b0082b6a3585dca": "dqHALbRkR+xF}qR+WVs-wIR+oeoK$jX7j[f8wKxsR+WC"
+      },
+      "Logo": {
+        "614d18f7cab6464888b39a628552da36": "HB2Qi~f5VXfkkDadkYfQVqpfadkYkDkDfkaJaJf6"
+      },
+      "Thumb": {
+        "f1fcfde22d94f2012e3cad99cea5d832": "WnJ?A]9vNHodaht6}nEOS1xZRkbFw0kWSyjZR+af,It4S4NHoen+"
+      },
+      "Backdrop": {
+        "928ec03b85c7f346c0872386c48b685f": "WXI3zI0gNG$%Rj%L},9vt5$%Rkoev~SikBw{kCRjw2kVR+nit6e."
+      }
+    },
+    "ParentThumbItemId": "de6053f3796143e2bfddb904e20e43ad",
+    "ParentThumbImageTag": "f1fcfde22d94f2012e3cad99cea5d832",
+    "LocationType": "FileSystem",
+    "MediaType": "Unknown"
+  },
+  {
+    "Name": "Season 3",
+    "ServerId": "79315eab3c4c401f8391d5c26210b6d7",
+    "Id": "fdb67b7a3a579222531659061bc69838",
+    "DateCreated": "2026-02-27T20:20:23.8843965Z",
+    "ChannelId": null,
+    "IndexNumber": 3,
+    "IsFolder": true,
+    "Type": "Season",
+    "ParentLogoItemId": "32b996505f5cc5d9768d1d8ab1e5c65b",
+    "ParentBackdropItemId": "32b996505f5cc5d9768d1d8ab1e5c65b",
+    "ParentBackdropImageTags": [
+      "e41f9022ef2ad30a229532917f38fe06"
+    ],
+    "UserData": {
+      "PlayedPercentage": 0,
+      "UnplayedItemCount": 16,
+      "PlaybackPositionTicks": 0,
+      "PlayCount": 0,
+      "IsFavorite": false,
+      "Played": false,
+      "Key": "305089003",
+      "ItemId": "fdb67b7a3a579222531659061bc69838"
+    },
+    "SeriesName": "Re:ZERO -Starting Life in Another World-",
+    "SeriesId": "32b996505f5cc5d9768d1d8ab1e5c65b",
+    "PrimaryImageAspectRatio": 0.6666666666666666,
+    "SeriesPrimaryImageTag": "e85d683a16c85f904b3d89550697eecf",
+    "ImageTags": {},
+    "BackdropImageTags": [],
+    "ParentLogoImageTag": "f5fb2700f21b44c03e5b87e35296b443",
+    "ImageBlurHashes": {
+      "Logo": {
+        "f5fb2700f21b44c03e5b87e35296b443": "PFPGjaxw-=4oofR%-:%M~qRlxvIUIUofxut7~qRia_%MD*WEWCM{"
+      },
+      "Thumb": {
+        "96891d20979e7689e10db55f0cc1562e": "WpKLI0-;yD-=tStS~XIpRkf#ofxu-;WFV@WAWAad-;t7WYt6V@R*"
+      },
+      "Backdrop": {
+        "e41f9022ef2ad30a229532917f38fe06": "WjFz?PNG0woebv-Wxva}RPj?ofbHV@kBofn+kCWAspoeaxRkf+s:"
+      },
+      "Primary": {
+        "e85d683a16c85f904b3d89550697eecf": "ddJ*@*~qMcxV.TNFR4xtgPM{oKtQ-pa#S6Rkr=M|o$oz"
+      }
+    },
+    "ParentThumbItemId": "32b996505f5cc5d9768d1d8ab1e5c65b",
+    "ParentThumbImageTag": "96891d20979e7689e10db55f0cc1562e",
+    "LocationType": "FileSystem",
+    "MediaType": "Unknown"
+  },
+  {
+    "Name": "Season 2",
+    "ServerId": "79315eab3c4c401f8391d5c26210b6d7",
+    "Id": "12c26118da072b8cf9dad9790a8447d2",
+    "DateCreated": "2026-03-05T03:16:26.4823031Z",
+    "PremiereDate": "2023-10-07T00:00:00.0000000Z",
+    "ChannelId": null,
+    "ProductionYear": 2023,
+    "IndexNumber": 2,
+    "IsFolder": true,
+    "Type": "Season",
+    "ParentLogoItemId": "51f766da55adb538e51c3ae11445f240",
+    "ParentBackdropItemId": "51f766da55adb538e51c3ae11445f240",
+    "ParentBackdropImageTags": [
+      "69fa9cce29a0d7f1d7068bbd4f2c1a20"
+    ],
+    "UserData": {
+      "PlayedPercentage": 0,
+      "UnplayedItemCount": 12,
+      "PlaybackPositionTicks": 0,
+      "PlayCount": 0,
+      "IsFavorite": false,
+      "Played": false,
+      "Key": "405920002",
+      "ItemId": "12c26118da072b8cf9dad9790a8447d2"
+    },
+    "SeriesName": "SPY x FAMILY",
+    "SeriesId": "51f766da55adb538e51c3ae11445f240",
+    "SeriesPrimaryImageTag": "222b1efb7b5b2afc40ca7789ee8efba7",
+    "ImageTags": {
+      "Primary": "4b8dced77dac71293652a2fef5105f59"
+    },
+    "BackdropImageTags": [],
+    "ParentLogoImageTag": "46a38c2c9906b096fa54bef569e3b5ca",
+    "ImageBlurHashes": {
+      "Primary": {
+        "4b8dced77dac71293652a2fef5105f59": "dsIrEXt8XSxb%%R-NekD9~bcaKWCOus;$fn+ETV]xZWY",
+        "222b1efb7b5b2afc40ca7789ee8efba7": "dgLNZ6-qbwxaB@NHJVSin:kXRPj[F~xu#+V[9*V[smbI"
+      },
+      "Logo": {
+        "46a38c2c9906b096fa54bef569e3b5ca": "PESF*3VrcG%%t8#%ZztR?cbIRPxZj[kWxvaxI]tSnMQ,aeksp0n$"
+      },
+      "Thumb": {
+        "48917a8f178f952932ab50b23a614561": "WQPrX%-;+c^lI9=y=foLRiaeVsn$+#s:E0Rjtlay}bazofxaozV["
+      },
+      "Backdrop": {
+        "69fa9cce29a0d7f1d7068bbd4f2c1a20": "WLGSiQFvb_-UR%%g?]-;E2tR%2NGb]soaLM|xtt7.8M{%2NGj[s:"
+      }
+    },
+    "ParentThumbItemId": "51f766da55adb538e51c3ae11445f240",
+    "ParentThumbImageTag": "48917a8f178f952932ab50b23a614561",
+    "LocationType": "FileSystem",
+    "MediaType": "Unknown"
+  }
+]

@@ -1,0 +1,54 @@
+[
+  {
+    "UserId": "8bed8d8cccf249548eb6a39fd6a7e54b",
+    "PrimaryImageTag": "3c0b29d9ed1bdf303020adb869978510",
+    "UserName": "Zenith Greyrat",
+    "LastWatched": "Desperate Housewives - The Story of Lucy and Jessie",
+    "NowPlayingItemId": "cde3668a5433ba3171ff466f1693e2f3",
+    "LastActivityDate": "2026-11-08T08:53:19.346Z",
+    "LastClient": "Jellyfin Android TV - Xiaomi TV Box",
+    "TotalPlays": 1,
+    "TotalWatchTime": 1559,
+    "LastSeen": {
+      "minutes": 5,
+      "seconds": 11,
+      "milliseconds": 432.298
+    }
+  },
+  {
+    "UserId": "4c0628aacef24bdfacd40f946ea33ee7",
+    "PrimaryImageTag": "96bd094ac0ccd7d13ad3e6a2f5bdb7a3",
+    "UserName": "Paul Greyrat",
+    "LastWatched": null,
+    "NowPlayingItemId": null,
+    "LastActivityDate": null,
+    "LastClient": null,
+    "TotalPlays": 0,
+    "TotalWatchTime": null,
+    "LastSeen": null
+  },
+  {
+    "UserId": "902b544b7a194203b4aebfa75d4baa68",
+    "PrimaryImageTag": "dc8c1843670b0c6c9f9fa53a72471b17",
+    "UserName": "Rudeus Greyrat",
+    "LastWatched": null,
+    "NowPlayingItemId": null,
+    "LastActivityDate": null,
+    "LastClient": null,
+    "TotalPlays": 0,
+    "TotalWatchTime": null,
+    "LastSeen": null
+  },
+  {
+    "UserId": "e040d960b2a9476391205d522a7d2176",
+    "PrimaryImageTag": "dd6a0b8eee4e85962e7f9bac062a8d83",
+    "UserName": "Zonika",
+    "LastWatched": null,
+    "NowPlayingItemId": null,
+    "LastActivityDate": null,
+    "LastClient": null,
+    "TotalPlays": 0,
+    "TotalWatchTime": null,
+    "LastSeen": null
+  }
+]

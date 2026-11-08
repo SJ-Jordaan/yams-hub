@@ -1,0 +1,209 @@
+{
+  "title": "That Time I Got Reincarnated as a Slime",
+  "alternateTitles": [
+    {
+      "title": "Tensei Shitara Slime Datta Ken S2",
+      "sceneSeasonNumber": 2
+    },
+    {
+      "title": "Tensei shitara Slime Datta Ken 2nd Season",
+      "sceneSeasonNumber": 2
+    },
+    {
+      "title": "Tensei Shitara Slime Datta Ken",
+      "sceneSeasonNumber": -1
+    },
+    {
+      "title": "That Time I Got Reincarnated as a Slime Season 2",
+      "sceneSeasonNumber": 2
+    },
+    {
+      "title": "Tensei Shitara Slime Datta Ken S3",
+      "sceneSeasonNumber": 3
+    },
+    {
+      "title": "Tensei shitara Slime Datta Ken 3rd Season",
+      "sceneSeasonNumber": 3
+    }
+  ],
+  "sortTitle": "that time i got reincarnated as a slime",
+  "status": "continuing",
+  "ended": false,
+  "overview": "37-year-old corporate worker Mikami Satoru is stabbed by a random killer, and is reborn to an alternate world. But he turns out to be reborn a slime! Thrown into this new world with the name Rimuru Tempest, he begins his quest to create a world that’s welcoming to all races. Broken free from ordinary, stale past life, his fresh adventure in a fantasy world as a slime monster with unique abilities begins.",
+  "previousAiring": "2026-09-25T14:00:00Z",
+  "network": "Nippon TV",
+  "airTime": "23:00",
+  "images": [
+    {
+      "coverType": "banner",
+      "url": "/MediaCover/54/banner.jpg?lastWrite=639058150411810432",
+      "remoteUrl": "https://artworks.thetvdb.com/banners/graphical/5c456e14aa17d.jpg"
+    },
+    {
+      "coverType": "poster",
+      "url": "/MediaCover/54/poster.jpg?lastWrite=639058150412210423",
+      "remoteUrl": "https://artworks.thetvdb.com/banners/posters/5bb2b28057ade.jpg"
+    },
+    {
+      "coverType": "fanart",
+      "url": "/MediaCover/54/fanart.jpg?lastWrite=639058150412650414",
+      "remoteUrl": "https://artworks.thetvdb.com/banners/fanart/original/5bb4c5b79f675.jpg"
+    },
+    {
+      "coverType": "clearlogo",
+      "url": "/MediaCover/54/clearlogo.png?lastWrite=639058150412850410",
+      "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/352408/clearlogo/611c83c1eba90.png"
+    }
+  ],
+  "originalLanguage": {
+    "id": 8,
+    "name": "Japanese"
+  },
+  "seasons": [
+    {
+      "seasonNumber": 0,
+      "monitored": false,
+      "statistics": {
+        "episodeFileCount": 0,
+        "episodeCount": 0,
+        "totalEpisodeCount": 14,
+        "sizeOnDisk": 0,
+        "releaseGroups": [],
+        "percentOfEpisodes": 0
+      },
+      "images": [
+        {
+          "coverType": "poster",
+          "remoteUrl": "https://artworks.thetvdb.com/banners/seasons/5c33ce6294e53.jpg"
+        }
+      ]
+    },
+    {
+      "seasonNumber": 1,
+      "monitored": true,
+      "statistics": {
+        "previousAiring": "2019-03-19T14:00:00Z",
+        "episodeFileCount": 0,
+        "episodeCount": 24,
+        "totalEpisodeCount": 24,
+        "sizeOnDisk": 0,
+        "releaseGroups": [],
+        "percentOfEpisodes": 0
+      },
+      "images": [
+        {
+          "coverType": "poster",
+          "remoteUrl": "https://artworks.thetvdb.com/banners/v4/season/777471/posters/64f8be088a661.jpg"
+        }
+      ]
+    },
+    {
+      "seasonNumber": 2,
+      "monitored": true,
+      "statistics": {
+        "previousAiring": "2021-09-21T14:00:00Z",
+        "episodeFileCount": 0,
+        "episodeCount": 24,
+        "totalEpisodeCount": 24,
+        "sizeOnDisk": 0,
+        "releaseGroups": [],
+        "percentOfEpisodes": 0
+      },
+      "images": [
+        {
+          "coverType": "poster",
+          "remoteUrl": "https://artworks.thetvdb.com/banners/v4/season/1806460/posters/64f8be6b7f8ea.jpg"
+        }
+      ]
+    },
+    {
+      "seasonNumber": 3,
+      "monitored": true,
+      "statistics": {
+        "previousAiring": "2024-09-27T14:00:00Z",
+        "episodeFileCount": 24,
+        "episodeCount": 24,
+        "totalEpisodeCount": 24,
+        "sizeOnDisk": 35937551194,
+        "releaseGroups": [
+          "SubsPlease"
+        ],
+        "percentOfEpisodes": 100
+      },
+      "images": [
+        {
+          "coverType": "poster",
+          "remoteUrl": "https://artworks.thetvdb.com/banners/v4/season/2081254/posters/661297d0d53cd.jpg"
+        }
+      ]
+    },
+    {
+      "seasonNumber": 4,
+      "monitored": true,
+      "statistics": {
+        "previousAiring": "2026-09-25T14:00:00Z",
+        "episodeFileCount": 24,
+        "episodeCount": 24,
+        "totalEpisodeCount": 24,
+        "sizeOnDisk": 35161288420,
+        "releaseGroups": [
+          "SubsPlease"
+        ],
+        "percentOfEpisodes": 100
+      },
+      "images": [
+        {
+          "coverType": "poster",
+          "remoteUrl": "https://artworks.thetvdb.com/banners/v4/season/2152754/posters/69d1b2a1bb4db.jpg"
+        }
+      ]
+    }
+  ],
+  "year": 2018,
+  "path": "/data/tvshows/That Time I Got Reincarnated as a Slime (2018) [tvdbid-352408]",
+  "qualityProfileId": 7,
+  "seasonFolder": true,
+  "monitored": true,
+  "monitorNewItems": "all",
+  "useSceneNumbering": true,
+  "runtime": 24,
+  "tvdbId": 352408,
+  "tvRageId": 0,
+  "tvMazeId": 38390,
+  "tmdbId": 82684,
+  "firstAired": "2018-10-02T00:00:00Z",
+  "lastAired": "2026-09-25T00:00:00Z",
+  "seriesType": "anime",
+  "cleanTitle": "thattimeigotreincarnatedasslime",
+  "imdbId": "tt9054364",
+  "titleSlug": "that-time-i-got-reincarnated-as-a-slime",
+  "rootFolderPath": "/data/tvshows",
+  "certification": "TV-14",
+  "genres": [
+    "Action",
+    "Adventure",
+    "Animation",
+    "Anime",
+    "Comedy",
+    "Fantasy"
+  ],
+  "tags": [],
+  "added": "2026-02-04T15:15:28Z",
+  "ratings": {
+    "votes": 29422,
+    "value": 8.0
+  },
+  "statistics": {
+    "seasonCount": 4,
+    "episodeFileCount": 48,
+    "episodeCount": 96,
+    "totalEpisodeCount": 110,
+    "sizeOnDisk": 71098839614,
+    "releaseGroups": [
+      "SubsPlease"
+    ],
+    "percentOfEpisodes": 50.0
+  },
+  "languageProfileId": 1,
+  "id": 54
+}

@@ -1,0 +1,287 @@
+{
+  "Id": "a51cd2e6d6ebafb929c742f581b8f3bafaebefb5a9643fd360e05c04f17e033a",
+  "Created": "2026-10-31T19:20:52.274709641Z",
+  "Path": "/init",
+  "Args": [],
+  "State": {
+    "Status": "running",
+    "Running": true,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 15900,
+    "ExitCode": 0,
+    "Error": "",
+    "StartedAt": "2026-11-08T06:21:17.288940434Z",
+    "FinishedAt": "2026-11-08T06:02:02.34364744Z"
+  },
+  "Image": "sha256:ae55f56fa15cd639e4114104ddd7d292660ec259eab68d2d07d663b13a5066b5",
+  "ResolvConfPath": "/volume1/@docker/containers/a51cd2e6d6ebafb929c742f581b8f3bafaebefb5a9643fd360e05c04f17e033a/resolv.conf",
+  "HostnamePath": "/volume1/@docker/containers/a51cd2e6d6ebafb929c742f581b8f3bafaebefb5a9643fd360e05c04f17e033a/hostname",
+  "HostsPath": "/volume1/@docker/containers/a51cd2e6d6ebafb929c742f581b8f3bafaebefb5a9643fd360e05c04f17e033a/hosts",
+  "LogPath": "/volume1/@docker/containers/a51cd2e6d6ebafb929c742f581b8f3bafaebefb5a9643fd360e05c04f17e033a/a51cd2e6d6ebafb929c742f581b8f3bafaebefb5a9643fd360e05c04f17e033a-json.log",
+  "Name": "/sonarr",
+  "RestartCount": 0,
+  "Driver": "overlay2",
+  "Platform": "linux",
+  "MountLabel": "",
+  "ProcessLabel": "",
+  "AppArmorProfile": "docker-default",
+  "ExecIDs": null,
+  "HostConfig": {
+    "Binds": [
+      "/etc/localtime:/etc/localtime:ro",
+      "/volume1/mediashare:/data:rw",
+      "/volume1/mediashare/config/sonarr:/config:rw"
+    ],
+    "ContainerIDFile": "",
+    "LogConfig": {
+      "Type": "json-file",
+      "Config": {}
+    },
+    "NetworkMode": "yams_network",
+    "PortBindings": {
+      "8989/tcp": [
+        {
+          "HostIp": "",
+          "HostPort": "8989"
+        }
+      ]
+    },
+    "RestartPolicy": {
+      "Name": "unless-stopped",
+      "MaximumRetryCount": 0
+    },
+    "AutoRemove": false,
+    "VolumeDriver": "",
+    "VolumesFrom": null,
+    "ConsoleSize": [
+      0,
+      0
+    ],
+    "CapAdd": null,
+    "CapDrop": null,
+    "CgroupnsMode": "private",
+    "Dns": [],
+    "DnsOptions": [],
+    "DnsSearch": [],
+    "ExtraHosts": [],
+    "GroupAdd": null,
+    "IpcMode": "private",
+    "Cgroup": "",
+    "Links": null,
+    "OomScoreAdj": 0,
+    "PidMode": "",
+    "Privileged": false,
+    "PublishAllPorts": false,
+    "ReadonlyRootfs": false,
+    "SecurityOpt": null,
+    "UTSMode": "",
+    "UsernsMode": "",
+    "ShmSize": 67108864,
+    "Runtime": "runc",
+    "Isolation": "",
+    "CpuShares": 0,
+    "Memory": 0,
+    "NanoCpus": 0,
+    "CgroupParent": "",
+    "BlkioWeight": 0,
+    "BlkioWeightDevice": null,
+    "BlkioDeviceReadBps": null,
+    "BlkioDeviceWriteBps": null,
+    "BlkioDeviceReadIOps": null,
+    "BlkioDeviceWriteIOps": null,
+    "CpuPeriod": 0,
+    "CpuQuota": 0,
+    "CpuRealtimePeriod": 0,
+    "CpuRealtimeRuntime": 0,
+    "CpusetCpus": "",
+    "CpusetMems": "",
+    "Devices": null,
+    "DeviceCgroupRules": null,
+    "DeviceRequests": null,
+    "MemoryReservation": 0,
+    "MemorySwap": 0,
+    "MemorySwappiness": null,
+    "OomKillDisable": null,
+    "PidsLimit": null,
+    "Ulimits": null,
+    "CpuCount": 0,
+    "CpuPercent": 0,
+    "IOMaximumIOps": 0,
+    "IOMaximumBandwidth": 0,
+    "MaskedPaths": [
+      "/proc/acpi",
+      "/proc/asound",
+      "/proc/interrupts",
+      "/proc/kcore",
+      "/proc/keys",
+      "/proc/latency_stats",
+      "/proc/sched_debug",
+      "/proc/scsi",
+      "/proc/timer_list",
+      "/proc/timer_stats",
+      "/sys/devices/virtual/powercap",
+      "/sys/firmware",
+      "/sys/devices/system/cpu/cpu0/thermal_throttle",
+      "/sys/devices/system/cpu/cpu1/thermal_throttle",
+      "/sys/devices/system/cpu/cpu2/thermal_throttle",
+      "/sys/devices/system/cpu/cpu3/thermal_throttle"
+    ],
+    "ReadonlyPaths": [
+      "/proc/bus",
+      "/proc/fs",
+      "/proc/irq",
+      "/proc/sys",
+      "/proc/sysrq-trigger"
+    ]
+  },
+  "GraphDriver": {
+    "Data": {
+      "ID": "a51cd2e6d6ebafb929c742f581b8f3bafaebefb5a9643fd360e05c04f17e033a",
+      "LowerDir": "/volume1/@docker/overlay2/aa33e246755473944a257411a713e6100c35371eddcc0838fcf71a5ca992740b-init/diff:/volume1/@docker/overlay2/dba4a139efa983362f37915b87d8aaadc7a999b6a4314b6dfd3985d79b3a222e/diff:/volume1/@docker/overlay2/a18435b53273663644e73cb54fd5fd7e70e7b737e6bf7e749d805afb1edfcab7/diff:/volume1/@docker/overlay2/e729e88b583dd38bdc209e917be8430f1715c1f3b7c2d3c45c8ca8d6cadd6148/diff:/volume1/@docker/overlay2/0621ae735bb32dc0cc21f54e8c7badd96eebf25228a610d8957a77804a087365/diff:/volume1/@docker/overlay2/cd301475e3f12429c4bc383ec7276e34e065e4dd99f39c5c77a64f2b2e838cc1/diff:/volume1/@docker/overlay2/053837d0077757d0d2a5827e12c0fe5669196e8044a4f56b7406f5a200763d93/diff:/volume1/@docker/overlay2/5f68a2f68edfe7c599c424e4bf57a8315fe201903b3d75ac31d75070d77acfa2/diff:/volume1/@docker/overlay2/45862879064e8875a1bbb65987490eccb8164daf64725017562a5eaeba53cbfc/diff:/volume1/@docker/overlay2/90e1e555017086e63ed3de14c158763201ee94aaac289076448c3ded10d5fd80/diff",
+      "MergedDir": "/volume1/@docker/overlay2/aa33e246755473944a257411a713e6100c35371eddcc0838fcf71a5ca992740b/merged",
+      "UpperDir": "/volume1/@docker/overlay2/aa33e246755473944a257411a713e6100c35371eddcc0838fcf71a5ca992740b/diff",
+      "WorkDir": "/volume1/@docker/overlay2/aa33e246755473944a257411a713e6100c35371eddcc0838fcf71a5ca992740b/work"
+    },
+    "Name": "overlay2"
+  },
+  "Mounts": [
+    {
+      "Type": "bind",
+      "Source": "/volume1/mediashare/config/sonarr",
+      "Destination": "/config",
+      "Mode": "rw",
+      "RW": true,
+      "Propagation": "rprivate"
+    },
+    {
+      "Type": "bind",
+      "Source": "/volume1/mediashare",
+      "Destination": "/data",
+      "Mode": "rw",
+      "RW": true,
+      "Propagation": "rprivate"
+    },
+    {
+      "Type": "bind",
+      "Source": "/etc/localtime",
+      "Destination": "/etc/localtime",
+      "Mode": "ro",
+      "RW": false,
+      "Propagation": "rprivate"
+    }
+  ],
+  "Config": {
+    "Hostname": "547f156e6955",
+    "Domainname": "",
+    "User": "",
+    "AttachStdin": false,
+    "AttachStdout": true,
+    "AttachStderr": true,
+    "ExposedPorts": {
+      "8989/tcp": {}
+    },
+    "Tty": false,
+    "OpenStdin": false,
+    "StdinOnce": false,
+    "Env": [
+      "PUID=1000",
+      "PGID=10",
+      "PATH=/lsiopy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+      "PS1=$(whoami)@$(hostname):$(pwd)\\$ ",
+      "HOME=/root",
+      "TERM=xterm",
+      "S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0",
+      "S6_VERBOSITY=1",
+      "S6_STAGE2_HOOK=/docker-mods",
+      "VIRTUAL_ENV=/lsiopy",
+      "LSIO_FIRST_PARTY=true",
+      "XDG_CONFIG_HOME=/config/xdg",
+      "SONARR_CHANNEL=v4-stable",
+      "SONARR_BRANCH=main",
+      "COMPlus_EnableDiagnostics=0",
+      "TMPDIR=/run/sonarr-temp"
+    ],
+    "Cmd": null,
+    "Image": "lscr.io/linuxserver/sonarr:latest",
+    "Volumes": {
+      "/config": {}
+    },
+    "WorkingDir": "/",
+    "Entrypoint": [
+      "/init"
+    ],
+    "Labels": {
+      "build_version": "Linuxserver.io version:- 4.0.20.3014-ls2 Build-date:- 2026-10-31T02:34:29+00:00",
+      "com.docker.compose.config-hash": "01544b56f5a3cb7964ec0985d13bbb0be1b5cb2ccb2ee0dbcd36cb36a6fd4fa1",
+      "com.docker.compose.container-number": "1",
+      "com.docker.compose.depends_on": "",
+      "com.docker.compose.image": "sha256:ae55f56fa15cd639e4114104ddd7d292660ec259eab68d2d07d663b13a5066b5",
+      "com.docker.compose.oneoff": "False",
+      "com.docker.compose.project": "yams",
+      "com.docker.compose.project.config_files": "/opt/yams/docker-compose.yaml,/opt/yams/docker-compose.custom.yaml",
+      "com.docker.compose.project.working_dir": "/opt/yams",
+      "com.docker.compose.service": "sonarr",
+      "com.docker.compose.version": "5.1.3",
+      "maintainer": "thespad",
+      "org.opencontainers.image.authors": "linuxserver.io",
+      "org.opencontainers.image.created": "2026-10-31T02:34:29+00:00",
+      "org.opencontainers.image.description": "[Sonarr](https://sonarr.tv/) (formerly NZBdrone) is a PVR for usenet and bittorrent users. It can monitor multiple RSS feeds for new episodes of your favorite shows and will grab, sort and rename them. It can also be configured to automatically upgrade the quality of files already downloaded when a better quality format becomes available.  ",
+      "org.opencontainers.image.documentation": "https://docs.linuxserver.io/images/docker-sonarr",
+      "org.opencontainers.image.licenses": "GPL-3.0-only",
+      "org.opencontainers.image.ref.name": "4a84583f0e819d7fa986715ce4ed4e971adce61c",
+      "org.opencontainers.image.revision": "4a84583f0e819d7fa986715ce4ed4e971adce61c",
+      "org.opencontainers.image.source": "https://github.com/linuxserver/docker-sonarr",
+      "org.opencontainers.image.title": "Sonarr",
+      "org.opencontainers.image.url": "https://github.com/linuxserver/docker-sonarr/packages",
+      "org.opencontainers.image.vendor": "linuxserver.io",
+      "org.opencontainers.image.version": "4.0.20.3014-ls2"
+    }
+  },
+  "NetworkSettings": {
+    "SandboxID": "59d24ec7a6a530dbd8904d937781fd7a4c64ce3bae04df82bc40e14ea8a57b96",
+    "SandboxKey": "/var/run/docker/netns/59d24ec7a6a5",
+    "Ports": {
+      "8989/tcp": [
+        {
+          "HostIp": "0.0.0.0",
+          "HostPort": "8989"
+        },
+        {
+          "HostIp": "::",
+          "HostPort": "8989"
+        }
+      ]
+    },
+    "Networks": {
+      "yams_network": {
+        "IPAMConfig": {
+          "IPv4Address": "172.28.0.13"
+        },
+        "Links": null,
+        "Aliases": [
+          "sonarr",
+          "sonarr"
+        ],
+        "DriverOpts": null,
+        "GwPriority": 0,
+        "NetworkID": "c2d51ddeb5f43670880a4789e88278bc90ddfe0532c698a15209684c3e515dde",
+        "EndpointID": "65a5664dc8a87f72be468b59ba226ec13d62e0e40e37a3e4be218233d5b0c622",
+        "Gateway": "172.28.0.1",
+        "IPAddress": "172.28.0.13",
+        "MacAddress": "52:ff:bb:a9:65:74",
+        "IPPrefixLen": 24,
+        "IPv6Gateway": "",
+        "GlobalIPv6Address": "",
+        "GlobalIPv6PrefixLen": 0,
+        "DNSNames": [
+          "sonarr",
+          "a51cd2e6d6eb",
+          "547f156e6955"
+        ]
+      }
+    }
+  }
+}

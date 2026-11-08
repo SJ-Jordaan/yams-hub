@@ -1,0 +1,114 @@
+[
+  {
+    "msg": "",
+    "num_downloaded": 0,
+    "num_leeches": 23,
+    "num_peers": 0,
+    "num_seeds": 0,
+    "status": 2,
+    "tier": -1,
+    "url": "** [DHT] **"
+  },
+  {
+    "msg": "",
+    "num_downloaded": 0,
+    "num_leeches": 33,
+    "num_peers": 0,
+    "num_seeds": 0,
+    "status": 2,
+    "tier": -1,
+    "url": "** [PeX] **"
+  },
+  {
+    "msg": "",
+    "num_downloaded": 0,
+    "num_leeches": 0,
+    "num_peers": 0,
+    "num_seeds": 0,
+    "status": 2,
+    "tier": -1,
+    "url": "** [LSD] **"
+  },
+  {
+    "endpoints": [
+      {
+        "bt_version": 1,
+        "min_announce": 1794127714,
+        "msg": "",
+        "name": "10.80.0.2:36681",
+        "next_announce": 1794129469,
+        "num_downloaded": 796,
+        "num_leeches": 101,
+        "num_peers": 100,
+        "num_seeds": 305,
+        "status": 2,
+        "updating": false
+      },
+      {
+        "bt_version": 1,
+        "min_announce": 1794127562,
+        "msg": "skipping tracker announce (unreachable)",
+        "name": "[fe80::2081:cf3c:62e7:55fe%tun0]:36681",
+        "next_announce": 1794128367,
+        "num_downloaded": -1,
+        "num_leeches": -1,
+        "num_peers": -1,
+        "num_seeds": -1,
+        "status": 6,
+        "updating": false
+      }
+    ],
+    "min_announce": 1794127714,
+    "msg": "",
+    "next_announce": 1794129469,
+    "num_downloaded": 796,
+    "num_leeches": 101,
+    "num_peers": 100,
+    "num_seeds": 305,
+    "status": 2,
+    "tier": 0,
+    "updating": false,
+    "url": "http://nyaa.tracker.wf:7777/announce"
+  },
+  {
+    "endpoints": [
+      {
+        "bt_version": 1,
+        "min_announce": 1794127775,
+        "msg": "",
+        "name": "10.80.0.2:36681",
+        "next_announce": 1794129575,
+        "num_downloaded": -1,
+        "num_leeches": 100,
+        "num_peers": 200,
+        "num_seeds": 315,
+        "status": 2,
+        "updating": false
+      },
+      {
+        "bt_version": 1,
+        "min_announce": 1794127575,
+        "msg": "skipping tracker announce (unreachable)",
+        "name": "[fe80::2081:cf3c:62e7:55fe%tun0]:36681",
+        "next_announce": 1794128380,
+        "num_downloaded": -1,
+        "num_leeches": -1,
+        "num_peers": -1,
+        "num_seeds": -1,
+        "status": 6,
+        "updating": false
+      }
+    ],
+    "min_announce": 1794127775,
+    "msg": "",
+    "next_announce": 1794129575,
+    "num_downloaded": -1,
+    "num_leeches": 100,
+    "num_peers": 200,
+    "num_seeds": 315,
+    "status": 2,
+    "tier": 1,
+    "updating": false,
+    "url": "udp://open.stealth.si:80/announce"
+  }
+]

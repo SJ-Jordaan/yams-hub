@@ -1,0 +1,72 @@
+{
+  "total": 1,
+  "numPages": 1,
+  "page": 0,
+  "itemsPerPage": 3,
+  "sessions": [
+    {
+      "id": "ee2209f4-0dba-4e7b-ae7a-fb7fd065a3d3",
+      "userId": "1dd28168-fe50-4957-9d26-8c23c7c6c568",
+      "libraryId": "5bbbf8b6-d60d-4ffa-837e-aaecb77d2995",
+      "libraryItemId": "2b3a26fa-c8ab-4553-bd96-34a74440485e",
+      "bookId": "b6a90d1d-a8b5-4a61-93ac-192240345dd9",
+      "episodeId": null,
+      "mediaType": "book",
+      "mediaMetadata": {
+        "title": "Lonely Castle in the Mirror",
+        "subtitle": null,
+        "authors": [
+          {
+            "id": "4fe7a860-09fd-44bc-8284-c9095332ef02",
+            "name": "Sarah Skaer"
+          }
+        ],
+        "narrators": [
+          "Mizuki Tsujimura"
+        ],
+        "series": [],
+        "genres": [
+          "Audiobook"
+        ],
+        "publishedYear": "2017 (04-25-23)",
+        "publishedDate": null,
+        "publisher": "Tantor Audio",
+        "description": "Phantom",
+        "isbn": null,
+        "asin": "B0C37THGFQ",
+        "language": null,
+        "explicit": false,
+        "abridged": false
+      },
+      "chapters": [],
+      "displayTitle": "Lonely Castle in the Mirror",
+      "displayAuthor": "Sarah Skaer",
+      "coverPath": "/audiobooks/(Mizuki Tsujimura)/Lonely Castle in the Mirror {Sarah Skaer}/cover-adb-large.png",
+      "duration": 45112.361678,
+      "playMethod": 0,
+      "mediaPlayer": "ios",
+      "deviceInfo": {
+        "id": "ca7623c3-b583-4b12-a540-c7a117e8c019",
+        "userId": "1dd28168-fe50-4957-9d26-8c23c7c6c568",
+        "deviceId": "1406BB19-1250-4545-B69C-0ED8C3E565F5",
+        "ipAddress": "::ffff:192.168.10.168",
+        "osName": "iOS",
+        "osVersion": "27.0.1",
+        "clientVersion": "1.13 (1792380258)",
+        "manufacturer": "Apple",
+        "model": "iPhone 16 Plus",
+        "sdkVersion": "",
+        "clientName": "AudioBooth iOS",
+        "deviceName": "Apple iPhone 16 Plus"
+      },
+      "serverVersion": "2.37.2",
+      "date": "2026-11-08",
+      "dayOfWeek": "Sunday",
+      "timeListening": 16.215938091278076,
+      "startTime": 0,
+      "currentTime": 7.38695594,
+      "startedAt": 1794127089479,
+      "updatedAt": 1794127736941
+    }
+  ]
+}

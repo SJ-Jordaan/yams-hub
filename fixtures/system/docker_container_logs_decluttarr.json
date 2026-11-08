@@ -1,0 +1,166 @@
+{
+  "_note": "GET /containers/decluttarr/logs?stdout=1&stderr=1&timestamps=1&tail=N (Tty=false => multiplexed stream). body_base64 is the exact raw response body; expected_frames is the decoded result.",
+  "body_base64": "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",
+  "expected_frames": [
+    {
+      "stream": "stderr",
+      "line": "2026-11-08T08:17:23.426244138Z INFO    | Termination signal received at 2026-11-08 10:17:23.425245."
+    },
+    {
+      "stream": "stderr",
+      "line": "2026-11-08T08:17:24.879112119Z INFO    | 🎉🎉🎉 Decluttarr - Application Started! 🎉🎉🎉"
+    },
+    {
+      "stream": "stderr",
+      "line": "2026-11-08T08:17:24.879129853Z --------------------------------------------------------------------------------"
+    },
+    {
+      "stream": "stderr",
+      "line": "2026-11-08T08:17:24.879133345Z ⭐️ Like this app?"
+    },
+    {
+      "stream": "stderr",
+      "line": "2026-11-08T08:17:24.879135634Z Thanks for giving it a ⭐️ on GitHub!"
+    },
+    {
+      "stream": "stderr",
+      "line": "2026-11-08T08:17:24.879137905Z https://github.com/ManiMatter/decluttarr/"
+    },
+    {
+      "stream": "stderr",
+      "line": "2026-11-08T08:17:24.879139960Z "
+    },
+    {
+      "stream": "stderr",
+      "line": "2026-11-08T08:17:24.879142006Z 💡 Tip: More logs?"
+    },
+    {
+      "stream": "stderr",
+      "line": "2026-11-08T08:17:24.879144197Z If you want to know more about what's going on, switch log level to 'VERBOSE'"
+    },
+    {
+      "stream": "stderr",
+      "line": "2026-11-08T08:17:24.879146499Z "
+    },
+    {
+      "stream": "stderr",
+      "line": "2026-11-08T08:17:24.879148600Z 🐛 Found a bug?"
+    },
+    {
+      "stream": "stderr",
+      "line": "2026-11-08T08:17:24.879150632Z Before reporting bugs on GitHub, please:"
+    },
+    {
+      "stream": "stderr",
+      "line": "2026-11-08T08:17:24.879152639Z 1) Check the readme on github"
+    },
+    {
+      "stream": "stderr",
+      "line": "2026-11-08T08:17:24.879154642Z 2) Check open and closed issues on github"
+    },
+    {
+      "stream": "stderr",
+      "line": "2026-11-08T08:17:24.879156636Z 3) Switch your logs to 'DEBUG' level"
+    },
+    {
+      "stream": "stderr",
+      "line": "2026-11-08T08:17:24.879158693Z 4) Turn off any features other than the one(s) causing it"
+    },
+    {
+      "stream": "stderr",
+      "line": "2026-11-08T08:17:24.879160800Z 5) Provide the full logs via pastebin on your GitHub issue"
+    },
+    {
+      "stream": "stderr",
+      "line": "2026-11-08T08:17:24.879162868Z Once submitted, thanks for being responsive and helping debug / re-test"
+    },
+    {
+      "stream": "stderr",
+      "line": "2026-11-08T08:17:24.879164964Z "
+    },
+    {
+      "stream": "stderr",
+      "line": "2026-11-08T08:17:24.879174199Z INFO    | *** Checking Instances ***"
+    },
+    {
+      "stream": "stderr",
+      "line": "2026-11-08T08:17:25.011704918Z INFO    | [Tip!] qBittorrent 5.3.0 supports API-key authentication. Consider replacing username/password with api_key."
+    },
+    {
+      "stream": "stderr",
+      "line": "2026-11-08T08:17:25.020389237Z INFO    | Enabling 'Keep unselected files in .unwanted folder' in qBittorrent."
+    },
+    {
+      "stream": "stderr",
+      "line": "2026-11-08T08:17:25.027518832Z INFO    | OK | qBittorrent (http://172.28.0.18:8081)"
+    },
+    {
+      "stream": "stderr",
+      "line": "2026-11-08T08:17:25.037291944Z INFO    | OK | Sonarr (http://sonarr:8989)"
+    },
+    {
+      "stream": "stderr",
+      "line": "2026-11-08T08:17:25.054742546Z INFO    | OK | Radarr (http://radarr:7878)"
+    },
+    {
+      "stream": "stderr",
+      "line": "2026-11-08T08:17:25.060265958Z INFO    | --------------------------------------------------"
+    },
+    {
+      "stream": "stderr",
+      "line": "2026-11-08T08:17:25.121092878Z INFO    | *** Running jobs on Sonarr (http://sonarr:8989) ***"
+    },
+    {
+      "stream": "stderr",
+      "line": "2026-11-08T08:17:25.130745820Z INFO    | *** Running jobs on Radarr (http://radarr:7878) ***"
+    },
+    {
+      "stream": "stderr",
+      "line": "2026-11-08T08:27:25.804755366Z INFO    | --------------------------------------------------"
+    },
+    {
+      "stream": "stderr",
+      "line": "2026-11-08T08:27:26.065054630Z INFO    | *** Running jobs on Sonarr (http://sonarr:8989) ***"
+    },
+    {
+      "stream": "stderr",
+      "line": "2026-11-08T08:27:26.158771335Z INFO    | *** Running jobs on Radarr (http://radarr:7878) ***"
+    },
+    {
+      "stream": "stderr",
+      "line": "2026-11-08T08:37:26.447475774Z INFO    | --------------------------------------------------"
+    },
+    {
+      "stream": "stderr",
+      "line": "2026-11-08T08:37:26.517492856Z INFO    | *** Running jobs on Sonarr (http://sonarr:8989) ***"
+    },
+    {
+      "stream": "stderr",
+      "line": "2026-11-08T08:37:26.527188583Z INFO    | *** Running jobs on Radarr (http://radarr:7878) ***"
+    },
+    {
+      "stream": "stderr",
+      "line": "2026-11-08T08:47:26.857938560Z INFO    | --------------------------------------------------"
+    },
+    {
+      "stream": "stderr",
+      "line": "2026-11-08T08:47:26.995073885Z INFO    | *** Running jobs on Sonarr (http://sonarr:8989) ***"
+    },
+    {
+      "stream": "stderr",
+      "line": "2026-11-08T08:47:27.004754435Z INFO    | *** Running jobs on Radarr (http://radarr:7878) ***"
+    },
+    {
+      "stream": "stderr",
+      "line": "2026-11-08T08:57:27.287436181Z INFO    | --------------------------------------------------"
+    },
+    {
+      "stream": "stderr",
+      "line": "2026-11-08T08:57:27.361334972Z INFO    | *** Running jobs on Sonarr (http://sonarr:8989) ***"
+    },
+    {
+      "stream": "stderr",
+      "line": "2026-11-08T08:57:27.370925678Z INFO    | *** Running jobs on Radarr (http://radarr:7878) ***"
+    }
+  ]
+}

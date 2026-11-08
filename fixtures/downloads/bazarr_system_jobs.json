@@ -1,0 +1,59 @@
+{
+  "data": [
+    {
+      "job_id": 21,
+      "job_name": "Downloaded missing subtitles for That Time I Got Reincarnated as a Slime",
+      "status": "completed",
+      "last_run_time": "2026-11-08T07:51:00.515617+00:00",
+      "is_progress": false,
+      "is_signalr": true,
+      "progress_value": 1,
+      "progress_max": 1,
+      "progress_message": "1 subtitle(s) downloaded"
+    },
+    {
+      "job_id": 22,
+      "job_name": "Downloaded missing subtitles for That Time I Got Reincarnated as a Slime",
+      "status": "completed",
+      "last_run_time": "2026-11-08T07:51:00.542386+00:00",
+      "is_progress": false,
+      "is_signalr": true,
+      "progress_value": 1,
+      "progress_max": 1,
+      "progress_message": "1 subtitle(s) downloaded"
+    },
+    {
+      "job_id": 23,
+      "job_name": "Downloaded missing subtitles for That Time I Got Reincarnated as a Slime",
+      "status": "completed",
+      "last_run_time": "2026-11-08T07:51:01.085568+00:00",
+      "is_progress": false,
+      "is_signalr": true,
+      "progress_value": 1,
+      "progress_max": 1,
+      "progress_message": "1 subtitle(s) downloaded"
+    },
+    {
+      "job_id": 24,
+      "job_name": "Downloaded missing subtitles for That Time I Got Reincarnated as a Slime",
+      "status": "completed",
+      "last_run_time": "2026-11-08T07:51:17.222023+00:00",
+      "is_progress": false,
+      "is_signalr": true,
+      "progress_value": 1,
+      "progress_max": 1,
+      "progress_message": "1 subtitle(s) downloaded"
+    },
+    {
+      "job_id": 26,
+      "job_name": "Downloaded missing subtitles for That Time I Got Reincarnated as a Slime",
+      "status": "completed",
+      "last_run_time": "2026-11-08T07:52:55.523215+00:00",
+      "is_progress": false,
+      "is_signalr": true,
+      "progress_value": 1,
+      "progress_max": 1,
+      "progress_message": "1 subtitle(s) downloaded"
+    }
+  ]
+}

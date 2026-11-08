@@ -1,0 +1,510 @@
+{
+  "createdBy": [
+    {
+      "id": 68870,
+      "credit_id": "525416b819c29579403802ba",
+      "name": "Kenn Navarro",
+      "original_name": "Kenn Navarro",
+      "gender": 2,
+      "profile_path": null
+    },
+    {
+      "id": 68869,
+      "credit_id": "525416b819c29579403802c0",
+      "name": "Rhode Montijo",
+      "original_name": "Rhode Montijo",
+      "gender": 2,
+      "profile_path": null
+    },
+    {
+      "id": 68862,
+      "credit_id": "525416b819c29579403802c6",
+      "name": "Aubrey Ankrum",
+      "original_name": "Aubrey Ankrum",
+      "gender": 2,
+      "profile_path": null
+    }
+  ],
+  "episodeRunTime": [
+    4
+  ],
+  "firstAirDate": "2000-12-01",
+  "genres": [
+    {
+      "id": 16,
+      "name": "Animation"
+    },
+    {
+      "id": 35,
+      "name": "Comedy"
+    },
+    {
+      "id": 10765,
+      "name": "Sci-Fi & Fantasy"
+    }
+  ],
+  "relatedVideos": [
+    {
+      "site": "YouTube",
+      "key": "-vZoY-6jaL4",
+      "name": "Trailer",
+      "size": 360,
+      "type": "Trailer",
+      "url": "https://www.youtube.com/watch?v=-vZoY-6jaL4"
+    },
+    {
+      "site": "YouTube",
+      "key": "VYzQgeLCc5A",
+      "name": "C SPOT RUN PRODUCTIONS - Happy Tree Friends Commercial",
+      "size": 360,
+      "type": "Trailer",
+      "url": "https://www.youtube.com/watch?v=VYzQgeLCc5A"
+    }
+  ],
+  "homepage": "http://www.mondomedia.com/shows/happytreefriends/",
+  "id": 1126,
+  "inProduction": false,
+  "languages": [
+    "en"
+  ],
+  "lastAirDate": "2026-09-04",
+  "name": "Happy Tree Friends",
+  "networks": [
+    {
+      "id": 247,
+      "name": "YouTube",
+      "originCountry": "",
+      "logoPath": "/i9YpTodhXMOAYo0TZrP0UrHeunc.png"
+    },
+    {
+      "id": 4931,
+      "name": "Mondo Media",
+      "originCountry": "",
+      "logoPath": "/uNYM3iYy46IOF9L4JSkH5GP9T.png"
+    }
+  ],
+  "numberOfEpisodes": 180,
+  "numberOfSeasons": 11,
+  "originCountry": [
+    "US"
+  ],
+  "originalLanguage": "en",
+  "originalName": "Happy Tree Friends",
+  "tagline": "Cute, cuddly and horribly wrong",
+  "overview": "This action and adventure comedy is drawn in simple appearance and combines cute forest animals with extreme graphic violence. Each episode revolves around the characters enduring accidental events of bloodshed, pain, dismemberment and/or death.",
+  "popularity": 20.5264,
+  "productionCompanies": [
+    {
+      "id": 67218,
+      "name": "Mondo Mini Shows",
+      "originCountry": "",
+      "logoPath": null
+    },
+    {
+      "id": 18757,
+      "name": "Mondo Media",
+      "originCountry": "US",
+      "logoPath": "/vJRMlQftrPN08euE7OzNki7gzor.png"
+    }
+  ],
+  "productionCountries": [
+    {
+      "iso_3166_1": "US",
+      "name": "United States of America"
+    }
+  ],
+  "contentRatings": {
+    "results": [
+      {
+        "descriptors": [],
+        "iso_3166_1": "US",
+        "rating": "TV-MA"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "RU",
+        "rating": "18+"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "DE",
+        "rating": "16"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "US",
+        "rating": "TV-14"
+      },
+      {
+        "descriptors": [],
+        "iso_3166_1": "BG",
+        "rating": "18"
+      }
+    ]
+  },
+  "spokenLanguages": [
+    {
+      "englishName": "English",
+      "iso_639_1": "en",
+      "name": "English"
+    }
+  ],
+  "seasons": [
+    {
+      "airDate": "1999-05-15",
+      "episodeCount": 38,
+      "id": 3140,
+      "name": "Specials",
+      "overview": "",
+      "seasonNumber": 0,
+      "posterPath": "/aGZAtlosdm8zRUnQJNyHGZC49yf.jpg"
+    },
+    {
+      "airDate": "2000-12-01",
+      "episodeCount": 27,
+      "id": 3139,
+      "name": "Season 1",
+      "overview": "",
+      "seasonNumber": 1,
+      "posterPath": "/fmmZ2Ky16j9ZjxL3vvufeLhUchL.jpg"
+    },
+    {
+      "airDate": "2002-09-23",
+      "episodeCount": 28,
+      "id": 3141,
+      "name": "Season 2",
+      "overview": "",
+      "seasonNumber": 2,
+      "posterPath": "/Ag1CWlPB0nuHWj5HkkmFzUnCO3U.jpg"
+    },
+    {
+      "airDate": "2007-10-03",
+      "episodeCount": 25,
+      "id": 3142,
+      "name": "Season 3",
+      "overview": "",
+      "seasonNumber": 3,
+      "posterPath": "/9CZYrIE7d6lpN6iN8VPHYBu0Te4.jpg"
+    },
+    {
+      "airDate": "2013-06-14",
+      "episodeCount": 9,
+      "id": 3143,
+      "name": "Season 4",
+      "overview": "",
+      "seasonNumber": 4,
+      "posterPath": "/c2cPsxfKrM6uVBEs3ztuhi7bYLP.jpg"
+    },
+    {
+      "airDate": "2006-09-21",
+      "episodeCount": 39,
+      "id": 3148,
+      "name": "Season 5",
+      "overview": "",
+      "seasonNumber": 5,
+      "posterPath": "/608rp3Fr8Dnp3KKwD6GjWV0Robh.jpg"
+    },
+    {
+      "airDate": null,
+      "episodeCount": 11,
+      "id": 3144,
+      "name": "Season 6",
+      "overview": "",
+      "seasonNumber": 6,
+      "posterPath": "/6C4oJmAP2xhhRFdaPSlqG2Tq7g0.jpg"
+    },
+    {
+      "airDate": null,
+      "episodeCount": 13,
+      "id": 3145,
+      "name": "Season 7",
+      "overview": "",
+      "seasonNumber": 7,
+      "posterPath": "/lz2VXPPKzMTtfPrn9LQoBaF6kci.jpg"
+    },
+    {
+      "airDate": "2009-01-25",
+      "episodeCount": 5,
+      "id": 3146,
+      "name": "Season 8",
+      "overview": "",
+      "seasonNumber": 8,
+      "posterPath": "/trHh3evffg8cQIBtL4g8xO6Bv3p.jpg"
+    },
+    {
+      "airDate": "2008-08-29",
+      "episodeCount": 6,
+      "id": 3147,
+      "name": "Season 9",
+      "overview": "",
+      "seasonNumber": 9,
+      "posterPath": "/AmBsvuCUSdWVjPneVRdm8mZnCPS.jpg"
+    }
+  ],
+  "status": "Canceled",
+  "type": "Scripted",
+  "voteAverage": 7.774,
+  "voteCount": 671,
+  "backdropPath": "/2FiRbfbmXN2DSHAcuHRtv9QJwnD.jpg",
+  "lastEpisodeToAir": {
+    "id": 7795353,
+    "airDate": "2026-09-04",
+    "episodeNumber": 7,
+    "name": "Swole Mates",
+    "overview": "Cro-Marmot goes to the beach and ends up in a contest against Lumpy on who is the most strongest.",
+    "productionCode": "",
+    "seasonNumber": 10,
+    "showId": 1126,
+    "voteAverage": 0,
+    "voteCount": 0,
+    "stillPath": "/jqNMzzxOV1qMbYjeiZtV6oJzvrx.jpg"
+  },
+  "posterPath": "/ztbEMJuGfj3QmceGTiwI7kFwBok.jpg",
+  "credits": {
+    "cast": [
+      {
+        "character": "Cuddles / Lifty / Shifty (voice)",
+        "creditId": "525416b119c29579403800c0",
+        "id": 68870,
+        "name": "Kenn Navarro",
+        "order": 0,
+        "gender": 2,
+        "profilePath": null
+      },
+      {
+        "character": "Flippy / Pop (voice)",
+        "creditId": "525416b019c295794037ffec",
+        "id": 68862,
+        "name": "Aubrey Ankrum",
+        "order": 2,
+        "gender": 2,
+        "profilePath": null
+      },
+      {
+        "character": "Toothy / Handy (voice)",
+        "creditId": "525416b119c295794038007a",
+        "id": 68866,
+        "name": "Warren Graff",
+        "order": 4,
+        "gender": 0,
+        "profilePath": null
+      },
+      {
+        "character": "Flaky (voice)",
+        "creditId": "525416b719c295794038026c",
+        "id": 68868,
+        "name": "Nica Lorber",
+        "order": 7,
+        "gender": 0,
+        "profilePath": null
+      },
+      {
+        "character": "Sniffles (voice)",
+        "creditId": "64e2272ca3b5e601da494d48",
+        "id": 2997955,
+        "name": "Liz Stuart",
+        "order": 8,
+        "gender": 0,
+        "profilePath": null
+      }
+    ],
+    "crew": []
+  },
+  "externalIds": {
+    "facebookId": null,
+    "freebaseId": "/en/happy_tree_friends",
+    "freebaseMid": "/m/03l04y",
+    "imdbId": "tt0770762",
+    "instagramId": null,
+    "tvdbId": 80534,
+    "tvrageId": null,
+    "twitterId": null
+  },
+  "keywords": [
+    {
+      "id": 10292,
+      "name": "gore"
+    },
+    {
+      "id": 34079,
+      "name": "death"
+    },
+    {
+      "id": 161919,
+      "name": "adult animation"
+    },
+    {
+      "id": 164246,
+      "name": "nostalgic"
+    },
+    {
+      "id": 200234,
+      "name": "shocking"
+    }
+  ],
+  "mediaInfo": {
+    "downloadStatus": [],
+    "downloadStatus4k": [],
+    "id": 423,
+    "mediaType": "tv",
+    "tmdbId": 1126,
+    "tvdbId": 80534,
+    "imdbId": null,
+    "status": 1,
+    "status4k": 1,
+    "createdAt": "2026-10-16T20:17:40.000Z",
+    "updatedAt": "2026-10-17T02:30:11.000Z",
+    "lastSeasonChange": "2026-10-16T20:17:40.000Z",
+    "mediaAddedAt": "2026-10-16T20:17:40.000Z",
+    "serviceId": null,
+    "serviceId4k": null,
+    "externalServiceId": null,
+    "externalServiceId4k": null,
+    "externalServiceSlug": null,
+    "externalServiceSlug4k": null,
+    "ratingKey": null,
+    "ratingKey4k": null,
+    "jellyfinMediaId": null,
+    "jellyfinMediaId4k": null,
+    "requests": [
+      {
+        "id": 189,
+        "status": 4,
+        "createdAt": "2026-10-16T20:17:40.000Z",
+        "updatedAt": "2026-10-16T20:17:45.000Z",
+        "type": "tv",
+        "is4k": false,
+        "serverId": null,
+        "profileId": null,
+        "rootFolder": null,
+        "languageProfileId": null,
+        "tags": null,
+        "isAutoRequest": false,
+        "ignoreQuota": false,
+        "media": {
+          "downloadStatus": [],
+          "downloadStatus4k": [],
+          "id": 423,
+          "mediaType": "tv",
+          "tmdbId": 1126,
+          "tvdbId": 80534,
+          "imdbId": null,
+          "status": 1,
+          "status4k": 1,
+          "createdAt": "2026-10-16T20:17:40.000Z",
+          "updatedAt": "2026-10-17T02:30:11.000Z",
+          "lastSeasonChange": "2026-10-16T20:17:40.000Z",
+          "mediaAddedAt": "2026-10-16T20:17:40.000Z",
+          "serviceId": null,
+          "serviceId4k": null,
+          "externalServiceId": null,
+          "externalServiceId4k": null,
+          "externalServiceSlug": null,
+          "externalServiceSlug4k": null,
+          "ratingKey": null,
+          "ratingKey4k": null,
+          "jellyfinMediaId": null,
+          "jellyfinMediaId4k": null
+        },
+        "requestedBy": {
+          "permissions": 2,
+          "warnings": [],
+          "id": 1,
+          "plexUsername": null,
+          "jellyfinUsername": "Paul Greyrat",
+          "username": null,
+          "recoveryLinkExpirationDate": null,
+          "userType": 3,
+          "jellyfinUserId": "4c0628aacef24bdfacd40f946ea33ee7",
+          "avatar": "/avatarproxy/4c0628aacef24bdfacd40f946ea33ee7?v=1791693617000",
+          "avatarETag": "16b7af80243e8107605f38a62a9fc4271e95b67189183e19d41c2cf296a373e9",
+          "avatarVersion": "1791693617000",
+          "movieQuotaLimit": null,
+          "movieQuotaDays": null,
+          "tvQuotaLimit": null,
+          "tvQuotaDays": null,
+          "createdAt": "2026-02-03T20:09:10.000Z",
+          "updatedAt": "2026-10-11T04:40:17.000Z",
+          "requestCount": 125,
+          "displayName": "Paul Greyrat"
+        },
+        "modifiedBy": {
+          "permissions": 2,
+          "warnings": [],
+          "id": 1,
+          "plexUsername": null,
+          "jellyfinUsername": "Paul Greyrat",
+          "username": null,
+          "recoveryLinkExpirationDate": null,
+          "userType": 3,
+          "jellyfinUserId": "4c0628aacef24bdfacd40f946ea33ee7",
+          "avatar": "/avatarproxy/4c0628aacef24bdfacd40f946ea33ee7?v=1791693617000",
+          "avatarETag": "16b7af80243e8107605f38a62a9fc4271e95b67189183e19d41c2cf296a373e9",
+          "avatarVersion": "1791693617000",
+          "movieQuotaLimit": null,
+          "movieQuotaDays": null,
+          "tvQuotaLimit": null,
+          "tvQuotaDays": null,
+          "createdAt": "2026-02-03T20:09:10.000Z",
+          "updatedAt": "2026-10-11T04:40:17.000Z",
+          "requestCount": 125,
+          "displayName": "Paul Greyrat"
+        },
+        "seasons": [
+          {
+            "id": 274,
+            "seasonNumber": 1,
+            "status": 2,
+            "createdAt": "2026-10-16T20:17:40.000Z",
+            "updatedAt": "2026-10-16T20:17:40.000Z"
+          }
+        ],
+        "seasonCount": 1
+      }
+    ],
+    "issues": [],
+    "seasons": []
+  },
+  "watchProviders": [
+    {
+      "iso_3166_1": "CA",
+      "link": "https://www.themoviedb.org/tv/1126-happy-tree-friends/watch?locale=CA",
+      "buy": [
+        {
+          "displayPriority": 7,
+          "logoPath": "/qdEGArH3lKfFnAtYXMkSYk5wxuG.png",
+          "id": 2,
+          "name": "Apple TV Store"
+        }
+      ],
+      "flatrate": []
+    },
+    {
+      "iso_3166_1": "US",
+      "link": "https://www.themoviedb.org/tv/1126-happy-tree-friends/watch?locale=US",
+      "buy": [
+        {
+          "displayPriority": 9,
+          "logoPath": "/jn6TLbtaTZntTRX9UYucHJvpQx1.png",
+          "id": 10,
+          "name": "Amazon Video"
+        },
+        {
+          "displayPriority": 23,
+          "logoPath": "/aZRENwYILujqs0RVOZutTh0BVGV.png",
+          "id": 3,
+          "name": "Google Play Movies"
+        }
+      ],
+      "flatrate": [
+        {
+          "displayPriority": 25,
+          "logoPath": "/qHLLmKo7udRgiSnIASVTwP2IxfJ.png",
+          "id": 1968,
+          "name": "Crunchyroll Amazon Channel"
+        }
+      ]
+    }
+  ],
+  "onUserWatchlist": false
+}

@@ -1,0 +1,58 @@
+{
+  "pageInfo": {
+    "pages": 1,
+    "pageSize": 10,
+    "results": 2,
+    "page": 1
+  },
+  "results": [
+    {
+      "permissions": 2,
+      "warnings": [],
+      "id": 1,
+      "email": "redacted@example.com",
+      "plexUsername": null,
+      "jellyfinUsername": "Paul Greyrat",
+      "username": null,
+      "recoveryLinkExpirationDate": null,
+      "userType": 3,
+      "plexId": null,
+      "jellyfinUserId": "4c0628aacef24bdfacd40f946ea33ee7",
+      "avatar": "/avatarproxy/4c0628aacef24bdfacd40f946ea33ee7?v=1791693617000",
+      "avatarETag": "16b7af80243e8107605f38a62a9fc4271e95b67189183e19d41c2cf296a373e9",
+      "avatarVersion": "1791693617000",
+      "movieQuotaLimit": null,
+      "movieQuotaDays": null,
+      "tvQuotaLimit": null,
+      "tvQuotaDays": null,
+      "createdAt": "2026-02-03T20:09:10.000Z",
+      "updatedAt": "2026-10-11T04:40:17.000Z",
+      "requestCount": 125,
+      "displayName": "Paul Greyrat"
+    },
+    {
+      "permissions": 32,
+      "warnings": [],
+      "id": 2,
+      "email": "redacted@example.com",
+      "plexUsername": null,
+      "jellyfinUsername": "Zenith Greyrat",
+      "username": null,
+      "recoveryLinkExpirationDate": null,
+      "userType": 3,
+      "plexId": null,
+      "jellyfinUserId": "8bed8d8cccf249548eb6a39fd6a7e54b",
+      "avatar": "/avatarproxy/8bed8d8cccf249548eb6a39fd6a7e54b?v=1783334055000",
+      "avatarETag": "05fe9030e3f3b48428e056a08b566635f40d51541eda759b26c1b7440ef6ef59",
+      "avatarVersion": "1783334055000",
+      "movieQuotaLimit": null,
+      "movieQuotaDays": null,
+      "tvQuotaLimit": null,
+      "tvQuotaDays": null,
+      "createdAt": "2026-08-23T12:26:42.000Z",
+      "updatedAt": "2026-08-23T12:26:42.000Z",
+      "requestCount": 2,
+      "displayName": "Zenith Greyrat"
+    }
+  ]
+}

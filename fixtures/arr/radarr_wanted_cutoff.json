@@ -1,0 +1,328 @@
+{
+  "page": 1,
+  "pageSize": 10,
+  "sortKey": "movieMetadata.sortTitle",
+  "sortDirection": "descending",
+  "totalRecords": 139,
+  "records": [
+    {
+      "title": "Zootopia 2",
+      "originalTitle": "Zootopia 2",
+      "originalLanguage": {
+        "id": 1,
+        "name": "English"
+      },
+      "alternateTitles": [],
+      "secondaryYearSourceId": 0,
+      "sortTitle": "zootopia 2",
+      "sizeOnDisk": 2561322154,
+      "status": "released",
+      "overview": "After cracking the biggest case in Zootopia's history, rookie cops Judy Hopps and Nick Wilde find themselves on the twisting trail of a great mystery when Gary De'Snake arrives and turns the animal metropolis upside down. To crack the case, Judy and Nick must go undercover to unexpected new parts of town, where their growing partnership is tested like never before.",
+      "inCinemas": "2025-11-26T00:00:00Z",
+      "physicalRelease": "2026-03-03T00:00:00Z",
+      "digitalRelease": "2026-01-26T00:00:00Z",
+      "releaseDate": "2026-01-26T00:00:00Z",
+      "images": [
+        {
+          "coverType": "poster",
+          "url": "/MediaCover/1/poster.jpg?h=ee00d06d64cb9c44727a",
+          "remoteUrl": "https://image.tmdb.org/t/p/original/oJ7g2CifqpStmoYQyaLQgEU32qO.jpg"
+        },
+        {
+          "coverType": "fanart",
+          "url": "/MediaCover/1/fanart.jpg?h=4ad69aed35c9a2d9804e",
+          "remoteUrl": "https://image.tmdb.org/t/p/original/lgotja3xMoJZbynwHfcQcJAEMWH.jpg"
+        }
+      ],
+      "website": "https://movies.disney.com/zootopia-2",
+      "year": 2025,
+      "youTubeTrailerId": "sEgPQ7HKoBA",
+      "studio": "Walt Disney Animation Studios",
+      "path": "/data/movies/Zootopia 2 (2025) [tmdbid-1084242]",
+      "qualityProfileId": 7,
+      "hasFile": true,
+      "movieFileId": 947,
+      "monitored": true,
+      "minimumAvailability": "released",
+      "isAvailable": true,
+      "folderName": "/data/movies/Zootopia 2 (2025) [tmdbid-1084242]",
+      "runtime": 108,
+      "cleanTitle": "zootopia2",
+      "imdbId": "tt26443597",
+      "tmdbId": 1084242,
+      "titleSlug": "1084242",
+      "certification": "PG",
+      "genres": [
+        "Animation",
+        "Adventure",
+        "Comedy"
+      ],
+      "keywords": [
+        "3d animation",
+        "animals",
+        "anthropomorphism"
+      ],
+      "tags": [],
+      "added": "2026-02-03T20:25:53Z",
+      "ratings": {
+        "imdb": {
+          "votes": 158917,
+          "value": 7.3,
+          "type": "user"
+        },
+        "tmdb": {
+          "votes": 3650,
+          "value": 7.667,
+          "type": "user"
+        },
+        "metacritic": {
+          "votes": 0,
+          "value": 73,
+          "type": "user"
+        },
+        "rottenTomatoes": {
+          "votes": 0,
+          "value": 92,
+          "type": "user"
+        },
+        "trakt": {
+          "votes": 17098,
+          "value": 8.14452,
+          "type": "user"
+        }
+      },
+      "collection": {
+        "title": "Zootopia Collection",
+        "tmdbId": 1084247
+      },
+      "popularity": 43.7588,
+      "lastSearchTime": "2026-02-03T20:26:09Z",
+      "statistics": {
+        "movieFileCount": 1,
+        "sizeOnDisk": 2561322154,
+        "releaseGroups": [
+          "DH"
+        ],
+        "movieFileQualities": [
+          {
+            "id": 15,
+            "name": "WEBRip-1080p",
+            "source": "webrip",
+            "resolution": 1080,
+            "modifier": "none"
+          }
+        ]
+      },
+      "id": 1
+    },
+    {
+      "title": "Your Name.",
+      "originalTitle": "君の名は。",
+      "originalLanguage": {
+        "id": 8,
+        "name": "Japanese"
+      },
+      "alternateTitles": [],
+      "secondaryYearSourceId": 0,
+      "sortTitle": "your name",
+      "sizeOnDisk": 1389023251,
+      "status": "released",
+      "overview": "High schoolers Mitsuha and Taki are complete strangers living separate lives. But one night, they suddenly switch places. Mitsuha wakes up in Taki’s body, and he in hers. This bizarre occurrence continues to happen randomly, and the two must adjust their lives around each other.",
+      "inCinemas": "2016-07-01T00:00:00Z",
+      "physicalRelease": "2017-07-26T00:00:00Z",
+      "digitalRelease": "2017-08-26T00:00:00Z",
+      "releaseDate": "2017-07-26T00:00:00Z",
+      "images": [
+        {
+          "coverType": "poster",
+          "url": "/MediaCover/187/poster.jpg?h=25a884871c42399ae73f",
+          "remoteUrl": "https://image.tmdb.org/t/p/original/vfJFJPepRKapMd5G2ro7klIRysq.jpg"
+        },
+        {
+          "coverType": "fanart",
+          "url": "/MediaCover/187/fanart.jpg?h=dbc30789e3dc70ce02ac",
+          "remoteUrl": "https://image.tmdb.org/t/p/original/mMtUybQ6hL24FXo0F3Z4j2KG7kZ.jpg"
+        }
+      ],
+      "website": "https://gkids.com/films/your-name",
+      "year": 2016,
+      "youTubeTrailerId": "TYku4P7MHdo",
+      "studio": "CoMix Wave Films",
+      "path": "/data/movies/Your Name. (2016) [tmdbid-372058]",
+      "qualityProfileId": 7,
+      "hasFile": true,
+      "movieFileId": 946,
+      "monitored": true,
+      "minimumAvailability": "released",
+      "isAvailable": true,
+      "folderName": "/data/movies/Your Name. (2016) [tmdbid-372058]",
+      "runtime": 106,
+      "cleanTitle": "yourname",
+      "imdbId": "tt5311514",
+      "tmdbId": 372058,
+      "titleSlug": "372058",
+      "certification": "PG",
+      "genres": [
+        "Animation",
+        "Romance",
+        "Drama"
+      ],
+      "keywords": [
+        "afterlife",
+        "anime",
+        "body swap"
+      ],
+      "tags": [],
+      "added": "2026-02-04T15:31:53Z",
+      "ratings": {
+        "imdb": {
+          "votes": 409145,
+          "value": 8.4,
+          "type": "user"
+        },
+        "tmdb": {
+          "votes": 13163,
+          "value": 8.492,
+          "type": "user"
+        },
+        "metacritic": {
+          "votes": 0,
+          "value": 81,
+          "type": "user"
+        },
+        "rottenTomatoes": {
+          "votes": 0,
+          "value": 98,
+          "type": "user"
+        },
+        "trakt": {
+          "votes": 19494,
+          "value": 8.79794,
+          "type": "user"
+        }
+      },
+      "popularity": 29.4442,
+      "lastSearchTime": "2026-02-04T18:59:41Z",
+      "statistics": {
+        "movieFileCount": 1,
+        "sizeOnDisk": 1389023251,
+        "releaseGroups": [],
+        "movieFileQualities": [
+          {
+            "id": 9,
+            "name": "HDTV-1080p",
+            "source": "tv",
+            "resolution": 1080,
+            "modifier": "none"
+          }
+        ]
+      },
+      "id": 187
+    },
+    {
+      "title": "“Wuthering Heights”",
+      "originalTitle": "“Wuthering Heights”",
+      "originalLanguage": {
+        "id": 1,
+        "name": "English"
+      },
+      "alternateTitles": [],
+      "secondaryYearSourceId": 0,
+      "sortTitle": "wuthering heights",
+      "sizeOnDisk": 1881607835,
+      "status": "released",
+      "overview": "Tragedy strikes when Heathcliff falls in love with Catherine Earnshaw, a woman from a wealthy family in 18th-century England.",
+      "inCinemas": "2026-02-11T00:00:00Z",
+      "physicalRelease": "2026-05-05T00:00:00Z",
+      "digitalRelease": "2026-03-30T00:00:00Z",
+      "releaseDate": "2026-03-30T00:00:00Z",
+      "images": [
+        {
+          "coverType": "poster",
+          "url": "/MediaCover/195/poster.jpg?h=1c793fccaf67f7d04467",
+          "remoteUrl": "https://image.tmdb.org/t/p/original/3YBce6dTh1D5oCMITXk2S5QhPt.jpg"
+        },
+        {
+          "coverType": "fanart",
+          "url": "/MediaCover/195/fanart.jpg?h=84078ce11665659f2ad7",
+          "remoteUrl": "https://image.tmdb.org/t/p/original/nHKscpZcAPkh97OsJJjyE5yaVE0.jpg"
+        }
+      ],
+      "website": "https://www.wutheringheightsfilm.com",
+      "year": 2026,
+      "youTubeTrailerId": "HWFdeoeBNV0",
+      "studio": "MRC",
+      "path": "/data/movies/Wuthering Heights (2026) [tmdbid-1316092]",
+      "qualityProfileId": 7,
+      "hasFile": true,
+      "movieFileId": 972,
+      "monitored": true,
+      "minimumAvailability": "released",
+      "isAvailable": true,
+      "folderName": "/data/movies/Wuthering Heights (2026) [tmdbid-1316092]",
+      "runtime": 136,
+      "cleanTitle": "wutheringheights",
+      "imdbId": "tt32897959",
+      "tmdbId": 1316092,
+      "titleSlug": "1316092",
+      "certification": "R",
+      "genres": [
+        "Romance",
+        "Drama",
+        "History"
+      ],
+      "keywords": [
+        "18th century",
+        "based on novel or book",
+        "dying and death"
+      ],
+      "tags": [],
+      "added": "2026-02-08T09:53:27Z",
+      "ratings": {
+        "imdb": {
+          "votes": 96128,
+          "value": 6.1,
+          "type": "user"
+        },
+        "tmdb": {
+          "votes": 1438,
+          "value": 6.6,
+          "type": "user"
+        },
+        "metacritic": {
+          "votes": 0,
+          "value": 55,
+          "type": "user"
+        },
+        "rottenTomatoes": {
+          "votes": 0,
+          "value": 57,
+          "type": "user"
+        },
+        "trakt": {
+          "votes": 5933,
+          "value": 6.48239,
+          "type": "user"
+        }
+      },
+      "popularity": 14.5984,
+      "statistics": {
+        "movieFileCount": 1,
+        "sizeOnDisk": 1881607835,
+        "releaseGroups": [
+          "RMTeam"
+        ],
+        "movieFileQualities": [
+          {
+            "id": 3,
+            "name": "WEBDL-1080p",
+            "source": "webdl",
+            "resolution": 1080,
+            "modifier": "none"
+          }
+        ]
+      },
+      "id": 195
+    }
+  ]
+}

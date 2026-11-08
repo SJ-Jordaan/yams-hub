@@ -1,0 +1,12 @@
+[
+  {
+    "id": 0,
+    "name": "Sonarr",
+    "is4k": false,
+    "isDefault": true,
+    "activeDirectory": "/data/tvshows",
+    "activeProfileId": 9,
+    "activeAnimeProfileId": 7,
+    "activeTags": []
+  }
+]

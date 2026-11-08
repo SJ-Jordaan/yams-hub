@@ -1,0 +1,197 @@
+{
+  "id": "1194e394dd8c790cb55d61009e103917ddd51b915f8e7a7b8ddbfc54da7cc547",
+  "name": "/qbittorrent",
+  "os_type": "linux",
+  "read": "2026-11-08T09:05:05.633156535Z",
+  "cpu_stats": {
+    "cpu_usage": {
+      "total_usage": 120292756000,
+      "usage_in_kernelmode": 45341371000,
+      "usage_in_usermode": 74951384000
+    },
+    "system_cpu_usage": 41886540000000,
+    "online_cpus": 4,
+    "throttling_data": {
+      "periods": 0,
+      "throttled_periods": 0,
+      "throttled_time": 0
+    }
+  },
+  "memory_stats": {
+    "usage": 1086042112,
+    "stats": {
+      "active_anon": 557056,
+      "active_file": 266784768,
+      "anon": 25325568,
+      "anon_thp": 6291456,
+      "file": 1059782656,
+      "file_dirty": 8192,
+      "file_mapped": 8028160,
+      "file_writeback": 0,
+      "inactive_anon": 24768512,
+      "inactive_file": 792997888,
+      "kernel_stack": 0,
+      "pgactivate": 193133,
+      "pgdeactivate": 137310,
+      "pgfault": 191796,
+      "pglazyfree": 0,
+      "pglazyfreed": 0,
+      "pgmajfault": 208,
+      "pgrefill": 142358,
+      "pgscan": 458762,
+      "pgsteal": 437798,
+      "shmem": 0,
+      "slab": 0,
+      "slab_reclaimable": 0,
+      "slab_unreclaimable": 0,
+      "sock": 0,
+      "thp_collapse_alloc": 0,
+      "thp_fault_alloc": 4,
+      "unevictable": 0,
+      "workingset_activate": 0,
+      "workingset_nodereclaim": 0,
+      "workingset_refault": 0
+    },
+    "limit": 8059052032
+  },
+  "networks": {
+    "eth0": {
+      "rx_bytes": 299376827,
+      "rx_packets": 2699230,
+      "rx_errors": 0,
+      "rx_dropped": 0,
+      "tx_bytes": 2328408702,
+      "tx_packets": 1840278,
+      "tx_errors": 0,
+      "tx_dropped": 0
+    }
+  },
+  "pids_stats": {
+    "current": 29,
+    "limit": 9141
+  },
+  "blkio_stats": {
+    "io_service_bytes_recursive": [
+      {
+        "major": 252,
+        "minor": 0,
+        "op": "read",
+        "value": 0
+      },
+      {
+        "major": 252,
+        "minor": 0,
+        "op": "write",
+        "value": 503808
+      },
+      {
+        "major": 252,
+        "minor": 2,
+        "op": "read",
+        "value": 0
+      },
+      {
+        "major": 252,
+        "minor": 2,
+        "op": "write",
+        "value": 823296
+      },
+      {
+        "major": 252,
+        "minor": 3,
+        "op": "read",
+        "value": 0
+      },
+      {
+        "major": 252,
+        "minor": 3,
+        "op": "write",
+        "value": 745472
+      },
+      {
+        "major": 252,
+        "minor": 1,
+        "op": "read",
+        "value": 0
+      },
+      {
+        "major": 252,
+        "minor": 1,
+        "op": "write",
+        "value": 552960
+      },
+      {
+        "major": 8,
+        "minor": 0,
+        "op": "read",
+        "value": 1403236352
+      },
+      {
+        "major": 8,
+        "minor": 0,
+        "op": "write",
+        "value": 339968
+      },
+      {
+        "major": 8,
+        "minor": 16,
+        "op": "read",
+        "value": 1447022592
+      },
+      {
+        "major": 8,
+        "minor": 16,
+        "op": "write",
+        "value": 454656
+      },
+      {
+        "major": 9,
+        "minor": 1,
+        "op": "read",
+        "value": 2850258944
+      },
+      {
+        "major": 9,
+        "minor": 1,
+        "op": "write",
+        "value": 794624
+      },
+      {
+        "major": 253,
+        "minor": 0,
+        "op": "read",
+        "value": 2850258944
+      },
+      {
+        "major": 253,
+        "minor": 0,
+        "op": "write",
+        "value": 794624
+      }
+    ],
+    "io_serviced_recursive": null,
+    "io_queue_recursive": null,
+    "io_service_time_recursive": null,
+    "io_wait_time_recursive": null,
+    "io_merged_recursive": null,
+    "io_time_recursive": null,
+    "sectors_recursive": null
+  },
+  "num_procs": 0,
+  "storage_stats": {},
+  "preread": "2026-11-08T09:05:04.623216531Z",
+  "precpu_stats": {
+    "cpu_usage": {
+      "total_usage": 120264032000,
+      "usage_in_kernelmode": 45334219000,
+      "usage_in_usermode": 74929813000
+    },
+    "system_cpu_usage": 41882600000000,
+    "online_cpus": 4,
+    "throttling_data": {
+      "periods": 0,
+      "throttled_periods": 0,
+      "throttled_time": 0
+    }
+  }
+}

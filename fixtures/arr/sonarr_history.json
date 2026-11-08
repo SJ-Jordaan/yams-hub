@@ -1,0 +1,617 @@
+{
+  "page": 1,
+  "pageSize": 10,
+  "sortKey": "date",
+  "sortDirection": "descending",
+  "totalRecords": 6832,
+  "records": [
+    {
+      "episodeId": 2463,
+      "seriesId": 54,
+      "sourceTitle": "[SubsPlease] Tensei Shitara Slime Datta Ken (49-72) (1080p) [Batch]",
+      "languages": [
+        {
+          "id": 8,
+          "name": "Japanese"
+        }
+      ],
+      "quality": {
+        "quality": {
+          "id": 9,
+          "name": "HDTV-1080p",
+          "source": "television",
+          "resolution": 1080
+        },
+        "revision": {
+          "version": 2,
+          "real": 0,
+          "isRepack": false
+        }
+      },
+      "customFormats": [
+        {
+          "id": 13,
+          "name": "Anime Web Tier 05"
+        }
+      ],
+      "customFormatScore": 200,
+      "qualityCutoffNotMet": true,
+      "date": "2026-11-08T07:41:48Z",
+      "downloadId": "B3CF3BAAFFB64C08105D1E2152685B3B158E4EF4",
+      "eventType": "downloadFolderImported",
+      "data": {
+        "fileId": "11043",
+        "droppedPath": "/data/downloads/torrents/[SubsPlease] Tensei Shitara Slime Datta Ken (49-72) (1080p) [Batch]/[SubsPlease] Tensei Shitara Slime Datta Ken - 65v2 (1080p) [8F715AD7].mkv",
+        "importedPath": "/data/tvshows/That Time I Got Reincarnated as a Slime (2018) [tvdbid-352408]/Season 03/That Time I Got Reincarnated as a Slime (2018) - S03E17 - 065 - The Lightspeed Hero [v2][HDTV-1080p v2][AAC 2.0][JA][x264 8bit]-SubsPlease.mkv",
+        "downloadClient": "qBittorrent",
+        "downloadClientName": "qBittorrent",
+        "releaseGroup": "SubsPlease",
+        "customFormatScore": "202",
+        "size": "1496206957",
+        "indexerFlags": "Freeleech",
+        "releaseType": "SeasonPack"
+      },
+      "episode": {
+        "seriesId": 54,
+        "tvdbId": 10383086,
+        "episodeFileId": 11043,
+        "seasonNumber": 3,
+        "episodeNumber": 17,
+        "title": "The Lightspeed Hero",
+        "airDate": "2024-08-02",
+        "airDateUtc": "2024-08-02T14:00:00Z",
+        "lastSearchTime": "2026-02-05T04:41:14Z",
+        "runtime": 24,
+        "overview": "After learning about an elf slave trade, Rimuru had Soei investigate, but it turns out the slave traders have already been shut down by Masayuki, the Lightspeed Hero. Word is now spreading that the Hero is headed to Tempest to slay a Demon Lord...",
+        "hasFile": true,
+        "monitored": true,
+        "absoluteEpisodeNumber": 65,
+        "sceneAbsoluteEpisodeNumber": 17,
+        "sceneEpisodeNumber": 17,
+        "sceneSeasonNumber": 3,
+        "unverifiedSceneNumbering": false,
+        "id": 2463
+      },
+      "series": {
+        "title": "That Time I Got Reincarnated as a Slime",
+        "sortTitle": "that time i got reincarnated as a slime",
+        "status": "continuing",
+        "ended": false,
+        "overview": "37-year-old corporate worker Mikami Satoru is stabbed by a random killer, and is reborn to an alternate world. But he turns out to be reborn a slime! Thrown into this new world with the name Rimuru Tempest, he begins his quest to create a world that’s welcoming to all races. Broken free from ordinary, stale past life, his fresh adventure in a fantasy world as a slime monster with unique abilities begins.",
+        "network": "Nippon TV",
+        "airTime": "23:00",
+        "images": [
+          {
+            "coverType": "banner",
+            "remoteUrl": "https://artworks.thetvdb.com/banners/graphical/5c456e14aa17d.jpg"
+          },
+          {
+            "coverType": "poster",
+            "remoteUrl": "https://artworks.thetvdb.com/banners/posters/5bb2b28057ade.jpg"
+          },
+          {
+            "coverType": "fanart",
+            "remoteUrl": "https://artworks.thetvdb.com/banners/fanart/original/5bb4c5b79f675.jpg"
+          },
+          {
+            "coverType": "clearlogo",
+            "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/352408/clearlogo/611c83c1eba90.png"
+          }
+        ],
+        "originalLanguage": {
+          "id": 8,
+          "name": "Japanese"
+        },
+        "seasons": [
+          {
+            "seasonNumber": 0,
+            "monitored": false
+          },
+          {
+            "seasonNumber": 1,
+            "monitored": true
+          },
+          {
+            "seasonNumber": 2,
+            "monitored": true
+          },
+          {
+            "seasonNumber": 3,
+            "monitored": true
+          }
+        ],
+        "year": 2018,
+        "path": "/data/tvshows/That Time I Got Reincarnated as a Slime (2018) [tvdbid-352408]",
+        "qualityProfileId": 7,
+        "seasonFolder": true,
+        "monitored": true,
+        "monitorNewItems": "all",
+        "useSceneNumbering": true,
+        "runtime": 24,
+        "tvdbId": 352408,
+        "tvRageId": 0,
+        "tvMazeId": 38390,
+        "tmdbId": 82684,
+        "firstAired": "2018-10-02T00:00:00Z",
+        "lastAired": "2026-09-25T00:00:00Z",
+        "seriesType": "anime",
+        "cleanTitle": "thattimeigotreincarnatedasslime",
+        "imdbId": "tt9054364",
+        "titleSlug": "that-time-i-got-reincarnated-as-a-slime",
+        "certification": "TV-14",
+        "genres": [
+          "Action",
+          "Adventure",
+          "Animation",
+          "Anime"
+        ],
+        "tags": [],
+        "added": "2026-02-04T15:15:28Z",
+        "ratings": {
+          "votes": 29422,
+          "value": 8.0
+        },
+        "languageProfileId": 1,
+        "id": 54
+      },
+      "id": 13734
+    },
+    {
+      "episodeId": 2463,
+      "seriesId": 54,
+      "sourceTitle": "/data/tvshows/That Time I Got Reincarnated as a Slime (2018) [tvdbid-352408]/Season 03/That Time I Got Reincarnated as a Slime (2018) - S03E17 - The Lightspeed Hero [v2][SDTV Proper][AAC 2.0][x264]-SubsPlease.mkv",
+      "languages": [
+        {
+          "id": 8,
+          "name": "Japanese"
+        }
+      ],
+      "quality": {
+        "quality": {
+          "id": 1,
+          "name": "SDTV",
+          "source": "television",
+          "resolution": 480
+        },
+        "revision": {
+          "version": 2,
+          "real": 0,
+          "isRepack": false
+        }
+      },
+      "customFormats": [
+        {
+          "id": 13,
+          "name": "Anime Web Tier 05"
+        },
+        {
+          "id": 45,
+          "name": "Repack/Proper"
+        },
+        {
+          "id": 20,
+          "name": "v2"
+        }
+      ],
+      "customFormatScore": 202,
+      "qualityCutoffNotMet": true,
+      "date": "2026-11-08T07:41:48Z",
+      "eventType": "episodeFileDeleted",
+      "data": {
+        "reason": "Upgrade",
+        "releaseGroup": "SubsPlease",
+        "size": "397057894",
+        "indexerFlags": "Freeleech",
+        "releaseType": "MultiEpisode"
+      },
+      "episode": {
+        "seriesId": 54,
+        "tvdbId": 10383086,
+        "episodeFileId": 11043,
+        "seasonNumber": 3,
+        "episodeNumber": 17,
+        "title": "The Lightspeed Hero",
+        "airDate": "2024-08-02",
+        "airDateUtc": "2024-08-02T14:00:00Z",
+        "lastSearchTime": "2026-02-05T04:41:14Z",
+        "runtime": 24,
+        "overview": "After learning about an elf slave trade, Rimuru had Soei investigate, but it turns out the slave traders have already been shut down by Masayuki, the Lightspeed Hero. Word is now spreading that the Hero is headed to Tempest to slay a Demon Lord...",
+        "hasFile": true,
+        "monitored": true,
+        "absoluteEpisodeNumber": 65,
+        "sceneAbsoluteEpisodeNumber": 17,
+        "sceneEpisodeNumber": 17,
+        "sceneSeasonNumber": 3,
+        "unverifiedSceneNumbering": false,
+        "id": 2463
+      },
+      "series": {
+        "title": "That Time I Got Reincarnated as a Slime",
+        "sortTitle": "that time i got reincarnated as a slime",
+        "status": "continuing",
+        "ended": false,
+        "overview": "37-year-old corporate worker Mikami Satoru is stabbed by a random killer, and is reborn to an alternate world. But he turns out to be reborn a slime! Thrown into this new world with the name Rimuru Tempest, he begins his quest to create a world that’s welcoming to all races. Broken free from ordinary, stale past life, his fresh adventure in a fantasy world as a slime monster with unique abilities begins.",
+        "network": "Nippon TV",
+        "airTime": "23:00",
+        "images": [
+          {
+            "coverType": "banner",
+            "remoteUrl": "https://artworks.thetvdb.com/banners/graphical/5c456e14aa17d.jpg"
+          },
+          {
+            "coverType": "poster",
+            "remoteUrl": "https://artworks.thetvdb.com/banners/posters/5bb2b28057ade.jpg"
+          },
+          {
+            "coverType": "fanart",
+            "remoteUrl": "https://artworks.thetvdb.com/banners/fanart/original/5bb4c5b79f675.jpg"
+          },
+          {
+            "coverType": "clearlogo",
+            "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/352408/clearlogo/611c83c1eba90.png"
+          }
+        ],
+        "originalLanguage": {
+          "id": 8,
+          "name": "Japanese"
+        },
+        "seasons": [
+          {
+            "seasonNumber": 0,
+            "monitored": false
+          },
+          {
+            "seasonNumber": 1,
+            "monitored": true
+          },
+          {
+            "seasonNumber": 2,
+            "monitored": true
+          },
+          {
+            "seasonNumber": 3,
+            "monitored": true
+          }
+        ],
+        "year": 2018,
+        "path": "/data/tvshows/That Time I Got Reincarnated as a Slime (2018) [tvdbid-352408]",
+        "qualityProfileId": 7,
+        "seasonFolder": true,
+        "monitored": true,
+        "monitorNewItems": "all",
+        "useSceneNumbering": true,
+        "runtime": 24,
+        "tvdbId": 352408,
+        "tvRageId": 0,
+        "tvMazeId": 38390,
+        "tmdbId": 82684,
+        "firstAired": "2018-10-02T00:00:00Z",
+        "lastAired": "2026-09-25T00:00:00Z",
+        "seriesType": "anime",
+        "cleanTitle": "thattimeigotreincarnatedasslime",
+        "imdbId": "tt9054364",
+        "titleSlug": "that-time-i-got-reincarnated-as-a-slime",
+        "certification": "TV-14",
+        "genres": [
+          "Action",
+          "Adventure",
+          "Animation",
+          "Anime"
+        ],
+        "tags": [],
+        "added": "2026-02-04T15:15:28Z",
+        "ratings": {
+          "votes": 29422,
+          "value": 8.0
+        },
+        "languageProfileId": 1,
+        "id": 54
+      },
+      "id": 13733
+    },
+    {
+      "episodeId": 2451,
+      "seriesId": 54,
+      "sourceTitle": "[SubsPlease] Tensei Shitara Slime Datta Ken (49-72) (1080p) [Batch]",
+      "languages": [
+        {
+          "id": 8,
+          "name": "Japanese"
+        }
+      ],
+      "quality": {
+        "quality": {
+          "id": 9,
+          "name": "HDTV-1080p",
+          "source": "television",
+          "resolution": 1080
+        },
+        "revision": {
+          "version": 2,
+          "real": 0,
+          "isRepack": false
+        }
+      },
+      "customFormats": [
+        {
+          "id": 13,
+          "name": "Anime Web Tier 05"
+        }
+      ],
+      "customFormatScore": 200,
+      "qualityCutoffNotMet": true,
+      "date": "2026-11-08T07:41:47Z",
+      "downloadId": "B3CF3BAAFFB64C08105D1E2152685B3B158E4EF4",
+      "eventType": "downloadFolderImported",
+      "data": {
+        "fileId": "11042",
+        "droppedPath": "/data/downloads/torrents/[SubsPlease] Tensei Shitara Slime Datta Ken (49-72) (1080p) [Batch]/[SubsPlease] Tensei Shitara Slime Datta Ken - 53v2 (1080p) [03402561].mkv",
+        "importedPath": "/data/tvshows/That Time I Got Reincarnated as a Slime (2018) [tvdbid-352408]/Season 03/That Time I Got Reincarnated as a Slime (2018) - S03E05 - 053 - Meeting of Both Sides [v2][HDTV-1080p v2][AAC 2.0][JA][x264 8bit]-SubsPlease.mkv",
+        "downloadClient": "qBittorrent",
+        "downloadClientName": "qBittorrent",
+        "releaseGroup": "SubsPlease",
+        "customFormatScore": "202",
+        "size": "1499027381",
+        "indexerFlags": "Freeleech",
+        "releaseType": "SeasonPack"
+      },
+      "episode": {
+        "seriesId": 54,
+        "tvdbId": 10383096,
+        "episodeFileId": 11042,
+        "seasonNumber": 3,
+        "episodeNumber": 5,
+        "title": "Meeting of Both Sides",
+        "airDate": "2024-05-03",
+        "airDateUtc": "2024-05-03T14:00:00Z",
+        "lastSearchTime": "2026-02-05T04:41:14Z",
+        "runtime": 25,
+        "overview": "A war council led by Hinata is held in the Holy Empire of Lubelius. Moments after Hinata declares her intent to meet Rimuru and talk to him, she receives a hostile message from Rimuru.",
+        "hasFile": true,
+        "monitored": true,
+        "absoluteEpisodeNumber": 53,
+        "sceneAbsoluteEpisodeNumber": 5,
+        "sceneEpisodeNumber": 5,
+        "sceneSeasonNumber": 3,
+        "unverifiedSceneNumbering": false,
+        "id": 2451
+      },
+      "series": {
+        "title": "That Time I Got Reincarnated as a Slime",
+        "sortTitle": "that time i got reincarnated as a slime",
+        "status": "continuing",
+        "ended": false,
+        "overview": "37-year-old corporate worker Mikami Satoru is stabbed by a random killer, and is reborn to an alternate world. But he turns out to be reborn a slime! Thrown into this new world with the name Rimuru Tempest, he begins his quest to create a world that’s welcoming to all races. Broken free from ordinary, stale past life, his fresh adventure in a fantasy world as a slime monster with unique abilities begins.",
+        "network": "Nippon TV",
+        "airTime": "23:00",
+        "images": [
+          {
+            "coverType": "banner",
+            "remoteUrl": "https://artworks.thetvdb.com/banners/graphical/5c456e14aa17d.jpg"
+          },
+          {
+            "coverType": "poster",
+            "remoteUrl": "https://artworks.thetvdb.com/banners/posters/5bb2b28057ade.jpg"
+          },
+          {
+            "coverType": "fanart",
+            "remoteUrl": "https://artworks.thetvdb.com/banners/fanart/original/5bb4c5b79f675.jpg"
+          },
+          {
+            "coverType": "clearlogo",
+            "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/352408/clearlogo/611c83c1eba90.png"
+          }
+        ],
+        "originalLanguage": {
+          "id": 8,
+          "name": "Japanese"
+        },
+        "seasons": [
+          {
+            "seasonNumber": 0,
+            "monitored": false
+          },
+          {
+            "seasonNumber": 1,
+            "monitored": true
+          },
+          {
+            "seasonNumber": 2,
+            "monitored": true
+          },
+          {
+            "seasonNumber": 3,
+            "monitored": true
+          }
+        ],
+        "year": 2018,
+        "path": "/data/tvshows/That Time I Got Reincarnated as a Slime (2018) [tvdbid-352408]",
+        "qualityProfileId": 7,
+        "seasonFolder": true,
+        "monitored": true,
+        "monitorNewItems": "all",
+        "useSceneNumbering": true,
+        "runtime": 24,
+        "tvdbId": 352408,
+        "tvRageId": 0,
+        "tvMazeId": 38390,
+        "tmdbId": 82684,
+        "firstAired": "2018-10-02T00:00:00Z",
+        "lastAired": "2026-09-25T00:00:00Z",
+        "seriesType": "anime",
+        "cleanTitle": "thattimeigotreincarnatedasslime",
+        "imdbId": "tt9054364",
+        "titleSlug": "that-time-i-got-reincarnated-as-a-slime",
+        "certification": "TV-14",
+        "genres": [
+          "Action",
+          "Adventure",
+          "Animation",
+          "Anime"
+        ],
+        "tags": [],
+        "added": "2026-02-04T15:15:28Z",
+        "ratings": {
+          "votes": 29422,
+          "value": 8.0
+        },
+        "languageProfileId": 1,
+        "id": 54
+      },
+      "id": 13732
+    },
+    {
+      "episodeId": 2451,
+      "seriesId": 54,
+      "sourceTitle": "/data/tvshows/That Time I Got Reincarnated as a Slime (2018) [tvdbid-352408]/Season 03/That Time I Got Reincarnated as a Slime (2018) - S03E05 - Meeting of Both Sides [v2][SDTV Proper][AAC 2.0][x264]-SubsPlease.mkv",
+      "languages": [
+        {
+          "id": 8,
+          "name": "Japanese"
+        }
+      ],
+      "quality": {
+        "quality": {
+          "id": 1,
+          "name": "SDTV",
+          "source": "television",
+          "resolution": 480
+        },
+        "revision": {
+          "version": 2,
+          "real": 0,
+          "isRepack": false
+        }
+      },
+      "customFormats": [
+        {
+          "id": 13,
+          "name": "Anime Web Tier 05"
+        },
+        {
+          "id": 45,
+          "name": "Repack/Proper"
+        },
+        {
+          "id": 20,
+          "name": "v2"
+        }
+      ],
+      "customFormatScore": 202,
+      "qualityCutoffNotMet": true,
+      "date": "2026-11-08T07:41:47Z",
+      "eventType": "episodeFileDeleted",
+      "data": {
+        "reason": "Upgrade",
+        "releaseGroup": "SubsPlease",
+        "size": "397914097",
+        "indexerFlags": "Freeleech",
+        "releaseType": "MultiEpisode"
+      },
+      "episode": {
+        "seriesId": 54,
+        "tvdbId": 10383096,
+        "episodeFileId": 11042,
+        "seasonNumber": 3,
+        "episodeNumber": 5,
+        "title": "Meeting of Both Sides",
+        "airDate": "2024-05-03",
+        "airDateUtc": "2024-05-03T14:00:00Z",
+        "lastSearchTime": "2026-02-05T04:41:14Z",
+        "runtime": 25,
+        "overview": "A war council led by Hinata is held in the Holy Empire of Lubelius. Moments after Hinata declares her intent to meet Rimuru and talk to him, she receives a hostile message from Rimuru.",
+        "hasFile": true,
+        "monitored": true,
+        "absoluteEpisodeNumber": 53,
+        "sceneAbsoluteEpisodeNumber": 5,
+        "sceneEpisodeNumber": 5,
+        "sceneSeasonNumber": 3,
+        "unverifiedSceneNumbering": false,
+        "id": 2451
+      },
+      "series": {
+        "title": "That Time I Got Reincarnated as a Slime",
+        "sortTitle": "that time i got reincarnated as a slime",
+        "status": "continuing",
+        "ended": false,
+        "overview": "37-year-old corporate worker Mikami Satoru is stabbed by a random killer, and is reborn to an alternate world. But he turns out to be reborn a slime! Thrown into this new world with the name Rimuru Tempest, he begins his quest to create a world that’s welcoming to all races. Broken free from ordinary, stale past life, his fresh adventure in a fantasy world as a slime monster with unique abilities begins.",
+        "network": "Nippon TV",
+        "airTime": "23:00",
+        "images": [
+          {
+            "coverType": "banner",
+            "remoteUrl": "https://artworks.thetvdb.com/banners/graphical/5c456e14aa17d.jpg"
+          },
+          {
+            "coverType": "poster",
+            "remoteUrl": "https://artworks.thetvdb.com/banners/posters/5bb2b28057ade.jpg"
+          },
+          {
+            "coverType": "fanart",
+            "remoteUrl": "https://artworks.thetvdb.com/banners/fanart/original/5bb4c5b79f675.jpg"
+          },
+          {
+            "coverType": "clearlogo",
+            "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/352408/clearlogo/611c83c1eba90.png"
+          }
+        ],
+        "originalLanguage": {
+          "id": 8,
+          "name": "Japanese"
+        },
+        "seasons": [
+          {
+            "seasonNumber": 0,
+            "monitored": false
+          },
+          {
+            "seasonNumber": 1,
+            "monitored": true
+          },
+          {
+            "seasonNumber": 2,
+            "monitored": true
+          },
+          {
+            "seasonNumber": 3,
+            "monitored": true
+          }
+        ],
+        "year": 2018,
+        "path": "/data/tvshows/That Time I Got Reincarnated as a Slime (2018) [tvdbid-352408]",
+        "qualityProfileId": 7,
+        "seasonFolder": true,
+        "monitored": true,
+        "monitorNewItems": "all",
+        "useSceneNumbering": true,
+        "runtime": 24,
+        "tvdbId": 352408,
+        "tvRageId": 0,
+        "tvMazeId": 38390,
+        "tmdbId": 82684,
+        "firstAired": "2018-10-02T00:00:00Z",
+        "lastAired": "2026-09-25T00:00:00Z",
+        "seriesType": "anime",
+        "cleanTitle": "thattimeigotreincarnatedasslime",
+        "imdbId": "tt9054364",
+        "titleSlug": "that-time-i-got-reincarnated-as-a-slime",
+        "certification": "TV-14",
+        "genres": [
+          "Action",
+          "Adventure",
+          "Animation",
+          "Anime"
+        ],
+        "tags": [],
+        "added": "2026-02-04T15:15:28Z",
+        "ratings": {
+          "votes": 29422,
+          "value": 8.0
+        },
+        "languageProfileId": 1,
+        "id": 54
+      },
+      "id": 13731
+    }
+  ]
+}

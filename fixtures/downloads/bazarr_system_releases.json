@@ -1,0 +1,59 @@
+{
+  "data": [
+    {
+      "body": [
+        "Fixed cutoff logic to correctly consider non-HI subtitles when HI is excluded in language profile for both series and movies. #3607 [7448b2a](https://github.com/morpheus65535/bazarr/commit/7448b2a7dc1a289fdc3978b782f72ecb86f8a85e)",
+        "Added clickable GitHub issue links to release notes by parsing #&lt;number&gt; patterns and converting them to hyperlinks [02bae52](https://github.com/morpheus65535/bazarr/commit/02bae52912867767e2b484e9408b6041d8d0450b)",
+        "Fixed napiprojekt to use SSL [d30a659](https://github.com/morpheus65535/bazarr/commit/d30a659d87c28fed41736b8678e186802132b861)"
+      ],
+      "name": "v1.6.2",
+      "date": "2026-09-26",
+      "prerelease": false,
+      "current": true
+    },
+    {
+      "body": [
+        "Improved Gestdown provider matching by adding year match when TVDb ID matches between video and subtitle source. [9013092](https://github.com/morpheus65535/bazarr/commit/9013092b5b0ceb74891f13532be595fc3d4ad0c1)\r",
+        "Fixed track ID collision with changed attributes in embedded subtitles indexing. #3588 [ed0d47e](https://github.com/morpheus65535/bazarr/commit/ed0d47e24b809370d3469b0746d732ba1c6428de)\r",
+        "Fixed syncing issue with Sonarr and Radarr on edge racing condition cases [ea22d7a](https://github.com/morpheus65535/bazarr/commit/ea22d7a216aeef84a379a6153409faaf179a4ade)\r"
+      ],
+      "name": "v1.6.1",
+      "date": "2026-09-15",
+      "prerelease": false,
+      "current": false
+    },
+    {
+      "body": [
+        "Refactored `postprocessing` function to handle subprocess invocation differently on Windows and Unix, ensuring path safety and avoiding OS command injection. Added comprehensive unit tests for both platforms to ensure behavior correctness. #3413 [5dd736c](https://github.com/morpheus65535/bazarr/commit/5dd736c398a18e7584fc7fa9a35d76871f948d44)\r",
+        "Fixed UNC path handling in `pp_replace` by replacing `re.sub` string substitutions with lambda functions to prevent escape sequence misinterpretation. #3413 [4217a9b](https://github.com/morpheus65535/bazarr/commit/4217a9b4b585ce73510eeb5cfb2b956e27c98c73)\r",
+        "Refactored SubDL provider by simplifying retry logic and improving error handling for rate limits and 404 responses. [047b915](https://github.com/morpheus65535/bazarr/commit/047b915d9da44b1c658bd3ce6957937742f77afe)\r"
+      ],
+      "name": "v1.6.0",
+      "date": "2026-07-04",
+      "prerelease": false,
+      "current": false
+    },
+    {
+      "body": [
+        "Improved error handling in `subdl` provider to log specific \"no subtitles found\" cases instead of raising exceptions when title is not found. #3218 [5dc1d27](https://github.com/morpheus65535/bazarr/commit/5dc1d278e1b459b8bcb388097d150074307cb9ae)\r",
+        "Improved `Gestdown` provider release matching [721361a](https://github.com/morpheus65535/bazarr/commit/721361a3619658742bc5d72ada25f5e24af1bdaa)\r",
+        "Added Spain vs LATAM Spanish detection to SubX provider [97ecde2](https://github.com/morpheus65535/bazarr/commit/97ecde2ec7164411dc59e4a2e9344f8c971f9037)\r"
+      ],
+      "name": "v1.5.6",
+      "date": "2026-02-26",
+      "prerelease": false,
+      "current": false
+    },
+    {
+      "body": [
+        "Updated match popup to bring the explanation to the bottom [4224e7d](https://github.com/morpheus65535/bazarr/commit/4224e7df1b20c1942bc3f3667c1d7fedfd0cbbcb)\r",
+        "Fixed utf-8 encoding issue when displaying announcements [b381a6f](https://github.com/morpheus65535/bazarr/commit/b381a6fb9a7a6225ed289e12ba64dff0b81a7cb3)\r",
+        "Fixed CVE-2024-40348: Use startswith to prevent path traversal [e08197b](https://github.com/morpheus65535/bazarr/commit/e08197b1f577197a3c85487de0b557bd91d42ac0)\r"
+      ],
+      "name": "v1.5.5",
+      "date": "2026-02-01",
+      "prerelease": false,
+      "current": false
+    }
+  ]
+}

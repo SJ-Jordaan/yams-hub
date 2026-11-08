@@ -1,0 +1,6 @@
+{
+  "alt_dl_limit": 10240000,
+  "alt_up_limit": 10240000,
+  "dl_limit": 0,
+  "up_limit": 0
+}

@@ -1,0 +1,100 @@
+{
+  "data": [
+    {
+      "seriesTitle": "Gachiakuta",
+      "episode_number": "1x11",
+      "episodeTitle": "Amo's Hospitality",
+      "missing_subtitles": [
+        {
+          "name": "English",
+          "code2": "en",
+          "code3": "eng",
+          "forced": false,
+          "hi": false
+        }
+      ],
+      "sonarrSeriesId": 164,
+      "sonarrEpisodeId": 7941,
+      "sceneName": null,
+      "tags": [],
+      "seriesType": "anime"
+    },
+    {
+      "seriesTitle": "To Be Hero X",
+      "episode_number": "1x13",
+      "episodeTitle": "Tough Girl",
+      "missing_subtitles": [
+        {
+          "name": "English",
+          "code2": "en",
+          "code3": "eng",
+          "forced": false,
+          "hi": false
+        }
+      ],
+      "sonarrSeriesId": 76,
+      "sonarrEpisodeId": 3639,
+      "sceneName": "TO BE HERO X S01E13 1080p HEVC x265 MeGusta EZTV",
+      "tags": [],
+      "seriesType": "standard"
+    },
+    {
+      "seriesTitle": "To Be Hero X",
+      "episode_number": "1x12",
+      "episodeTitle": "Fall of the Star",
+      "missing_subtitles": [
+        {
+          "name": "English",
+          "code2": "en",
+          "code3": "eng",
+          "forced": false,
+          "hi": false
+        }
+      ],
+      "sonarrSeriesId": 76,
+      "sonarrEpisodeId": 3638,
+      "sceneName": "TO.BE.HERO.X.S01E12.Fall.of.the.Star.1080p.CR.WEB-DL.AAC2.0.H.264-VARYG",
+      "tags": [],
+      "seriesType": "standard"
+    },
+    {
+      "seriesTitle": "Dragon Raja",
+      "episode_number": "2x23",
+      "episodeTitle": "The Truth about Black Swan Bay",
+      "missing_subtitles": [
+        {
+          "name": "English",
+          "code2": "en",
+          "code3": "eng",
+          "forced": false,
+          "hi": false
+        }
+      ],
+      "sonarrSeriesId": 70,
+      "sonarrEpisodeId": 3483,
+      "sceneName": "Dragon Raja The Blazing Dawn S02E23 1080p WEB H264 SKYANiME EZTV",
+      "tags": [],
+      "seriesType": "standard"
+    },
+    {
+      "seriesTitle": "Dragon Raja",
+      "episode_number": "2x22",
+      "episodeTitle": "The Blood of Emperors Must End by the Sword",
+      "missing_subtitles": [
+        {
+          "name": "English",
+          "code2": "en",
+          "code3": "eng",
+          "forced": false,
+          "hi": false
+        }
+      ],
+      "sonarrSeriesId": 70,
+      "sonarrEpisodeId": 3482,
+      "sceneName": "Dragon Raja The Blazing Dawn S02E22 1080p WEB H264 SKYANiME EZTV",
+      "tags": [],
+      "seriesType": "standard"
+    }
+  ],
+  "total": 111
+}

@@ -1,0 +1,14 @@
+{
+  "_note": "GET /containers/recyclarr/logs?stdout=1&stderr=1&timestamps=1&tail=N (Tty=false => multiplexed stream). body_base64 is the exact raw response body; expected_frames is the decoded result.",
+  "body_base64": "AQAAAAAAAEcyMDI2LTExLTA4VDA3OjUzOjAwLjU5ODY2MzgzNVogU3RhcnRpbmcgY3JvbiBzY2hlZHVsZSB1c2luZzogMCA0ICogKiAwCgIAAAAAAABsMjAyNi0xMS0wOFQwNzo1MzowMi4xNTQ5MTc4OTFaIHRpbWU9IjIwMjYtMTEtMDhUMDk6NTM6MDIrMDI6MDAiIGxldmVsPWluZm8gbXNnPSJyZWFkIGNyb250YWI6IC90bXAvY3JvbnRhYiIK",
+  "expected_frames": [
+    {
+      "stream": "stdout",
+      "line": "2026-11-08T07:53:00.598663835Z Starting cron schedule using: 0 4 * * 0"
+    },
+    {
+      "stream": "stderr",
+      "line": "2026-11-08T07:53:02.154917891Z time=\"2026-11-08T09:53:02+02:00\" level=info msg=\"read crontab: /tmp/crontab\""
+    }
+  ]
+}

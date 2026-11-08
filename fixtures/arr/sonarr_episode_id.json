@@ -1,0 +1,162 @@
+{
+  "seriesId": 2,
+  "tvdbId": 9725383,
+  "episodeFileId": 10005,
+  "seasonNumber": 1,
+  "episodeNumber": 1,
+  "title": "The Hedge Knight",
+  "airDate": "2026-01-18",
+  "airDateUtc": "2026-01-19T03:00:00Z",
+  "runtime": 40,
+  "overview": "On his journey to the forthcoming tournament in Ashford, Dunk meets a clever young boy named Egg, who offers to be his squire.",
+  "episodeFile": {
+    "seriesId": 2,
+    "seasonNumber": 1,
+    "relativePath": "Season 01/A Knight of the Seven Kingdoms (2026) - S01E01 - The Hedge Knight [Bluray-1080p][EAC3 5.1][HDR10][HEVC]-d3g.mkv",
+    "path": "/data/tvshows/A Knight of the Seven Kingdoms (2026) [tvdbid-433631]/Season 01/A Knight of the Seven Kingdoms (2026) - S01E01 - The Hedge Knight [Bluray-1080p][EAC3 5.1][HDR10][HEVC]-d3g.mkv",
+    "size": 2636508931,
+    "dateAdded": "2026-06-10T21:19:00Z",
+    "sceneName": "www.UIndex.org    -    A Knight of the Seven Kingdoms S01E01 The Hedge Knight 1080p BluRay HDR10 10bit DDP5 1 HEVC-d3g",
+    "releaseGroup": "d3g",
+    "languages": [
+      {
+        "id": 1,
+        "name": "English"
+      }
+    ],
+    "quality": {
+      "quality": {
+        "id": 7,
+        "name": "Bluray-1080p",
+        "source": "bluray",
+        "resolution": 1080
+      },
+      "revision": {
+        "version": 1,
+        "real": 0,
+        "isRepack": false
+      }
+    },
+    "customFormats": [
+      {
+        "id": 23,
+        "name": "10bit"
+      },
+      {
+        "id": 72,
+        "name": "LQ"
+      },
+      {
+        "id": 65,
+        "name": "x265 (HD)"
+      }
+    ],
+    "customFormatScore": -20000,
+    "indexerFlags": 1,
+    "releaseType": "singleEpisode",
+    "mediaInfo": {
+      "audioBitrate": 448000,
+      "audioChannels": 5.1,
+      "audioCodec": "EAC3",
+      "audioLanguages": "eng",
+      "audioStreamCount": 1,
+      "videoBitDepth": 10,
+      "videoBitrate": 0,
+      "videoCodec": "HEVC",
+      "videoFps": 23.976,
+      "videoDynamicRange": "HDR",
+      "videoDynamicRangeType": "HDR10",
+      "resolution": "1920x1080",
+      "runTime": "41:55",
+      "scanType": "Progressive",
+      "subtitles": "eng/eng/eng/eng"
+    },
+    "qualityCutoffNotMet": true,
+    "id": 10005
+  },
+  "hasFile": true,
+  "monitored": true,
+  "absoluteEpisodeNumber": 1,
+  "unverifiedSceneNumbering": false,
+  "series": {
+    "title": "A Knight of the Seven Kingdoms",
+    "sortTitle": "knight of the seven kingdoms",
+    "status": "continuing",
+    "ended": false,
+    "overview": "A century before the events of Game of Thrones, two unlikely heroes wandered Westeros, a young knight, Ser Duncan the Tall, and his squire, Egg, set in an age when the Targaryen line still holds the Iron Throne.",
+    "network": "HBO",
+    "airTime": "22:00",
+    "images": [
+      {
+        "coverType": "banner",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/433631/banners/696d01d889ebf.jpg"
+      },
+      {
+        "coverType": "poster",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/433631/posters/6934ab30720ee.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/433631/backgrounds/6934a76d9bbba.jpg"
+      },
+      {
+        "coverType": "clearlogo",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/433631/clearlogo/696cfcd38cd4e.png"
+      }
+    ],
+    "originalLanguage": {
+      "id": 1,
+      "name": "English"
+    },
+    "seasons": [
+      {
+        "seasonNumber": 0,
+        "monitored": false
+      },
+      {
+        "seasonNumber": 1,
+        "monitored": true
+      }
+    ],
+    "year": 2026,
+    "path": "/data/tvshows/A Knight of the Seven Kingdoms (2026) [tvdbid-433631]",
+    "qualityProfileId": 9,
+    "seasonFolder": true,
+    "monitored": true,
+    "monitorNewItems": "all",
+    "useSceneNumbering": false,
+    "runtime": 33,
+    "tvdbId": 433631,
+    "tvRageId": 0,
+    "tvMazeId": 53063,
+    "tmdbId": 224372,
+    "firstAired": "2026-01-18T00:00:00Z",
+    "lastAired": "2026-02-22T00:00:00Z",
+    "seriesType": "standard",
+    "cleanTitle": "aknightsevenkingdoms",
+    "imdbId": "tt27497448",
+    "titleSlug": "a-knight-of-the-seven-kingdoms",
+    "certification": "TV-MA",
+    "genres": [
+      "Action",
+      "Adventure",
+      "Drama",
+      "Fantasy"
+    ],
+    "tags": [],
+    "added": "2026-02-04T15:15:28Z",
+    "ratings": {
+      "votes": 293271,
+      "value": 8.6
+    },
+    "languageProfileId": 1,
+    "id": 2
+  },
+  "images": [
+    {
+      "coverType": "screenshot",
+      "remoteUrl": "https://artworks.thetvdb.com/banners/v4/episode/9725383/screencap/696f64930ae98.jpg"
+    }
+  ],
+  "id": 76
+}

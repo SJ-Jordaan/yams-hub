@@ -1,0 +1,637 @@
+[
+  {
+    "title": "Dune",
+    "originalTitle": "Dune",
+    "originalLanguage": {
+      "id": 1,
+      "name": "English"
+    },
+    "alternateTitles": [
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 12,
+        "title": "デューン",
+        "id": 74
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 12,
+        "title": "Dune: Part One",
+        "id": 75
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 12,
+        "title": "חולית: חלק ראשון",
+        "id": 76
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 12,
+        "title": "デューン 砂の惑星",
+        "id": 77
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 12,
+        "title": "DUNE デューン 砂の惑星",
+        "id": 78
+      }
+    ],
+    "secondaryYearSourceId": 0,
+    "sortTitle": "dune",
+    "status": "released",
+    "overview": "Paul Atreides, a brilliant and gifted young man born into a great destiny beyond his understanding, must travel to the most dangerous planet in the universe to ensure the future of his family and his people. As malevolent forces explode into conflict over the planet's exclusive supply of the most precious resource in existence - a commodity capable of unlocking humanity's greatest potential - only those who can conquer their fear will survive.",
+    "inCinemas": "2021-09-15T00:00:00Z",
+    "physicalRelease": "2021-12-22T00:00:00Z",
+    "digitalRelease": "2021-10-21T00:00:00Z",
+    "releaseDate": "2021-10-21T00:00:00Z",
+    "images": [
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/8/poster.jpg?h=bd15f9a27331fc78d4df",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/v1tRXZ4JtD2Iv6fjkPvT4GiwslV.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/8/fanart.jpg?h=2fb146b3ea0bb0868510",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/jYEW5xZkZk2WTrdbMGAPFuBqbDc.jpg"
+      }
+    ],
+    "website": "https://www.warnerbros.com/movies/dune",
+    "remotePoster": "https://image.tmdb.org/t/p/original/v1tRXZ4JtD2Iv6fjkPvT4GiwslV.jpg",
+    "year": 2021,
+    "youTubeTrailerId": "w0HgHet0sxg",
+    "studio": "Legendary Pictures",
+    "path": "/data/movies/Dune (2021) [tmdbid-438631]",
+    "qualityProfileId": 7,
+    "movieFileId": 1012,
+    "monitored": true,
+    "minimumAvailability": "released",
+    "isAvailable": true,
+    "folderName": "/data/movies/Dune (2021) [tmdbid-438631]",
+    "runtime": 155,
+    "cleanTitle": "dune",
+    "imdbId": "tt1160419",
+    "tmdbId": 438631,
+    "titleSlug": "438631",
+    "folder": "Dune (2021) [tmdbid-438631]",
+    "certification": "PG-13",
+    "genres": [
+      "Science Fiction",
+      "Adventure"
+    ],
+    "keywords": [
+      "army",
+      "baron",
+      "based on novel or book",
+      "betrayal",
+      "chosen one"
+    ],
+    "tags": [],
+    "added": "2026-02-04T15:20:01Z",
+    "ratings": {
+      "imdb": {
+        "votes": 1099937,
+        "value": 8,
+        "type": "user"
+      },
+      "tmdb": {
+        "votes": 15897,
+        "value": 7.786,
+        "type": "user"
+      },
+      "metacritic": {
+        "votes": 0,
+        "value": 74,
+        "type": "user"
+      },
+      "rottenTomatoes": {
+        "votes": 0,
+        "value": 83,
+        "type": "user"
+      },
+      "trakt": {
+        "votes": 57693,
+        "value": 8.14492,
+        "type": "user"
+      }
+    },
+    "movieFile": {
+      "movieId": 8,
+      "relativePath": "Dune (2021) [imdbid-tt1160419] - [WEBRip-2160p][EAC3 Atmos 5.1][h265].mkv",
+      "path": "/data/movies/Dune (2021) [tmdbid-438631]/Dune (2021) [imdbid-tt1160419] - [WEBRip-2160p][EAC3 Atmos 5.1][h265].mkv",
+      "size": 65583835282,
+      "dateAdded": "2026-11-06T05:38:02Z",
+      "sceneName": "Dune.2021.2160p.AI Enhanced.WEBRip.60FPS.H265.SDR.DDP5.1.Atmos.EngSubs_Marjenbo",
+      "edition": "",
+      "languages": [
+        {
+          "id": 1,
+          "name": "English"
+        }
+      ],
+      "quality": {
+        "quality": {
+          "id": 17,
+          "name": "WEBRip-2160p",
+          "source": "webrip",
+          "resolution": 2160,
+          "modifier": "none"
+        },
+        "revision": {
+          "version": 1,
+          "real": 0,
+          "isRepack": false
+        }
+      },
+      "indexerFlags": 1,
+      "mediaInfo": {
+        "audioBitrate": 768000,
+        "audioChannels": 5.1,
+        "audioCodec": "EAC3 Atmos",
+        "audioLanguages": "eng",
+        "audioStreamCount": 1,
+        "videoBitDepth": 10,
+        "videoBitrate": 55492484,
+        "videoCodec": "h265",
+        "videoFps": 60,
+        "videoDynamicRange": "",
+        "videoDynamicRangeType": "",
+        "resolution": "3840x1606",
+        "runTime": "2:35:24",
+        "scanType": "Progressive",
+        "subtitles": "eng/eng/spa/spa"
+      },
+      "originalFilePath": "Dune.2021.2160p.AI Enhanced.WEBRip.60FPS.H265.10BIT.SDR.DDP5.1.Atmos_Marjenbo  .mkv",
+      "qualityCutoffNotMet": false,
+      "id": 1012
+    },
+    "collection": {
+      "title": "Dune Collection",
+      "tmdbId": 726871
+    },
+    "popularity": 41.3994,
+    "id": 8
+  },
+  {
+    "title": "Dune: Part Two",
+    "originalTitle": "Dune: Part Two",
+    "originalLanguage": {
+      "id": 1,
+      "name": "English"
+    },
+    "alternateTitles": [
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 13,
+        "title": "Dune 2",
+        "id": 94
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 13,
+        "title": "Dune: Part 2",
+        "id": 95
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 13,
+        "title": "デューン 砂の惑星PART2",
+        "id": 96
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 13,
+        "title": "Duna 2",
+        "id": 97
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 13,
+        "title": "Hành Tinh Cát 2",
+        "id": 98
+      }
+    ],
+    "secondaryYearSourceId": 0,
+    "sortTitle": "dune part two",
+    "status": "released",
+    "overview": "Follow the mythic journey of Paul Atreides as he unites with Chani and the Fremen while on a path of revenge against the conspirators who destroyed his family. Facing a choice between the love of his life and the fate of the known universe, Paul endeavors to prevent a terrible future only he can foresee.",
+    "inCinemas": "2024-02-27T00:00:00Z",
+    "physicalRelease": "2024-05-14T00:00:00Z",
+    "digitalRelease": "2024-04-15T00:00:00Z",
+    "releaseDate": "2024-04-15T00:00:00Z",
+    "images": [
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/9/poster.jpg?h=2ace71ed7e091318ffe9",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/6izwz7rsy95ARzTR3poZ8H6c5pp.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/9/fanart.jpg?h=1a01b280b9b172efba08",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/eZ239CUp1d6OryZEBPnO2n87gMG.jpg"
+      }
+    ],
+    "website": "https://www.warnerbros.com/movies/dune-part-two",
+    "remotePoster": "https://image.tmdb.org/t/p/original/6izwz7rsy95ARzTR3poZ8H6c5pp.jpg",
+    "year": 2024,
+    "youTubeTrailerId": "U2Qp5pL3ovA",
+    "studio": "Legendary Pictures",
+    "path": "/data/movies/Dune Part Two (2024) [tmdbid-693134]",
+    "qualityProfileId": 7,
+    "movieFileId": 1013,
+    "monitored": true,
+    "minimumAvailability": "released",
+    "isAvailable": true,
+    "folderName": "/data/movies/Dune Part Two (2024) [tmdbid-693134]",
+    "runtime": 167,
+    "cleanTitle": "duneparttwo",
+    "imdbId": "tt15239678",
+    "tmdbId": 693134,
+    "titleSlug": "693134",
+    "folder": "Dune Part Two (2024) [tmdbid-693134]",
+    "certification": "PG-13",
+    "genres": [
+      "Science Fiction",
+      "Adventure"
+    ],
+    "keywords": [
+      "allegorical",
+      "ambiguous",
+      "antagonistic",
+      "based on novel or book",
+      "chosen one"
+    ],
+    "tags": [],
+    "added": "2026-02-04T15:20:01Z",
+    "ratings": {
+      "imdb": {
+        "votes": 803759,
+        "value": 8.4,
+        "type": "user"
+      },
+      "tmdb": {
+        "votes": 8913,
+        "value": 8.143,
+        "type": "user"
+      },
+      "metacritic": {
+        "votes": 0,
+        "value": 79,
+        "type": "user"
+      },
+      "rottenTomatoes": {
+        "votes": 0,
+        "value": 92,
+        "type": "user"
+      },
+      "trakt": {
+        "votes": 43102,
+        "value": 8.55313,
+        "type": "user"
+      }
+    },
+    "movieFile": {
+      "movieId": 9,
+      "relativePath": "Dune Part Two (2024) [imdbid-tt15239678] - [WEBRip-2160p][TrueHD Atmos 7.1][h265].mkv",
+      "path": "/data/movies/Dune Part Two (2024) [tmdbid-693134]/Dune Part Two (2024) [imdbid-tt15239678] - [WEBRip-2160p][TrueHD Atmos 7.1][h265].mkv",
+      "size": 61820790488,
+      "dateAdded": "2026-11-06T09:06:01Z",
+      "sceneName": "Dune- Part Two (2024) 2160p.AI Enhanced.WEBRip.60FPS.H265.Hybrid.TrueHD7.1.MultiSubs_Marjenbo ",
+      "edition": "",
+      "languages": [
+        {
+          "id": 1,
+          "name": "English"
+        }
+      ],
+      "quality": {
+        "quality": {
+          "id": 17,
+          "name": "WEBRip-2160p",
+          "source": "webrip",
+          "resolution": 2160,
+          "modifier": "none"
+        },
+        "revision": {
+          "version": 1,
+          "real": 0,
+          "isRepack": false
+        }
+      },
+      "indexerFlags": 1,
+      "mediaInfo": {
+        "audioBitrate": 3257429,
+        "audioChannels": 7.1,
+        "audioCodec": "TrueHD Atmos",
+        "audioLanguages": "eng/eng",
+        "audioStreamCount": 2,
+        "videoBitDepth": 10,
+        "videoBitrate": 45571410,
+        "videoCodec": "h265",
+        "videoFps": 60,
+        "videoDynamicRange": "",
+        "videoDynamicRangeType": "",
+        "resolution": "3840x2160",
+        "runTime": "2:45:48",
+        "scanType": "Progressive",
+        "subtitles": "eng/eng/bul/chi/chi/cze/dan/dut/fin/fre/ger/gre/heb/hun/ind/ita/jpn/kor/lav/lit/nor/pol/por/por/rus/slo/slv/spa/spa/swe/tha/tur"
+      },
+      "originalFilePath": "Dune- Part Two (2024) 2160p.AI Enhanced.WEBRip.60FPS.H265.10BIT.Hybrid.TrueHD7.1_Marjenbo  .1.Atmos.mkv",
+      "qualityCutoffNotMet": false,
+      "id": 1013
+    },
+    "collection": {
+      "title": "Dune Collection",
+      "tmdbId": 726871
+    },
+    "popularity": 43.7757,
+    "id": 9
+  },
+  {
+    "title": "Dune",
+    "originalTitle": "Dune",
+    "originalLanguage": {
+      "id": 1,
+      "name": "English"
+    },
+    "alternateTitles": [
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 0,
+        "title": "砂の惑星"
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 0,
+        "title": "Xolit"
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 0,
+        "title": "Дина"
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 0,
+        "title": "듄"
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 0,
+        "title": "Duna"
+      }
+    ],
+    "secondaryYearSourceId": 0,
+    "sortTitle": "dune",
+    "status": "released",
+    "overview": "In the year 10,191, the most precious substance in the universe is the spice Melange. The spice extends life. The spice expands consciousness. The spice is vital to space travel.  The spice exists on only one planet in the entire universe, the vast desert planet Arrakis, also known as Dune.  Its native inhabitants, the Fremen, have long held a prophecy that a man would come, a messiah who would lead them to true freedom.",
+    "inCinemas": "1984-12-14T00:00:00Z",
+    "physicalRelease": "1998-12-03T00:00:00Z",
+    "digitalRelease": "1998-01-04T00:00:00Z",
+    "releaseDate": "1984-12-14T00:00:00Z",
+    "images": [
+      {
+        "coverType": "poster",
+        "url": "/MediaCoverProxy/acae98ad1275f939cef4c39afb66eeb7d95cea420a59fc11df6fd1314f9d23e2/4kJmUCE7mkVJjXa7A0g2rY4IGTm.jpg",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/4kJmUCE7mkVJjXa7A0g2rY4IGTm.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCoverProxy/8bb706229c13ef882c8478a325a1fbb3e36123f6c21226617b3d6564ecac10f9/5wJ2tckpvwcxGCAgZiccodwEJpf.jpg",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/5wJ2tckpvwcxGCAgZiccodwEJpf.jpg"
+      }
+    ],
+    "website": "",
+    "remotePoster": "https://image.tmdb.org/t/p/original/4kJmUCE7mkVJjXa7A0g2rY4IGTm.jpg",
+    "year": 1984,
+    "youTubeTrailerId": "hjRG8kvMFw0",
+    "studio": "The De Laurentiis Company",
+    "qualityProfileId": 0,
+    "movieFileId": 0,
+    "monitored": false,
+    "minimumAvailability": "tba",
+    "isAvailable": true,
+    "folderName": "",
+    "runtime": 136,
+    "cleanTitle": "dune",
+    "imdbId": "tt0087182",
+    "tmdbId": 841,
+    "titleSlug": "841",
+    "folder": "Dune (1984) [tmdbid-841]",
+    "certification": "PG-13",
+    "genres": [
+      "Action",
+      "Science Fiction",
+      "Adventure"
+    ],
+    "keywords": [
+      "army",
+      "atomic bomb",
+      "baron",
+      "based on novel or book",
+      "chosen one"
+    ],
+    "tags": [],
+    "added": "0001-01-01T00:00:00Z",
+    "ratings": {
+      "imdb": {
+        "votes": 194790,
+        "value": 6.2,
+        "type": "user"
+      },
+      "tmdb": {
+        "votes": 3595,
+        "value": 6.195,
+        "type": "user"
+      },
+      "metacritic": {
+        "votes": 0,
+        "value": 41,
+        "type": "user"
+      },
+      "rottenTomatoes": {
+        "votes": 0,
+        "value": 36,
+        "type": "user"
+      },
+      "trakt": {
+        "votes": 7008,
+        "value": 6.60402,
+        "type": "user"
+      }
+    },
+    "popularity": 16.4785
+  },
+  {
+    "title": "Dune: Part Three",
+    "originalTitle": "Dune: Part Three",
+    "originalLanguage": {
+      "id": 1,
+      "name": "English"
+    },
+    "alternateTitles": [
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 0,
+        "title": "듄 3"
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 0,
+        "title": "Dune 3"
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 0,
+        "title": "Dune: Part 3"
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 0,
+        "title": "חולית 3"
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 0,
+        "title": "Duna 3"
+      }
+    ],
+    "secondaryYearSourceId": 0,
+    "sortTitle": "dune part three",
+    "status": "announced",
+    "overview": "Nearly two decades after he seized control of the Imperium, Paul Atreides is now a ruthless Emperor, and must face the consequences of his reign as old allies return, terrifying new threats emerge, and betrayal lurks in every shadow. Haunted by visions of Imperial collapse and the reappearance of his long-lost love, Paul is drawn into a sweeping conspiracy, with Chani at the heart of its unfolding mystery. As enemies close in, Paul must confront the true cost of power and the fate of those he loves the most.",
+    "inCinemas": "2026-12-16T00:00:00Z",
+    "releaseDate": "2026-12-16T00:00:00Z",
+    "images": [
+      {
+        "coverType": "poster",
+        "url": "/MediaCoverProxy/2ffcd867867c4343ff9df07ca02fceba65c827a9fc79114e5da9d9ed970bbe2f/glt0v4I89rMWstDNCaFXc5SNyO1.jpg",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/glt0v4I89rMWstDNCaFXc5SNyO1.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCoverProxy/9522a6848939f8009b60df18a71878382fe66a2998f0077bbb8b9a92bdcd5105/i5E9H7Ik0u61ylDDTbmUpTL3Yw.jpg",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/i5E9H7Ik0u61ylDDTbmUpTL3Yw.jpg"
+      }
+    ],
+    "website": "https://www.dunemovie.com",
+    "remotePoster": "https://image.tmdb.org/t/p/original/glt0v4I89rMWstDNCaFXc5SNyO1.jpg",
+    "year": 2026,
+    "youTubeTrailerId": "uJqaGLmZpGo",
+    "studio": "Legendary Pictures",
+    "qualityProfileId": 0,
+    "movieFileId": 0,
+    "monitored": false,
+    "minimumAvailability": "tba",
+    "isAvailable": true,
+    "folderName": "",
+    "runtime": 150,
+    "cleanTitle": "dunepartthree",
+    "imdbId": "tt31378509",
+    "tmdbId": 1170608,
+    "titleSlug": "1170608",
+    "folder": "Dune Part Three (2026) [tmdbid-1170608]",
+    "certification": "PG-13",
+    "genres": [
+      "Science Fiction",
+      "Adventure"
+    ],
+    "keywords": [
+      "based on novel or book",
+      "desert",
+      "messianic",
+      "planet",
+      "political conspiracy"
+    ],
+    "tags": [],
+    "added": "0001-01-01T00:00:00Z",
+    "ratings": {
+      "tmdb": {
+        "votes": 0,
+        "value": 0,
+        "type": "user"
+      }
+    },
+    "collection": {
+      "title": "Dune Collection",
+      "tmdbId": 726871
+    },
+    "popularity": 33.4033
+  },
+  {
+    "title": "Dune",
+    "originalTitle": "Dűne",
+    "originalLanguage": {
+      "id": 22,
+      "name": "Hungarian"
+    },
+    "alternateTitles": [
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 0,
+        "title": "სილახვავი"
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 0,
+        "title": "დიუნი"
+      }
+    ],
+    "secondaryYearSourceId": 0,
+    "sortTitle": "dune",
+    "status": "announced",
+    "overview": "Sounds as witnesses. They blurr into memories, half-dreams, it is undecided if they are real or not. A fluctuation between imagination and reality.",
+    "images": [
+      {
+        "coverType": "poster",
+        "url": "/MediaCoverProxy/393c90b14fce9614495082f55f2e74bc40312cb20112f2ddfec0bb2cf82246da/CecUPdnnP22wV1NoRFQaG231zj.jpg",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/CecUPdnnP22wV1NoRFQaG231zj.jpg"
+      }
+    ],
+    "website": "https://www.kecskemetfilm.hu/en/filmek/rovidfilm/dune",
+    "remotePoster": "https://image.tmdb.org/t/p/original/CecUPdnnP22wV1NoRFQaG231zj.jpg",
+    "year": 2020,
+    "youTubeTrailerId": "",
+    "studio": "Kecskemétfilm",
+    "qualityProfileId": 0,
+    "movieFileId": 0,
+    "monitored": false,
+    "minimumAvailability": "tba",
+    "isAvailable": true,
+    "folderName": "",
+    "runtime": 4,
+    "cleanTitle": "dune",
+    "imdbId": "tt12451788",
+    "tmdbId": 697620,
+    "titleSlug": "697620",
+    "folder": "Dune (2020) [tmdbid-697620]",
+    "genres": [
+      "Animation",
+      "Mystery",
+      "Thriller"
+    ],
+    "keywords": [],
+    "tags": [],
+    "added": "0001-01-01T00:00:00Z",
+    "ratings": {
+      "imdb": {
+        "votes": 87,
+        "value": 6.5,
+        "type": "user"
+      },
+      "tmdb": {
+        "votes": 37,
+        "value": 7.4,
+        "type": "user"
+      },
+      "trakt": {
+        "votes": 41,
+        "value": 7.5122,
+        "type": "user"
+      }
+    },
+    "popularity": 2.4939
+  }
+]

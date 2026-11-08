@@ -1,0 +1,17 @@
+{
+  "data": {
+    "bazarr_version": "1.6.2",
+    "package_version": "v1.6.2-ls371 by linuxserver.io",
+    "sonarr_version": "4.0.20.3014",
+    "radarr_version": "6.4.4.10685",
+    "operating_system": "Linux-6.18.15-x86_64-with",
+    "python_version": "3.12.16",
+    "database_engine": "Sqlite 3.53.4",
+    "database_migration": "537e9b4d10e3",
+    "bazarr_directory": "/app/bazarr/bin",
+    "bazarr_config_directory": "/config",
+    "start_time": 1794118925.3305922,
+    "timezone": "Etc/UTC",
+    "cpu_cores": 4
+  }
+}

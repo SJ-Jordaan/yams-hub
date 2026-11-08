@@ -1,0 +1,43 @@
+[
+  {
+    "version": "6.4.4.10685",
+    "branch": "master",
+    "releaseDate": "2026-09-16T18:13:40Z",
+    "fileName": "Radarr.master.6.4.4.10685.linux-musl-core-x64.tar.gz",
+    "url": "https://github.com/Radarr/Radarr/releases/download/v6.4.4.10685/Radarr.master.6.4.4.10685.linux-musl-core-x64.tar.gz",
+    "installed": true,
+    "installedOn": "2026-09-23T17:49:43Z",
+    "installable": false,
+    "latest": true,
+    "changes": {
+      "new": [
+        "Filter movies by movie file quality",
+        "Add Trusted Networks setting"
+      ],
+      "fixed": [
+        "Improve logging for 'Allowed Hosts' and 'Trusted Networks'",
+        "Switch theme automatically on system change"
+      ]
+    },
+    "hash": "027bce03a2c97bc8216ec636fb31641a729e1cb609700508335344f0423f29ea"
+  },
+  {
+    "version": "6.3.0.10514",
+    "branch": "master",
+    "releaseDate": "2026-07-12T16:54:55Z",
+    "fileName": "Radarr.master.6.3.0.10514.linux-musl-core-x64.tar.gz",
+    "url": "https://github.com/Radarr/Radarr/releases/download/v6.3.0.10514/Radarr.master.6.3.0.10514.linux-musl-core-x64.tar.gz",
+    "installed": false,
+    "installedOn": "2026-08-24T14:13:38Z",
+    "installable": false,
+    "latest": false,
+    "changes": {
+      "new": [],
+      "fixed": [
+        "Importing new items from Simkl lists",
+        "Bump FFProbe to 5.1.10"
+      ]
+    },
+    "hash": "060348c45c10b8810a33710dd86f914f07163071bcec505c788952e3cedaddfa"
+  }
+]

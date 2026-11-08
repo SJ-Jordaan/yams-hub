@@ -1,0 +1,90 @@
+{
+  "data": [
+    {
+      "alternativeTitles": [
+        "De 101 Dalmatinerna II – Tuffs Äventyr i London",
+        "Les 101 Dalmatiens II",
+        "101 Dalmatiërs II: Het Avontuur Van Vlek In Londen",
+        "101 Dalmatians 2",
+        "101 Dalmatinů II: Flíčkova londýnská dobrodružství"
+      ],
+      "audio_language": [
+        {
+          "name": "English",
+          "code2": "en",
+          "code3": "eng"
+        }
+      ],
+      "created_at_timestamp": "2026-02-04 21:02:25.122011",
+      "fanart": "/images/movies/MediaCover/25/fanart.jpg?h=74b28335dd015ef67a4a",
+      "imdbId": "tt0324941",
+      "missing_subtitles": [],
+      "monitored": true,
+      "overview": "Being one of 101 takes its toll on Patch, who doesn't feel unique. When he's accidentally left behind on moving day, he meets his idol, Thunderbolt, who enlists him on a publicity campaign.",
+      "path": "/data/movies/101 Dalmatians II Patchs London Adventure (2003) [tmdbid-13654]/101 Dalmatians II Patchs London Adventure (2003) [imdbid-tt0324941] - [Bluray-1080p][AC3 5.1][x264]-nikt0.mkv",
+      "poster": "/images/movies/MediaCover/25/poster-500.jpg?h=4d83abd06400776fa85c",
+      "profileId": 1,
+      "radarrId": 25,
+      "sceneName": null,
+      "subtitles": [
+        {
+          "name": "English",
+          "code2": "en",
+          "code3": "eng",
+          "path": "/data/movies/101 Dalmatians II Patchs London Adventure (2003) [tmdbid-13654]/101 Dalmatians II Patchs London Adventure (2003) [imdbid-tt0324941] - [Bluray-1080p][AC3 5.1][x264]-nikt0.en.srt",
+          "forced": false,
+          "hi": false,
+          "file_size": 61949,
+          "embedded_track_id": null,
+          "id": 52
+        }
+      ],
+      "tags": [],
+      "title": "101 Dalmatians II: Patch's London Adventure",
+      "year": "2003"
+    },
+    {
+      "alternativeTitles": [
+        "일구일칠",
+        "一九一七",
+        "1917：逆战救兵",
+        "One Nine One Seven"
+      ],
+      "audio_language": [
+        {
+          "name": "English",
+          "code2": "en",
+          "code3": "eng"
+        }
+      ],
+      "created_at_timestamp": "2026-03-01 12:09:05.493402",
+      "fanart": "/images/movies/MediaCover/5/fanart.jpg?h=1d1d510cc8834ced9532",
+      "imdbId": "tt8579674",
+      "missing_subtitles": [],
+      "monitored": true,
+      "overview": "At the height of the First World War, two young British soldiers must cross enemy territory and deliver a message that will stop a deadly attack on hundreds of soldiers.",
+      "path": "/data/movies/1917 (2019) [tmdbid-530915]/1917 (2019) [imdbid-tt8579674] - [WEBDL-2160p][TrueHD Atmos 7.1][DV HDR10Plus][x265]-E.mkv",
+      "poster": "/images/movies/MediaCover/5/poster-500.jpg?h=1fe615a057500b03a4f3",
+      "profileId": 1,
+      "radarrId": 5,
+      "sceneName": null,
+      "subtitles": [
+        {
+          "name": "English",
+          "code2": "en",
+          "code3": "eng",
+          "path": "/data/movies/1917 (2019) [tmdbid-530915]/1917 (2019) [imdbid-tt8579674] - [WEBDL-2160p][TrueHD Atmos 7.1][DV HDR10Plus][x265]-E.en.srt",
+          "forced": false,
+          "hi": false,
+          "file_size": 60744,
+          "embedded_track_id": null,
+          "id": 4
+        }
+      ],
+      "tags": [],
+      "title": "1917",
+      "year": "2019"
+    }
+  ],
+  "total": 178
+}

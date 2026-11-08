@@ -1,0 +1,270 @@
+{
+  "page": 1,
+  "pageSize": 10,
+  "sortKey": "episodes.airDateUtc",
+  "sortDirection": "descending",
+  "totalRecords": 892,
+  "records": [
+    {
+      "seriesId": 38,
+      "tvdbId": 11928696,
+      "episodeFileId": 0,
+      "seasonNumber": 18,
+      "episodeNumber": 8,
+      "title": "Mac and Dennis Tear Their ACLs",
+      "airDate": "2026-09-28",
+      "airDateUtc": "2026-09-29T02:00:00Z",
+      "runtime": 22,
+      "overview": "After a Christmas card catastrophe, Charlie nurses a bedridden Mac and Dennis and deliberates on which one is the originator of all their ideas. Dee and Frank are tired of being the bottom of the communication ladder and decide to flip the script.",
+      "hasFile": false,
+      "monitored": true,
+      "unverifiedSceneNumbering": false,
+      "series": {
+        "title": "It's Always Sunny in Philadelphia",
+        "sortTitle": "its always sunny in philadelphia",
+        "status": "continuing",
+        "ended": false,
+        "overview": "Four egocentric friends who run a neighborhood Irish pub in Philadelphia try to find their way through the adult world of work and relationships. Unfortunately, their warped views and precarious judgments often lead them to trouble, creating a myriad of uncomfortable situations that usually only get worse before they get better.",
+        "network": "FXX",
+        "airTime": "22:00",
+        "images": [
+          {
+            "coverType": "banner",
+            "remoteUrl": "https://artworks.thetvdb.com/banners/graphical/75805-g3.jpg"
+          },
+          {
+            "coverType": "poster",
+            "remoteUrl": "https://artworks.thetvdb.com/banners/posters/75805-12.jpg"
+          },
+          {
+            "coverType": "fanart",
+            "remoteUrl": "https://artworks.thetvdb.com/banners/fanart/original/75805-20.jpg"
+          }
+        ],
+        "originalLanguage": {
+          "id": 1,
+          "name": "English"
+        },
+        "seasons": [
+          {
+            "seasonNumber": 1,
+            "monitored": true
+          },
+          {
+            "seasonNumber": 2,
+            "monitored": true
+          },
+          {
+            "seasonNumber": 3,
+            "monitored": true
+          }
+        ],
+        "year": 2005,
+        "path": "/data/tvshows/It's Always Sunny in Philadelphia (2005) [tvdbid-75805]",
+        "qualityProfileId": 9,
+        "seasonFolder": true,
+        "monitored": true,
+        "monitorNewItems": "all",
+        "useSceneNumbering": false,
+        "runtime": 25,
+        "tvdbId": 75805,
+        "tvRageId": 4004,
+        "tvMazeId": 347,
+        "tmdbId": 2710,
+        "firstAired": "2005-08-04T00:00:00Z",
+        "lastAired": "2026-10-12T00:00:00Z",
+        "seriesType": "standard",
+        "cleanTitle": "itsalwayssunnyinphiladelphia",
+        "imdbId": "tt0472954",
+        "titleSlug": "its-always-sunny-in-philadelphia",
+        "certification": "TV-MA",
+        "genres": [
+          "Comedy"
+        ],
+        "tags": [],
+        "added": "2026-02-04T15:15:28Z",
+        "ratings": {
+          "votes": 287386,
+          "value": 8.8
+        },
+        "languageProfileId": 1,
+        "id": 38
+      },
+      "id": 7110
+    },
+    {
+      "seriesId": 38,
+      "tvdbId": 11928695,
+      "episodeFileId": 0,
+      "seasonNumber": 18,
+      "episodeNumber": 7,
+      "title": "Gilligan's Island: A Conspiracy Theorist's Paradise",
+      "airDate": "2026-09-21",
+      "airDateUtc": "2026-09-22T02:00:00Z",
+      "runtime": 21,
+      "overview": "Mac and Charlie drink the proverbial Kool-Aid while trying to uncover the mystery of why 'Gilligan's Island' never made it to 100 episodes.",
+      "hasFile": false,
+      "monitored": true,
+      "unverifiedSceneNumbering": false,
+      "series": {
+        "title": "It's Always Sunny in Philadelphia",
+        "sortTitle": "its always sunny in philadelphia",
+        "status": "continuing",
+        "ended": false,
+        "overview": "Four egocentric friends who run a neighborhood Irish pub in Philadelphia try to find their way through the adult world of work and relationships. Unfortunately, their warped views and precarious judgments often lead them to trouble, creating a myriad of uncomfortable situations that usually only get worse before they get better.",
+        "network": "FXX",
+        "airTime": "22:00",
+        "images": [
+          {
+            "coverType": "banner",
+            "remoteUrl": "https://artworks.thetvdb.com/banners/graphical/75805-g3.jpg"
+          },
+          {
+            "coverType": "poster",
+            "remoteUrl": "https://artworks.thetvdb.com/banners/posters/75805-12.jpg"
+          },
+          {
+            "coverType": "fanart",
+            "remoteUrl": "https://artworks.thetvdb.com/banners/fanart/original/75805-20.jpg"
+          }
+        ],
+        "originalLanguage": {
+          "id": 1,
+          "name": "English"
+        },
+        "seasons": [
+          {
+            "seasonNumber": 1,
+            "monitored": true
+          },
+          {
+            "seasonNumber": 2,
+            "monitored": true
+          },
+          {
+            "seasonNumber": 3,
+            "monitored": true
+          }
+        ],
+        "year": 2005,
+        "path": "/data/tvshows/It's Always Sunny in Philadelphia (2005) [tvdbid-75805]",
+        "qualityProfileId": 9,
+        "seasonFolder": true,
+        "monitored": true,
+        "monitorNewItems": "all",
+        "useSceneNumbering": false,
+        "runtime": 25,
+        "tvdbId": 75805,
+        "tvRageId": 4004,
+        "tvMazeId": 347,
+        "tmdbId": 2710,
+        "firstAired": "2005-08-04T00:00:00Z",
+        "lastAired": "2026-10-12T00:00:00Z",
+        "seriesType": "standard",
+        "cleanTitle": "itsalwayssunnyinphiladelphia",
+        "imdbId": "tt0472954",
+        "titleSlug": "its-always-sunny-in-philadelphia",
+        "certification": "TV-MA",
+        "genres": [
+          "Comedy"
+        ],
+        "tags": [],
+        "added": "2026-02-04T15:15:28Z",
+        "ratings": {
+          "votes": 287386,
+          "value": 8.8
+        },
+        "languageProfileId": 1,
+        "id": 38
+      },
+      "id": 7109
+    },
+    {
+      "seriesId": 38,
+      "tvdbId": 11928694,
+      "episodeFileId": 0,
+      "seasonNumber": 18,
+      "episodeNumber": 6,
+      "title": "The War on Alcohol",
+      "airDate": "2026-09-14",
+      "airDateUtc": "2026-09-15T02:00:00Z",
+      "runtime": 23,
+      "overview": "The Gang takes the trend against drinking into their own hands. Dennis, Dee, and Frank look to recruit white collar suits for happy hour while Mac and Charlie seek to enlist blue collar factory workers so they can return the bar to the melting pot it once was.",
+      "hasFile": false,
+      "monitored": true,
+      "unverifiedSceneNumbering": false,
+      "series": {
+        "title": "It's Always Sunny in Philadelphia",
+        "sortTitle": "its always sunny in philadelphia",
+        "status": "continuing",
+        "ended": false,
+        "overview": "Four egocentric friends who run a neighborhood Irish pub in Philadelphia try to find their way through the adult world of work and relationships. Unfortunately, their warped views and precarious judgments often lead them to trouble, creating a myriad of uncomfortable situations that usually only get worse before they get better.",
+        "network": "FXX",
+        "airTime": "22:00",
+        "images": [
+          {
+            "coverType": "banner",
+            "remoteUrl": "https://artworks.thetvdb.com/banners/graphical/75805-g3.jpg"
+          },
+          {
+            "coverType": "poster",
+            "remoteUrl": "https://artworks.thetvdb.com/banners/posters/75805-12.jpg"
+          },
+          {
+            "coverType": "fanart",
+            "remoteUrl": "https://artworks.thetvdb.com/banners/fanart/original/75805-20.jpg"
+          }
+        ],
+        "originalLanguage": {
+          "id": 1,
+          "name": "English"
+        },
+        "seasons": [
+          {
+            "seasonNumber": 1,
+            "monitored": true
+          },
+          {
+            "seasonNumber": 2,
+            "monitored": true
+          },
+          {
+            "seasonNumber": 3,
+            "monitored": true
+          }
+        ],
+        "year": 2005,
+        "path": "/data/tvshows/It's Always Sunny in Philadelphia (2005) [tvdbid-75805]",
+        "qualityProfileId": 9,
+        "seasonFolder": true,
+        "monitored": true,
+        "monitorNewItems": "all",
+        "useSceneNumbering": false,
+        "runtime": 25,
+        "tvdbId": 75805,
+        "tvRageId": 4004,
+        "tvMazeId": 347,
+        "tmdbId": 2710,
+        "firstAired": "2005-08-04T00:00:00Z",
+        "lastAired": "2026-10-12T00:00:00Z",
+        "seriesType": "standard",
+        "cleanTitle": "itsalwayssunnyinphiladelphia",
+        "imdbId": "tt0472954",
+        "titleSlug": "its-always-sunny-in-philadelphia",
+        "certification": "TV-MA",
+        "genres": [
+          "Comedy"
+        ],
+        "tags": [],
+        "added": "2026-02-04T15:15:28Z",
+        "ratings": {
+          "votes": 287386,
+          "value": 8.8
+        },
+        "languageProfileId": 1,
+        "id": 38
+      },
+      "id": 7108
+    }
+  ]
+}

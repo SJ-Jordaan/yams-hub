@@ -1,0 +1,188 @@
+[
+  {
+    "movieId": 1,
+    "sourceTitle": "/data/movies/Zootopia 2 (2025) [tmdbid-1084242]/Zootopia 2 (2025) [imdbid-tt26443597] - [WEBRip-1080p][AAC 5.1][x265]-DH.mkv",
+    "languages": [
+      {
+        "id": 1,
+        "name": "English"
+      }
+    ],
+    "quality": {
+      "quality": {
+        "id": 15,
+        "name": "WEBRip-1080p",
+        "source": "webrip",
+        "resolution": 1080,
+        "modifier": "none"
+      },
+      "revision": {
+        "version": 1,
+        "real": 0,
+        "isRepack": false
+      }
+    },
+    "customFormats": [
+      {
+        "id": 29,
+        "name": "x265 (HD)"
+      }
+    ],
+    "customFormatScore": -10000,
+    "qualityCutoffNotMet": true,
+    "date": "2026-03-01T17:36:27Z",
+    "eventType": "movieFileDeleted",
+    "data": {
+      "reason": "ManualOverride",
+      "releaseGroup": "DH",
+      "size": "2561322154",
+      "indexerFlags": "G_Freeleech"
+    },
+    "id": 737
+  },
+  {
+    "movieId": 1,
+    "sourceTitle": "/data/movies/Zootopia 2 (2025)/Zootopia 2 (2025).mkv",
+    "languages": [
+      {
+        "id": 1,
+        "name": "English"
+      }
+    ],
+    "quality": {
+      "quality": {
+        "id": 15,
+        "name": "WEBRip-1080p",
+        "source": "webrip",
+        "resolution": 1080,
+        "modifier": "none"
+      },
+      "revision": {
+        "version": 1,
+        "real": 0,
+        "isRepack": false
+      }
+    },
+    "customFormats": [],
+    "customFormatScore": 0,
+    "qualityCutoffNotMet": true,
+    "date": "2026-02-27T21:40:10Z",
+    "eventType": "movieFileRenamed",
+    "data": {
+      "sourcePath": "/data/movies/Zootopia 2 (2025)/Zootopia 2 (2025).mkv",
+      "sourceRelativePath": "Zootopia 2 (2025).mkv",
+      "path": "/data/movies/Zootopia 2 (2025)/Zootopia 2 (2025) [imdbid-tt26443597] - [WEBRip-1080p][AAC 5.1][x265]-DH.mkv",
+      "relativePath": "Zootopia 2 (2025) [imdbid-tt26443597] - [WEBRip-1080p][AAC 5.1][x265]-DH.mkv",
+      "releaseGroup": "DH",
+      "size": "2561322154",
+      "indexerFlags": "G_Freeleech"
+    },
+    "id": 219
+  },
+  {
+    "movieId": 1,
+    "sourceTitle": "Zootopia 2 2025 1080p WEBRip x265-DH",
+    "languages": [
+      {
+        "id": 1,
+        "name": "English"
+      }
+    ],
+    "quality": {
+      "quality": {
+        "id": 15,
+        "name": "WEBRip-1080p",
+        "source": "webrip",
+        "resolution": 1080,
+        "modifier": "none"
+      },
+      "revision": {
+        "version": 1,
+        "real": 0,
+        "isRepack": false
+      }
+    },
+    "customFormats": [
+      {
+        "id": 29,
+        "name": "x265 (HD)"
+      }
+    ],
+    "customFormatScore": -10000,
+    "qualityCutoffNotMet": true,
+    "date": "2026-02-03T20:42:57Z",
+    "downloadId": "243B9E23433F08D4173CA9066B6E9CE0252622CB",
+    "eventType": "downloadFolderImported",
+    "data": {
+      "fileId": "1",
+      "droppedPath": "/data/downloads/torrents/www.UIndex.org    -    Zootopia 2 2025 1080p WEBRip x265-DH/Zootopia 2 2025 1080p WEBRip x265-DH.mkv",
+      "importedPath": "/data/movies/Zootopia 2 (2025)/Zootopia 2 (2025).mkv",
+      "downloadClient": "qBittorrent",
+      "downloadClientName": "qBittorrent",
+      "releaseGroup": "DH",
+      "customFormatScore": "0",
+      "size": "2561322154",
+      "indexerFlags": "G_Freeleech"
+    },
+    "id": 3
+  },
+  {
+    "movieId": 1,
+    "sourceTitle": "Zootopia 2 2025 1080p WEBRip x265-DH",
+    "languages": [
+      {
+        "id": 1,
+        "name": "English"
+      }
+    ],
+    "quality": {
+      "quality": {
+        "id": 15,
+        "name": "WEBRip-1080p",
+        "source": "webrip",
+        "resolution": 1080,
+        "modifier": "none"
+      },
+      "revision": {
+        "version": 1,
+        "real": 0,
+        "isRepack": false
+      }
+    },
+    "customFormats": [
+      {
+        "id": 29,
+        "name": "x265 (HD)"
+      }
+    ],
+    "customFormatScore": -10000,
+    "qualityCutoffNotMet": true,
+    "date": "2026-02-03T20:26:11Z",
+    "downloadId": "243B9E23433F08D4173CA9066B6E9CE0252622CB",
+    "eventType": "grabbed",
+    "data": {
+      "indexer": "The Pirate Bay (Prowlarr)",
+      "nzbInfoUrl": "https://thepiratebay.org/description.php?id=81941082",
+      "releaseGroup": "DH",
+      "age": "7",
+      "ageHours": "179.40112834730556",
+      "ageMinutes": "10764.067702693334",
+      "publishedDate": "2026-01-27T09:02:07Z",
+      "downloadClient": "qBittorrent",
+      "downloadClientName": "qBittorrent",
+      "size": "2561323008",
+      "downloadUrl": "http://prowlarr:9696/2/download?apikey=REDACTED&link=QUQvSEc4WXlEeURRR3l0ZnM5ZURZSUcwbFVQYnNuNSs5cko1NHpobWt6OWljNEdodkQ0K2c1eUtDd3JCaHUvRkx3REZyVlRGYUQ1RXFHLzZvNjFhOTJENWhaamNsTitiY0ZScjc1dUtoTkFDUTY3WnpyN0wvbEhUWTd0bmpwR1Fzb09RNitvSkJpdUhDa0U2ek9VS2dBNUF6LzlLcmM5TW9NRzhRWS85eGJjNXlnMmM4U1B2YUVVbkU5akdaY3RYNkNKQnRFZVJQVTRIVFlNeDEzbkIxcUdNYm5ybm5nNmVyaFl6OW82WnNHRzQ3ZUZVWE9GYWNkRGw4aEFKLyt2OUQ3R3l0OTJ4UGhkdnFJbGdEYkdsSjRlN0ZCRzBuR01idmtGTm8zamNHTUs2bU52RWdQaDBoMUxJYlpOUUFSZDh2cTA0bXA2M0lzNW9sME1BSFpyZ0dsR3loRXAyL2JFaUVSWGZHWHpJb1RpU1lCL3lWd3M3WDNQZVE4Zm0ycVJUSk81UFQvdEZLNldtK3V5LzgrMlFjak9OUFUrL2FXUm9lbHVKNWEwVUZmVEtUNmlScFgwSUFvWVBsUzZINzJsb2dxWTA4cUxtSUtSVWR6ZXIzWjVseE1NamFFVlpqdEhrVzJqbG9lbS9mNTJNY0gxZGNTSTFvdU1iTHJrUk5HdDdXaXBoNDlMVmlHdUhYTXFWTGl4aE1YTjJnelpiQkk1aThYK1p5Qm1tOUFJeC9uekJFbHljU2hTV1l2VlNwelNvUWZzS1h6YmhicTVROGtDeEVaVzdKOHVSbGhiVCtSaTR3VWlqQWt5WVR6Q2NTN3pzTlJKNWMxZWlOWXFEazVOQ21QQkplRUZKTmVCODVaQ2JDeG9scFpCcUZ1WEtCTlFFR0NtcWluWDk0ZFRwWWxQWU9sZlkzTisxdEoybUpnWGNjeUFsWllrZnVaR3IxTlZCYzZXTkFGbUFrUHhjdkRBdWlaS3k3MUVpM2ZHOEFReWlZOWpTQXlTYzE0cnlqY25KUmRSaWNIWFlQUGgzRGVPMmw4bmFza0pJa0IyTUVVb0o1ZjRnbG9VUklIM1ZGNTlJdTNnMGhOSllzQUlVR1grb0NnU2ptcTVMSzBFRWMvdytVRWV6VTNLOXc3RTZPZFhaZjlndmRJTXV3eU5uTENDenJ1UURvOExYbFZCYjRBc0tYRE9oTDROSnBPRTFFRkFHUmoxZ05qVnBjUVEramowWmRCZWJRUTl4TlpxU1phQisyK1JwdGE4ZmttUmJkNGRKTWg5THpyQm9DYm1YRjg1YmQ3WmhXQXlxZnV1cWcvais0YWxSKzBVWWVRQUlmYUxUYStNYTFQSndmYXlmaUlLSkZjZ04rejNlNi9VOFdRclBwb3R6WEpuaGRMZ3NuMXkyWGkrU25zenk5QmV2TUdHYkFmTVRtemVxckhDa2dSWVJpbUFZdms2eVBZVFRVbkRYMldwVlBMVTAvejN3dm5oUndTd1BlWkJlcXhDZGVnS3g1ODZFQlJvRVVrYThsT2lJK29zbXBmT2gwVEd1KzAyRXpGNmpXV1JGQkd6R0JyellCZzYzckx0d09OT3E4dmhyb2dRaEdvRW5RbEpuTERsWFl6U1RLMENpQ1I5MDZJMmhTcEFSK0pwbVFYdm9MNk1meDFlZFJVNlZMa2ZsRnZKanNVS1lIS25yY2sveWdMa0ZOTjV2SW82TXdNd0pJazFSeXZNNjRod1dTNFFMczBURlhZSUovQ20reTdEWFdPbDdoaFRITys3VFUrUFJZakhDcDRoZXJMcTZCQU81SSt6VE44TE9rVWhTSk1xdDJXOWFKb0l4Sjk4YnpmdHhGWXo5Uzc5d2xwSXg5Rk10MmV0QUpldWFjWnRuSkJvb3czeVkzQkp1YVdlT3ZRdFhtMytUMHhBYnVmb3FuNHkyUHVEdFlzZWkwQkluN0NtRUtubFBRMTc4RTYxblRUaWxUM2pHcXE0TU82VElaRy80cnJQc0RuM3I4U3lZQlBRRFd4MDNvTVE4QTFJaFAraU5QNGtrWHFwZzZ1OG5iZS8wdzNRYk8vcThKNDU0cDZ0b0lRZ3RCc3l5aEdWOUpndz0&file=Zootopia+2+2025+1080p+WEBRip+x265-DH",
+      "guid": "magnet:?xt=urn:btih:243B9E23433F08D4173CA9066B6E9CE0252622CB&dn=Zootopia+2+2025+1080p+WEBRip+x265-DH&tr=http%3a%2f%2ftracker.opentrackr.org%3a1337%2fannounce&tr=udp%3a%2f%2ftracker.auctor.tv%3a6969%2fannounce&tr=udp%3a%2f%2fopentracker.i2p.rocks%3a6969%2fannounce&tr=https%3a%2f%2fopentracker.i2p.rocks%3a443%2fannounce&tr=udp%3a%2f%2fopen.demonii.com%3a1337%2fannounce&tr=udp%3a%2f%2ftracker.openbittorrent.com%3a6969%2fannounce&tr=http%3a%2f%2ftracker.openbittorrent.com%3a80%2fannounce&tr=udp%3a%2f%2fopen.stealth.si%3a80%2fannounce&tr=udp%3a%2f%2ftracker.torrent.eu.org%3a451%2fannounce&tr=udp%3a%2f%2ftracker.moeking.me%3a6969%2fannounce&tr=udp%3a%2f%2fexplodie.org%3a6969%2fannounce&tr=udp%3a%2f%2fexodus.desync.com%3a6969%2fannounce&tr=udp%3a%2f%2fuploads.gamecoast.net%3a6969%2fannounce&tr=udp%3a%2f%2ftracker1.bt.moack.co.kr%3a80%2fannounce&tr=udp%3a%2f%2ftracker.tiny-vps.com%3a6969%2fannounce&tr=udp%3a%2f%2ftracker.theoks.net%3a6969%2fannounce&tr=udp%3a%2f%2ftracker.skyts.net%3a6969%2fannounce&tr=udp%3a%2f%2ftracker-udp.gbitt.info%3a80%2fannounce&tr=udp%3a%2f%2fopen.tracker.ink%3a6969%2fannounce&tr=udp%3a%2f%2fmovies.zsw.ca%3a6969%2fannounce",
+      "tmdbId": "0",
+      "imdbId": "0",
+      "protocol": "2",
+      "customFormatScore": "0",
+      "movieMatchType": "Title",
+      "releaseSource": "Search",
+      "indexerFlags": "G_Freeleech",
+      "indexerId": "1",
+      "torrentInfoHash": "243B9E23433F08D4173CA9066B6E9CE0252622CB"
+    },
+    "id": 1
+  }
+]

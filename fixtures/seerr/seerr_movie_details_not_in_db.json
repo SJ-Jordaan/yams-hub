@@ -1,0 +1,478 @@
+{
+  "id": 603,
+  "adult": false,
+  "budget": 63000000,
+  "genres": [
+    {
+      "id": 28,
+      "name": "Action"
+    },
+    {
+      "id": 878,
+      "name": "Science Fiction"
+    }
+  ],
+  "relatedVideos": [
+    {
+      "site": "YouTube",
+      "key": "w-efbYj1YHA",
+      "name": "How KEANU REEVES prepared for THE MATRIX",
+      "size": 1080,
+      "type": "Featurette",
+      "url": "https://www.youtube.com/watch?v=w-efbYj1YHA"
+    },
+    {
+      "site": "YouTube",
+      "key": "CF5bBZ2t130",
+      "name": "Why The Wachowskis Invented \"Bullet Time” for 'The Matrix'",
+      "size": 1080,
+      "type": "Featurette",
+      "url": "https://www.youtube.com/watch?v=CF5bBZ2t130"
+    },
+    {
+      "site": "YouTube",
+      "key": "-_Rup7zDPGc",
+      "name": "How ‘The Matrix’ Almost Didn’t Get Made!",
+      "size": 1080,
+      "type": "Featurette",
+      "url": "https://www.youtube.com/watch?v=-_Rup7zDPGc"
+    },
+    {
+      "site": "YouTube",
+      "key": "fadsla_mVxk",
+      "name": "You’ll Never Believe How This 'Matrix' Shot Was Done!",
+      "size": 1080,
+      "type": "Behind the Scenes",
+      "url": "https://www.youtube.com/watch?v=fadsla_mVxk"
+    },
+    {
+      "site": "YouTube",
+      "key": "FVI84Dfx2-I",
+      "name": "Official 25th Anniversary Trailer #3",
+      "size": 2160,
+      "type": "Trailer",
+      "url": "https://www.youtube.com/watch?v=FVI84Dfx2-I"
+    }
+  ],
+  "originalLanguage": "en",
+  "originalTitle": "The Matrix",
+  "popularity": 38.2774,
+  "productionCompanies": [
+    {
+      "id": 79,
+      "name": "Village Roadshow Pictures",
+      "originCountry": "US",
+      "logoPath": "/at4uYdwAAgNRKhZuuFX8ShKSybw.png"
+    },
+    {
+      "id": 372,
+      "name": "Groucho II Film Partnership",
+      "originCountry": "",
+      "logoPath": null
+    },
+    {
+      "id": 1885,
+      "name": "Silver Pictures",
+      "originCountry": "US",
+      "logoPath": "/xlvoOZr4s1PygosrwZyolIFe5xs.png"
+    },
+    {
+      "id": 174,
+      "name": "Warner Bros. Pictures",
+      "originCountry": "US",
+      "logoPath": "/zhD3hhtKB5qyv7ZeL4uLpNxgMVU.png"
+    }
+  ],
+  "productionCountries": [
+    {
+      "iso_3166_1": "US",
+      "name": "United States of America"
+    }
+  ],
+  "releaseDate": "1999-03-31",
+  "releases": {
+    "results": [
+      {
+        "iso_3166_1": "AE",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2016-01-07T00:00:00.000Z",
+            "type": 4
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "AR",
+        "release_dates": [
+          {
+            "certification": "13",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "1999-06-10T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "Re-Release",
+            "release_date": "2003-10-02T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "IMAX Re-Release",
+            "release_date": "2021-12-09T00:00:00.000Z",
+            "type": 3
+          },
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "25th Anniversary 4K Re-Release",
+            "release_date": "2024-06-06T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "AT",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "1999-09-03T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "AU",
+        "release_dates": [
+          {
+            "certification": "M",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "1999-04-08T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "BD",
+        "release_dates": [
+          {
+            "certification": "",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "1999-07-14T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      }
+    ]
+  },
+  "revenue": 463517383,
+  "spokenLanguages": [
+    {
+      "english_name": "English",
+      "iso_639_1": "en",
+      "name": "English"
+    }
+  ],
+  "status": "Released",
+  "title": "The Matrix",
+  "video": false,
+  "voteAverage": 8.263,
+  "voteCount": 29186,
+  "backdropPath": "/tlm8UkiQsitc8rSuIAscQDCnP8d.jpg",
+  "homepage": "http://www.warnerbros.com/matrix",
+  "imdbId": "tt0133093",
+  "overview": "Set in the 22nd century, The Matrix tells the story of a computer hacker who joins a group of underground insurgents fighting the vast and powerful computers who now rule the earth.",
+  "posterPath": "/dXNAPwY7VrqMAo51EKhhCJfaGb5.jpg",
+  "runtime": 136,
+  "tagline": "Believe the unbelievable.",
+  "credits": {
+    "cast": [
+      {
+        "castId": 34,
+        "character": "Neo",
+        "creditId": "52fe425bc3a36847f80181c1",
+        "id": 6384,
+        "name": "Keanu Reeves",
+        "order": 0,
+        "gender": 2,
+        "profilePath": "/8RZLOyYGsoRe9p44q3xin9QkMHv.jpg"
+      },
+      {
+        "castId": 21,
+        "character": "Morpheus",
+        "creditId": "52fe425bc3a36847f801818d",
+        "id": 2975,
+        "name": "Laurence Fishburne",
+        "order": 1,
+        "gender": 2,
+        "profilePath": "/2GbXERENPpl5MmlqOLlPVaVtifD.jpg"
+      },
+      {
+        "castId": 22,
+        "character": "Trinity",
+        "creditId": "52fe425bc3a36847f8018191",
+        "id": 530,
+        "name": "Carrie-Anne Moss",
+        "order": 2,
+        "gender": 1,
+        "profilePath": "/9zya72vRZYBQILfetACsnmCBgdj.jpg"
+      },
+      {
+        "castId": 23,
+        "character": "Agent Smith",
+        "creditId": "52fe425bc3a36847f8018195",
+        "id": 1331,
+        "name": "Hugo Weaving",
+        "order": 3,
+        "gender": 2,
+        "profilePath": "/lSC8Et0PYi5zeQb3IpPkFje7hgR.jpg"
+      },
+      {
+        "castId": 24,
+        "character": "Oracle",
+        "creditId": "52fe425bc3a36847f8018199",
+        "id": 9364,
+        "name": "Gloria Foster",
+        "order": 4,
+        "gender": 1,
+        "profilePath": "/AriGXtC9fjBOia9Zr8CZjn4o3rx.jpg"
+      }
+    ],
+    "crew": [
+      {
+        "creditId": "52fe425bc3a36847f8018153",
+        "department": "Art",
+        "id": 9343,
+        "job": "Production Design",
+        "name": "Owen Paterson",
+        "gender": 2,
+        "profilePath": null
+      },
+      {
+        "creditId": "52fe425bc3a36847f801815f",
+        "department": "Art",
+        "id": 9345,
+        "job": "Art Direction",
+        "name": "Michelle McGahey",
+        "gender": 1,
+        "profilePath": null
+      },
+      {
+        "creditId": "52fe425bc3a36847f801816b",
+        "department": "Costume & Make-Up",
+        "id": 6209,
+        "job": "Costume Design",
+        "name": "Kym Barrett",
+        "gender": 1,
+        "profilePath": "/cZ3jE9PNY6kiI45kFUOIjeyxPlU.jpg"
+      },
+      {
+        "creditId": "52fe425bc3a36847f801812f",
+        "department": "Production",
+        "id": 1091,
+        "job": "Producer",
+        "name": "Joel Silver",
+        "gender": 2,
+        "profilePath": null
+      },
+      {
+        "creditId": "52fe425bc3a36847f801813b",
+        "department": "Camera",
+        "id": 9341,
+        "job": "Director of Photography",
+        "name": "Bill Pope",
+        "gender": 2,
+        "profilePath": "/kpakvuSrk1D9D8WMt5SOi4Rs2EV.jpg"
+      }
+    ]
+  },
+  "collection": {
+    "id": 2344,
+    "name": "The Matrix Collection",
+    "posterPath": "/bV9qTVHTVf0gkW0j7p7M0ILD4pG.jpg",
+    "backdropPath": "/bRm2DEgUiYciDw3myHuYFInD7la.jpg"
+  },
+  "externalIds": {
+    "facebookId": "TheMatrixMovie",
+    "imdbId": "tt0133093",
+    "instagramId": "thematrixmovie",
+    "twitterId": "thematrixmovie"
+  },
+  "watchProviders": [
+    {
+      "iso_3166_1": "AD",
+      "link": "https://www.themoviedb.org/movie/603-the-matrix/watch?locale=AD",
+      "buy": [],
+      "flatrate": [
+        {
+          "displayPriority": 2,
+          "logoPath": "/gMZdpavHmxFNnLpMHwVxfqeux2g.png",
+          "id": 119,
+          "name": "Amazon Prime Video"
+        },
+        {
+          "displayPriority": 25,
+          "logoPath": "/skypuy7SXuugIQeYg0IglmzoKaS.png",
+          "id": 1899,
+          "name": "HBO Max"
+        }
+      ]
+    },
+    {
+      "iso_3166_1": "AE",
+      "link": "https://www.themoviedb.org/movie/603-the-matrix/watch?locale=AE",
+      "buy": [
+        {
+          "displayPriority": 4,
+          "logoPath": "/qdEGArH3lKfFnAtYXMkSYk5wxuG.png",
+          "id": 2,
+          "name": "Apple TV Store"
+        }
+      ],
+      "flatrate": [
+        {
+          "displayPriority": 8,
+          "logoPath": "/3Gfphgh5Uvcvb3IgbwUn79CT8Un.png",
+          "id": 629,
+          "name": "OSN+"
+        },
+        {
+          "displayPriority": 12,
+          "logoPath": "/vmBE15FtFOa5RDcH5LEy5TftBLI.png",
+          "id": 1715,
+          "name": "Shahid VIP"
+        }
+      ]
+    },
+    {
+      "iso_3166_1": "AG",
+      "link": "https://www.themoviedb.org/movie/603-the-matrix/watch?locale=AG",
+      "buy": [],
+      "flatrate": [
+        {
+          "displayPriority": 11,
+          "logoPath": "/skypuy7SXuugIQeYg0IglmzoKaS.png",
+          "id": 1899,
+          "name": "HBO Max"
+        }
+      ]
+    },
+    {
+      "iso_3166_1": "AR",
+      "link": "https://www.themoviedb.org/movie/603-the-matrix/watch?locale=AR",
+      "buy": [
+        {
+          "displayPriority": 5,
+          "logoPath": "/qdEGArH3lKfFnAtYXMkSYk5wxuG.png",
+          "id": 2,
+          "name": "Apple TV Store"
+        }
+      ],
+      "flatrate": [
+        {
+          "displayPriority": 7,
+          "logoPath": "/kxUmV9TCZHfukpVOMuN90Jibbnm.png",
+          "id": 339,
+          "name": "MovistarTV"
+        },
+        {
+          "displayPriority": 34,
+          "logoPath": "/skypuy7SXuugIQeYg0IglmzoKaS.png",
+          "id": 1899,
+          "name": "HBO Max"
+        }
+      ]
+    },
+    {
+      "iso_3166_1": "AT",
+      "link": "https://www.themoviedb.org/movie/603-the-matrix/watch?locale=AT",
+      "buy": [
+        {
+          "displayPriority": 5,
+          "logoPath": "/jn6TLbtaTZntTRX9UYucHJvpQx1.png",
+          "id": 10,
+          "name": "Amazon Video"
+        },
+        {
+          "displayPriority": 6,
+          "logoPath": "/qdEGArH3lKfFnAtYXMkSYk5wxuG.png",
+          "id": 2,
+          "name": "Apple TV Store"
+        },
+        {
+          "displayPriority": 10,
+          "logoPath": "/872dfVu1biZISJ8rO143CZZutPR.png",
+          "id": 35,
+          "name": "Rakuten TV"
+        },
+        {
+          "displayPriority": 15,
+          "logoPath": "/mjB4eyswPoC0XeJPUd1W1oitOlh.png",
+          "id": 20,
+          "name": "maxdome Store"
+        },
+        {
+          "displayPriority": 19,
+          "logoPath": "/nNkZ1JKe6vNhzti14KiKEUWHE6H.png",
+          "id": 130,
+          "name": "Sky Store"
+        }
+      ],
+      "flatrate": [
+        {
+          "displayPriority": 150,
+          "logoPath": "/64fLWeSyZ1KQZhIdvTdy4QHeWty.png",
+          "id": 1825,
+          "name": "HBO Max Amazon Channel"
+        },
+        {
+          "displayPriority": 151,
+          "logoPath": "/skypuy7SXuugIQeYg0IglmzoKaS.png",
+          "id": 1899,
+          "name": "HBO Max"
+        }
+      ]
+    }
+  ],
+  "keywords": [
+    {
+      "id": 312,
+      "name": "man vs machine"
+    },
+    {
+      "id": 779,
+      "name": "martial arts"
+    },
+    {
+      "id": 663,
+      "name": "fortune teller"
+    },
+    {
+      "id": 310,
+      "name": "artificial intelligence (a.i.)"
+    },
+    {
+      "id": 83,
+      "name": "saving the world"
+    }
+  ],
+  "onUserWatchlist": false
+}

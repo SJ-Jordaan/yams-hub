@@ -1,0 +1,610 @@
+{
+  "Name": "Austin Powers in Goldmember",
+  "OriginalTitle": "Austin Powers in Goldmember",
+  "ServerId": "79315eab3c4c401f8391d5c26210b6d7",
+  "Id": "2c9be43f2af318954f1dac93bc87b209",
+  "Etag": "fde6819412f623acef80760e0692eb46",
+  "DateCreated": "2026-10-24T17:27:20.3590001Z",
+  "CanDelete": true,
+  "CanDownload": true,
+  "HasSubtitles": true,
+  "Container": "mkv",
+  "SortName": "austin powers in goldmember",
+  "PremiereDate": "2002-07-26T00:00:00.0000000Z",
+  "ExternalUrls": [
+    {
+      "Name": "IMDb",
+      "Url": "https://www.imdb.com/title/tt0295178"
+    },
+    {
+      "Name": "TMDB",
+      "Url": "https://www.themoviedb.org/movie/818"
+    }
+  ],
+  "MediaSources": [
+    {
+      "Protocol": "File",
+      "Id": "2c9be43f2af318954f1dac93bc87b209",
+      "Path": "/data/movies/Austin Powers in Goldmember (2002) [tmdbid-818]/Austin Powers in Goldmember (2002) [imdbid-tt0295178] - [Remux-1080p][TrueHD 5.1][VC1]-HDX.mkv",
+      "Type": "Default",
+      "Container": "mkv",
+      "Size": 18047609689,
+      "Name": "Austin Powers in Goldmember (2002) [imdbid-tt0295178] - [Remux-1080p][TrueHD 5.1][VC1]-HDX",
+      "IsRemote": false,
+      "ETag": "d63a6136136b18180dfd9e0044bdbe68",
+      "RunTimeTicks": 56717070000,
+      "ReadAtNativeFramerate": false,
+      "IgnoreDts": false,
+      "IgnoreIndex": false,
+      "GenPtsInput": false,
+      "SupportsTranscoding": true,
+      "SupportsDirectStream": true,
+      "SupportsDirectPlay": true,
+      "IsInfiniteStream": false,
+      "UseMostCompatibleTranscodingProfile": false,
+      "RequiresOpening": false,
+      "RequiresClosing": false,
+      "RequiresLooping": false,
+      "SupportsProbing": true,
+      "VideoType": "VideoFile",
+      "MediaStreams": [
+        {
+          "Codec": "subrip",
+          "Language": "eng",
+          "TimeBase": "1/1000",
+          "VideoRange": "Unknown",
+          "VideoRangeType": "Unknown",
+          "AudioSpatialFormat": "None",
+          "LocalizedUndefined": "Undefined",
+          "LocalizedDefault": "Default",
+          "LocalizedForced": "Forced",
+          "LocalizedExternal": "External",
+          "LocalizedHearingImpaired": "Hearing Impaired",
+          "LocalizedLanguage": "English",
+          "DisplayTitle": "English - SUBRIP - External",
+          "IsInterlaced": false,
+          "IsDefault": false,
+          "IsForced": false,
+          "IsHearingImpaired": false,
+          "IsOriginal": false,
+          "Type": "Subtitle",
+          "Index": 0,
+          "Score": 111222,
+          "IsExternal": true,
+          "IsTextSubtitleStream": true,
+          "SupportsExternalStream": true,
+          "Path": "/data/movies/Austin Powers in Goldmember (2002) [tmdbid-818]/Austin Powers in Goldmember (2002) [imdbid-tt0295178] - [Remux-1080p][TrueHD 5.1][VC1]-HDX.en.srt"
+        },
+        {
+          "Codec": "vc1",
+          "CodecTag": "WVC1",
+          "TimeBase": "1/1000",
+          "Title": "",
+          "VideoRange": "SDR",
+          "VideoRangeType": "SDR",
+          "AudioSpatialFormat": "None",
+          "DisplayTitle": "1080p VC1 SDR",
+          "IsInterlaced": false,
+          "BitRate": 21256335,
+          "BitDepth": 8,
+          "RefFrames": 1,
+          "IsDefault": true,
+          "IsForced": false,
+          "IsHearingImpaired": false,
+          "IsOriginal": false,
+          "Height": 1080,
+          "Width": 1920,
+          "AverageFrameRate": 23.976025,
+          "RealFrameRate": 23.976025,
+          "ReferenceFrameRate": 23.976025,
+          "Profile": "Advanced",
+          "Type": "Video",
+          "AspectRatio": "16:9",
+          "Index": 1,
+          "IsExternal": false,
+          "IsTextSubtitleStream": false,
+          "SupportsExternalStream": false,
+          "PixelFormat": "yuv420p",
+          "Level": 3,
+          "IsAnamorphic": false
+        },
+        {
+          "Codec": "truehd",
+          "Language": "eng",
+          "TimeBase": "1/1000",
+          "VideoRange": "Unknown",
+          "VideoRangeType": "Unknown",
+          "AudioSpatialFormat": "None",
+          "LocalizedDefault": "Default",
+          "LocalizedExternal": "External",
+          "LocalizedLanguage": "English",
+          "LocalizedOriginal": "Original",
+          "DisplayTitle": "English - TRUEHD - 5.1 - Default",
+          "IsInterlaced": false,
+          "ChannelLayout": "5.1",
+          "BitRate": 4200000,
+          "BitDepth": 24,
+          "Channels": 6,
+          "SampleRate": 48000,
+          "IsDefault": true,
+          "IsForced": false,
+          "IsHearingImpaired": false,
+          "IsOriginal": false,
+          "Type": "Audio",
+          "Index": 2,
+          "IsExternal": false,
+          "IsTextSubtitleStream": false,
+          "SupportsExternalStream": false
+        },
+        {
+          "Codec": "PGSSUB",
+          "Language": "eng",
+          "TimeBase": "1/1000",
+          "VideoRange": "Unknown",
+          "VideoRangeType": "Unknown",
+          "AudioSpatialFormat": "None",
+          "LocalizedUndefined": "Undefined",
+          "LocalizedDefault": "Default",
+          "LocalizedForced": "Forced",
+          "LocalizedExternal": "External",
+          "LocalizedHearingImpaired": "Hearing Impaired",
+          "LocalizedLanguage": "English",
+          "DisplayTitle": "English - Default - PGSSUB",
+          "IsInterlaced": false,
+          "IsDefault": true,
+          "IsForced": false,
+          "IsHearingImpaired": false,
+          "IsOriginal": false,
+          "Height": 1080,
+          "Width": 1920,
+          "Type": "Subtitle",
+          "Index": 3,
+          "Score": 112211,
+          "IsExternal": false,
+          "IsTextSubtitleStream": false,
+          "SupportsExternalStream": true
+        },
+        {
+          "Codec": "PGSSUB",
+          "Language": "spa",
+          "TimeBase": "1/1000",
+          "VideoRange": "Unknown",
+          "VideoRangeType": "Unknown",
+          "AudioSpatialFormat": "None",
+          "LocalizedUndefined": "Undefined",
+          "LocalizedDefault": "Default",
+          "LocalizedForced": "Forced",
+          "LocalizedExternal": "External",
+          "LocalizedHearingImpaired": "Hearing Impaired",
+          "LocalizedLanguage": "Spanish",
+          "DisplayTitle": "Spanish - PGSSUB",
+          "IsInterlaced": false,
+          "IsDefault": false,
+          "IsForced": false,
+          "IsHearingImpaired": false,
+          "IsOriginal": false,
+          "Height": 1080,
+          "Width": 1920,
+          "Type": "Subtitle",
+          "Index": 4,
+          "IsExternal": false,
+          "IsTextSubtitleStream": false,
+          "SupportsExternalStream": true
+        },
+        {
+          "Codec": "PGSSUB",
+          "Language": "eng",
+          "TimeBase": "1/1000",
+          "VideoRange": "Unknown",
+          "VideoRangeType": "Unknown",
+          "AudioSpatialFormat": "None",
+          "LocalizedUndefined": "Undefined",
+          "LocalizedDefault": "Default",
+          "LocalizedForced": "Forced",
+          "LocalizedExternal": "External",
+          "LocalizedHearingImpaired": "Hearing Impaired",
+          "LocalizedLanguage": "English",
+          "DisplayTitle": "English - PGSSUB",
+          "IsInterlaced": false,
+          "IsDefault": false,
+          "IsForced": false,
+          "IsHearingImpaired": false,
+          "IsOriginal": false,
+          "Height": 1080,
+          "Width": 1920,
+          "Type": "Subtitle",
+          "Index": 5,
+          "IsExternal": false,
+          "IsTextSubtitleStream": false,
+          "SupportsExternalStream": true
+        }
+      ],
+      "MediaAttachments": [],
+      "Formats": [],
+      "Bitrate": 25456335,
+      "RequiredHttpHeaders": {},
+      "TranscodingSubProtocol": "http",
+      "DefaultAudioStreamIndex": 2,
+      "DefaultSubtitleStreamIndex": 0,
+      "HasSegments": false
+    }
+  ],
+  "CriticRating": 52,
+  "ProductionLocations": [
+    "United States of America"
+  ],
+  "Path": "/data/movies/Austin Powers in Goldmember (2002) [tmdbid-818]/Austin Powers in Goldmember (2002) [imdbid-tt0295178] - [Remux-1080p][TrueHD 5.1][VC1]-HDX.mkv",
+  "EnableMediaSourceDisplay": true,
+  "OfficialRating": "PG-13",
+  "ChannelId": null,
+  "Overview": "The world's most shagadelic spy continues his fight against Dr. Evil. This time, the diabolical doctor and his clone, Mini-Me, team up with a new foe—'70s kingpin Goldmember. While pursuing the team of villains to stop them from world domination, Austin gets help from his dad and an old girlfriend.",
+  "Taglines": [
+    "The grooviest movie of the summer has a secret, baby!"
+  ],
+  "Genres": [
+    "Comedy",
+    "Crime"
+  ],
+  "CommunityRating": 6.022,
+  "RunTimeTicks": 56717070000,
+  "PlayAccess": "Full",
+  "ProductionYear": 2002,
+  "RemoteTrailers": [
+    {
+      "Url": "https://www.youtube.com/watch?v=JuOVbayBr0I",
+      "Name": "Austin Powers in Goldmember (2002) Original Trailer [FHD]"
+    }
+  ],
+  "ProviderIds": {
+    "Imdb": "tt0295178",
+    "Tmdb": "818",
+    "TmdbCollection": "1006"
+  },
+  "IsHD": true,
+  "IsFolder": false,
+  "ParentId": "429cfa5c1648e89c5f696f08e19b138f",
+  "Type": "Movie",
+  "People": [
+    {
+      "Name": "Mike Myers",
+      "Id": "0d7ba2c2a1a4a33880cee2fdce1b7801",
+      "Role": "Austin Powers / Dr. Evil / Goldmember / Fat Bastard",
+      "Type": "Actor",
+      "PrimaryImageTag": "00e43c31aafb59d26da370e594a1f9cc",
+      "ImageBlurHashes": {
+        "Primary": {
+          "00e43c31aafb59d26da370e594a1f9cc": "dOJai*^+KhK3~Uni_4%N68I;ibw]pIR*t6%M^*jtkDxa"
+        }
+      }
+    },
+    {
+      "Name": "Beyoncé",
+      "Id": "3c77c019f0b6e88df4807e95cbaabf8b",
+      "Role": "Foxxy Cleopatra",
+      "Type": "Actor",
+      "PrimaryImageTag": "77fcbed1515e3130e56258d7dbc5906b",
+      "ImageBlurHashes": {
+        "Primary": {
+          "77fcbed1515e3130e56258d7dbc5906b": "d6BC73NG0}-U}sjaIWsT9uxZ-BoL$zoLkDayELay-Uaz"
+        }
+      }
+    },
+    {
+      "Name": "Seth Green",
+      "Id": "baaa7dafaac984826ed32f55b755c5ee",
+      "Role": "Scott Evil",
+      "Type": "Actor",
+      "PrimaryImageTag": "1afa028a1f60141a22aa038f5b9c8290",
+      "ImageBlurHashes": {
+        "Primary": {
+          "1afa028a1f60141a22aa038f5b9c8290": "dKAl^P%10zI;$eoJIoRjEkWW-Us:9tWV%2ofIoWBxas:"
+        }
+      }
+    },
+    {
+      "Name": "Michael York",
+      "Id": "2080204b989df8651f3e374bbd4235e0",
+      "Role": "Basil Exposition",
+      "Type": "Actor",
+      "PrimaryImageTag": "3cfbcb5e85be17119ae7ee2f39f36cb3",
+      "ImageBlurHashes": {
+        "Primary": {
+          "3cfbcb5e85be17119ae7ee2f39f36cb3": "daEBX0s:0zR*r=jZbcj[9^WC$hoeI;oft6R*RkWBs.t6"
+        }
+      }
+    },
+    {
+      "Name": "Robert Wagner",
+      "Id": "35209148804c00d30655cea470db09c4",
+      "Role": "Number Two",
+      "Type": "Actor",
+      "PrimaryImageTag": "95007765870ce60d2931adf4b9258764",
+      "ImageBlurHashes": {
+        "Primary": {
+          "95007765870ce60d2931adf4b9258764": "dgH2Zijt%M%M~qt7-;ofxuofWCay%MkCRjRj_2WBRjof"
+        }
+      }
+    }
+  ],
+  "Studios": [
+    {
+      "Name": "Eric's Boy",
+      "Id": "d798014fb62b885f76e9ea5feed49c63"
+    },
+    {
+      "Name": "New Line Cinema",
+      "Id": "7873ccad8e0c6cb8e4381eaf1d35e7fa"
+    },
+    {
+      "Name": "Team Todd",
+      "Id": "07378c25605455edf1c1363f425d5fde"
+    },
+    {
+      "Name": "Gratitude International",
+      "Id": "0d7e7254afaf7b000103cfcdd4d1a869"
+    },
+    {
+      "Name": "Moving Pictures",
+      "Id": "bd6a11c29c76ab5b87432503421cdb10"
+    }
+  ],
+  "GenreItems": [
+    {
+      "Name": "Comedy",
+      "Id": "08d31605d366d63a7a924f944b4417f1"
+    },
+    {
+      "Name": "Crime",
+      "Id": "83a9dab21914792744c8fb23b9925dc6"
+    }
+  ],
+  "LocalTrailerCount": 0,
+  "UserData": {
+    "PlaybackPositionTicks": 0,
+    "PlayCount": 0,
+    "IsFavorite": false,
+    "Played": false,
+    "Key": "818",
+    "ItemId": "2c9be43f2af318954f1dac93bc87b209"
+  },
+  "SpecialFeatureCount": 0,
+  "DisplayPreferencesId": "dbf7709c41faaa746463d67978eb863d",
+  "Tags": [
+    "gold",
+    "helicopter",
+    "sibling relationship",
+    "saving the world",
+    "submarine"
+  ],
+  "PrimaryImageAspectRatio": 0.6666666666666666,
+  "MediaStreams": [
+    {
+      "Codec": "subrip",
+      "Language": "eng",
+      "TimeBase": "1/1000",
+      "VideoRange": "Unknown",
+      "VideoRangeType": "Unknown",
+      "AudioSpatialFormat": "None",
+      "LocalizedUndefined": "Undefined",
+      "LocalizedDefault": "Default",
+      "LocalizedForced": "Forced",
+      "LocalizedExternal": "External",
+      "LocalizedHearingImpaired": "Hearing Impaired",
+      "LocalizedLanguage": "English",
+      "DisplayTitle": "English - SUBRIP - External",
+      "IsInterlaced": false,
+      "IsDefault": false,
+      "IsForced": false,
+      "IsHearingImpaired": false,
+      "IsOriginal": false,
+      "Type": "Subtitle",
+      "Index": 0,
+      "Score": 111222,
+      "IsExternal": true,
+      "IsTextSubtitleStream": true,
+      "SupportsExternalStream": true,
+      "Path": "/data/movies/Austin Powers in Goldmember (2002) [tmdbid-818]/Austin Powers in Goldmember (2002) [imdbid-tt0295178] - [Remux-1080p][TrueHD 5.1][VC1]-HDX.en.srt"
+    },
+    {
+      "Codec": "vc1",
+      "CodecTag": "WVC1",
+      "TimeBase": "1/1000",
+      "Title": "",
+      "VideoRange": "SDR",
+      "VideoRangeType": "SDR",
+      "AudioSpatialFormat": "None",
+      "DisplayTitle": "1080p VC1 SDR",
+      "IsInterlaced": false,
+      "BitRate": 21256335,
+      "BitDepth": 8,
+      "RefFrames": 1,
+      "IsDefault": true,
+      "IsForced": false,
+      "IsHearingImpaired": false,
+      "IsOriginal": false,
+      "Height": 1080,
+      "Width": 1920,
+      "AverageFrameRate": 23.976025,
+      "RealFrameRate": 23.976025,
+      "ReferenceFrameRate": 23.976025,
+      "Profile": "Advanced",
+      "Type": "Video",
+      "AspectRatio": "16:9",
+      "Index": 1,
+      "IsExternal": false,
+      "IsTextSubtitleStream": false,
+      "SupportsExternalStream": false,
+      "PixelFormat": "yuv420p",
+      "Level": 3,
+      "IsAnamorphic": false
+    },
+    {
+      "Codec": "truehd",
+      "Language": "eng",
+      "TimeBase": "1/1000",
+      "VideoRange": "Unknown",
+      "VideoRangeType": "Unknown",
+      "AudioSpatialFormat": "None",
+      "LocalizedDefault": "Default",
+      "LocalizedExternal": "External",
+      "LocalizedLanguage": "English",
+      "LocalizedOriginal": "Original",
+      "DisplayTitle": "English - TRUEHD - 5.1 - Default",
+      "IsInterlaced": false,
+      "ChannelLayout": "5.1",
+      "BitRate": 4200000,
+      "BitDepth": 24,
+      "Channels": 6,
+      "SampleRate": 48000,
+      "IsDefault": true,
+      "IsForced": false,
+      "IsHearingImpaired": false,
+      "IsOriginal": false,
+      "Type": "Audio",
+      "Index": 2,
+      "IsExternal": false,
+      "IsTextSubtitleStream": false,
+      "SupportsExternalStream": false
+    },
+    {
+      "Codec": "PGSSUB",
+      "Language": "eng",
+      "TimeBase": "1/1000",
+      "VideoRange": "Unknown",
+      "VideoRangeType": "Unknown",
+      "AudioSpatialFormat": "None",
+      "LocalizedUndefined": "Undefined",
+      "LocalizedDefault": "Default",
+      "LocalizedForced": "Forced",
+      "LocalizedExternal": "External",
+      "LocalizedHearingImpaired": "Hearing Impaired",
+      "LocalizedLanguage": "English",
+      "DisplayTitle": "English - Default - PGSSUB",
+      "IsInterlaced": false,
+      "IsDefault": true,
+      "IsForced": false,
+      "IsHearingImpaired": false,
+      "IsOriginal": false,
+      "Height": 1080,
+      "Width": 1920,
+      "Type": "Subtitle",
+      "Index": 3,
+      "Score": 112211,
+      "IsExternal": false,
+      "IsTextSubtitleStream": false,
+      "SupportsExternalStream": true
+    },
+    {
+      "Codec": "PGSSUB",
+      "Language": "spa",
+      "TimeBase": "1/1000",
+      "VideoRange": "Unknown",
+      "VideoRangeType": "Unknown",
+      "AudioSpatialFormat": "None",
+      "LocalizedUndefined": "Undefined",
+      "LocalizedDefault": "Default",
+      "LocalizedForced": "Forced",
+      "LocalizedExternal": "External",
+      "LocalizedHearingImpaired": "Hearing Impaired",
+      "LocalizedLanguage": "Spanish",
+      "DisplayTitle": "Spanish - PGSSUB",
+      "IsInterlaced": false,
+      "IsDefault": false,
+      "IsForced": false,
+      "IsHearingImpaired": false,
+      "IsOriginal": false,
+      "Height": 1080,
+      "Width": 1920,
+      "Type": "Subtitle",
+      "Index": 4,
+      "IsExternal": false,
+      "IsTextSubtitleStream": false,
+      "SupportsExternalStream": true
+    },
+    {
+      "Codec": "PGSSUB",
+      "Language": "eng",
+      "TimeBase": "1/1000",
+      "VideoRange": "Unknown",
+      "VideoRangeType": "Unknown",
+      "AudioSpatialFormat": "None",
+      "LocalizedUndefined": "Undefined",
+      "LocalizedDefault": "Default",
+      "LocalizedForced": "Forced",
+      "LocalizedExternal": "External",
+      "LocalizedHearingImpaired": "Hearing Impaired",
+      "LocalizedLanguage": "English",
+      "DisplayTitle": "English - PGSSUB",
+      "IsInterlaced": false,
+      "IsDefault": false,
+      "IsForced": false,
+      "IsHearingImpaired": false,
+      "IsOriginal": false,
+      "Height": 1080,
+      "Width": 1920,
+      "Type": "Subtitle",
+      "Index": 5,
+      "IsExternal": false,
+      "IsTextSubtitleStream": false,
+      "SupportsExternalStream": true
+    }
+  ],
+  "VideoType": "VideoFile",
+  "ImageTags": {
+    "Primary": "53a970d963a05e7e4443777690c6171b",
+    "Logo": "6bd66053cdfc38a8313a30d6195f3260",
+    "Thumb": "350f6b07e1924df18024407156f3907e"
+  },
+  "BackdropImageTags": [
+    "0bd9c31cff2059ae539b65a2a1bd7a1d"
+  ],
+  "ImageBlurHashes": {
+    "Backdrop": {
+      "0bd9c31cff2059ae539b65a2a1bd7a1d": "WyCb}~xuG^PBw[kqPWS4n~s:n3jZbvofn$RjWBs.k?W=WYo1s.f+"
+    },
+    "Primary": {
+      "53a970d963a05e7e4443777690c6171b": "diFs#^-oCTTftSbIT0ogCTNIwHXAtSozS$RkXTozn#jE"
+    },
+    "Logo": {
+      "6bd66053cdfc38a8313a30d6195f3260": "NWHKm{^IV=s.M{oz.8E3E2oLRPxa0;M}jEoeRjt6"
+    },
+    "Thumb": {
+      "350f6b07e1924df18024407156f3907e": "WdM$hc~L?lMzs8xW~Rf+-lsmWBjF$^ajXRs:t6s9xFkCSgRnxGRk"
+    }
+  },
+  "Chapters": [
+    {
+      "StartPositionTicks": 0,
+      "Name": "Chapter 1",
+      "ImageDateModified": "0001-01-01T00:00:00.0000000Z"
+    },
+    {
+      "StartPositionTicks": 4501160000,
+      "Name": "Chapter 2",
+      "ImageDateModified": "0001-01-01T00:00:00.0000000Z"
+    },
+    {
+      "StartPositionTicks": 7872030000,
+      "Name": "Chapter 3",
+      "ImageDateModified": "0001-01-01T00:00:00.0000000Z"
+    },
+    {
+      "StartPositionTicks": 14244640000,
+      "Name": "Chapter 4",
+      "ImageDateModified": "0001-01-01T00:00:00.0000000Z"
+    },
+    {
+      "StartPositionTicks": 20261900000,
+      "Name": "Chapter 5",
+      "ImageDateModified": "0001-01-01T00:00:00.0000000Z"
+    }
+  ],
+  "Trickplay": {},
+  "LocationType": "FileSystem",
+  "MediaType": "Video",
+  "LockedFields": [],
+  "LockData": false,
+  "Width": 1920,
+  "Height": 1080,
+  "OriginalLanguage": "en"
+}

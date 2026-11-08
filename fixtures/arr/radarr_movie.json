@@ -1,0 +1,719 @@
+[
+  {
+    "title": "Zootopia 2",
+    "originalTitle": "Zootopia 2",
+    "originalLanguage": {
+      "id": 1,
+      "name": "English"
+    },
+    "alternateTitles": [
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 1,
+        "title": "زوتروبوليس ٢",
+        "id": 1
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 1,
+        "title": "زوتروبوليس 2",
+        "id": 2
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 1,
+        "title": "นครสัตว์มหาสนุก 2",
+        "id": 3
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 1,
+        "title": "Zootropolis 2",
+        "id": 4
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 1,
+        "title": "زوتوپیا 2",
+        "id": 5
+      }
+    ],
+    "secondaryYearSourceId": 0,
+    "sortTitle": "zootopia 2",
+    "sizeOnDisk": 2561322154,
+    "status": "released",
+    "overview": "After cracking the biggest case in Zootopia's history, rookie cops Judy Hopps and Nick Wilde find themselves on the twisting trail of a great mystery when Gary De'Snake arrives and turns the animal metropolis upside down. To crack the case, Judy and Nick must go undercover to unexpected new parts of town, where their growing partnership is tested like never before.",
+    "inCinemas": "2025-11-26T00:00:00Z",
+    "physicalRelease": "2026-03-03T00:00:00Z",
+    "digitalRelease": "2026-01-26T00:00:00Z",
+    "releaseDate": "2026-01-26T00:00:00Z",
+    "images": [
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/1/poster.jpg?h=ee00d06d64cb9c44727a",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/oJ7g2CifqpStmoYQyaLQgEU32qO.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/1/fanart.jpg?h=4ad69aed35c9a2d9804e",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/lgotja3xMoJZbynwHfcQcJAEMWH.jpg"
+      }
+    ],
+    "website": "https://movies.disney.com/zootopia-2",
+    "year": 2025,
+    "youTubeTrailerId": "sEgPQ7HKoBA",
+    "studio": "Walt Disney Animation Studios",
+    "path": "/data/movies/Zootopia 2 (2025) [tmdbid-1084242]",
+    "qualityProfileId": 7,
+    "hasFile": true,
+    "movieFileId": 947,
+    "monitored": true,
+    "minimumAvailability": "released",
+    "isAvailable": true,
+    "folderName": "/data/movies/Zootopia 2 (2025) [tmdbid-1084242]",
+    "runtime": 108,
+    "cleanTitle": "zootopia2",
+    "imdbId": "tt26443597",
+    "tmdbId": 1084242,
+    "titleSlug": "1084242",
+    "rootFolderPath": "/data/movies",
+    "certification": "PG",
+    "genres": [
+      "Animation",
+      "Adventure",
+      "Comedy",
+      "Mystery",
+      "Family"
+    ],
+    "keywords": [
+      "3d animation",
+      "animals",
+      "anthropomorphism",
+      "buddy comedy",
+      "buddy cop"
+    ],
+    "tags": [],
+    "added": "2026-02-03T20:25:53Z",
+    "ratings": {
+      "imdb": {
+        "votes": 158917,
+        "value": 7.3,
+        "type": "user"
+      },
+      "tmdb": {
+        "votes": 3650,
+        "value": 7.667,
+        "type": "user"
+      },
+      "metacritic": {
+        "votes": 0,
+        "value": 73,
+        "type": "user"
+      },
+      "rottenTomatoes": {
+        "votes": 0,
+        "value": 92,
+        "type": "user"
+      },
+      "trakt": {
+        "votes": 17098,
+        "value": 8.14452,
+        "type": "user"
+      }
+    },
+    "movieFile": {
+      "movieId": 1,
+      "relativePath": "Zootopia 2 (2025) [imdbid-tt26443597] - [WEBRip-1080p][AAC 5.1][x265]-DH.mkv",
+      "path": "/data/movies/Zootopia 2 (2025) [tmdbid-1084242]/Zootopia 2 (2025) [imdbid-tt26443597] - [WEBRip-1080p][AAC 5.1][x265]-DH.mkv",
+      "size": 2561322154,
+      "dateAdded": "2026-03-01T17:36:27Z",
+      "releaseGroup": "DH",
+      "edition": "",
+      "languages": [
+        {
+          "id": 1,
+          "name": "English"
+        }
+      ],
+      "quality": {
+        "quality": {
+          "id": 15,
+          "name": "WEBRip-1080p",
+          "source": "webrip",
+          "resolution": 1080,
+          "modifier": "none"
+        },
+        "revision": {
+          "version": 1,
+          "real": 0,
+          "isRepack": false
+        }
+      },
+      "indexerFlags": 0,
+      "mediaInfo": {
+        "audioBitrate": 388613,
+        "audioChannels": 5.1,
+        "audioCodec": "AAC",
+        "audioLanguages": "eng",
+        "audioStreamCount": 1,
+        "videoBitDepth": 10,
+        "videoBitrate": 2781378,
+        "videoCodec": "h265",
+        "videoFps": 24,
+        "videoDynamicRange": "",
+        "videoDynamicRangeType": "",
+        "resolution": "1920x804",
+        "runTime": "1:47:38",
+        "scanType": "Progressive",
+        "subtitles": "eng/eng"
+      },
+      "qualityCutoffNotMet": true,
+      "id": 947
+    },
+    "collection": {
+      "title": "Zootopia Collection",
+      "tmdbId": 1084247
+    },
+    "popularity": 43.7588,
+    "lastSearchTime": "2026-02-03T20:26:09Z",
+    "statistics": {
+      "movieFileCount": 1,
+      "sizeOnDisk": 2561322154,
+      "releaseGroups": [
+        "DH"
+      ],
+      "movieFileQualities": [
+        {
+          "id": 15,
+          "name": "WEBRip-1080p",
+          "source": "webrip",
+          "resolution": 1080,
+          "modifier": "none"
+        }
+      ]
+    },
+    "id": 1
+  },
+  {
+    "title": "Dune",
+    "originalTitle": "Dune",
+    "originalLanguage": {
+      "id": 1,
+      "name": "English"
+    },
+    "alternateTitles": [
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 12,
+        "title": "デューン",
+        "id": 74
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 12,
+        "title": "Dune: Part One",
+        "id": 75
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 12,
+        "title": "חולית: חלק ראשון",
+        "id": 76
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 12,
+        "title": "デューン 砂の惑星",
+        "id": 77
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 12,
+        "title": "DUNE デューン 砂の惑星",
+        "id": 78
+      }
+    ],
+    "secondaryYearSourceId": 0,
+    "sortTitle": "dune",
+    "sizeOnDisk": 65583835282,
+    "status": "released",
+    "overview": "Paul Atreides, a brilliant and gifted young man born into a great destiny beyond his understanding, must travel to the most dangerous planet in the universe to ensure the future of his family and his people. As malevolent forces explode into conflict over the planet's exclusive supply of the most precious resource in existence - a commodity capable of unlocking humanity's greatest potential - only those who can conquer their fear will survive.",
+    "inCinemas": "2021-09-15T00:00:00Z",
+    "physicalRelease": "2021-12-22T00:00:00Z",
+    "digitalRelease": "2021-10-21T00:00:00Z",
+    "releaseDate": "2021-10-21T00:00:00Z",
+    "images": [
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/8/poster.jpg?h=bd15f9a27331fc78d4df",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/v1tRXZ4JtD2Iv6fjkPvT4GiwslV.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/8/fanart.jpg?h=2fb146b3ea0bb0868510",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/jYEW5xZkZk2WTrdbMGAPFuBqbDc.jpg"
+      }
+    ],
+    "website": "https://www.warnerbros.com/movies/dune",
+    "year": 2021,
+    "youTubeTrailerId": "w0HgHet0sxg",
+    "studio": "Legendary Pictures",
+    "path": "/data/movies/Dune (2021) [tmdbid-438631]",
+    "qualityProfileId": 7,
+    "hasFile": true,
+    "movieFileId": 1012,
+    "monitored": true,
+    "minimumAvailability": "released",
+    "isAvailable": true,
+    "folderName": "/data/movies/Dune (2021) [tmdbid-438631]",
+    "runtime": 155,
+    "cleanTitle": "dune",
+    "imdbId": "tt1160419",
+    "tmdbId": 438631,
+    "titleSlug": "438631",
+    "rootFolderPath": "/data/movies",
+    "certification": "PG-13",
+    "genres": [
+      "Science Fiction",
+      "Adventure"
+    ],
+    "keywords": [
+      "army",
+      "baron",
+      "based on novel or book",
+      "betrayal",
+      "chosen one"
+    ],
+    "tags": [],
+    "added": "2026-02-04T15:20:01Z",
+    "ratings": {
+      "imdb": {
+        "votes": 1099937,
+        "value": 8,
+        "type": "user"
+      },
+      "tmdb": {
+        "votes": 15897,
+        "value": 7.786,
+        "type": "user"
+      },
+      "metacritic": {
+        "votes": 0,
+        "value": 74,
+        "type": "user"
+      },
+      "rottenTomatoes": {
+        "votes": 0,
+        "value": 83,
+        "type": "user"
+      },
+      "trakt": {
+        "votes": 57693,
+        "value": 8.14492,
+        "type": "user"
+      }
+    },
+    "movieFile": {
+      "movieId": 8,
+      "relativePath": "Dune (2021) [imdbid-tt1160419] - [WEBRip-2160p][EAC3 Atmos 5.1][h265].mkv",
+      "path": "/data/movies/Dune (2021) [tmdbid-438631]/Dune (2021) [imdbid-tt1160419] - [WEBRip-2160p][EAC3 Atmos 5.1][h265].mkv",
+      "size": 65583835282,
+      "dateAdded": "2026-11-06T05:38:02Z",
+      "sceneName": "Dune.2021.2160p.AI Enhanced.WEBRip.60FPS.H265.SDR.DDP5.1.Atmos.EngSubs_Marjenbo",
+      "edition": "",
+      "languages": [
+        {
+          "id": 1,
+          "name": "English"
+        }
+      ],
+      "quality": {
+        "quality": {
+          "id": 17,
+          "name": "WEBRip-2160p",
+          "source": "webrip",
+          "resolution": 2160,
+          "modifier": "none"
+        },
+        "revision": {
+          "version": 1,
+          "real": 0,
+          "isRepack": false
+        }
+      },
+      "indexerFlags": 1,
+      "mediaInfo": {
+        "audioBitrate": 768000,
+        "audioChannels": 5.1,
+        "audioCodec": "EAC3 Atmos",
+        "audioLanguages": "eng",
+        "audioStreamCount": 1,
+        "videoBitDepth": 10,
+        "videoBitrate": 55492484,
+        "videoCodec": "h265",
+        "videoFps": 60,
+        "videoDynamicRange": "",
+        "videoDynamicRangeType": "",
+        "resolution": "3840x1606",
+        "runTime": "2:35:24",
+        "scanType": "Progressive",
+        "subtitles": "eng/eng/spa/spa"
+      },
+      "originalFilePath": "Dune.2021.2160p.AI Enhanced.WEBRip.60FPS.H265.10BIT.SDR.DDP5.1.Atmos_Marjenbo  .mkv",
+      "qualityCutoffNotMet": true,
+      "id": 1012
+    },
+    "collection": {
+      "title": "Dune Collection",
+      "tmdbId": 726871
+    },
+    "popularity": 41.3994,
+    "statistics": {
+      "movieFileCount": 1,
+      "sizeOnDisk": 65583835282,
+      "releaseGroups": [],
+      "movieFileQualities": [
+        {
+          "id": 17,
+          "name": "WEBRip-2160p",
+          "source": "webrip",
+          "resolution": 2160,
+          "modifier": "none"
+        }
+      ]
+    },
+    "id": 8
+  },
+  {
+    "title": "Made in Abyss: Mezameru Shinpi",
+    "originalTitle": "メイドインアビス 目覚める神秘",
+    "originalLanguage": {
+      "id": 8,
+      "name": "Japanese"
+    },
+    "alternateTitles": [
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 278,
+        "title": "Made in Abyss: Awakening Mystery",
+        "id": 2123
+      }
+    ],
+    "secondaryYearSourceId": 0,
+    "sortTitle": "made in abyss mezameru shinpi",
+    "sizeOnDisk": 0,
+    "status": "inCinemas",
+    "overview": "Sequel to Made in Abyss: The Golden City of the Scorching Sun.",
+    "inCinemas": "2026-10-23T00:00:00Z",
+    "releaseDate": "2027-01-21T00:00:00Z",
+    "images": [
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/204/poster.jpg?h=bae297fec5a50f854b75",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/7HfBlYDlMVaHnvd7NEpZLd8r7FO.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/204/fanart.jpg?h=adb0539e642a0f58d9f6",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/7vZSK3hXn9fNiaij2YjvNXdwOUn.jpg"
+      }
+    ],
+    "website": "",
+    "year": 2026,
+    "youTubeTrailerId": "",
+    "studio": "KADOKAWA",
+    "path": "/data/movies/Made in Abyss Mezameru Shinpi () [tmdbid-1526917]",
+    "qualityProfileId": 7,
+    "hasFile": false,
+    "movieFileId": 0,
+    "monitored": true,
+    "minimumAvailability": "released",
+    "isAvailable": false,
+    "folderName": "/data/movies/Made in Abyss Mezameru Shinpi () [tmdbid-1526917]",
+    "runtime": 71,
+    "cleanTitle": "madeinabyssmezamerushinpi",
+    "imdbId": "tt38864557",
+    "tmdbId": 1526917,
+    "titleSlug": "1526917",
+    "rootFolderPath": "/data/movies",
+    "genres": [
+      "Animation",
+      "Science Fiction",
+      "Fantasy",
+      "Adventure"
+    ],
+    "keywords": [
+      "anime",
+      "based on manga",
+      "sequel"
+    ],
+    "tags": [],
+    "added": "2026-02-16T16:07:21Z",
+    "ratings": {
+      "imdb": {
+        "votes": 52,
+        "value": 9.7,
+        "type": "user"
+      },
+      "tmdb": {
+        "votes": 0,
+        "value": 0,
+        "type": "user"
+      }
+    },
+    "collection": {
+      "title": "Made in Abyss Collection",
+      "tmdbId": 688209
+    },
+    "popularity": 4.3427,
+    "statistics": {
+      "movieFileCount": 0,
+      "sizeOnDisk": 0,
+      "releaseGroups": [],
+      "movieFileQualities": []
+    },
+    "id": 204
+  },
+  {
+    "title": "Winnie the Pooh: Seasons of Giving",
+    "originalTitle": "Winnie the Pooh: Seasons of Giving",
+    "originalLanguage": {
+      "id": 1,
+      "name": "English"
+    },
+    "alternateTitles": [
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 295,
+        "title": "Nalle Puh - Vännernas Fest",
+        "id": 2396
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 295,
+        "title": "Peter Plys - Vennernes Fest",
+        "id": 2397
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 295,
+        "title": "Winnie l'ourson : Les saisons du cœur",
+        "id": 2398
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 295,
+        "title": "Winnie l'ourson : Joyeux Noël",
+        "id": 2399
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 295,
+        "title": "פו הדוב: עונות הנתינה",
+        "id": 2400
+      }
+    ],
+    "secondaryYearSourceId": 0,
+    "sortTitle": "winnie the pooh seasons of giving",
+    "sizeOnDisk": 0,
+    "status": "released",
+    "overview": "A collection of Winnie the Pooh's memorable holiday adventures, as Winnie, Piglet, and Tigger set out to find the right ingredients for Winter, Rabbit learns how to manage a complicated Thanksgiving dinner, and everyone gets a special visit from a new friend. Featuring a number of delightful songs for singing along, this movie is sure to become a favorite holiday classic.",
+    "inCinemas": "1999-11-08T00:00:00Z",
+    "physicalRelease": "2004-12-02T00:00:00Z",
+    "digitalRelease": "1999-11-08T00:00:00Z",
+    "releaseDate": "1999-11-08T00:00:00Z",
+    "images": [
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/227/poster.jpg?h=9960a42d282215350074",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/x3XpdngNOIHSdGEwqav6PLyWjMz.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/227/fanart.jpg?h=dcbab65d36edf7cddc19",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/2zpQBibD3FVcpxOkbJ6JUoWgCQ0.jpg"
+      }
+    ],
+    "website": "https://winniethepooh.disney.com/",
+    "year": 1999,
+    "youTubeTrailerId": "z9CvZau1tdI",
+    "studio": "Walt Disney Studios Home Entertainment",
+    "path": "/data/movies/Winnie the Pooh Seasons of Giving (1999) [tmdbid-261339]",
+    "qualityProfileId": 7,
+    "hasFile": false,
+    "movieFileId": 0,
+    "monitored": true,
+    "minimumAvailability": "released",
+    "isAvailable": true,
+    "folderName": "/data/movies/Winnie the Pooh Seasons of Giving (1999) [tmdbid-261339]",
+    "runtime": 70,
+    "cleanTitle": "winniepoohseasonsgiving",
+    "imdbId": "tt0240219",
+    "tmdbId": 261339,
+    "titleSlug": "261339",
+    "rootFolderPath": "/data/movies",
+    "certification": "G",
+    "genres": [
+      "Animation",
+      "Family"
+    ],
+    "keywords": [
+      "cartoon",
+      "cartoon donkey",
+      "cartoon pig",
+      "cartoon rabbit",
+      "christmas"
+    ],
+    "tags": [],
+    "added": "2026-03-01T17:44:07Z",
+    "ratings": {
+      "imdb": {
+        "votes": 1884,
+        "value": 6.7,
+        "type": "user"
+      },
+      "tmdb": {
+        "votes": 102,
+        "value": 6.6,
+        "type": "user"
+      },
+      "trakt": {
+        "votes": 122,
+        "value": 6.35246,
+        "type": "user"
+      }
+    },
+    "popularity": 2.8001,
+    "statistics": {
+      "movieFileCount": 0,
+      "sizeOnDisk": 0,
+      "releaseGroups": [],
+      "movieFileQualities": []
+    },
+    "id": 227
+  },
+  {
+    "title": "The Odyssey",
+    "originalTitle": "The Odyssey",
+    "originalLanguage": {
+      "id": 1,
+      "name": "English"
+    },
+    "alternateTitles": [
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 338,
+        "title": "האודיסיאה",
+        "id": 2686
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 338,
+        "title": "Odysseen",
+        "id": 2922
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 338,
+        "title": "奧德賽",
+        "id": 2925
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 338,
+        "title": "Οδύσσεια",
+        "id": 2937
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 338,
+        "title": "دی اوڈیسی",
+        "id": 2941
+      }
+    ],
+    "secondaryYearSourceId": 0,
+    "sortTitle": "odyssey",
+    "sizeOnDisk": 0,
+    "status": "inCinemas",
+    "overview": "Odysseus, the legendary King of Ithaca, embarks on a long and perilous journey home following the Trojan War. Throughout his voyage, he is forced to confront the whims of gods, mythological monsters, and trials that stretch both his cunning and his humanity to the breaking point.",
+    "inCinemas": "2026-07-15T00:00:00Z",
+    "physicalRelease": "2026-11-17T00:00:00Z",
+    "digitalRelease": "2026-11-17T00:00:00Z",
+    "releaseDate": "2026-11-17T00:00:00Z",
+    "images": [
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/246/poster.jpg?h=3f0aaf34044123d571bc",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/5rhTDKUhPYvpdQIijFIs5VoWsON.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/246/fanart.jpg?h=a4d420ad74fbf0935dc4",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/iDiTY1wA35YWzTmXLTtqaxtN6tc.jpg"
+      }
+    ],
+    "website": "https://www.universalpictures.com/movies/the-odyssey",
+    "year": 2026,
+    "youTubeTrailerId": "AyIZ9tiiN8I",
+    "studio": "Universal Pictures",
+    "path": "/data/movies/The Odyssey (2026) [tmdbid-1368337]",
+    "qualityProfileId": 7,
+    "hasFile": false,
+    "movieFileId": 0,
+    "monitored": true,
+    "minimumAvailability": "released",
+    "isAvailable": false,
+    "folderName": "/data/movies/The Odyssey (2026) [tmdbid-1368337]",
+    "runtime": 173,
+    "cleanTitle": "theodyssey",
+    "imdbId": "tt33764258",
+    "tmdbId": 1368337,
+    "titleSlug": "1368337",
+    "rootFolderPath": "/data/movies",
+    "certification": "R",
+    "genres": [
+      "Adventure",
+      "Action",
+      "Fantasy"
+    ],
+    "keywords": [
+      "ancient",
+      "ancient world",
+      "based on song, poem or rhyme",
+      "bronze age",
+      "epic fantasy"
+    ],
+    "tags": [],
+    "added": "2026-06-05T19:57:40Z",
+    "ratings": {
+      "imdb": {
+        "votes": 543096,
+        "value": 8.4,
+        "type": "user"
+      },
+      "tmdb": {
+        "votes": 4363,
+        "value": 8,
+        "type": "user"
+      },
+      "metacritic": {
+        "votes": 0,
+        "value": 88,
+        "type": "user"
+      },
+      "trakt": {
+        "votes": 116,
+        "value": 5.75,
+        "type": "user"
+      }
+    },
+    "popularity": 188.0529,
+    "statistics": {
+      "movieFileCount": 0,
+      "sizeOnDisk": 0,
+      "releaseGroups": [],
+      "movieFileQualities": []
+    },
+    "id": 246
+  }
+]

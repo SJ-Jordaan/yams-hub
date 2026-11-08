@@ -1,0 +1,113 @@
+{
+  "page": 1,
+  "totalPages": 22,
+  "totalResults": 436,
+  "results": [
+    {
+      "id": 337372,
+      "firstAirDate": "2027-01-01",
+      "genreIds": [
+        10759,
+        80
+      ],
+      "mediaType": "tv",
+      "name": "Esref Tek",
+      "originCountry": [
+        "TR"
+      ],
+      "originalLanguage": "tr",
+      "originalName": "Eşref Tek",
+      "overview": "Set before the events of Eşref Rüya, Eşref Tek follows Eşref’s early years in the criminal underworld and his alliance with Kadir. The series explores the past, choices, and relationships that shaped Eşref into the man he would become.",
+      "popularity": 16.2071,
+      "voteAverage": 0,
+      "voteCount": 0,
+      "backdropPath": null,
+      "posterPath": "/tgGsACYKoMAtclxXkBkHhl3EvYa.jpg"
+    },
+    {
+      "id": 224377,
+      "firstAirDate": "2026-12-25",
+      "genreIds": [
+        10765,
+        10759,
+        10751
+      ],
+      "mediaType": "tv",
+      "name": "Harry Potter",
+      "originCountry": [
+        "GB",
+        "US"
+      ],
+      "originalLanguage": "en",
+      "originalName": "Harry Potter",
+      "overview": "There is nothing special about Harry Potter - at least that's what his Aunt Petunia always says. On his 11th birthday, a letter of admittance to Hogwarts School of Witchcraft and Wizardry opens up a hidden world for Harry: one of fun, friendship and magic. But with this new adventure comes great risk as Harry is forced to face a dangerous enemy from his past.",
+      "popularity": 12.2478,
+      "voteAverage": 0,
+      "voteCount": 0,
+      "backdropPath": "/liHWCTCi3PK56P7fUJrxhu4OuJZ.jpg",
+      "posterPath": "/AcVckVxfN169mGOgQGYe983KT1C.jpg"
+    },
+    {
+      "id": 171802,
+      "firstAirDate": "2026-11-25",
+      "genreIds": [
+        10765
+      ],
+      "mediaType": "tv",
+      "name": "Blade Runner 2099",
+      "originCountry": [
+        "US"
+      ],
+      "originalLanguage": "en",
+      "originalName": "Blade Runner 2099",
+      "overview": "Fifty years after the events of Blade Runner 2049, Los Angeles has been reborn, just not by humanity. Cora, a fugitive in a final bid to stop running, takes on one last identity: a Blade Runner. Forced to partner with Olwen, a Replicant days from dying, she hunts down a runaway hiding a truth that could collapse their fragile city.",
+      "popularity": 11.2209,
+      "voteAverage": 0,
+      "voteCount": 0,
+      "backdropPath": "/nuLUxzJ4bVVxafru5lgWfmcPOm7.jpg",
+      "posterPath": "/gMdQMmqKu5zee7sCGGZvbSHFVb2.jpg"
+    },
+    {
+      "id": 254630,
+      "firstAirDate": "2026-11-12",
+      "genreIds": [
+        10759,
+        80,
+        18
+      ],
+      "mediaType": "tv",
+      "name": "12 12 12",
+      "originCountry": [
+        "US"
+      ],
+      "originalLanguage": "en",
+      "originalName": "12 12 12",
+      "overview": "A heist takes 12 months to plan, 12 hours to execute—and a thief not caught within 12 days won't be caught at all. Across three pulse-pounding timelines, an FBI agent and a career criminal face off in a deadly game of cat and mouse through Europe.",
+      "popularity": 7.9415,
+      "voteAverage": 0,
+      "voteCount": 0,
+      "backdropPath": "/tjy25xpiFeo2gahl7N0hoxbRtG7.jpg",
+      "posterPath": "/8q6BvFQuKM1Rud4E9NQDaMGy9EL.jpg"
+    },
+    {
+      "id": 338841,
+      "firstAirDate": "2026-11-18",
+      "genreIds": [
+        35
+      ],
+      "mediaType": "tv",
+      "name": "Somos así",
+      "originCountry": [
+        "AR"
+      ],
+      "originalLanguage": "es",
+      "originalName": "Somos así",
+      "overview": "An ensemble comedy about a group of friends in their thirties and forties whose lives are upended all at once: their jobs become unstable, their relationships shift, dates go awry, and certain secrets come to light. Amidst the chaos, they must decide what they want to hold onto from the lives they once led and what they are willing to change.",
+      "popularity": 7.7453,
+      "voteAverage": 0,
+      "voteCount": 0,
+      "backdropPath": null,
+      "posterPath": "/88Fq3xnV6Rrwgys9rXJ5YUBLgrH.jpg"
+    }
+  ]
+}

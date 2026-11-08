@@ -1,0 +1,154 @@
+[
+  {
+    "episodeId": 7668,
+    "seriesId": 159,
+    "sourceTitle": "[Half-Baked] The Apothecary Diaries - S03E06 [WEB 1080p HEVC AAC] | Kusuriya no Hitorigoto - 54 | The Apothecary Diaries Season 3 - 06",
+    "languages": [
+      {
+        "id": 8,
+        "name": "Japanese"
+      }
+    ],
+    "quality": {
+      "quality": {
+        "id": 3,
+        "name": "WEBDL-1080p",
+        "source": "web",
+        "resolution": 1080
+      },
+      "revision": {
+        "version": 1,
+        "real": 0,
+        "isRepack": false
+      }
+    },
+    "customFormats": [
+      {
+        "id": 10,
+        "name": "Anime Web Tier 02"
+      },
+      {
+        "id": 65,
+        "name": "x265 (HD)"
+      }
+    ],
+    "customFormatScore": 500,
+    "qualityCutoffNotMet": true,
+    "date": "2026-11-07T19:29:01Z",
+    "downloadId": "C474A999C719731EC00C355B7F294D9E8D2D9A53",
+    "eventType": "downloadFolderImported",
+    "data": {
+      "fileId": "10995",
+      "droppedPath": "/data/downloads/torrents/[Half-Baked] The Apothecary Diaries - S03E06 [WEB 1080p HEVC AAC].mkv",
+      "importedPath": "/data/tvshows/The Apothecary Diaries (2023) [tvdbid-431162]/Season 03/The Apothecary Diaries (2023) - S03E06 - The Paper Village [WEBDL-1080p][AAC 2.0][x265]-Half-Baked.mkv",
+      "downloadClient": "qBittorrent",
+      "downloadClientName": "qBittorrent",
+      "releaseGroup": "Half-Baked",
+      "customFormatScore": "500",
+      "size": "2147796925",
+      "indexerFlags": "Freeleech",
+      "releaseType": "SingleEpisode"
+    },
+    "id": 13638
+  },
+  {
+    "episodeId": 2471,
+    "seriesId": 54,
+    "sourceTitle": "[SubsPlease] Tensei Shitara Slime Datta Ken S4 - 01v2 (1080p) [09A41FF2]",
+    "languages": [
+      {
+        "id": 8,
+        "name": "Japanese"
+      }
+    ],
+    "quality": {
+      "quality": {
+        "id": 9,
+        "name": "HDTV-1080p",
+        "source": "television",
+        "resolution": 1080
+      },
+      "revision": {
+        "version": 2,
+        "real": 0,
+        "isRepack": false
+      }
+    },
+    "customFormats": [
+      {
+        "id": 13,
+        "name": "Anime Web Tier 05"
+      },
+      {
+        "id": 20,
+        "name": "v2"
+      }
+    ],
+    "customFormatScore": 202,
+    "qualityCutoffNotMet": true,
+    "date": "2026-11-07T23:02:24Z",
+    "downloadId": "E66AAC4C7D8A4F813A4E5B3A63C1BB52BEEE342E",
+    "eventType": "downloadFolderImported",
+    "data": {
+      "fileId": "10996",
+      "droppedPath": "/data/downloads/torrents/[SubsPlease] Tensei Shitara Slime Datta Ken S4 (01-24) (1080p) [Batch]/[SubsPlease] Tensei Shitara Slime Datta Ken S4 - 01v2 (1080p) [09A41FF2].mkv",
+      "importedPath": "/data/tvshows/That Time I Got Reincarnated as a Slime (2018) [tvdbid-352408]/Season 04/That Time I Got Reincarnated as a Slime (2018) - S04E01 - New Days [v2][HDTV-1080p Proper][AAC 2.0][x264]-SubsPlease.mkv",
+      "downloadClient": "qBittorrent",
+      "downloadClientName": "qBittorrent",
+      "releaseGroup": "SubsPlease",
+      "customFormatScore": "202",
+      "size": "1461367836",
+      "indexerFlags": "Freeleech",
+      "releaseType": "SeasonPack"
+    },
+    "id": 13663
+  },
+  {
+    "episodeId": 5558,
+    "seriesId": 54,
+    "sourceTitle": "[SubsPlease] Tensei Shitara Slime Datta Ken S4 - 02 (1080p) [7902C657]",
+    "languages": [
+      {
+        "id": 8,
+        "name": "Japanese"
+      }
+    ],
+    "quality": {
+      "quality": {
+        "id": 9,
+        "name": "HDTV-1080p",
+        "source": "television",
+        "resolution": 1080
+      },
+      "revision": {
+        "version": 1,
+        "real": 0,
+        "isRepack": false
+      }
+    },
+    "customFormats": [
+      {
+        "id": 13,
+        "name": "Anime Web Tier 05"
+      }
+    ],
+    "customFormatScore": 200,
+    "qualityCutoffNotMet": true,
+    "date": "2026-11-07T23:02:24Z",
+    "downloadId": "E66AAC4C7D8A4F813A4E5B3A63C1BB52BEEE342E",
+    "eventType": "downloadFolderImported",
+    "data": {
+      "fileId": "10997",
+      "droppedPath": "/data/downloads/torrents/[SubsPlease] Tensei Shitara Slime Datta Ken S4 (01-24) (1080p) [Batch]/[SubsPlease] Tensei Shitara Slime Datta Ken S4 - 02 (1080p) [7902C657].mkv",
+      "importedPath": "/data/tvshows/That Time I Got Reincarnated as a Slime (2018) [tvdbid-352408]/Season 04/That Time I Got Reincarnated as a Slime (2018) - S04E02 - The Dungeon Evolves [HDTV-1080p][AAC 2.0][x264]-SubsPlease.mkv",
+      "downloadClient": "qBittorrent",
+      "downloadClientName": "qBittorrent",
+      "releaseGroup": "SubsPlease",
+      "customFormatScore": "200",
+      "size": "1466650501",
+      "indexerFlags": "Freeleech",
+      "releaseType": "SeasonPack"
+    },
+    "id": 13664
+  }
+]

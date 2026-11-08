@@ -1,0 +1,65 @@
+{
+  "rid": 2,
+  "server_state": {
+    "alltime_dl": 8030129928099,
+    "alltime_ul": 7410392803868,
+    "average_time_queue": 3230,
+    "request_latency": 3734,
+    "total_buffers_size": 114688,
+    "total_peer_connections": 135,
+    "up_info_data": 1858988871,
+    "up_info_speed": 943680
+  },
+  "torrents": {
+    "8646cc75b5d2ed42a7918b081b9c9dc010d8bded": {
+      "connections_count": 13,
+      "num_leechs": 13,
+      "popularity": 0.2553943466904725,
+      "reannounce": 699,
+      "seeding_time": 4978772,
+      "time_active": 4979299
+    },
+    "9a40a56b68a0661d72f0ec03ffe7aca022099c44": {
+      "connections_count": 29,
+      "eta": 329441,
+      "last_activity": 1794128517,
+      "num_leechs": 29,
+      "popularity": 1.7883172179741929,
+      "ratio": 0.7270279636597221,
+      "reannounce": 678,
+      "seeding_time": 1064929,
+      "time_active": 1069105,
+      "uploaded": 57486200813,
+      "uploaded_session": 262514817,
+      "upspeed": 51364
+    },
+    "b3cf3baaffb64c08105d1e2152685b3b158e4ef4": {
+      "connections_count": 36,
+      "eta": 121430,
+      "last_activity": 1794128517,
+      "num_leechs": 36,
+      "popularity": 17.8536687226978,
+      "ratio": 0.8122438715810736,
+      "reannounce": 888,
+      "seeding_time": 116593,
+      "time_active": 119639,
+      "uploaded": 31640507730,
+      "uploaded_session": 200732991,
+      "upspeed": 57529
+    },
+    "e66aac4c7d8a4f813a4e5b3a63c1bb52beee342e": {
+      "connections_count": 55,
+      "eta": 36009,
+      "last_activity": 1794128517,
+      "num_leechs": 55,
+      "popularity": 30.951264700594994,
+      "ratio": 0.4463768230980352,
+      "reannounce": 782,
+      "seeding_time": 34068,
+      "time_active": 37926,
+      "uploaded": 15705542775,
+      "uploaded_session": 1395719946,
+      "upspeed": 834787
+    }
+  }
+}

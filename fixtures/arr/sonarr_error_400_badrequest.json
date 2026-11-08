@@ -1,0 +1,4 @@
+{
+  "message": "BadRequest: seriesId or episodeIds must be provided",
+  "content": "seriesId or episodeIds must be provided"
+}

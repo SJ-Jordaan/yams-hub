@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Application Check Update",
+    "taskName": "ApplicationCheckUpdate",
+    "interval": 360,
+    "lastExecution": "2026-11-08T05:36:01Z",
+    "lastStartTime": "2026-11-08T05:36:00Z",
+    "nextExecution": "2026-11-08T11:36:01Z",
+    "lastDuration": "00:00:00.7554685",
+    "id": 2
+  },
+  {
+    "name": "Backup",
+    "taskName": "Backup",
+    "interval": 10080,
+    "lastExecution": "2026-11-05T17:30:18Z",
+    "lastStartTime": "2026-11-05T17:30:15Z",
+    "nextExecution": "2026-11-12T17:30:18Z",
+    "lastDuration": "00:00:03.5476437",
+    "id": 8
+  },
+  {
+    "name": "Check Health",
+    "taskName": "CheckHealth",
+    "interval": 360,
+    "lastExecution": "2026-11-08T05:36:32Z",
+    "lastStartTime": "2026-11-08T05:36:30Z",
+    "nextExecution": "2026-11-08T11:36:32Z",
+    "lastDuration": "00:00:01.7298057",
+    "id": 3
+  },
+  {
+    "name": "Clean Up Recycle Bin",
+    "taskName": "CleanUpRecycleBin",
+    "interval": 1440,
+    "lastExecution": "2026-11-07T17:32:25Z",
+    "lastStartTime": "2026-11-07T17:32:25Z",
+    "nextExecution": "2026-11-08T17:32:25Z",
+    "lastDuration": "00:00:00.0054204",
+    "id": 6
+  },
+  {
+    "name": "Housekeeping",
+    "taskName": "Housekeeping",
+    "interval": 1440,
+    "lastExecution": "2026-11-07T17:34:27Z",
+    "lastStartTime": "2026-11-07T17:34:25Z",
+    "nextExecution": "2026-11-08T17:34:27Z",
+    "lastDuration": "00:00:02.2936169",
+    "id": 5
+  }
+]

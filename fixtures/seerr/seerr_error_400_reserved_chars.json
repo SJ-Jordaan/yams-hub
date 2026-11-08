@@ -1,0 +1,9 @@
+{
+  "message": "Parameter 'query' must be url encoded. Its value may not contain reserved characters.",
+  "errors": [
+    {
+      "path": "/query/query",
+      "message": "Parameter 'query' must be url encoded. Its value may not contain reserved characters."
+    }
+  ]
+}

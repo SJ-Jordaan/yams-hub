@@ -1,0 +1,715 @@
+[
+  {
+    "title": "A Knight of the Seven Kingdoms",
+    "alternateTitles": [
+      {
+        "title": "El caballero de los Siete Reinos",
+        "seasonNumber": -1
+      }
+    ],
+    "sortTitle": "knight of the seven kingdoms",
+    "status": "continuing",
+    "ended": false,
+    "overview": "A century before the events of Game of Thrones, two unlikely heroes wandered Westeros, a young knight, Ser Duncan the Tall, and his squire, Egg, set in an age when the Targaryen line still holds the Iron Throne.",
+    "previousAiring": "2026-02-23T03:00:00Z",
+    "network": "HBO",
+    "airTime": "22:00",
+    "images": [
+      {
+        "coverType": "banner",
+        "url": "/MediaCover/2/banner.jpg?lastWrite=639058149419870776",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/433631/banners/696d01d889ebf.jpg"
+      },
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/2/poster.jpg?lastWrite=639058149420070772",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/433631/posters/6934ab30720ee.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/2/fanart.jpg?lastWrite=639058149420390765",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/433631/backgrounds/6934a76d9bbba.jpg"
+      },
+      {
+        "coverType": "clearlogo",
+        "url": "/MediaCover/2/clearlogo.png?lastWrite=639058149420630760",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/433631/clearlogo/696cfcd38cd4e.png"
+      }
+    ],
+    "originalLanguage": {
+      "id": 1,
+      "name": "English"
+    },
+    "seasons": [
+      {
+        "seasonNumber": 0,
+        "monitored": false,
+        "statistics": {
+          "episodeFileCount": 0,
+          "episodeCount": 0,
+          "totalEpisodeCount": 9,
+          "sizeOnDisk": 0,
+          "releaseGroups": [],
+          "percentOfEpisodes": 0
+        }
+      },
+      {
+        "seasonNumber": 1,
+        "monitored": true,
+        "statistics": {
+          "previousAiring": "2026-02-23T03:00:00Z",
+          "episodeFileCount": 4,
+          "episodeCount": 6,
+          "totalEpisodeCount": 6,
+          "sizeOnDisk": 12339660060,
+          "releaseGroups": [
+            "d3g"
+          ],
+          "percentOfEpisodes": 66.66666666666667
+        }
+      }
+    ],
+    "year": 2026,
+    "path": "/data/tvshows/A Knight of the Seven Kingdoms (2026) [tvdbid-433631]",
+    "qualityProfileId": 9,
+    "seasonFolder": true,
+    "monitored": true,
+    "monitorNewItems": "all",
+    "useSceneNumbering": false,
+    "runtime": 33,
+    "tvdbId": 433631,
+    "tvRageId": 0,
+    "tvMazeId": 53063,
+    "tmdbId": 224372,
+    "firstAired": "2026-01-18T00:00:00Z",
+    "lastAired": "2026-02-22T00:00:00Z",
+    "seriesType": "standard",
+    "cleanTitle": "aknightsevenkingdoms",
+    "imdbId": "tt27497448",
+    "titleSlug": "a-knight-of-the-seven-kingdoms",
+    "rootFolderPath": "/data/tvshows",
+    "certification": "TV-MA",
+    "genres": [
+      "Action",
+      "Adventure",
+      "Drama",
+      "Fantasy"
+    ],
+    "tags": [],
+    "added": "2026-02-04T15:15:28Z",
+    "ratings": {
+      "votes": 293271,
+      "value": 8.6
+    },
+    "statistics": {
+      "seasonCount": 1,
+      "episodeFileCount": 4,
+      "episodeCount": 6,
+      "totalEpisodeCount": 15,
+      "sizeOnDisk": 12339660060,
+      "releaseGroups": [
+        "d3g"
+      ],
+      "percentOfEpisodes": 66.66666666666667
+    },
+    "languageProfileId": 1,
+    "id": 2
+  },
+  {
+    "title": "Frieren: Beyond Journey's End",
+    "alternateTitles": [
+      {
+        "title": "Sousou no Frieren",
+        "sceneSeasonNumber": -1
+      },
+      {
+        "title": "Frieren Nach dem Ende der Reise",
+        "sceneSeasonNumber": -1
+      },
+      {
+        "title": "Sousou no Frieren S2",
+        "sceneSeasonNumber": 2
+      },
+      {
+        "title": "Sousou no Frieren 2nd Season",
+        "sceneSeasonNumber": 2
+      },
+      {
+        "title": "Frieren Beyond Journeys End S2",
+        "sceneSeasonNumber": 2
+      }
+    ],
+    "sortTitle": "frieren beyond journeys end",
+    "status": "continuing",
+    "ended": false,
+    "overview": "Decades after her party defeated the Demon King, an old friend's funeral launches the elf wizard Frieren on a journey of self-discovery.",
+    "previousAiring": "2026-03-27T14:00:00Z",
+    "network": "Nippon TV",
+    "airTime": "23:00",
+    "images": [
+      {
+        "coverType": "banner",
+        "url": "/MediaCover/25/banner.jpg?lastWrite=639058149733344357",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/424536/banners/651dd688bd4d5.jpg"
+      },
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/25/poster.jpg?lastWrite=639058149733504354",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/424536/posters/6516fe48e7a06.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/25/fanart.jpg?lastWrite=639096245732778300",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/424536/backgrounds/64e6cbe29d9c0.jpg"
+      },
+      {
+        "coverType": "clearlogo",
+        "url": "/MediaCover/25/clearlogo.png?lastWrite=639058149734024343",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/424536/clearlogo/65d798fbd2f61.png"
+      }
+    ],
+    "originalLanguage": {
+      "id": 8,
+      "name": "Japanese"
+    },
+    "seasons": [
+      {
+        "seasonNumber": 0,
+        "monitored": false,
+        "statistics": {
+          "episodeFileCount": 0,
+          "episodeCount": 0,
+          "totalEpisodeCount": 27,
+          "sizeOnDisk": 0,
+          "releaseGroups": [],
+          "percentOfEpisodes": 0
+        }
+      },
+      {
+        "seasonNumber": 1,
+        "monitored": true,
+        "statistics": {
+          "previousAiring": "2024-03-22T14:00:00Z",
+          "episodeFileCount": 28,
+          "episodeCount": 28,
+          "totalEpisodeCount": 28,
+          "sizeOnDisk": 42197969789,
+          "releaseGroups": [
+            "SubsPlease"
+          ],
+          "percentOfEpisodes": 100
+        }
+      },
+      {
+        "seasonNumber": 2,
+        "monitored": true,
+        "statistics": {
+          "previousAiring": "2026-03-27T14:00:00Z",
+          "episodeFileCount": 10,
+          "episodeCount": 10,
+          "totalEpisodeCount": 10,
+          "sizeOnDisk": 11446070975,
+          "releaseGroups": [
+            "Erai-raws",
+            "HHWEB",
+            "Kitsune",
+            "ToonsHub"
+          ],
+          "percentOfEpisodes": 100
+        }
+      }
+    ],
+    "year": 2023,
+    "path": "/data/tvshows/Frieren - Beyond Journey's End (2023) [tvdbid-424536]",
+    "qualityProfileId": 7,
+    "seasonFolder": true,
+    "monitored": true,
+    "monitorNewItems": "all",
+    "useSceneNumbering": true,
+    "runtime": 25,
+    "tvdbId": 424536,
+    "tvRageId": 0,
+    "tvMazeId": 69956,
+    "tmdbId": 209867,
+    "firstAired": "2023-09-29T00:00:00Z",
+    "lastAired": "2026-03-27T00:00:00Z",
+    "seriesType": "standard",
+    "cleanTitle": "frierenbeyondjourneysend",
+    "imdbId": "tt22248376",
+    "titleSlug": "frieren-beyond-journeys-end",
+    "rootFolderPath": "/data/tvshows",
+    "certification": "TV-14",
+    "genres": [
+      "Adventure",
+      "Animation",
+      "Anime",
+      "Drama",
+      "Fantasy"
+    ],
+    "tags": [],
+    "added": "2026-02-04T15:15:28Z",
+    "ratings": {
+      "votes": 87048,
+      "value": 8.9
+    },
+    "statistics": {
+      "seasonCount": 2,
+      "episodeFileCount": 38,
+      "episodeCount": 38,
+      "totalEpisodeCount": 65,
+      "sizeOnDisk": 53644040764,
+      "releaseGroups": [
+        "SubsPlease",
+        "Erai-raws",
+        "HHWEB",
+        "Kitsune",
+        "ToonsHub"
+      ],
+      "percentOfEpisodes": 100
+    },
+    "languageProfileId": 1,
+    "id": 25
+  },
+  {
+    "title": "That Time I Got Reincarnated as a Slime",
+    "alternateTitles": [
+      {
+        "title": "Tensei Shitara Slime Datta Ken S2",
+        "sceneSeasonNumber": 2
+      },
+      {
+        "title": "Tensei shitara Slime Datta Ken 2nd Season",
+        "sceneSeasonNumber": 2
+      },
+      {
+        "title": "Tensei Shitara Slime Datta Ken",
+        "sceneSeasonNumber": -1
+      },
+      {
+        "title": "That Time I Got Reincarnated as a Slime Season 2",
+        "sceneSeasonNumber": 2
+      },
+      {
+        "title": "Tensei Shitara Slime Datta Ken S3",
+        "sceneSeasonNumber": 3
+      }
+    ],
+    "sortTitle": "that time i got reincarnated as a slime",
+    "status": "continuing",
+    "ended": false,
+    "overview": "37-year-old corporate worker Mikami Satoru is stabbed by a random killer, and is reborn to an alternate world. But he turns out to be reborn a slime! Thrown into this new world with the name Rimuru Tempest, he begins his quest to create a world that’s welcoming to all races. Broken free from ordinary, stale past life, his fresh adventure in a fantasy world as a slime monster with unique abilities begins.",
+    "previousAiring": "2026-09-25T14:00:00Z",
+    "network": "Nippon TV",
+    "airTime": "23:00",
+    "images": [
+      {
+        "coverType": "banner",
+        "url": "/MediaCover/54/banner.jpg?lastWrite=639058150411810432",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/graphical/5c456e14aa17d.jpg"
+      },
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/54/poster.jpg?lastWrite=639058150412210423",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/posters/5bb2b28057ade.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/54/fanart.jpg?lastWrite=639058150412650414",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/fanart/original/5bb4c5b79f675.jpg"
+      },
+      {
+        "coverType": "clearlogo",
+        "url": "/MediaCover/54/clearlogo.png?lastWrite=639058150412850410",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/352408/clearlogo/611c83c1eba90.png"
+      }
+    ],
+    "originalLanguage": {
+      "id": 8,
+      "name": "Japanese"
+    },
+    "seasons": [
+      {
+        "seasonNumber": 0,
+        "monitored": false,
+        "statistics": {
+          "episodeFileCount": 0,
+          "episodeCount": 0,
+          "totalEpisodeCount": 14,
+          "sizeOnDisk": 0,
+          "releaseGroups": [],
+          "percentOfEpisodes": 0
+        }
+      },
+      {
+        "seasonNumber": 1,
+        "monitored": true,
+        "statistics": {
+          "previousAiring": "2019-03-19T14:00:00Z",
+          "episodeFileCount": 0,
+          "episodeCount": 24,
+          "totalEpisodeCount": 24,
+          "sizeOnDisk": 0,
+          "releaseGroups": [],
+          "percentOfEpisodes": 0
+        }
+      },
+      {
+        "seasonNumber": 2,
+        "monitored": true,
+        "statistics": {
+          "previousAiring": "2021-09-21T14:00:00Z",
+          "episodeFileCount": 0,
+          "episodeCount": 24,
+          "totalEpisodeCount": 24,
+          "sizeOnDisk": 0,
+          "releaseGroups": [],
+          "percentOfEpisodes": 0
+        }
+      },
+      {
+        "seasonNumber": 3,
+        "monitored": true,
+        "statistics": {
+          "previousAiring": "2024-09-27T14:00:00Z",
+          "episodeFileCount": 24,
+          "episodeCount": 24,
+          "totalEpisodeCount": 24,
+          "sizeOnDisk": 35937551194,
+          "releaseGroups": [
+            "SubsPlease"
+          ],
+          "percentOfEpisodes": 100
+        }
+      },
+      {
+        "seasonNumber": 4,
+        "monitored": true,
+        "statistics": {
+          "previousAiring": "2026-09-25T14:00:00Z",
+          "episodeFileCount": 24,
+          "episodeCount": 24,
+          "totalEpisodeCount": 24,
+          "sizeOnDisk": 35161288420,
+          "releaseGroups": [
+            "SubsPlease"
+          ],
+          "percentOfEpisodes": 100
+        }
+      }
+    ],
+    "year": 2018,
+    "path": "/data/tvshows/That Time I Got Reincarnated as a Slime (2018) [tvdbid-352408]",
+    "qualityProfileId": 7,
+    "seasonFolder": true,
+    "monitored": true,
+    "monitorNewItems": "all",
+    "useSceneNumbering": true,
+    "runtime": 24,
+    "tvdbId": 352408,
+    "tvRageId": 0,
+    "tvMazeId": 38390,
+    "tmdbId": 82684,
+    "firstAired": "2018-10-02T00:00:00Z",
+    "lastAired": "2026-09-25T00:00:00Z",
+    "seriesType": "anime",
+    "cleanTitle": "thattimeigotreincarnatedasslime",
+    "imdbId": "tt9054364",
+    "titleSlug": "that-time-i-got-reincarnated-as-a-slime",
+    "rootFolderPath": "/data/tvshows",
+    "certification": "TV-14",
+    "genres": [
+      "Action",
+      "Adventure",
+      "Animation",
+      "Anime",
+      "Comedy"
+    ],
+    "tags": [],
+    "added": "2026-02-04T15:15:28Z",
+    "ratings": {
+      "votes": 29422,
+      "value": 8.0
+    },
+    "statistics": {
+      "seasonCount": 4,
+      "episodeFileCount": 48,
+      "episodeCount": 96,
+      "totalEpisodeCount": 110,
+      "sizeOnDisk": 71098839614,
+      "releaseGroups": [
+        "SubsPlease"
+      ],
+      "percentOfEpisodes": 50.0
+    },
+    "languageProfileId": 1,
+    "id": 54
+  },
+  {
+    "title": "Severance",
+    "alternateTitles": [
+      {
+        "title": "Separación",
+        "seasonNumber": -1
+      },
+      {
+        "title": "Scissione",
+        "seasonNumber": -1
+      },
+      {
+        "title": "Severence Scissione",
+        "seasonNumber": -1
+      },
+      {
+        "title": "Separacion",
+        "seasonNumber": -1
+      }
+    ],
+    "sortTitle": "severance",
+    "status": "continuing",
+    "ended": false,
+    "overview": "Mark leads a team of office workers whose memories have been surgically divided between their work and personal lives. When a mysterious colleague appears outside of work, it begins a journey to discover the truth about their jobs.",
+    "previousAiring": "2025-03-21T01:00:00Z",
+    "network": "Apple TV",
+    "airTime": "21:00",
+    "images": [
+      {
+        "coverType": "banner",
+        "url": "/MediaCover/61/banner.jpg?lastWrite=639058324300676770",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/371980/banners/67d3854a3f3f2.jpg"
+      },
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/61/poster.jpg?lastWrite=639058324300836766",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/371980/posters/621096b26f0e2.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/61/fanart.jpg?lastWrite=639058324301156760",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/371980/backgrounds/61bdee7c62d99.jpg"
+      },
+      {
+        "coverType": "clearlogo",
+        "url": "/MediaCover/61/clearlogo.png?lastWrite=639058324301316756",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/371980/clearlogo/67deb201804b5.png"
+      }
+    ],
+    "originalLanguage": {
+      "id": 1,
+      "name": "English"
+    },
+    "seasons": [
+      {
+        "seasonNumber": 0,
+        "monitored": false,
+        "statistics": {
+          "episodeFileCount": 0,
+          "episodeCount": 0,
+          "totalEpisodeCount": 21,
+          "sizeOnDisk": 0,
+          "releaseGroups": [],
+          "percentOfEpisodes": 0
+        }
+      },
+      {
+        "seasonNumber": 1,
+        "monitored": true,
+        "statistics": {
+          "previousAiring": "2022-04-09T01:00:00Z",
+          "episodeFileCount": 0,
+          "episodeCount": 9,
+          "totalEpisodeCount": 9,
+          "sizeOnDisk": 0,
+          "releaseGroups": [],
+          "percentOfEpisodes": 0
+        }
+      },
+      {
+        "seasonNumber": 2,
+        "monitored": true,
+        "statistics": {
+          "previousAiring": "2025-03-21T01:00:00Z",
+          "episodeFileCount": 0,
+          "episodeCount": 10,
+          "totalEpisodeCount": 10,
+          "sizeOnDisk": 0,
+          "releaseGroups": [],
+          "percentOfEpisodes": 0
+        }
+      }
+    ],
+    "year": 2022,
+    "path": "/data/tvshows/Severance (2022) [tvdbid-371980]",
+    "qualityProfileId": 9,
+    "seasonFolder": true,
+    "monitored": true,
+    "monitorNewItems": "all",
+    "useSceneNumbering": false,
+    "runtime": 49,
+    "tvdbId": 371980,
+    "tvRageId": 0,
+    "tvMazeId": 44933,
+    "tmdbId": 95396,
+    "firstAired": "2022-02-18T00:00:00Z",
+    "lastAired": "2025-03-20T00:00:00Z",
+    "seriesType": "standard",
+    "cleanTitle": "severance",
+    "imdbId": "tt11280740",
+    "titleSlug": "severance",
+    "rootFolderPath": "/data/tvshows",
+    "certification": "TV-MA",
+    "genres": [
+      "Drama",
+      "Mystery",
+      "Science Fiction",
+      "Thriller"
+    ],
+    "tags": [],
+    "added": "2026-02-04T20:07:09Z",
+    "ratings": {
+      "votes": 414829,
+      "value": 8.6
+    },
+    "statistics": {
+      "seasonCount": 2,
+      "episodeFileCount": 0,
+      "episodeCount": 19,
+      "totalEpisodeCount": 40,
+      "sizeOnDisk": 0,
+      "releaseGroups": [],
+      "percentOfEpisodes": 0
+    },
+    "languageProfileId": 1,
+    "id": 61
+  },
+  {
+    "title": "The Ramparts of Ice",
+    "alternateTitles": [
+      {
+        "title": "Koori no Jouheki",
+        "sceneSeasonNumber": 1
+      },
+      {
+        "title": "Koori no Jouheki 2nd Season",
+        "sceneSeasonNumber": 2
+      }
+    ],
+    "sortTitle": "ramparts of ice",
+    "status": "continuing",
+    "ended": false,
+    "overview": "Weighed down by memories she can’t shake, high schooler Koyuki Hikawa keeps everyone at arm's length — until three schoolmates draw her out of her shell.",
+    "nextAiring": "2026-11-12T14:45:00Z",
+    "previousAiring": "2026-11-05T14:45:00Z",
+    "network": "TBS (JP)",
+    "airTime": "23:45",
+    "images": [
+      {
+        "coverType": "banner",
+        "url": "/MediaCover/140/banner.jpg?lastWrite=639149740237126345",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/459627/banners/69ce963a6b993.jpg"
+      },
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/140/poster.jpg?lastWrite=639149740237446334",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/459627/posters/6963aff5c520a.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/140/fanart.jpg?lastWrite=639153370579955637",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/459627/backgrounds/6a12fb830536d.jpg"
+      },
+      {
+        "coverType": "clearlogo",
+        "url": "/MediaCover/140/clearlogo.png?lastWrite=639149740238326306",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/459627/clearlogo/69cfad99d30cb.png"
+      }
+    ],
+    "originalLanguage": {
+      "id": 8,
+      "name": "Japanese"
+    },
+    "seasons": [
+      {
+        "seasonNumber": 1,
+        "monitored": true,
+        "statistics": {
+          "previousAiring": "2026-07-02T14:45:00Z",
+          "episodeFileCount": 14,
+          "episodeCount": 14,
+          "totalEpisodeCount": 14,
+          "sizeOnDisk": 15067958724,
+          "releaseGroups": [
+            "Kitsune",
+            "ToonsHub",
+            "VARYG"
+          ],
+          "percentOfEpisodes": 100
+        }
+      },
+      {
+        "seasonNumber": 2,
+        "monitored": true,
+        "statistics": {
+          "nextAiring": "2026-11-12T14:45:00Z",
+          "previousAiring": "2026-11-05T14:45:00Z",
+          "episodeFileCount": 6,
+          "episodeCount": 6,
+          "totalEpisodeCount": 10,
+          "sizeOnDisk": 5312959784,
+          "releaseGroups": [
+            "ToonsHub",
+            "VARYG"
+          ],
+          "percentOfEpisodes": 100
+        }
+      }
+    ],
+    "year": 2026,
+    "path": "/data/tvshows/The Ramparts of Ice (2026) [tvdbid-459627]",
+    "qualityProfileId": 7,
+    "seasonFolder": true,
+    "monitored": true,
+    "monitorNewItems": "all",
+    "useSceneNumbering": true,
+    "runtime": 24,
+    "tvdbId": 459627,
+    "tvRageId": 0,
+    "tvMazeId": 90251,
+    "tmdbId": 283428,
+    "firstAired": "2026-04-02T00:00:00Z",
+    "lastAired": "2026-12-03T00:00:00Z",
+    "seriesType": "anime",
+    "cleanTitle": "therampartsice",
+    "imdbId": "tt39123061",
+    "titleSlug": "the-ramparts-of-ice",
+    "rootFolderPath": "/data/tvshows",
+    "certification": "12",
+    "genres": [
+      "Animation",
+      "Anime",
+      "Comedy",
+      "Drama",
+      "Romance"
+    ],
+    "tags": [],
+    "added": "2026-05-21T15:25:57Z",
+    "ratings": {
+      "votes": 3126,
+      "value": 8.1
+    },
+    "statistics": {
+      "seasonCount": 2,
+      "episodeFileCount": 20,
+      "episodeCount": 20,
+      "totalEpisodeCount": 24,
+      "sizeOnDisk": 20380918508,
+      "releaseGroups": [
+        "Kitsune",
+        "ToonsHub",
+        "VARYG"
+      ],
+      "percentOfEpisodes": 100
+    },
+    "languageProfileId": 1,
+    "id": 140
+  }
+]

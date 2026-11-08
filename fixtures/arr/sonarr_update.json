@@ -1,0 +1,43 @@
+[
+  {
+    "version": "4.0.20.3014",
+    "branch": "main",
+    "releaseDate": "2026-09-16T16:40:21Z",
+    "fileName": "Sonarr.main.4.0.20.3014.linux-musl-x64.tar.gz",
+    "url": "https://github.com/Sonarr/Sonarr/releases/download/v4.0.20.3014/Sonarr.main.4.0.20.3014.linux-musl-x64.tar.gz",
+    "installed": true,
+    "installedOn": "2026-09-23T17:49:38Z",
+    "installable": false,
+    "latest": true,
+    "changes": {
+      "new": [
+        "Add Trusted Networks setting",
+        "Add hostname validation"
+      ],
+      "fixed": [
+        "Update help text for Allowed Hosts",
+        "Improve logging for 'Allowed Hosts' and 'Trusted Networks'"
+      ]
+    },
+    "hash": "549027593de725b132e9b87b06b5b9466506096270d45e047051005091dbfe31"
+  },
+  {
+    "version": "4.0.19.2979",
+    "branch": "main",
+    "releaseDate": "2026-06-26T17:24:52Z",
+    "fileName": "Sonarr.main.4.0.19.2979.linux-musl-x64.tar.gz",
+    "url": "https://github.com/Sonarr/Sonarr/releases/download/v4.0.19.2979/Sonarr.main.4.0.19.2979.linux-musl-x64.tar.gz",
+    "installed": false,
+    "installedOn": "2026-06-30T15:05:46Z",
+    "installable": false,
+    "latest": false,
+    "changes": {
+      "new": [],
+      "fixed": [
+        "Basic auth for qBittorrent",
+        "Bump FFprobe to 5.1.10"
+      ]
+    },
+    "hash": "df95aafa363d72620cdce124457e2f17b97fd04eb9f722b6db16a13704df93a4"
+  }
+]
