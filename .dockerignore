@@ -1,0 +1,11 @@
+# Build context for gateway/Dockerfile is the repo root (ARCHITECTURE §5.20).
+# Send only the shared models, the gateway and the Flutter web build.
+*
+!packages/yams_models/
+!gateway/
+!app/build/web/
+
+# Re-exclude tool state and debug symbols inside the allowed trees.
+**/.dart_tool
+**/.packages
+app/build/web/**/*.symbols

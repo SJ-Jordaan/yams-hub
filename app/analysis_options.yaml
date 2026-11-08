@@ -1,0 +1,12 @@
+# The repo-wide lints (../analysis_options.yaml: strict casts and raw types,
+# single quotes, directives ordering, ...) plus the Flutter recommended set.
+include:
+  - ../analysis_options.yaml
+  - package:flutter_lints/flutter.yaml
+
+analyzer:
+  exclude:
+    - build/**
+    - android/**
+    - ios/**
+    - web/**

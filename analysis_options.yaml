@@ -1,0 +1,28 @@
+# Shared lints for every package in this repo.
+# Packages include this file: `include: ../analysis_options.yaml` (gateway, updater, app)
+# or `include: ../../analysis_options.yaml` (packages/*).
+include: package:lints/recommended.yaml
+
+analyzer:
+  language:
+    strict-casts: true
+    strict-raw-types: true
+  exclude:
+    - "**/build/**"
+    - "**/.dart_tool/**"
+  errors:
+    # A duplicate public name across the re-exported model files breaks every package (ARCHITECTURE §4).
+    ambiguous_export: error
+
+linter:
+  rules:
+    - always_declare_return_types
+    - avoid_dynamic_calls
+    - cancel_subscriptions
+    - directives_ordering
+    - prefer_final_fields
+    - prefer_single_quotes
+    - throw_in_finally
+    - unawaited_futures
+    - unnecessary_await_in_return
+    - unnecessary_statements

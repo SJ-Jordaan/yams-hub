@@ -1,0 +1,273 @@
+[
+ {
+  "id": "core-models",
+  "title": "Shared models package, repo scaffolding and check script",
+  "kind": "core",
+  "depends_on": [],
+  "owned_paths": [
+   "README.md",
+   ".gitignore",
+   ".dockerignore",
+   "analysis_options.yaml",
+   "tool/**",
+   "packages/yams_models/pubspec.yaml",
+   "packages/yams_models/pubspec.lock",
+   "packages/yams_models/analysis_options.yaml",
+   "packages/yams_models/lib/yams_models.dart",
+   "packages/yams_models/lib/src/json.dart",
+   "packages/yams_models/lib/src/common.dart",
+   "packages/yams_models/lib/src/auth.dart",
+   "packages/yams_models/lib/src/server.dart",
+   "packages/yams_models/lib/src/dashboard.dart",
+   "packages/yams_models/lib/src/arr_common.dart",
+   "packages/yams_models/test/core/**"
+  ],
+  "description": "Read ARCHITECTURE \u00a72-4, \u00a712, API.md \u00a71-5. Create the repo scaffolding: README.md (build/run/deploy overview), .gitignore, .dockerignore (ARCH 5.20: allow only packages/yams_models, gateway, app/build/web; exclude **/.dart_tool and app/build/web/**/*.symbols), the shared analysis_options.yaml, and tool/check_all.sh. The script runs `dart analyze packages/yams_models` FIRST, then analyze+test for each existing package (yams_models, gateway, updater, app via `source ~/development/env.sh`). Last comes a docker build smoke: create a placeholder app/build/web/index.html if missing, build gateway/Dockerfile and updater/Dockerfile (skip each Dockerfile that does not exist yet, and skip with a warning when docker is unavailable). Package yams_models: `sdk: ^3.13.0`, deps meta, dev test+lints via `dart pub add`; commit pubspec.lock. Write json.dart (ARCH \u00a74 helpers). common.dart: ApiError (fields, details, retryAfterSeconds), PagedList<T> (NOT Page), CursorPage<T>, ItemList<T>, non-generic Section with decode<T>(), SectionStatus, Alert + AlertSeverity, ServiceId and ExternalApp (both include shelfmark), ExternalLink, Job/JobStep/JobStatus, CommandRef. auth.dart: LoginRequest, LoginResponse (top-level serverProofKey), TokenPair, User/Role, SessionInfo, MeResponse with its seerr part (SeerrQuota, QuotaInfo), CreateUserRequest, UpdateUserRequest, JellyfinUserOption, AuditEntry, ChangePasswordRequest. server.dart: ServerPing (optional proof), ServerConfig (externalApps map incl. shelfmark, policy, features incl. containerActions, seerr flags), HealthReport, ServiceHealth. dashboard.dart: DashboardResponse. arr_common.dart: ArrService, QualityInfo, MediaFileInfo, HealthMessage, ArrHistoryType with the int mapping, ArrHistoryItem. Every enum has `unknown`; follow the naming rule and reserved-names list of ARCH \u00a74. creates_stubs (create once with `// <feature> DTOs: written by the <feature> slice.`, export from yams_models.dart, never touch again): packages/yams_models/lib/src/{requests,library,activity,calendar,indexers,subtitles,containers,system,media}.dart. Tests: round trips and unknown-enum parsing for every core DTO."
+ },
+ {
+  "id": "core-gateway",
+  "title": "Gateway core: config, pipeline, auth, upstreams, images, jobs, health, dashboard, stubs, test support",
+  "kind": "core",
+  "depends_on": [
+   "core-models"
+  ],
+  "owned_paths": [
+   "gateway/pubspec.yaml",
+   "gateway/pubspec.lock",
+   "gateway/analysis_options.yaml",
+   "gateway/Dockerfile",
+   "gateway/bin/**",
+   "gateway/lib/*.dart",
+   "gateway/lib/src/*.dart",
+   "gateway/lib/src/config/**",
+   "gateway/lib/src/core/**",
+   "gateway/test/core/**",
+   "gateway/test/support/**"
+  ],
+  "description": "Read ARCHITECTURE \u00a73, \u00a75 (all of it), \u00a76, \u00a712, \u00a713, and API.md \u00a71-4 and \u00a715.\n\nSetup: `sdk: ^3.13.0`. Add the deps of ARCH 2.1 with `dart pub add`, including http_parser, async and dev fake_async. Commit pubspec.lock. Dockerfile exactly as ARCH 5.20 (`mkdir -p /out`, USER 64090).\n\nCLI (bin/server.dart): serve, hash-password, healthcheck, check-config (reports sources, admin user id auto/set, PBKDF2 timing), reset-admin. Set umask 077 at start.\n\nConfig (5.2): non-secret env plus the secrets file YAMS_HUB_SECRETS_FILE (KEY='value' parser). The bootstrap hash is ignored once users.json exists. CORS origin validation. HOST_SYS=/sys, HOST_NET_DEV, SHELFMARK_URL, JELLYFIN_ADMIN_USER_ID auto-detect. Policy YAML including adminRefreshTokenTtlDays and imageCache limits.\n\nPipeline (5.3): requestId, hostCheck (ping exempt), accessLog, securityHeaders/CSP/CORP, cors, errorHandler (messages redacted). ApiRouter mounted at both /api/v1 and /yh/api/v1 with `Router(notFoundHandler: jsonNotFound)`, regex-constrained params, static-before-param registration.\n\nAuth (5.4):\n- users and sessions stores (0600);\n- PBKDF2 with fail-closed parsing, auto-tune and a global semaphore (2 running, 8 queued, else 429);\n- access tokens indexed by session;\n- self-identifying refresh tokens with reuse revocation;\n- per-session server proof (login serverProofKey; `/ping?nonce&sid` proof);\n- cookie transport on /yh with the cookie paths given there, CSRF header on all cookie requests except img GETs and on cookie login, Secure only on HTTPS;\n- limiter counts attempts before hashing, known-IP exemption, bridge-IP skip;\n- the invalidation table; authenticate() reads role/disabled from the store per request.\n\nFeatureModule/FeatureContext (5.5) with every member listed: config, upstreams, caches, pollers, jobs, audit, images, remoteHttp (RemoteFetcher), jellyfin (JellyfinServerInfo), seerrIdentity, seerrSettings, health, stores, redact, clock, log.\n\nUpstreams (5.6): UpstreamClient with absolute paths incl. API prefix, multipart, maxBytes, auth strategies (shelfmark none), QbitSession, DockerClient prepending /v1.54, error mapping, transport exceptions rethrown without text. RemoteFetcher: manual redirects, public-IP check, magnet redirect.\n\nRest of core:\n- caches/pollers (5.7); watchtowerCheck probe via GET /v1/containers/details (never /v1/check);\n- ImageUrls with the exact signatures of 5.8, and ImageRoutes with validation, buckets, raster magic-byte sniffing, SVG ban, headers, streaming cap, growth control, Seerr avatar host assertion, gravatar allow-list;\n- JobRegistry and /jobs (member filter, redacted logs);\n- HealthService and /health (incl. shelfmark GET /api/health), plus the docker proxy self-test that disables container actions;\n- dashboard aggregation (stubs throw notImplemented); audit with sanitize (5.13); redactSecrets (5.14); static handler (5.15).\n\nCore routes: /ping, /auth/**, /admin/** (incl. POST /admin/jellyfin-users/{id}/import-to-seerr), /server, /health, /jobs, /img/**, /dashboard.\n\ncreates_stubs (create once, never touch again): gateway/lib/src/features/{requests,library,activity,calendar,indexers,subtitles,containers,system,media}/<id>_module.dart. Each registers EVERY API.md route of its feature (regex params, static first) returning 501, and its dashboard() throws ApiException.notImplemented(). Also core/feature_registry.dart.\n\nTest support (5.19): TestHub(startModules: false, startOnly, FakeClock), fake_upstreams on MockClient.streaming with call recording, fixture() loader.\n\nCore tests: everything in 5.19's core list, including the stub-path 501 test, upstream path assertions, ImageUrls round trips and the check-config secrets-file test.\n\nAcceptance: dart analyze clean, tests green, docker build smoke passes."
+ },
+ {
+  "id": "core-app",
+  "title": "Flutter app core: project, platform config, shell, routing, networking, auth, launcher, shared widgets, stubs",
+  "kind": "core",
+  "depends_on": [
+   "core-models"
+  ],
+  "owned_paths": [
+   "app/pubspec.yaml",
+   "app/pubspec.lock",
+   "app/analysis_options.yaml",
+   "app/.metadata",
+   "app/.gitignore",
+   "app/README.md",
+   "app/android/**",
+   "app/ios/**",
+   "app/web/**",
+   "app/lib/main.dart",
+   "app/lib/app.dart",
+   "app/lib/core/**",
+   "app/test/core/**",
+   "app/test/support/**",
+   "app/test/widget_test.dart"
+  ],
+  "description": "Read ARCHITECTURE \u00a72.1, \u00a73, \u00a77 (all), \u00a712, \u00a713 and APP.md \u00a71-3, \u00a713-15.\n\nSetup: `flutter create --org dev.zenith --project-name yams_hub --platforms android,ios,web app`. DELETE app/test/widget_test.dart. Run the exact `flutter pub add` command of ARCH 2.1 (pinned go_router ^17.5.0, cached_network_image ^3.4.1 + cached_network_image_platform_interface, dynamic_color ^1.9.0, flutter_riverpod '>=3.0.0 <3.5.0', flutter_secure_storage 11, device_info_plus, web, collection, flutter_web_plugins sdk, yams_models path, dev fake_async). Set environment `sdk: ^3.13.0`, `flutter: \">=3.47.0\"`. Commit pubspec.lock. Never add material_ui. Every file imports package:flutter/material.dart.\n\nPlatform config (7.11):\n- Android: INTERNET, cleartext, <queries>, allowBackup=false, magnet: intent filter, minSdk = flutter.minSdkVersion.\n- iOS: 15.0, ATS, local network text, LSApplicationQueriesSchemes, CFBundleURLTypes magnet.\n- flutter_deeplinking_enabled=false, plus a tiny MethodChannel `dev.zenith.yams_hub/links` for incoming links \u2192 core/intents routes to AppPaths.activityAdd(url:).\n- Web: index.html/manifest.json with display standalone, start_url /home, 192/512 + maskable icons, apple-touch-icon; no Google Fonts.\n\nCore code (\u00a77):\n- theme with StatusColors and DynamicColorBuilder; app_settings incl. hiddenLauncherApps.\n- Server profiles and ServerResolver: happy-eyeballs, server proof via /ping?nonce&sid, Tailscale-first when unverified, plain-HTTP warning.\n- TokenStore (secure storage v11 with first_unlock_this_device; web cookie no-op / dev sessionStorage via package:web; stores sessionId and serverProofKey).\n- Dio: /api/v1 bearer or /yh/api/v1 cookie; X-YAMS-Client always; no release LogInterceptor. Interceptors: Auth with single-flight refresh, where the refresh Dio copies baseUrl and X-YAMS-Client; Failover that retries only GET/HEAD or connectionError/connectionTimeout, else ApiException.resultUnknown(); Error.\n- Login (device_info_plus device names) and onboarding screens.\n- go_router StatefulShellRoute with 12 branches; ShellScaffold (compact/medium/expanded); AppPaths with EVERY helper listed in ARCH 7.3.\n- navBadgesProvider polling GET /dashboard?cards=... every 30 s and seeded by dashboardProvider, reading the raw keys of API.md \u00a74.\n- Dashboard screen with alerts panel, DashboardCardFrame and the card registry.\n- More screen.\n- Web-apps launcher (core/launcher: /home/apps, dashboard section and More entry, from GET /server externalApps + GET /health, members included).\n- jobProvider(id) + JobChip.\n- Shared widgets of 7.9 incl. HubImage (ImageRenderMethodForWeb from the platform interface, /yh prefix rewrite on cookie transport), InfiniteList over PagedList/CursorPage, ConfirmDialog/TypedConfirmDialog.\n- core/platform helper (no dart:io in features); external_links incl. shelfmark.\n\ncreates_stubs (create once, never touch again):\n- app/lib/features/{requests,library,activity,calendar,media,containers,indexers,subtitles,system,settings}/<f>_routes.dart: root GoRoute plus every APP.md \u00a71 sub-route as PlaceholderScreen, static sub-routes first.\n- app/lib/features/<f>/<f>_dashboard_card.dart for the nine card features (not settings), with the ARCH \u00a712 signature.\n\nTest support: FakeApi (Dio adapter serving canned JSON), pumpHubApp, model builders.\n\nCore tests: AppPaths outputs match registered routes and every API.md alert route parses; failover retry rules; token store; server proof verification; navBadges raw-key parsing; launcher filtering.\n\nAcceptance: flutter analyze clean, flutter test green, `flutter build web --release --no-web-resources-cdn` succeeds."
+ },
+ {
+  "id": "feat-requests",
+  "title": "Requests (Seerr): discover, search, titles, requests, issues",
+  "kind": "feature",
+  "depends_on": [
+   "core-models",
+   "core-gateway",
+   "core-app"
+  ],
+  "owned_paths": [
+   "packages/yams_models/lib/src/requests.dart",
+   "packages/yams_models/test/requests/**",
+   "gateway/lib/src/features/requests/**",
+   "gateway/test/features/requests/**",
+   "app/lib/features/requests/**",
+   "app/test/features/requests/**"
+  ],
+  "description": "Implement API.md \u00a76 and APP.md \u00a74; upstream facts in integrations/seerr.md.\n\nDTOs: TitleCard, TitlePage, RequestSummary (seerrMediaId, libraryId = media.externalServiceId, downloads as RequestDownloadProgress), MovieTitle, TvTitle, MediaState, RequestEligibility, TvSeason, SeasonEpisodes/SeasonEpisode, Ratings, CreateRequest/CreateRequestResult, RequestCounts, RequestOptions/ServiceOptions (prefixed sub-types RequestOptionsProfile, RequestOptionsRootFolder), Issue, IssueUser, IssueComment (commentCount in lists), IssueCounts (others\u2192other, closed\u2192resolved), Genre. IssueStatus has unknown. Follow the ARCH \u00a74 prefix rule.\n\nGateway:\n- Use ctx.seerrIdentity for X-API-User (never your own cache), ctx.jellyfin.itemLink/serverId for Jellyfin links, ctx.seerrSettings for flags. Seerr strict query encoding via rawQuery.\n- Watchlist per user via `GET /user/{seerrUserId}/watchlist`, cache keyed by Seerr user id; unlinked members get an empty TitlePage. Write a test for admin vs member watchlist.\n- `declined` filter: take=500 fetch, 15 s cache, gateway-side paging with exact totals.\n- Issue comment/resolve/reopen as the user, upstream 403 \u2192 403.\n- quota_exceeded details carry the quota; invalidate the quota cache on create.\n- Dashboard card RequestsCard: keep the raw key counts.pending; alerts seerr.pending/seerr.failed with valid routes.\n\nApp: discover carousels (watchlist hides when empty), search, title detail with the request/season sheet and the quota line from meProvider, requests list/detail with Open in Library via AppPaths from libraryId, issues with commentCount and creator/admin resolve. Card widget. Tests per ARCH 5.19/7.12."
+ },
+ {
+  "id": "feat-library",
+  "title": "Library (Sonarr/Radarr) incl. interactive release search",
+  "kind": "feature",
+  "depends_on": [
+   "core-models",
+   "core-gateway",
+   "core-app"
+  ],
+  "owned_paths": [
+   "packages/yams_models/lib/src/library.dart",
+   "packages/yams_models/test/library/**",
+   "gateway/lib/src/features/library/**",
+   "gateway/test/features/library/**",
+   "app/lib/features/library/**",
+   "app/test/features/library/**"
+  ],
+  "description": "Implement API.md \u00a77 (incl. \u00a77.8 releases) and APP.md \u00a75; upstream facts in integrations/arr.md (\u00a79.2 for releases).\n\nDTOs: SeriesSummary/MovieSummary with `tags` (resolved via /api/v3/tag, cached 10 min), Episode, EpisodeQueueState, SeasonInfo, SeriesDetail, MovieDetail, SeriesLookup, MovieLookup, AddSeriesRequest, AddMovieRequest, WantedItem, LibraryProfiles (prefixed sub-types LibraryQualityProfile, LibraryRootFolder), LibrarySummary/ArrSummary, ReleaseChoiceList/ReleaseChoice, LibraryCard.\n\nGateway:\n- All routes of \u00a77 with static segments first (lookup, episodes, releases/grab before <id>). Paths include /api/v3.\n- Release search: GET episode/season/movie releases, 150 s timeout, one per user (409); releaseId tokens hide guid/downloadUrl. POST /library/releases/grab \u2192 POST /api/v3/release {guid, indexerId}; 404 when expired.\n- Commands, wanted, profiles, summary.\n- Delete with policy/confirm and 428 impact text.\n- Dashboard card and alerts (\u00a77.11).\n\nApp: Library tabs, series/season/movie detail with tag chips, the release picker sheet (\"Choose release\" in episode, season and movie overflows; rejected releases greyed and confirmed), add flow, history, wanted multi-select, typed delete confirm. Card widget. No real indexer calls in tests; build queue records from the arr.md \u00a79 schema as *.synthetic.json files."
+ },
+ {
+  "id": "feat-activity",
+  "title": "Activity: torrents, unified queue, manual import, transfer, VPN, history",
+  "kind": "feature",
+  "depends_on": [
+   "core-models",
+   "core-gateway",
+   "core-app"
+  ],
+  "owned_paths": [
+   "packages/yams_models/lib/src/activity.dart",
+   "packages/yams_models/test/activity/**",
+   "gateway/lib/src/features/activity/**",
+   "gateway/test/features/activity/**",
+   "app/lib/features/activity/**",
+   "app/test/features/activity/**"
+  ],
+  "description": "Implement API.md \u00a78 (incl. \u00a78.3.1 manual import) and APP.md \u00a76; upstream facts in integrations/downloads.md and arr.md \u00a79/\u00a79.1.\n\nDTOs: TorrentState, TorrentSummary, TransferState, QueueItem, QueueArrEntry (downloadId, canManualImport, links to the *arr /activity/queue), QueueResponse, TorrentList, TorrentDetail, ShareLimits, TorrentFile, TrackerInfo (url reduced to scheme://host[:port]), CategoryList, VpnStatus + VpnGluetunHealth, ManualImportCandidates, ManualImportFile, TorrentActionRequest, ActivityCard.\n\nGateway:\n- qBittorrent maindata DemandPoller via QbitSession; unified queue merge.\n- Queue remove/grab/refresh, and manual import: GET candidates via /api/v3/manualimport (path kept behind a fileId token), POST /api/v3/command ManualImport.\n- Torrent actions, with managed_by_arr 409. Share-limits is [confirm] for remove/removeWithContent.\n- torrents/add through UpstreamClient.send multipart (URLs passed to qBittorrent, never fetched by the gateway).\n- Transfer, VPN, merged history cursor (core merged_cursor).\n- ActivityCard keeps the raw key counts.attention. Alert queue.import.<key> routes to /activity?tab=queue&import=<key>.\n\nApp:\n- Queue tab with attention tiles (Import\u2026 and Open in Sonarr/Radarr), the manual-import sheet (also opened from the import= query), torrents tab with the admin FAB Add torrent.\n- Add-torrent sheet and route /activity/add?url= (magnet links from core intents; web-only .torrent picker via package:web behind a conditional import).\n- Torrent detail with confirm flow for share-limit deletes, transfer settings, VPN sheet (\"Restart VPN\" via the containers action plus JobChip).\n- Card widget. Never import dart:io."
+ },
+ {
+  "id": "feat-calendar",
+  "title": "Calendar agenda",
+  "kind": "feature",
+  "depends_on": [
+   "core-models",
+   "core-gateway",
+   "core-app"
+  ],
+  "owned_paths": [
+   "packages/yams_models/lib/src/calendar.dart",
+   "packages/yams_models/test/calendar/**",
+   "gateway/lib/src/features/calendar/**",
+   "gateway/test/features/calendar/**",
+   "app/lib/features/calendar/**",
+   "app/test/features/calendar/**"
+  ],
+  "description": "Implement API.md \u00a79 and APP.md \u00a77. CalendarResponse/CalendarItem/CalendarCard (keep the raw key countNext7Days). Gateway: Sonarr+Radarr calendar with YAMS_HUB_TZ_OFFSET day bounds. `downloading` comes from BOTH the Sonarr queue (episodeId) and the Radarr queue (movieId), each cached 5 s; failures are ignored. One item per movie release date in the window; 62-day max window; 5 min cache. App: agenda grouped by day with sticky headers, filters, Today FAB, tablet month grid, navigation via AppPaths.seriesDetail/movieDetail. Card widget. Queue samples are synthetic (arr.md \u00a79 schema)."
+ },
+ {
+  "id": "feat-indexers",
+  "title": "Indexers (Prowlarr) incl. SSRF-safe manual grab",
+  "kind": "feature",
+  "depends_on": [
+   "core-models",
+   "core-gateway",
+   "core-app"
+  ],
+  "owned_paths": [
+   "packages/yams_models/lib/src/indexers.dart",
+   "packages/yams_models/test/indexers/**",
+   "gateway/lib/src/features/indexers/**",
+   "gateway/test/features/indexers/**",
+   "app/lib/features/indexers/**",
+   "app/test/features/indexers/**"
+  ],
+  "description": "Implement API.md \u00a710 and APP.md \u00a710; upstream facts in integrations/downloads.md \u00a73.\n\nDTOs: Indexer, IndexerTag, IndexerStats, IndexerList, IndexerHistoryItem, IndexerCategory, IndexerTestResult, ReleaseList/Release, IndexersCard (raw key `failing` array).\n\nGateway:\n- Reads/writes; tests as jobs.\n- Manual search: 150 s, one per user; releaseId tokens.\n- Grab: magnet \u2192 qBittorrent. Otherwise rewrite Prowlarr download URLs to PROWLARR_URL (key in the header, apikey query removed), or fetch https public URLs only through ctx.remoteHttp (manual redirects, public-IP check). Magnet redirect handled; 5 MB streaming cap; bencode check; downloadUrl never logged. Upload via multipart; create category `manual` if missing.\n- Test that a redirect to http://socket-proxy:2375 is refused.\n- Static routes before <id>.\n\nApp: list with enable switches and multi-select, detail, history, manual search with grab sheet, Test all job sheet (core JobChip/jobProvider). Card widget. testall bodies are synthetic."
+ },
+ {
+  "id": "feat-subtitles",
+  "title": "Subtitles (Bazarr)",
+  "kind": "feature",
+  "depends_on": [
+   "core-models",
+   "core-gateway",
+   "core-app"
+  ],
+  "owned_paths": [
+   "packages/yams_models/lib/src/subtitles.dart",
+   "packages/yams_models/test/subtitles/**",
+   "gateway/lib/src/features/subtitles/**",
+   "gateway/test/features/subtitles/**",
+   "app/lib/features/subtitles/**",
+   "app/test/features/subtitles/**"
+  ],
+  "description": "Implement API.md \u00a712 and APP.md \u00a711; upstream facts in integrations/downloads.md \u00a74. DTOs: SubtitleLanguage, WantedSubtitle, SubtitleHistoryItem, SubtitlesSummary, SubtitleJob, SubtitlesCard (raw key missingEpisodes). Gateway: Bazarr paths with the /api prefix, writes as query params, search-all is [confirm], task ids validated against the cached task list, posters via ImageUrls.arr. App: header with providers/SignalR, Episodes/Movies/History tabs, language-chip searches polling /subtitles/jobs, admin overflow actions with confirms. Card widget."
+ },
+ {
+  "id": "feat-containers",
+  "title": "Containers, updates and maintenance",
+  "kind": "feature",
+  "depends_on": [
+   "core-models",
+   "core-gateway",
+   "core-app"
+  ],
+  "owned_paths": [
+   "packages/yams_models/lib/src/containers.dart",
+   "packages/yams_models/test/containers/**",
+   "gateway/lib/src/features/containers/**",
+   "gateway/test/features/containers/**",
+   "app/lib/features/containers/**",
+   "app/test/features/containers/**"
+  ],
+  "description": "Implement API.md \u00a711 and APP.md \u00a79; upstream facts in integrations/system.md \u00a71-3, \u00a78-9.\n\nDTOs: ContainerSummary, ContainerDetail, ContainerHealthLogEntry, ContainerEvent, LogLine, LogResponse, ContainerList, UpdateInfo, UpdatesResponse with lastScan (WatchtowerScan from /v1/metrics, plus /v1/status), DecluttarrStatus, RecyclarrStatus, ContainersCard (raw keys running/total).\n\nGateway:\n- DockerClient paths without /v1.54.\n- EXACT-NAME resolution against /containers/json for every {name} route; ids and prefixes return 404. Tests: an id prefix of a locked container \u2192 404; `..` \u2192 404.\n- Locked/confirm/gluetun\u2192qbittorrent coupling. Actions disabled when features.containerActions is false.\n- healthLog output admin-only, redacted, 200 chars; LogLine.text redacted.\n- Docker events stream and stats poller in start().\n- The ONLY caller of Watchtower /v1/check (6 h + on request, 5 min rate limit), cached via ctx.stores updates.json.\n- Updater calls with /updates/{service} validated against the updater /services allow-list; job logs redacted.\n- Decluttarr/recyclarr parsers; recyclarr sync via updater /exec/recyclarr-sync.\n- Static routes (events, updates, maintenance) before <name>.\n\nApp: grouped list, detail with health log (admin output), logs viewer, Updates screen with the Watchtower last-scan strip even when available=false, maintenance cards; all actions via core JobChip/jobProvider and ConfirmDialogs. Card widget."
+ },
+ {
+  "id": "feat-system",
+  "title": "System: host metrics and Uptime Kuma",
+  "kind": "feature",
+  "depends_on": [
+   "core-models",
+   "core-gateway",
+   "core-app"
+  ],
+  "owned_paths": [
+   "packages/yams_models/lib/src/system.dart",
+   "packages/yams_models/test/system/**",
+   "gateway/lib/src/features/system/**",
+   "gateway/test/features/system/**",
+   "app/lib/features/system/**",
+   "app/test/features/system/**"
+  ],
+  "description": "Implement API.md \u00a713 and APP.md \u00a712; upstream facts in integrations/system.md \u00a74-5.\n\nDTOs: HostMetrics (+ prefixed sub-types), MetricSeries, UptimeResponse, SystemCard.\n\nGateway sampler (start(), every 5 s, ring buffer 1 h/24 h):\n- reads /proc/stat, meminfo, loadavg, uptime, cpuinfo, mdstat and diskstats (dm-0) from the container's OWN /proc;\n- network from HOST_NET_DEV;\n- hwmon under HOST_SYS/class/hwmon (default /sys), resolving the relative symlinks safely (dangling entries skipped). The test fixture builds a temp tree with symlinked and one dangling hwmon entry.\n- statvfs(/data) via ffi; missing sources \u2192 flags false.\n- The diskstats sample is synthetic.\n\nUptime Kuma status page (UTC beats). Alerts raid.degraded, raid.noRedundancy, host.temperature, host.volume, uptime.down.<id>, uptime.incident with valid routes.\n\nApp: host/storage/network/uptime/service-health cards (health row tap targets incl. shelfmark \u2192 AppPaths.mediaShelfmark()), charts with explicit fl_chart text styles, updated missing-source texts. Card widget."
+ },
+ {
+  "id": "feat-media",
+  "title": "Media: Jellyfin, Jellystat, Audiobookshelf, Kavita, Shelfmark",
+  "kind": "feature",
+  "depends_on": [
+   "core-models",
+   "core-gateway",
+   "core-app"
+  ],
+  "owned_paths": [
+   "packages/yams_models/lib/src/media.dart",
+   "packages/yams_models/test/media/**",
+   "gateway/lib/src/features/media/**",
+   "gateway/test/features/media/**",
+   "app/lib/features/media/**",
+   "app/test/features/media/**"
+  ],
+  "description": "Implement API.md \u00a714 (incl. \u00a714.7 Shelfmark and \u00a714.8 launcher/card) and APP.md \u00a78; upstream facts in integrations/seerr.md \u00a72-3 and system.md \u00a76, \u00a77, \u00a712.\n\nDTOs: NowPlayingSession, NowPlaying, MediaItem, JellyfinOverview, WatchStats, WatchUser, PlaybackRecord, AudiobooksOverview, BooksOverview, BookSeries, ShelfmarkStatus, MediaApp (app enum incl. shelfmark), MediaCard (incl. shelfmark counts).\n\nGateway:\n- Use ctx.jellyfin (serverId, itemLink, adminUserId; never your own cache) and ctx.health for MediaApp status/version.\n- Members' /media/stats/history is scoped to their own linked jellyfinUserId.\n- Shelfmark: only GET /api/health and GET /api/stats. NEVER /api/status, /api/restart, /api/debug, /api/localdownload, /api/releases, /api/metadata/search or any write.\n- Kavita with the x-api-key Auth Key, missingKey handling, never Account/login. Jellystat dangerous routes never called.\n- Alerts: kavita.auth \u2192 /media/books, jellyfin.restart \u2192 /containers/jellyfin, shelfmark.coordinator \u2192 /media/shelfmark.\n- Kavita samples are synthetic (*.synthetic.json).\n\nApp: Now playing, Stats (fl_chart with explicit text styles), Apps tab with five rich tiles (link to /home/apps), Jellyfin/Audiobookshelf/Kavita/Shelfmark detail screens (/media/shelfmark with the Open Shelfmark button), stats/users. Card widget."
+ },
+ {
+  "id": "feat-settings",
+  "title": "Settings screens (app only)",
+  "kind": "feature",
+  "depends_on": [
+   "core-models",
+   "core-app"
+  ],
+  "owned_paths": [
+   "app/lib/features/settings/**",
+   "app/test/features/settings/**"
+  ],
+  "description": "Implement APP.md \u00a713 using only core endpoints (API.md \u00a72) and core providers.\n- Servers list/editor (hidden on gateway-served web; plain-HTTP warning).\n- Account (POST /auth/password), sign out.\n- Sessions (own; admins all).\n- Users (admin): CRUD via /admin/users, and a Jellyfin user dropdown from /admin/jellyfin-users with an \"Import into Seerr\" button (confirm \u2192 POST /admin/jellyfin-users/{id}/import-to-seerr); \"No Seerr account\" chips.\n- Audit log (admin) with filters.\n- Appearance: theme, dynamic color, seeds, dashboard cards checklist/order, and the web apps checklist writing appSettingsProvider.hiddenLauncherApps.\n- Refresh presets.\n- Media apps: per-ExternalApp base URL overrides and custom schemes.\n- About: versions, health, public URLs, the Tailscale-on-untrusted-Wi-Fi note, licenses.\nThere is no gateway or models code in this slice."
+ },
+ {
+  "id": "updater-deploy",
+  "title": "Updater sidecar and deploy files",
+  "kind": "feature",
+  "depends_on": [
+   "core-gateway"
+  ],
+  "owned_paths": [
+   "updater/**",
+   "deploy/**"
+  ],
+  "description": "Read ARCHITECTURE \u00a75.17, \u00a75.18, \u00a76, \u00a78, \u00a79, \u00a710.\n\nupdater/: Dart shelf service, `sdk: ^3.13.0`, deps shelf, shelf_router, args, logging, crypto; commit pubspec.lock. Dockerfile: dart:3.13 build with `mkdir -p /out`; distroless cc final with the docker:29-cli docker binary and compose plugin; runs as root.\n- Token read from UPDATER_TOKEN_FILE (`UPDATER_TOKEN='...'`); refuse to start if it is under 32 bytes. Constant-time Bearer check returning 401 on EVERY path, including unknown ones. Request bodies never logged.\n- Allow-list from `docker compose -p yams --project-directory /opt/yams -f ... -f ... config --services` every 10 min. UPDATER_DENY default yams-hub,yams-hub-updater,socket-proxy-hub. {service} validated by regex + allow-list.\n- Routes: GET /healthz, GET /services, POST /update/{service} (one job at a time). Steps: `compose pull -- svc`, `up -d --no-deps -- svc`, gluetun also force-recreates qbittorrent, then `docker image prune -f`. Process.start with argument arrays, 15 min timeouts.\n- POST /exec/recyclarr-sync with a CONSTANT argument array (test asserts it). GET /jobs/{id}.\n- Tests with a fake process runner.\n\ndeploy/:\n- docker-compose.hub.yaml exactly as ARCH \u00a76: yams_hub_ctl internal network; IPv4-only 0.0.0.0:8090; secrets bind mounts; /proc/1/net/dev mount; no hwmon; user 64090; pinned socket-proxy with monitor-only=true.\n- yams-hub.example.yaml (5.2.1 incl. shelfmark).\n- make_hub_env.sh per \u00a79: printf to a mktemp file, no secrets in argv, JELLYFIN_ADMIN_USER_ID default, UPDATER_TOKEN 48 bytes, chown/chmod via `docker run --rm alpine`, --drop-bootstrap, final check-config.\n- verify.sh with the 7 checks of \u00a76.\n- tailscale-acl.example.hujson (\u00a78).\n- deploy.sh (\u00a79; compose -p yams, delete *.symbols).\n\nScripts must be shellcheck-clean. Do NOT run anything against the NAS."
+ }
+]

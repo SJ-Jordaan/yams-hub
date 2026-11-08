@@ -1,7 +1,26 @@
+# Dart / Flutter tooling
 .dart_tool/
-build/
 .packages
+build/
+coverage/
+.flutter-plugins
+.flutter-plugins-dependencies
 *.iml
 .idea/
+.vscode/
+.DS_Store
+*.log
+
+# Secrets never go into the repo (ARCHITECTURE §5.2)
 .env
+*.env
+!*.example.env
 secrets/
+
+# Signing material and machine-local SDK paths (Android/iOS)
+*.jks
+*.keystore
+*.p12
+*.mobileprovision
+key.properties
+local.properties

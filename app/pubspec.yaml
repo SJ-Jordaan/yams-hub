@@ -1,0 +1,61 @@
+name: yams_hub
+description: "YAMS Hub: Android, iOS and web companion for the Zenith YAMS media server."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.13.0
+  flutter: ">=3.47.0"
+
+# Dependencies are fixed by ARCHITECTURE §2.1 and pinned by the committed
+# pubspec.lock. Feature slices never add, remove or upgrade them. The three
+# packages that later moved to `material_ui` (go_router 18, cached_network_image
+# 4, dynamic_color 2) are deliberately held at their pre-migration majors.
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_riverpod: ">=3.0.0 <3.5.0"
+  go_router: ^17.5.0
+  dio: ^5.11.1
+  flutter_secure_storage: ^11.2.0
+  shared_preferences: ^2.5.6
+  cached_network_image: ^3.4.1
+  cached_network_image_platform_interface: ^4.1.1
+  url_launcher: ^6.3.3
+  dynamic_color: ^1.9.0
+  intl: ^0.20.3
+  fl_chart: ^1.3.0
+  package_info_plus: ^10.2.2
+  device_info_plus: ^13.3.0
+  web: ^1.1.2
+  collection: ^1.19.1
+  flutter_web_plugins:
+    sdk: flutter
+  yams_models:
+    path: ../packages/yams_models
+  cupertino_icons: ^2.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  fake_async: ^1.3.3
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - lib/core/theme/fonts/LICENSE.txt
+
+  # Roboto (Apache 2.0, from the Flutter SDK's material fonts) is bundled so the
+  # gateway-served web build never fetches fonts from the internet: Flutter web
+  # otherwise downloads Roboto from fonts.gstatic.com at start-up.
+  fonts:
+    - family: Roboto
+      fonts:
+        - asset: lib/core/theme/fonts/Roboto-Regular.ttf
+        - asset: lib/core/theme/fonts/Roboto-Medium.ttf
+          weight: 500
+        - asset: lib/core/theme/fonts/Roboto-Bold.ttf
+          weight: 700
