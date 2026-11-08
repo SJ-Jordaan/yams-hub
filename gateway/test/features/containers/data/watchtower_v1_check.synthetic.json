@@ -1,0 +1,11 @@
+{
+  "_note": "Synthetic Watchtower 1.24 POST /v1/check answer built from integrations/system.md 3.2.",
+  "containers": [
+    {"name": "sonarr", "image": "lscr.io/linuxserver/sonarr:latest", "image_id": "sha256:ae55f56fa15c", "digest": "sha256:old0001", "update_available": true, "latest_image_id": "", "latest_digest": "sha256:new0001", "update_source": "registry", "oci_source": "https://github.com/linuxserver/docker-sonarr", "current_image_version": "4.0.20.3014-ls2", "current_revision": "abc", "timestamp": "2026-11-08T09:00:05Z"},
+    {"name": "homepage", "image": "ghcr.io/gethomepage/homepage:latest", "image_id": "sha256:1111", "digest": "sha256:same", "update_available": false, "latest_image_id": "", "latest_digest": "sha256:same", "update_source": "registry", "current_image_version": "v2.7.0", "timestamp": "2026-11-08T09:00:05Z"},
+    {"name": "qbittorrent", "image": "lscr.io/linuxserver/qbittorrent:5.3.0", "image_id": "sha256:c123", "digest": "sha256:q1", "update_available": false, "latest_image_id": "", "latest_digest": "", "update_source": "registry", "error": "registry lookup failed: GET https://ghcr.io/token?scope=x&token=ABCDEF0123 timeout", "timestamp": "2026-11-08T09:00:05Z"}
+  ],
+  "count": 3,
+  "timestamp": "2026-11-08T09:00:05Z",
+  "api_version": "v1"
+}

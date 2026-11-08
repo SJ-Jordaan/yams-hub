@@ -1,0 +1,12 @@
+[
+  {
+    "propertyName": "BaseUrl",
+    "errorMessage": "Unable to access uindex.org, blocked by CloudFlare Protection.",
+    "attemptedValue": "https://uindex.org/",
+    "severity": "error",
+    "errorCode": "",
+    "isWarning": false,
+    "infoLink": null,
+    "detailedDescription": null
+  }
+]

@@ -1,0 +1,114 @@
+[
+  {
+    "id": 1,
+    "path": "/data/downloads/torrents/[SubsPlease] Slime S4/[SubsPlease] Tensei Shitara Slime Datta Ken - 73 (1080p) [09A41FF2].mkv",
+    "relativePath": "[SubsPlease] Tensei Shitara Slime Datta Ken - 73 (1080p) [09A41FF2].mkv",
+    "folderName": "/data/downloads/torrents/[SubsPlease] Slime S4",
+    "name": "[SubsPlease] Tensei Shitara Slime Datta Ken - 73 (1080p) [09A41FF2]",
+    "size": 1461367836,
+    "series": {
+      "id": 54,
+      "title": "That Time I Got Reincarnated as a Slime",
+      "sortTitle": "that time i got reincarnated as a slime",
+      "seriesType": "anime",
+      "images": [
+        {
+          "coverType": "poster",
+          "url": "/MediaCover/54/poster.jpg?lastWrite=639058149420070772",
+          "remoteUrl": "https://artworks.thetvdb.com/banners/posters/5bb2b28057ade.jpg"
+        }
+      ]
+    },
+    "seasonNumber": 4,
+    "episodes": [
+      {
+        "seriesId": 54,
+        "seasonNumber": 4,
+        "episodeNumber": 1,
+        "absoluteEpisodeNumber": 73,
+        "title": "Episode 1",
+        "id": 5580
+      }
+    ],
+    "releaseGroup": "SubsPlease",
+    "quality": {
+      "quality": {
+        "id": 3,
+        "name": "WEBDL-1080p",
+        "source": "web",
+        "resolution": 1080
+      },
+      "revision": {
+        "version": 1,
+        "real": 0,
+        "isRepack": false
+      }
+    },
+    "languages": [
+      {
+        "id": 8,
+        "name": "Japanese"
+      }
+    ],
+    "releaseType": "seasonPack",
+    "qualityWeight": 501,
+    "downloadId": "0985D9EFDF7508DB837E629AE8F40EE8B56F4D71",
+    "customFormats": [],
+    "customFormatScore": 200,
+    "indexerFlags": 1,
+    "rejections": []
+  },
+  {
+    "id": 2,
+    "path": "/data/downloads/torrents/[SubsPlease] Slime S4/NCOP.mkv",
+    "relativePath": "NCOP.mkv",
+    "folderName": "/data/downloads/torrents/[SubsPlease] Slime S4",
+    "name": "NCOP",
+    "size": 104857600,
+    "series": {
+      "id": 54,
+      "title": "That Time I Got Reincarnated as a Slime",
+      "sortTitle": "that time i got reincarnated as a slime",
+      "seriesType": "anime",
+      "images": [
+        {
+          "coverType": "poster",
+          "url": "/MediaCover/54/poster.jpg?lastWrite=639058149420070772",
+          "remoteUrl": "https://artworks.thetvdb.com/banners/posters/5bb2b28057ade.jpg"
+        }
+      ]
+    },
+    "episodes": [],
+    "releaseGroup": "SubsPlease",
+    "quality": {
+      "quality": {
+        "id": 3,
+        "name": "WEBDL-1080p",
+        "source": "web",
+        "resolution": 1080
+      },
+      "revision": {
+        "version": 1,
+        "real": 0,
+        "isRepack": false
+      }
+    },
+    "languages": [
+      {
+        "id": 8,
+        "name": "Japanese"
+      }
+    ],
+    "releaseType": "unknown",
+    "downloadId": "0985D9EFDF7508DB837E629AE8F40EE8B56F4D71",
+    "customFormats": [],
+    "customFormatScore": 0,
+    "indexerFlags": 0,
+    "rejections": [
+      {
+        "reason": "Unable to determine if file is a sample",
+        "type": "permanent"
+      }
+    ]
+  }
+]

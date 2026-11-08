@@ -22,11 +22,17 @@ final _errorLog = Logger('http.error');
 final _requestIdPattern = RegExp(r'^[A-Za-z0-9-]{8,64}$');
 
 /// CSP of HTML responses (the Flutter web build).
+///
+/// `base-uri 'self'`, not ARCHITECTURE §5.15's `'none'`: Flutter web needs its
+/// `<base href="/">`. With `'none'` the browser ignores it, `document.baseURI`
+/// becomes the page URL, and a deep link such as `/login` aborts at startup
+/// ("The base href has to end with a "/"") while relative asset URLs resolve
+/// against the route. `'self'` still forbids a foreign base URL.
 const htmlCsp =
     "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; "
     "style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; "
     "connect-src 'self'; font-src 'self' data:; worker-src 'self' blob:; "
-    "frame-ancestors 'none'; base-uri 'none'; form-action 'self'";
+    "frame-ancestors 'none'; base-uri 'self'; form-action 'self'";
 
 /// CSP of JSON responses.
 const jsonCsp = "default-src 'none'; frame-ancestors 'none'";

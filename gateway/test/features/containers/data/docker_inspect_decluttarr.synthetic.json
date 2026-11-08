@@ -1,0 +1,46 @@
+{
+  "_note": "Synthetic GET /containers/decluttarr/json (shape of fixtures/system/docker_container_inspect.json) with a healthcheck log; the env and the health output carry fake secrets that must never reach the app.",
+  "Id": "DECLUTTARR_ID",
+  "Created": "2026-11-08T08:17:20.100000000Z",
+  "Path": "python",
+  "Args": ["main.py"],
+  "State": {
+    "Status": "running",
+    "Running": true,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 4242,
+    "ExitCode": 0,
+    "Error": "",
+    "StartedAt": "2026-11-08T08:17:23.000000000Z",
+    "FinishedAt": "2026-11-08T08:17:22.900000000Z",
+    "Health": {
+      "Status": "healthy",
+      "FailingStreak": 0,
+      "Log": [
+        {"Start": "2026-11-08T10:58:00.123456789+02:00", "End": "2026-11-08T10:58:00.223456789+02:00", "ExitCode": 0, "Output": "checked http://sonarr:8989/api/v3/system/status?apikey=SUPERSECRETKEY123 ok\n"},
+        {"Start": "2026-11-08T10:58:30.123456789+02:00", "End": "2026-11-08T10:58:30.223456789+02:00", "ExitCode": 1, "Output": "PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"}
+      ]
+    }
+  },
+  "Image": "sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+  "Name": "/decluttarr",
+  "RestartCount": 3,
+  "HostConfig": {
+    "Binds": ["/volume1/mediashare/config/decluttarr:/app/config:ro"],
+    "NetworkMode": "yams_network",
+    "RestartPolicy": {"Name": "unless-stopped", "MaximumRetryCount": 0}
+  },
+  "Mounts": [
+    {"Type": "bind", "Source": "/volume1/mediashare/config/decluttarr", "Destination": "/app/config", "Mode": "ro", "RW": false, "Propagation": "rprivate"}
+  ],
+  "Config": {
+    "Hostname": "decluttarr",
+    "Tty": false,
+    "Env": ["SONARR_KEY=SUPERSECRETKEY123", "TZ=Africa/Johannesburg"],
+    "Cmd": ["python", "main.py", "--password=hunter2"],
+    "Image": "ghcr.io/manimatter/decluttarr:latest"
+  }
+}

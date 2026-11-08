@@ -1,0 +1,41 @@
+[
+  {
+    "id": 3,
+    "name": "Ascendance of a Bookworm",
+    "localizedName": "",
+    "sortName": "Ascendance of a Bookworm",
+    "pages": 4210,
+    "format": 3,
+    "created": "2026-11-08T11:00:00",
+    "lastChapterAdded": "2026-11-08T11:00:00",
+    "libraryId": 2,
+    "libraryName": "Light Novels",
+    "pagesRead": 0,
+    "wordCount": 900000,
+    "avgHoursToRead": 50,
+    "coverImage": "series3.png",
+    "primaryColor": "#AA8844"
+  },
+  {
+    "id": 2,
+    "name": "Mushoku Tensei",
+    "localizedName": "Mushoku Tensei: Jobless Reincarnation",
+    "sortName": "Mushoku Tensei",
+    "pages": 2800,
+    "format": 3,
+    "created": "2026-11-08T10:59:00",
+    "lastChapterAdded": "2026-11-08T10:59:00",
+    "libraryId": 2,
+    "libraryName": "Light Novels",
+    "pagesRead": 700,
+    "coverImage": "series2.png"
+  },
+  {
+    "id": 1,
+    "name": "Some Comic",
+    "pages": 24,
+    "format": 1,
+    "libraryId": 1,
+    "pagesRead": 24
+  }
+]

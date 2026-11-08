@@ -1,0 +1,21 @@
+{
+  "config": {"slug": "zenith", "title": "Zenith", "description": "Media server status", "autoRefreshInterval": 60},
+  "incident": {
+    "id": 1,
+    "style": "warning",
+    "title": "VPN switch",
+    "content": "Downloads pause while gluetun reconnects.",
+    "pin": true,
+    "createdDate": "2026-11-08 07:50:00",
+    "lastUpdatedDate": null
+  },
+  "publicGroupList": [
+    {"id": 7, "name": "Downloads", "weight": 3, "monitorList": [
+      {"id": 14, "name": "gluetun (VPN)", "sendUrl": 0, "type": "docker"}
+    ]},
+    {"id": 5, "name": "Media", "weight": 1, "monitorList": [
+      {"id": 2, "name": "jellyfin", "sendUrl": 0, "type": "docker"}
+    ]}
+  ],
+  "maintenanceList": []
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "name": "Books",
+    "type": 2,
+    "lastScanned": "2026-11-08T10:25:00",
+    "coverImage": null,
+    "folders": [
+      "/books"
+    ],
+    "folderWatching": true,
+    "includeInDashboard": true
+  },
+  {
+    "id": 2,
+    "name": "Light Novels",
+    "type": 4,
+    "lastScanned": "2026-11-08T10:25:00",
+    "coverImage": null,
+    "folders": [
+      "/books/lightnovels"
+    ],
+    "folderWatching": true,
+    "includeInDashboard": true
+  }
+]

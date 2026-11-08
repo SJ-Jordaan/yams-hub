@@ -1,0 +1,79 @@
+# YAMS Hub: services to merge into /opt/yams/docker-compose.custom.yaml (ARCHITECTURE §6).
+#
+# Never edit the core /opt/yams/docker-compose.yaml. Merge steps, validation and rollback: deploy/README.md.
+#   * `networks.yams_hub_ctl` goes under the custom file's top-level `networks:` key (add the key if the file has none).
+#   * The three services go under its existing `services:` key.
+#   * `yams_network` (172.28.0.0/24) is the stack's existing network; 172.28.0.49 must be unused
+#     (README "Before you start").
+#
+# This file is also a valid compose fragment on its own, so it can be checked before merging:
+#   docker compose -p yams -f docker-compose.yaml -f docker-compose.custom.yaml -f /tmp/docker-compose.hub.yaml config -q
+
+networks:
+  yams_hub_ctl:
+    internal: true            # no outside access, no other container
+
+services:
+  yams-hub:
+    image: yams-hub:latest
+    container_name: yams-hub
+    restart: unless-stopped
+    user: "64090:64090"
+    environment:                                   # non-secret settings only (secrets: bind-mounted file below)
+      - TZ=${TZ}
+      - YAMS_HUB_DATA_DIR=/data
+      - YAMS_HUB_SECRETS_FILE=/run/secrets/yams-hub.env
+      - HOST_SYS=/sys
+      - HOST_NET_DEV=/host/proc/1/net/dev
+    ports: ["0.0.0.0:8090:8080"]                  # IPv4 only: LAN + tailscale0 (100.x is IPv4), never [::]
+    volumes:
+      - /volume1/mediashare/config/yams-hub:/data            # statvfs(/data) also gives /volume1 usage
+      - /opt/yams/monitoring/secrets/yams-hub.env:/run/secrets/yams-hub.env:ro
+      - /proc/1/net/dev:/host/proc/1/net/dev:ro              # host NIC counters (eth0, tailscale0) only
+      - /volume1/mediashare/config/recyclarr/logs:/host/recyclarr-logs:ro
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    depends_on: [socket-proxy-hub]
+    labels:
+      - com.centurylinklabs.watchtower.enable=false        # local image; deployed by deploy.sh
+    networks:
+      yams_network:
+        ipv4_address: 172.28.0.49
+      yams_hub_ctl: {}
+
+  socket-proxy-hub:
+    image: lscr.io/linuxserver/socket-proxy:3.4.7-r0-ls105   # pinned (template reviewed); pin @sha256 at deploy
+    container_name: socket-proxy-hub
+    environment:
+      - CONTAINERS=1
+      - EVENTS=1
+      - INFO=1
+      - PING=1
+      - VERSION=1
+      - ALLOW_LOGS=1
+      - ALLOW_RESTARTS=1
+      - ALLOW_START=1
+      - POST=0
+      - TZ=${TZ}
+    volumes: [/var/run/docker.sock:/var/run/docker.sock:ro]
+    read_only: true
+    tmpfs: [/run]
+    labels:
+      - com.centurylinklabs.watchtower.monitor-only=true   # never auto-updated
+    restart: unless-stopped
+    networks: [yams_hub_ctl]
+
+  yams-hub-updater:
+    image: yams-hub-updater:latest
+    container_name: yams-hub-updater
+    restart: unless-stopped
+    environment:
+      - UPDATER_TOKEN_FILE=/run/secrets/updater.env
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /opt/yams:/opt/yams:ro
+      - /opt/yams/monitoring/secrets/yams-hub-updater.env:/run/secrets/updater.env:ro
+    labels:
+      - com.centurylinklabs.watchtower.enable=false
+    networks: [yams_hub_ctl]

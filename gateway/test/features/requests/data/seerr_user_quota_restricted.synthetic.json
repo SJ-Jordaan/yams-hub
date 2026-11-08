@@ -1,0 +1,13 @@
+{
+  "movie": {
+    "limit": 5,
+    "days": 7,
+    "used": 5,
+    "remaining": 0,
+    "restricted": true
+  },
+  "tv": {
+    "used": 1,
+    "restricted": false
+  }
+}

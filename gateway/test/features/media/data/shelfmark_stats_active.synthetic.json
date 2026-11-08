@@ -1,0 +1,26 @@
+{
+  "added": {
+    "audiobook_30d": 4,
+    "audiobook_7d": 2,
+    "ebook_30d": 9,
+    "ebook_7d": 3,
+    "total_30d": 13,
+    "total_7d": 5
+  },
+  "errors": {
+    "failed_7d": 1
+  },
+  "generated_at": "2026-11-08T09:51:34.709206+00:00",
+  "queue": {
+    "active": 2,
+    "awaiting_pickup": 1,
+    "queued": 1
+  },
+  "requests": {
+    "cancelled": 0,
+    "delivered": 6,
+    "failed": 1,
+    "pending": 2,
+    "rejected": 0
+  }
+}

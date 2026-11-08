@@ -127,7 +127,7 @@ void main() {
   testWidgets('admins reach admin-only routes', (tester) async {
     final app = await pumpHubApp(tester, location: '/containers/sonarr/logs');
     expect(location(app), '/containers/sonarr/logs');
-    expect(find.text('Logs'), findsWidgets);
+    expect(find.textContaining('Logs'), findsWidgets);
   });
 
   testWidgets('web apps screen', (tester) async {

@@ -1,0 +1,1 @@
+{"id": "u_job1", "service": "sonarr", "state": "running", "steps": [{"cmd": "docker compose -p yams --project-directory /opt/yams -f /opt/yams/docker-compose.yaml -f /opt/yams/docker-compose.custom.yaml pull -- sonarr", "exitCode": null, "startedAt": "2026-11-08T09:00:00Z"}], "log": ["Pulling sonarr ...", "auth with token=SECRETTOKEN42 ok"], "startedAt": "2026-11-08T09:00:00Z"}

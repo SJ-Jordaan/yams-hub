@@ -1,0 +1,20 @@
+[
+  {"id": 4, "isValid": true, "validationFailures": []},
+  {"id": 5, "isValid": true, "validationFailures": []},
+  {
+    "id": 15,
+    "isValid": false,
+    "validationFailures": [
+      {
+        "propertyName": "BaseUrl",
+        "errorMessage": "Unable to connect to indexer, check the log above the ValidationFailure for more details. https://uindex.org/?apikey=leakedkey123",
+        "attemptedValue": "https://uindex.org/",
+        "severity": "error",
+        "errorCode": "",
+        "isWarning": false,
+        "infoLink": null,
+        "detailedDescription": null
+      }
+    ]
+  }
+]

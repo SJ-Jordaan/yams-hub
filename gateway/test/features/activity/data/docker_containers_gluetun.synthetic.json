@@ -1,0 +1,18 @@
+[
+  {
+    "Id": "1b55eec7aa",
+    "Names": [
+      "/gluetun"
+    ],
+    "Image": "qmcgaw/gluetun:v3.40.0",
+    "State": "running",
+    "Status": "Up 2 days (healthy)",
+    "Health": {
+      "Status": "healthy",
+      "FailingStreak": 0
+    },
+    "Labels": {
+      "com.docker.compose.service": "gluetun"
+    }
+  }
+]

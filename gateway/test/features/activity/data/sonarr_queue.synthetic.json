@@ -1,0 +1,144 @@
+{
+  "page": 1,
+  "pageSize": 200,
+  "sortKey": "timeleft",
+  "sortDirection": "descending",
+  "totalRecords": 3,
+  "records": [
+    {
+      "seriesId": 54,
+      "episodeId": 5580,
+      "seasonNumber": 4,
+      "series": {
+        "id": 54,
+        "title": "That Time I Got Reincarnated as a Slime",
+        "sortTitle": "that time i got reincarnated as a slime",
+        "seriesType": "anime",
+        "images": [
+          {
+            "coverType": "poster",
+            "url": "/MediaCover/54/poster.jpg?lastWrite=639058149420070772",
+            "remoteUrl": "https://artworks.thetvdb.com/banners/posters/5bb2b28057ade.jpg"
+          }
+        ]
+      },
+      "episode": {
+        "seriesId": 54,
+        "seasonNumber": 4,
+        "episodeNumber": 1,
+        "title": "Episode 1",
+        "hasFile": false,
+        "absoluteEpisodeNumber": 73,
+        "id": 5580
+      },
+      "title": "[SubsPlease] Tensei Shitara Slime Datta Ken S4 (01-24) (1080p) [Batch]",
+      "size": 920507089,
+      "sizeleft": 0,
+      "timeleft": "00:00:00",
+      "added": "2026-11-07T21:16:00Z",
+      "status": "completed",
+      "trackedDownloadStatus": "warning",
+      "trackedDownloadState": "importPending",
+      "statusMessages": [
+        {
+          "title": "[SubsPlease] Tensei Shitara Slime Datta Ken S4 (01-24) (1080p) [Batch]",
+          "messages": [
+            "No files found are eligible for import in /data/downloads/torrents/[SubsPlease] Tensei Shitara Slime Datta Ken S4 (01-24) (1080p) [Batch]"
+          ]
+        }
+      ],
+      "downloadId": "0985D9EFDF7508DB837E629AE8F40EE8B56F4D71",
+      "protocol": "torrent",
+      "downloadClient": "qBittorrent",
+      "downloadClientHasPostImportCategory": false,
+      "indexer": "Nyaa.si (Prowlarr)",
+      "outputPath": "/data/downloads/torrents/[SubsPlease] Slime S4",
+      "episodeHasFile": false,
+      "id": 123456
+    },
+    {
+      "seriesId": 54,
+      "episodeId": 5581,
+      "seasonNumber": 4,
+      "series": {
+        "id": 54,
+        "title": "That Time I Got Reincarnated as a Slime",
+        "sortTitle": "that time i got reincarnated as a slime",
+        "seriesType": "anime",
+        "images": [
+          {
+            "coverType": "poster",
+            "url": "/MediaCover/54/poster.jpg?lastWrite=639058149420070772",
+            "remoteUrl": "https://artworks.thetvdb.com/banners/posters/5bb2b28057ade.jpg"
+          }
+        ]
+      },
+      "episode": {
+        "seriesId": 54,
+        "seasonNumber": 4,
+        "episodeNumber": 2,
+        "title": "Episode 2",
+        "hasFile": false,
+        "absoluteEpisodeNumber": 74,
+        "id": 5581
+      },
+      "title": "[SubsPlease] Tensei Shitara Slime Datta Ken S4 (01-24) (1080p) [Batch]",
+      "size": 920507089,
+      "sizeleft": 0,
+      "timeleft": "00:00:00",
+      "added": "2026-11-07T21:16:00Z",
+      "status": "completed",
+      "trackedDownloadStatus": "warning",
+      "trackedDownloadState": "importPending",
+      "statusMessages": [
+        {
+          "title": "[SubsPlease] Tensei Shitara Slime Datta Ken S4 (01-24) (1080p) [Batch]",
+          "messages": [
+            "No files found are eligible for import in /data/downloads/torrents/[SubsPlease] Tensei Shitara Slime Datta Ken S4 (01-24) (1080p) [Batch]"
+          ]
+        }
+      ],
+      "downloadId": "0985D9EFDF7508DB837E629AE8F40EE8B56F4D71",
+      "protocol": "torrent",
+      "downloadClient": "qBittorrent",
+      "downloadClientHasPostImportCategory": false,
+      "indexer": "Nyaa.si (Prowlarr)",
+      "outputPath": "/data/downloads/torrents/[SubsPlease] Slime S4",
+      "episodeHasFile": false,
+      "id": 123457
+    },
+    {
+      "seriesId": 2,
+      "episodeId": 76,
+      "seasonNumber": 1,
+      "series": {
+        "id": 2,
+        "title": "A Knight of the Seven Kingdoms",
+        "seriesType": "standard",
+        "images": []
+      },
+      "episode": {
+        "seriesId": 2,
+        "seasonNumber": 1,
+        "episodeNumber": 2,
+        "title": "Hard Salt Beef",
+        "id": 76
+      },
+      "title": "A.Knight.of.the.Seven.Kingdoms.S01E02.1080p.WEB.h264-GRP",
+      "size": 1496206957,
+      "sizeleft": 1496206957,
+      "timeleft": "1.02:00:00",
+      "added": "2026-11-08T08:00:00Z",
+      "status": "delay",
+      "trackedDownloadStatus": "ok",
+      "trackedDownloadState": "downloading",
+      "statusMessages": [],
+      "downloadId": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "protocol": "torrent",
+      "downloadClient": "qBittorrent",
+      "indexer": "EZTV (Prowlarr)",
+      "episodeHasFile": true,
+      "id": 200
+    }
+  ]
+}

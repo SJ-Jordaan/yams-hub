@@ -1,0 +1,25 @@
+[
+  {
+    "seriesId": 54,
+    "episodeId": 2447,
+    "seasonNumber": 3,
+    "title": "[SubsPlease] Tensei Shitara Slime Datta Ken S3 (49-72) (1080p) [Batch]",
+    "size": 35111357644,
+    "sizeleft": 12000000000,
+    "timeleft": "00:41:10",
+    "estimatedCompletionTime": "2026-11-08T09:41:10Z",
+    "added": "2026-11-08T08:50:00Z",
+    "status": "downloading",
+    "trackedDownloadStatus": "warning",
+    "trackedDownloadState": "importPending",
+    "statusMessages": [{"title": "Season 3", "messages": ["No files found are eligible for import in /data/downloads/torrents/x"]}],
+    "downloadId": "E66AAC4C7D8A4F813A4E5B3A63C1BB52BEEE342E",
+    "protocol": "torrent",
+    "downloadClient": "qBittorrent",
+    "indexer": "Nyaa.si (Prowlarr)",
+    "outputPath": "/data/downloads/torrents/x",
+    "episodeHasFile": true,
+    "downloadClientHasPostImportCategory": false,
+    "id": 123456
+  }
+]

@@ -1,0 +1,49 @@
+{
+  "page": 1,
+  "pageSize": 200,
+  "sortKey": "timeleft",
+  "sortDirection": "ascending",
+  "totalRecords": 2,
+  "records": [
+    {
+      "seriesId": 140,
+      "episodeId": 7958,
+      "seasonNumber": 2,
+      "title": "[SubsPlease] Koori no Jouheki - 07 (1080p) [A1B2C3D4].mkv",
+      "size": 1446121472,
+      "sizeleft": 723060736,
+      "timeleft": "00:04:10",
+      "estimatedCompletionTime": "2026-11-08T09:04:10Z",
+      "added": "2026-11-08T08:55:00Z",
+      "status": "downloading",
+      "trackedDownloadStatus": "ok",
+      "trackedDownloadState": "downloading",
+      "statusMessages": [],
+      "downloadId": "B3CF3BAAFF0E4F1D9C7A55E4D1F0A2B3C4D5E6F7",
+      "protocol": "torrent",
+      "downloadClient": "qBittorrent",
+      "indexer": "Nyaa.si (Prowlarr)",
+      "episodeHasFile": false,
+      "id": 1846201377
+    },
+    {
+      "seriesId": 54,
+      "episodeId": 5580,
+      "seasonNumber": 4,
+      "title": "[SubsPlease] Tensei Shitara Slime Datta Ken S4 (01-24) (1080p) [Batch]",
+      "size": 35111357644,
+      "sizeleft": 12000000000,
+      "timeleft": "00:41:10",
+      "status": "downloading",
+      "trackedDownloadStatus": "warning",
+      "trackedDownloadState": "importPending",
+      "statusMessages": [{"title": "Slime S4", "messages": ["No files found are eligible for import"]}],
+      "downloadId": "E66AAC4C7D8A4F813A4E5B3A63C1BB52BEEE342E",
+      "protocol": "torrent",
+      "downloadClient": "qBittorrent",
+      "indexer": "Nyaa.si (Prowlarr)",
+      "episodeHasFile": false,
+      "id": 123456
+    }
+  ]
+}

@@ -1,16 +1,15 @@
-// subtitles routes: stub created by core-app (ARCHITECTURE §12); the subtitles slice replaces the screens.
-// Keep `subtitlesRoutes` (one top-level GoRoute at the feature root) and declare static
-// sub-routes before parameterised ones.
+// subtitles routes (APP.md §1, §11). One top-level GoRoute at the feature root; no sub-routes.
 
 import 'package:go_router/go_router.dart';
 
 import 'package:yams_hub/core/routing/paths.dart';
-import 'package:yams_hub/core/routing/placeholder_screen.dart';
 
-/// Routes of the subtitles feature (APP.md §1).
+import 'screens/subtitles_screen.dart';
+
+/// Routes of the subtitles feature (APP.md §1): `/subtitles?tab=episodes|movies|history`.
 final List<RouteBase> subtitlesRoutes = [
   GoRoute(
     path: RootPaths.subtitles,
-    builder: (context, state) => const PlaceholderScreen(title: 'Subtitles'),
+    builder: (context, state) => SubtitlesScreen(initialTab: SubtitlesTab.fromQuery(state.uri.queryParameters['tab'])),
   ),
 ];

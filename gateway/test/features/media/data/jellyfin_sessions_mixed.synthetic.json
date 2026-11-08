@@ -1,0 +1,89 @@
+[
+  {
+    "Id": "AA11BB22CC33DD44EE55FF6677889900",
+    "UserId": "4c0628aacef24bdfacd40f946ea33ee7",
+    "UserName": "Paul Greyrat",
+    "Client": "Jellyfin Web",
+    "DeviceName": "Firefox",
+    "RemoteEndPoint": "100.101.102.103",
+    "SupportsMediaControl": true,
+    "SupportsRemoteControl": true,
+    "UserPrimaryImageTag": "96bd094ac0ccd7d13ad3e6a2f5bdb7a3",
+    "PlayState": {
+      "PositionTicks": 36000000000,
+      "IsPaused": false,
+      "PlayMethod": "Transcode"
+    },
+    "TranscodingInfo": {
+      "AudioCodec": "aac",
+      "VideoCodec": "h264",
+      "Container": "ts",
+      "IsVideoDirect": false,
+      "IsAudioDirect": true,
+      "Bitrate": 8000000,
+      "Framerate": 23.976,
+      "CompletionPercentage": 12.5,
+      "Width": 1920,
+      "Height": 1080,
+      "AudioChannels": 2,
+      "HardwareAccelerationType": "qsv",
+      "TranscodeReasons": [
+        "VideoCodecNotSupported",
+        "BrandNewReason"
+      ]
+    },
+    "NowPlayingItem": {
+      "Name": "Dune: Part Two",
+      "Id": "4fcea1b4-d58b-0501-0e29-c1cea2be02d4",
+      "Type": "Movie",
+      "RunTimeTicks": 99600000000,
+      "ProductionYear": 2024,
+      "ImageTags": {
+        "Primary": "7f5fe64d90771c34330481f6806aa9e7"
+      },
+      "BackdropImageTags": [
+        "1a2b3c4d5e6f"
+      ]
+    }
+  },
+  {
+    "Id": "bb11bb22cc33dd44ee55ff6677889911",
+    "UserId": "902b544b7a194203b4aebfa75d4baa68",
+    "UserName": "Rudeus Greyrat",
+    "Client": "Finamp",
+    "DeviceName": "Pixel 8",
+    "RemoteEndPoint": "192.168.10.77",
+    "SupportsMediaControl": false,
+    "PlayState": {
+      "PositionTicks": 600000000,
+      "IsPaused": true,
+      "PlayMethod": "DirectStream"
+    },
+    "TranscodingInfo": null,
+    "NowPlayingItem": {
+      "Name": "Some Song",
+      "Id": "cc11bb22cc33dd44ee55ff6677889922",
+      "Type": "Audio",
+      "RunTimeTicks": 2400000000,
+      "ImageTags": {}
+    }
+  },
+  {
+    "Id": "dd11bb22cc33dd44ee55ff6677889933",
+    "UserName": null,
+    "Client": "Homepage",
+    "DeviceName": "homepage",
+    "NowPlayingItem": {
+      "Name": "x",
+      "Id": "ee11bb22cc33dd44ee55ff6677889944",
+      "Type": "Movie"
+    }
+  },
+  {
+    "Id": "ff11bb22cc33dd44ee55ff6677889955",
+    "UserName": "Zenith Greyrat",
+    "Client": "Jellyfin Web",
+    "DeviceName": "Safari",
+    "PlayState": {}
+  }
+]

@@ -1,0 +1,25 @@
+{
+  "Items": [
+    {
+      "Name": "Now That I'm Here",
+      "Id": "a1a2a3a4a5a6a7a8a9a0b1b2b3b4b5b6",
+      "Type": "Episode",
+      "SeriesName": "Desperate Housewives",
+      "SeriesId": "9efa4240a1af422beff21712c58c218d",
+      "ParentIndexNumber": 5,
+      "IndexNumber": 19,
+      "ProductionYear": 2009,
+      "ImageTags": {
+        "Primary": "0f0e0d0c0b0a"
+      },
+      "SeriesPrimaryImageTag": "0a65d366de64b25cc004faf719a6e6a7",
+      "UserData": {
+        "PlaybackPositionTicks": 0,
+        "PlayCount": 0,
+        "Played": false
+      }
+    }
+  ],
+  "TotalRecordCount": 1,
+  "StartIndex": 0
+}

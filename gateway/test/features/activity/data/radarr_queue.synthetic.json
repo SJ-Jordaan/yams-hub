@@ -1,0 +1,39 @@
+{
+  "page": 1,
+  "pageSize": 200,
+  "sortKey": "timeleft",
+  "sortDirection": "descending",
+  "totalRecords": 1,
+  "records": [
+    {
+      "movieId": 9,
+      "movie": {
+        "id": 9,
+        "title": "Dune: Part Two",
+        "year": 2024,
+        "hasFile": true,
+        "images": [
+          {
+            "coverType": "poster",
+            "url": "/MediaCover/9/poster.jpg?h=ee00d06d64cb9c44727a",
+            "remoteUrl": "https://image.tmdb.org/t/p/original/6izwz7rsy95ARzTR3poZ8H6c5pp.jpg"
+          }
+        ]
+      },
+      "title": "Dune.Part.Two.2024.2160p.WEB-DL",
+      "size": 61820790488,
+      "sizeleft": 0,
+      "timeleft": "00:00:00",
+      "added": "2026-11-06T08:00:00Z",
+      "status": "downloading",
+      "trackedDownloadStatus": "ok",
+      "trackedDownloadState": "downloading",
+      "statusMessages": [],
+      "downloadId": "2B96B8269B32CB9C44BF8808ECA92AAAD3E2B015",
+      "protocol": "torrent",
+      "downloadClient": "qBittorrent",
+      "indexer": "1337x (Prowlarr)",
+      "id": 9
+    }
+  ]
+}

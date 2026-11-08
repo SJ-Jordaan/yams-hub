@@ -1,0 +1,18 @@
+[
+  {
+    "movieId": 227,
+    "title": "Winnie.the.Pooh.Seasons.of.Giving.1999.1080p.WEB-DL",
+    "size": 4000000000,
+    "sizeleft": 1000000000,
+    "timeleft": "1.02:03:04",
+    "status": "downloading",
+    "trackedDownloadStatus": "ok",
+    "trackedDownloadState": "downloading",
+    "statusMessages": [],
+    "downloadId": "5E28B6504BEB319ABA494A3AB540AB434B697B65",
+    "protocol": "torrent",
+    "downloadClient": "qBittorrent",
+    "indexer": "TorrentGalaxy (Prowlarr)",
+    "id": 98765
+  }
+]

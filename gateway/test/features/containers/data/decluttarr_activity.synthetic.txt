@@ -1,0 +1,15 @@
+2026-11-08T07:47:26.857938560Z INFO    | --------------------------------------------------
+2026-11-08T07:47:26.995073885Z INFO    | *** Running jobs on Sonarr (http://sonarr:8989) ***
+2026-11-08T07:47:27.104754435Z INFO    | >>> Job '('remove_stalled',)' flagged download (1/3 strikes): Some.Show.S01E01.1080p.WEB
+2026-11-08T07:47:27.204754435Z INFO    | *** Running jobs on Radarr (http://radarr:7878) ***
+2026-11-08T07:57:26.857938560Z INFO    | --------------------------------------------------
+2026-11-08T07:57:26.995073885Z INFO    | *** Running jobs on Sonarr (http://sonarr:8989) ***
+2026-11-08T07:57:27.104754435Z INFO    | >>> Job 'remove_stalled' flagged download (3/3 strikes -> too many): Some.Show.S01E01.1080p.WEB
+2026-11-08T07:57:27.114754435Z INFO    | Job 'remove_stalled' triggered queue removal (torrent kept): Some.Show.S01E01.1080p.WEB
+2026-11-08T07:57:27.124754435Z INFO    | Job 'remove_failed_imports' triggered removal: Other.Movie.2024.2160p
+2026-11-08T07:57:27.134754435Z INFO    | Job 'remove_stalled' triggered a search for 2 episodes
+2026-11-08T07:57:27.144754435Z INFO    | Job 'remove_bad_files' triggered obsolete-tagging: Private.Release.720p
+2026-11-08T07:57:27.204754435Z INFO    | *** Running jobs on Radarr (http://radarr:7878) ***
+2026-11-08T08:07:26.857938560Z WARNING | >>> qBittorrent is disconnected. Skipping queue cleaning on Sonarr.
+2026-11-08T08:07:27.000000000Z ERROR   | remove_stalled: request error on Radarr (http://radarr:7878/api/v3/queue?apikey=LEAKEDKEY99): timeout
+2026-11-08T08:07:27.995073885Z INFO    | *** Running jobs on Sonarr (http://sonarr:8989) ***

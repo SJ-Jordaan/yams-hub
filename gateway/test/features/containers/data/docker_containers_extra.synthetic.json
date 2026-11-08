@@ -1,0 +1,100 @@
+{
+  "_note": "Synthetic GET /containers/json entries (shape of fixtures/system/docker_containers_json.json, integrations/system.md 1.2): the netns owner gluetun, a locked container, an exited container and an unhealthy one.",
+  "items": [
+    {
+      "Id": "1b55eec72010d6b642b5dd6fb9dd7d7c66da3eb56941c8a82e0d92b22d5c4208",
+      "Names": ["/gluetun"],
+      "Image": "qmcgaw/gluetun:v3.40.0",
+      "ImageID": "sha256:5bf014748996266f47e04cc019bde17eaef9deddd0e1288f87ac39268dc54d18",
+      "Command": "/gluetun-entrypoint",
+      "Created": 1794125700,
+      "Ports": [
+        {"IP": "0.0.0.0", "PrivatePort": 8081, "PublicPort": 8081, "Type": "tcp"},
+        {"IP": "::", "PrivatePort": 8081, "PublicPort": 8081, "Type": "tcp"},
+        {"PrivatePort": 8000, "Type": "tcp"}
+      ],
+      "Labels": {
+        "com.docker.compose.service": "gluetun",
+        "com.docker.compose.project": "yams",
+        "org.opencontainers.image.version": "v3.40.0"
+      },
+      "State": "running",
+      "Status": "Up 37 minutes (healthy)",
+      "HostConfig": {"NetworkMode": "yams_network"},
+      "Health": {"Status": "healthy", "FailingStreak": 0},
+      "NetworkSettings": {"Networks": {}},
+      "Mounts": [{"Type": "bind", "Source": "/volume1/mediashare/config/gluetun", "Destination": "/gluetun", "Mode": "rw", "RW": true}]
+    },
+    {
+      "Id": "f00dbabe0123456789abcdef0123456789abcdef0123456789abcdef01234567",
+      "Names": ["/yams-hub"],
+      "Image": "yams-hub:local",
+      "ImageID": "sha256:0000000000000000000000000000000000000000000000000000000000000001",
+      "Command": "/app/yams-hub serve",
+      "Created": 1794125000,
+      "Ports": [{"IP": "192.168.10.183", "PrivatePort": 8080, "PublicPort": 8090, "Type": "tcp"}],
+      "Labels": {"com.docker.compose.service": "yams-hub"},
+      "State": "running",
+      "Status": "Up 2 hours",
+      "HostConfig": {"NetworkMode": "yams_network"},
+      "Health": {"Status": "none", "FailingStreak": 0},
+      "NetworkSettings": {"Networks": {}},
+      "Mounts": []
+    },
+    {
+      "Id": "aaaa1111bbbb2222cccc3333dddd4444eeee5555ffff6666aaaa7777bbbb8888",
+      "Names": ["/portainer"],
+      "Image": "portainer/portainer-ce:latest",
+      "ImageID": "sha256:0000000000000000000000000000000000000000000000000000000000000002",
+      "Command": "/portainer",
+      "Created": 1794000000,
+      "Ports": [],
+      "Labels": {"com.docker.compose.service": "portainer"},
+      "State": "exited",
+      "Status": "Exited (137) 3 hours ago",
+      "HostConfig": {"NetworkMode": "yams_network"},
+      "Health": {"Status": "none", "FailingStreak": 0},
+      "NetworkSettings": {"Networks": {}},
+      "Mounts": []
+    },
+    {
+      "Id": "cccc1111bbbb2222cccc3333dddd4444eeee5555ffff6666aaaa7777bbbb9999",
+      "Names": ["/uptime-kuma"],
+      "Image": "louislam/uptime-kuma:2-slim",
+      "ImageID": "sha256:0000000000000000000000000000000000000000000000000000000000000003",
+      "Command": "/usr/bin/dumb-init",
+      "Created": 1794100000,
+      "Ports": [{"IP": "0.0.0.0", "PrivatePort": 3001, "PublicPort": 3001, "Type": "tcp"}],
+      "Labels": {
+        "com.docker.compose.service": "uptime-kuma",
+        "com.centurylinklabs.watchtower.monitor-only": "false"
+      },
+      "State": "running",
+      "Status": "Up 5 hours (unhealthy)",
+      "HostConfig": {"NetworkMode": "yams_network"},
+      "Health": {"Status": "unhealthy", "FailingStreak": 4},
+      "NetworkSettings": {"Networks": {}},
+      "Mounts": []
+    },
+    {
+      "Id": "dddd1111bbbb2222cccc3333dddd4444eeee5555ffff6666aaaa7777bbbb0000",
+      "Names": ["/recyclarr"],
+      "Image": "ghcr.io/recyclarr/recyclarr:latest",
+      "ImageID": "sha256:0000000000000000000000000000000000000000000000000000000000000004",
+      "Command": "/init",
+      "Created": 1794100000,
+      "Ports": [],
+      "Labels": {
+        "com.docker.compose.service": "recyclarr",
+        "com.centurylinklabs.watchtower.monitor-only": "false",
+        "org.opencontainers.image.version": "8.8.1"
+      },
+      "State": "running",
+      "Status": "Up 1 hour",
+      "HostConfig": {"NetworkMode": "yams_network"},
+      "Health": {"Status": "none", "FailingStreak": 0},
+      "NetworkSettings": {"Networks": {}},
+      "Mounts": []
+    }
+  ]
+}

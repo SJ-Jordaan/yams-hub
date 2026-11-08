@@ -1,0 +1,7 @@
+# Build context = updater/ (ARCHITECTURE §5.20 smoke build).
+.dart_tool/
+build/
+test/
+Dockerfile
+.dockerignore
+*.env

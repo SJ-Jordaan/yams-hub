@@ -1,0 +1,32 @@
+// YAMS Hub: Tailscale ACL snippet (ARCHITECTURE §8).
+//
+// Logging the NAS in to Tailscale (UGOS > Tailscale) exposes EVERY published port of Zenith
+// (Portainer 9000, qBittorrent 8081, gluetun control 8003, Uptime Kuma 3001, Jellystat 3002,
+// the *arr UIs, ...) to every device on the tailnet, including nodes shared from other tailnets.
+// This policy gives the owner's own devices everything and limits everyone else to the hub and
+// the apps the hub deep-links into.
+//
+// Apply in the Tailscale admin console: Access controls > edit the policy file and merge these
+// sections into the existing ones (do not paste a second "acls" key). Then tag the NAS:
+// Machines > zenith > ... > Edit ACL tags > tag:nas. Tagging the NAS also disables its key
+// expiry (tagged nodes do not expire), so decide on that deliberately.
+//
+// Ports: 8090 hub, 8096 Jellyfin, 13378 Audiobookshelf, 5000 Kavita, 5055 Seerr.
+// Add "tag:nas:8084" for Shelfmark if household members should open it from the hub's launcher
+// (it runs with auth_mode none: everyone who reaches it is its admin).
+{
+  "tagOwners": {"tag:nas": ["autogroup:admin"]},
+  "acls": [
+    // the owner's own devices: everything on the NAS
+    {"action": "accept", "src": ["autogroup:owner"], "dst": ["tag:nas:*"]},
+    // household members (and shared devices): hub + apps they open from it
+    {"action": "accept", "src": ["autogroup:member", "autogroup:shared"],
+     "dst": ["tag:nas:8090", "tag:nas:8096", "tag:nas:13378", "tag:nas:5000", "tag:nas:5055"]},
+  ],
+  // Optional self-check, evaluated by the admin console on save. Replace the user with a real
+  // household member's login before enabling it.
+  // "tests": [
+  //   {"src": "member@example.com", "accept": ["tag:nas:8090", "tag:nas:8096"],
+  //    "deny": ["tag:nas:9000", "tag:nas:8081", "tag:nas:3001"]},
+  // ],
+}

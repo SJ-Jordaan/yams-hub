@@ -550,6 +550,8 @@ void main() {
         r.headers['content-security-policy'],
         contains("frame-ancestors 'none'"),
       );
+      // Flutter web's <base href="/"> must stay effective on deep links.
+      expect(r.headers['content-security-policy'], contains("base-uri 'self'"));
       expect(r.headers['x-frame-options'], 'DENY');
       final none = createWebHandler(p.join(web.path, 'nope'));
       final page = await none(Request('GET', Uri.parse('http://h/')));

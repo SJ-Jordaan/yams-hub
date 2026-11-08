@@ -1,0 +1,54 @@
+# YAMS Hub policy file (ARCHITECTURE §5.2.1). Optional, non-secret.
+#
+# Copy to /volume1/mediashare/config/yams-hub/yams-hub.yaml (the gateway reads $YAMS_HUB_CONFIG_FILE,
+# default /data/yams-hub.yaml) and restart the hub. Every key is optional; the values below are the
+# defaults compiled into the gateway, except publicUrls (replace the tailnet name with yours).
+# The data dir belongs to uid 64090 (mode 0700), so install it through a throwaway container:
+#   ssh nas 'cat > /tmp/yams-hub.yaml' < yams-hub.yaml
+#   ssh nas 'docker run --rm --network none -v /tmp/yams-hub.yaml:/in:ro -v /volume1/mediashare/config/yams-hub:/d alpine:3.22 \
+#            sh -c "cp /in /d/yams-hub.yaml && chown 64090:64090 /d/yams-hub.yaml && chmod 0600 /d/yams-hub.yaml"'
+
+publicUrls: ["http://192.168.10.183:8090", "http://zenith.example-tailnet.ts.net:8090"]  # shown in Settings > About / QR
+
+externalApps:            # how the app reaches the native web UIs; port is combined with the host the app is using
+  jellyfin:       {port: 8096}          # optional absolute override: {baseUrl: "http://..."}
+  audiobookshelf: {port: 13378}
+  kavita:         {port: 5000}
+  seerr:          {port: 5055}
+  shelfmark:      {port: 8084}
+  sonarr:         {port: 8989}
+  radarr:         {port: 7878}
+  prowlarr:       {port: 9696}
+  bazarr:         {port: 6767}
+  qbittorrent:    {port: 8081}
+  uptimeKuma:     {port: 3001}
+  jellystat:      {port: 3002}
+  portainer:      {port: 9000}
+
+policy:
+  allowGlobalSearch: false          # MissingEpisodeSearch/CutoffUnmet*/MissingMoviesSearch without an id (README: no bulk searches)
+  allowArrDeleteFiles: true         # delete series/movie with files (typed confirmation still required)
+  containers:
+    locked:  [yams-hub, socket-proxy-hub, yams-hub-updater]   # never stop/restart/update from the hub
+    confirm: [gluetun, jellyfin, portainer, socket-proxy, jellystat-db, qbittorrent]  # need confirm=true
+    groups:                          # display grouping (matches Uptime Kuma)
+      media: [jellyfin, seerr, shelfmark, audiobookshelf, kavita, jellystat, jellystat-db]
+      automation: [sonarr, radarr, bazarr, prowlarr, flaresolverr, recyclarr, decluttarr]
+      downloads: [gluetun, qbittorrent]
+      system: [homepage, portainer, watchtower, socket-proxy, socket-proxy-hub, yams-hub, yams-hub-updater, uptime-kuma]
+
+alerts:
+  cpuTempWarnC: 85
+  volumeUsedWarnPercent: 90
+
+auth:
+  accessTokenTtlMinutes: 60
+  refreshTokenTtlDays: 90          # members
+  adminRefreshTokenTtlDays: 30     # admins (shorter: an unlocked phone carries admin power)
+  pbkdf2Iterations: 600000         # auto-lowered to 310000 at start-up if one verify takes > 1.5 s
+
+imageCache:
+  maxBytes: 1073741824
+  newRemoteEntriesPerUserPerMinute: 300
+
+remoteImageHosts: [artworks.thetvdb.com, image.tmdb.org, assets.fanart.tv, static.tvmaze.com, www.gravatar.com]

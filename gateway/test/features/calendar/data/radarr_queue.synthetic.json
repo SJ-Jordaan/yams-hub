@@ -1,0 +1,27 @@
+{
+  "page": 1,
+  "pageSize": 200,
+  "sortKey": "timeleft",
+  "sortDirection": "ascending",
+  "totalRecords": 1,
+  "records": [
+    {
+      "movieId": 246,
+      "title": "The.Odyssey.2026.1080p.WEB-DL.DDP5.1.H.264-GRP",
+      "size": 8589934592,
+      "sizeleft": 2147483648,
+      "timeleft": "00:12:30",
+      "estimatedCompletionTime": "2026-11-08T09:12:30Z",
+      "added": "2026-11-08T08:40:00Z",
+      "status": "downloading",
+      "trackedDownloadStatus": "ok",
+      "trackedDownloadState": "downloading",
+      "statusMessages": [],
+      "downloadId": "0F1E2D3C4B5A69788796A5B4C3D2E1F00F1E2D3C",
+      "protocol": "torrent",
+      "downloadClient": "qBittorrent",
+      "indexer": "TorrentGalaxy (Prowlarr)",
+      "id": 902114583
+    }
+  ]
+}
