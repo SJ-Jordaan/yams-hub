@@ -35,4 +35,46 @@ void main() {
       greaterThan(shutdownDrainTimeout(UpdaterConfig(token: 't' * 48))),
     );
   });
+
+  test('the updater only accepts the gateway\'s control-network address', () {
+    final text = File('../deploy/docker-compose.hub.yaml').readAsStringSync();
+    String block(String service) {
+      final start = text.indexOf('\n  $service:\n');
+      expect(start, isNonNegative, reason: service);
+      final next = RegExp(r'\n  [a-z]').firstMatch(text.substring(start + 1));
+      return text.substring(
+        start,
+        next == null ? text.length : start + 1 + next.start,
+      );
+    }
+
+    final ctlAddress = RegExp(
+      r'^      yams_hub_ctl:\n        ipv4_address:\s*(\S+)',
+      multiLine: true,
+    );
+    final gateway = ctlAddress.firstMatch(block('yams-hub'))?[1];
+    final updater = ctlAddress.firstMatch(block('yams-hub-updater'))?[1];
+    expect(gateway, '172.30.250.2');
+    expect(updater, isNotNull);
+
+    final m = RegExp(
+      r'^\s+- UPDATER_ALLOWED_SOURCES=(\S+)',
+      multiLine: true,
+    ).firstMatch(block('yams-hub-updater'));
+    expect(
+      m,
+      isNotNull,
+      reason: 'yams-hub-updater needs UPDATER_ALLOWED_SOURCES',
+    );
+    final sources = SourceAllowList.parse(m![1]!);
+    expect(sources.allows(InternetAddress(gateway!)), isTrue);
+    for (final other in [
+      '172.30.250.1',
+      '172.30.250.3',
+      updater!,
+      '172.28.0.49',
+    ]) {
+      expect(sources.allows(InternetAddress(other)), isFalse, reason: other);
+    }
+  });
 }

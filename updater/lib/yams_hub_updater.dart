@@ -9,4 +9,5 @@ export 'src/config.dart';
 export 'src/jobs.dart';
 export 'src/process_runner.dart';
 export 'src/server.dart';
+export 'src/source_allow_list.dart';
 export 'src/version.dart';

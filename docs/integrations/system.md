@@ -28,7 +28,7 @@ Versions observed:
 | Upstream | Base URL from the gateway | Auth |
 |---|---|---|
 | Docker (read) | `http://socket-proxy:2375` (existing; see section 1) **or** the hub's own proxy | none (network-level) |
-| Docker (control) | `http://socket-proxy-hub:2375` (new; see section 2) | none (network-level) |
+| Docker (control) | `http://socket-proxy-hub:2375` (new; see section 2) | none (source-address ACL: only the gateway's 172.30.250.2, ARCHITECTURE §6) |
 | Watchtower | `http://watchtower:8080` | `Authorization: Bearer <WATCHTOWER_HTTP_API_TOKEN>` |
 | Uptime Kuma | `http://uptime-kuma:3001` | none (public status page `zenith`) |
 | Audiobookshelf | `http://audiobookshelf:80` (host port 13378) | `Authorization: Bearer <ABS API key>` |

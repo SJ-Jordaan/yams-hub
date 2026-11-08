@@ -12,12 +12,18 @@
 #   --skip-health        skip check 5 (no login)
 #
 # Checks:
-#   1. socket-proxy-hub and yams-hub-updater are unreachable from yams_network (from prowlarr)
-#      and only the three hub containers sit on the internal yams_hub_ctl network
+#   1. the control plane refuses everyone but the gateway: from prowlarr (yams_network; it must
+#      first reach the hub's own ping, so a broken probe cannot pass) and from the host,
+#      socket-proxy-hub drops the connection (haproxy source ACL) and the updater says 403
+#      (UPDATER_ALLOWED_SOURCES) or drops it; the proxy's rendered config binds :2375 with exactly
+#      one `acl from_hub src 172.30.250.2 127.0.0.1` and the reject rule; yams_yams_hub_ctl has
+#      172.30.250.0/29, the hub trio has its fixed addresses and is alone on it, and no container
+#      shares a hub container's network namespace. `internal: true` is NOT relied upon (UGOS's
+#      DOCKER-USER ACCEPT defeats it). The gateway's own path through both is proven by check 5.
 #   2. port 8090 listens on 0.0.0.0 only, never on [::]
 #   3. no key, token, password or hash in the Config.Env of the hub containers
 #   4. the gateway's /host/proc/1/net/dev shows the host NICs; /sys/class/hwmon has coretemp
-#   5. GET /api/v1/health: docker up (proxy self-test passed) and shelfmark up
+#   5. GET /api/v1/health: docker up (proxy reached and self-test passed), updater up and shelfmark up
 #   6. Config.OpenStdin is false for every running container
 #   7. /api/v1/ping answers on the LAN URL and on the Tailscale URL
 set -euo pipefail
@@ -30,8 +36,15 @@ SECRETS_DIR=${YAMS_SECRETS_DIR:-/opt/yams/monitoring/secrets}
 ALPINE_IMAGE=${ALPINE_IMAGE:-alpine:3.22}
 HUB_UID=64090
 HUB_CONTAINERS=(yams-hub socket-proxy-hub yams-hub-updater)
+# Must match deploy/docker-compose.hub.yaml and deploy.sh (deploy/test/deploy_test.sh checks it).
+CTL_NET=yams_yams_hub_ctl
+HUB_CTL_SUBNET=172.30.250.0/29
+HUB_CTL_GATEWAY_IP=172.30.250.2
+HUB_CTL_PROXY_IP=172.30.250.3
+HUB_CTL_UPDATER_IP=172.30.250.4
+HUB_LAN_IP=172.28.0.49
 
-usage() { sed -n '2,22p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; }
+usage() { awk 'NR == 1 { next } /^#/ { sub(/^# ?/, ""); print; next } { exit }' "${BASH_SOURCE[0]}"; }
 
 while (($#)); do
   case "$1" in
@@ -94,62 +107,179 @@ command -v curl >/dev/null && have_curl=1
 running() { [[ $(docker inspect -f '{{.State.Running}}' "$1" 2>/dev/null || true) == true ]]; }
 
 # --- 1. control plane isolation ---------------------------------------------------------------
+# On Zenith, UGOS's `DOCKER-USER ! -i docker0 ! -o docker0 -j ACCEPT` lets every container route to
+# yams_hub_ctl by IP, so this probes what actually answers instead of trusting `internal: true`.
+
+# probe URL CURL...: runs CURL... (curl, or docker exec <c> curl) on URL and prints
+# "<curl exit> <http status>" (status 000 = no HTTP response at all).
+probe() {
+  local url=$1 code rc=0
+  shift
+  code=$("$@" -s -m 3 -o /dev/null -w '%{http_code}' "$url" 2>/dev/null) || rc=$?
+  printf '%s %s\n' "$rc" "${code:-000}"
+}
+# refused RC CODE URL: the probe got no HTTP answer because the peer refused or dropped it (curl 7:
+# connect failed, 28: timeout, 52: empty reply, 56: reset), or, for a by-name URL, because the name
+# does not resolve there (6). Anything else (126/127: curl missing, exec failed) proves nothing.
+refused() {
+  [[ $2 == 000 ]] || return 1
+  case $1 in
+    7 | 28 | 52 | 56) return 0 ;;
+    6) [[ $3 != http://[0-9]* ]] ;;
+    *) return 1 ;;
+  esac
+}
+ctl_ip() { docker inspect -f "{{with index .NetworkSettings.Networks \"$CTL_NET\"}}{{.IPAddress}}{{end}}" "$1" 2>/dev/null || true; }
+
 check_isolation() {
-  local ok=1 name ips ip nets target
-  if ! running prowlarr; then
-    fail '1 isolation: prowlarr is not running, cannot test from yams_network'
+  local ok=1 name nets rc code where
+  # Layout: the fixed addresses the source ACLs are written for.
+  local subnet
+  subnet=$(docker network inspect -f '{{range .IPAM.Config}}{{.Subnet}} {{end}}' "$CTL_NET" 2>/dev/null || true)
+  subnet=${subnet% }
+  if [[ -z $subnet ]]; then
+    fail "1 isolation: no network $CTL_NET"
     return
   fi
-  for target in http://socket-proxy-hub:2375/_ping http://yams-hub-updater:8080/healthz; do
-    if docker exec prowlarr curl -s -m 3 -o /dev/null "$target" 2>/dev/null; then
-      fail "1 isolation: prowlarr reached $target"
+  if [[ $subnet != "$HUB_CTL_SUBNET" ]]; then
+    fail "1 isolation: $CTL_NET has subnet $subnet, expected $HUB_CTL_SUBNET (deploy.sh --migrate-ctl-network)"
+    ok=0
+  fi
+  local -A want=([yams-hub]=$HUB_CTL_GATEWAY_IP [socket-proxy-hub]=$HUB_CTL_PROXY_IP [yams-hub-updater]=$HUB_CTL_UPDATER_IP)
+  for name in "${HUB_CONTAINERS[@]}"; do
+    local got
+    got=$(ctl_ip "$name")
+    if [[ $got != "${want[$name]}" ]]; then
+      fail "1 isolation: $name has ${got:-no address} on $CTL_NET, expected ${want[$name]}"
       ok=0
     fi
   done
-  # By IP as well (DNS isolation alone would not be enough).
-  for name in socket-proxy-hub yams-hub-updater; do
-    ips=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}} {{end}}' "$name" 2>/dev/null || true)
-    # shellcheck disable=SC2086 # word splitting intended: one address per network
-    for ip in $ips; do
-      local port=2375 path=/_ping
-      [[ $name == yams-hub-updater ]] && port=8080 path=/healthz
-      if docker exec prowlarr curl -s -m 3 -o /dev/null "http://$ip:$port$path" 2>/dev/null; then
-        fail "1 isolation: prowlarr reached $name by IP ($ip)"
-        ok=0
-      fi
-    done
-  done
-  # Networks: proxy and updater only on yams_hub_ctl, which is internal and holds only the hub trio.
+  local lan
+  lan=$(docker inspect -f '{{range $k, $v := .NetworkSettings.Networks}}{{if ne $k "'"$CTL_NET"'"}}{{$v.IPAddress}} {{end}}{{end}}' yams-hub 2>/dev/null || true)
+  if [[ ${lan% } != "$HUB_LAN_IP" ]]; then
+    fail "1 isolation: yams-hub has ${lan:-no address} outside $CTL_NET, expected only $HUB_LAN_IP"
+    ok=0
+  fi
+  # Proxy and updater only on the control network, which holds only the hub trio.
   for name in socket-proxy-hub yams-hub-updater; do
     nets=$(docker inspect -f '{{range $k, $v := .NetworkSettings.Networks}}{{$k}} {{end}}' "$name" 2>/dev/null || true)
     nets=${nets% }
     if [[ -z $nets ]]; then
       fail "1 isolation: $name is not running"
       ok=0
-    elif [[ $nets == *' '* || $nets != *yams_hub_ctl ]]; then
-      fail "1 isolation: $name is attached to: $nets (expected only yams_hub_ctl)"
+    elif [[ $nets != "$CTL_NET" ]]; then
+      fail "1 isolation: $name is attached to: $nets (expected only $CTL_NET)"
       ok=0
     fi
   done
-  local ctl
-  ctl=$(docker network ls --format '{{.Name}}' | grep -E '(^|_)yams_hub_ctl$' | head -n1 || true)
-  if [[ -z $ctl ]]; then
-    fail '1 isolation: no yams_hub_ctl network'
+  local members expected
+  members=$(docker network inspect -f '{{range .Containers}}{{.Name}}{{"\n"}}{{end}}' "$CTL_NET" | sed '/^$/d' | sort | tr '\n' ' ')
+  expected=$(printf '%s\n' "${HUB_CONTAINERS[@]}" | sort | tr '\n' ' ')
+  if [[ $members != "$expected" ]]; then
+    fail "1 isolation: $CTL_NET members are: ${members:-none} (expected: $expected)"
+    ok=0
+  fi
+  # The rendered proxy config carries the ACL (a template mount that did not take is caught here),
+  # binds plain IPv4 (DISABLE_IPV6 honoured: with a v4v6 bind, IPv4 patterns also match some IPv6
+  # sources), and has exactly one from_hub line (haproxy ORs them) with exactly these sources.
+  local rendered gw_rx=${HUB_CTL_GATEWAY_IP//./\\.}
+  rendered=$(docker exec socket-proxy-hub cat /run/haproxy/haproxy.cfg 2>/dev/null || true)
+  if [[ -z $rendered ]]; then
+    fail '1 isolation: cannot read /run/haproxy/haproxy.cfg in socket-proxy-hub (not running?)'
     ok=0
   else
-    if [[ $(docker network inspect -f '{{.Internal}}' "$ctl") != true ]]; then
-      fail "1 isolation: $ctl is not internal"
+    if ! grep -qE '^[[:space:]]*tcp-request connection reject if !from_hub([[:space:]]+#.*)?$' <<<"$rendered"; then
+      fail '1 isolation: /run/haproxy/haproxy.cfg in socket-proxy-hub has no source ACL reject rule (template mount?)'
       ok=0
     fi
-    local members expected
-    members=$(docker network inspect -f '{{range .Containers}}{{.Name}}{{"\n"}}{{end}}' "$ctl" | sed '/^$/d' | sort | tr '\n' ' ')
-    expected=$(printf '%s\n' "${HUB_CONTAINERS[@]}" | sort | tr '\n' ' ')
-    if [[ $members != "$expected" ]]; then
-      fail "1 isolation: $ctl members are: ${members:-none} (expected: $expected)"
+    if [[ $(grep -cE '^[[:space:]]*acl[[:space:]]+from_hub([[:space:]]|$)' <<<"$rendered" || true) != 1 ]] ||
+      ! grep -qE "^[[:space:]]*acl from_hub src $gw_rx 127\.0\.0\.1([[:space:]]+#.*)?\$" <<<"$rendered"; then
+      fail "1 isolation: /run/haproxy/haproxy.cfg needs exactly one 'acl from_hub src $HUB_CTL_GATEWAY_IP 127.0.0.1'"
+      ok=0
+    fi
+    if [[ $(grep -cE '^[[:space:]]*bind[[:space:]]' <<<"$rendered" || true) != 1 ]] ||
+      ! grep -qE '^[[:space:]]*bind :2375[[:space:]]*$' <<<"$rendered"; then
+      fail "1 isolation: socket-proxy-hub does not bind exactly ':2375' ($(grep -E '^[[:space:]]*bind[[:space:]]' <<<"$rendered" | sed 's/^[[:space:]]*//' | tr '\n' ';')) - DISABLE_IPV6=1 not honoured?"
       ok=0
     fi
   fi
-  if ((ok)); then pass '1 isolation: socket-proxy-hub and the updater are unreachable from yams_network'; fi
+  # A container in a hub container's network namespace (network_mode: container:...) would come from
+  # 172.30.250.2, or from the updater's always-allowed loopback; it is not listed as a network member.
+  local -A hub_ids=()
+  local id mode
+  for name in "${HUB_CONTAINERS[@]}"; do
+    id=$(docker inspect -f '{{.Id}}' "$name" 2>/dev/null || true)
+    if [[ -n $id ]]; then hub_ids[$name]=$id; fi
+  done
+  while read -r name mode; do
+    [[ $mode == container:* ]] || continue
+    local peer=${mode#container:} hub
+    for hub in "${!hub_ids[@]}"; do
+      if [[ $peer == "$hub" || $peer == "${hub_ids[$hub]}" || (${#peer} -ge 12 && ${hub_ids[$hub]} == "$peer"*) ]]; then
+        fail "1 isolation: ${name#/} shares the network namespace of $hub (network_mode container:), so it passes the source ACLs"
+        ok=0
+      fi
+    done
+  done < <(docker ps -aq | xargs -r docker inspect -f '{{.Name}} {{.HostConfig.NetworkMode}}' 2>/dev/null || true)
+
+  # Reachability, from a container on yams_network and from the host (the bridge gateway .1).
+  local -a from=()
+  if ! running prowlarr; then
+    fail '1 isolation: prowlarr is not running, cannot test from yams_network'
+    ok=0
+  else
+    # Positive control: the same probe must reach the hub on yams_network, or a failing
+    # `docker exec prowlarr curl` (curl gone after an image bump, prowlarr restarting) would pass.
+    read -r rc code < <(probe "http://$HUB_LAN_IP:8080/api/v1/ping" docker exec prowlarr curl)
+    if [[ $code == 200 ]]; then
+      from+=(prowlarr)
+    else
+      fail "1 isolation: cannot probe from prowlarr (its curl got exit $rc, HTTP $code from the hub's own http://$HUB_LAN_IP:8080/api/v1/ping)"
+      ok=0
+    fi
+  fi
+  if ((have_curl)); then from+=(host); else note 'curl not found on the host; probed from prowlarr only'; fi
+  for where in ${from[@]+"${from[@]}"}; do
+    local -a curl_cmd=(curl)
+    [[ $where == host ]] || curl_cmd=(docker exec "$where" curl)
+    local target
+    for target in "http://$HUB_CTL_PROXY_IP:2375/_ping" "http://$HUB_CTL_PROXY_IP:2375/containers/json" \
+      http://socket-proxy-hub:2375/_ping; do
+      read -r rc code < <(probe "$target" "${curl_cmd[@]}")
+      # A refused connection never gets an HTTP status.
+      if [[ $code != 000 ]]; then
+        fail "1 isolation: $where reached socket-proxy-hub ($target answered HTTP $code)"
+        ok=0
+      elif ! refused "$rc" "$code" "$target"; then
+        fail "1 isolation: probing $target from $where failed with curl exit $rc, which proves nothing"
+        ok=0
+      fi
+    done
+    for target in "http://$HUB_CTL_UPDATER_IP:8080/healthz" "http://$HUB_CTL_UPDATER_IP:8080/services" \
+      http://yams-hub-updater:8080/healthz; do
+      read -r rc code < <(probe "$target" "${curl_cmd[@]}")
+      # 403 = UPDATER_ALLOWED_SOURCES refused it before the token; 000 = no connection at all.
+      # 401 would mean only the token stands in the way.
+      if [[ $code == 000 ]]; then
+        if ! refused "$rc" "$code" "$target"; then
+          fail "1 isolation: probing $target from $where failed with curl exit $rc, which proves nothing"
+          ok=0
+        fi
+      elif [[ $code != 403 ]]; then
+        fail "1 isolation: $where got HTTP $code from the updater ($target; expected 403 or no connection)"
+        ok=0
+      fi
+    done
+  done
+  if ((ok)); then
+    pass "1 isolation: socket-proxy-hub and the updater refuse ${from[*]:-nobody tested} (source ACLs; $CTL_NET has the fixed $HUB_CTL_SUBNET layout)"
+  fi
+  if ((skip_health)); then
+    note "the gateway's own access to both (from $HUB_CTL_GATEWAY_IP) is NOT verified: check 5 is skipped"
+  else
+    note "the gateway's own access to both (from $HUB_CTL_GATEWAY_IP) is check 5: docker=up and updater=up"
+  fi
+  note "not relied upon: internal: true (UGOS's DOCKER-USER ACCEPT bypasses it), and $CTL_NET has internet egress"
 }
 
 # --- 2. IPv4-only publishing ------------------------------------------------------------------
@@ -288,7 +418,7 @@ check_health() {
     fail '5 health: curl not found on the host'
     return
   fi
-  local token=${YAMS_HUB_TOKEN:-} logged_in=0 password body json docker_s shelf_s
+  local token=${YAMS_HUB_TOKEN:-} logged_in=0 password body json docker_s shelf_s updater_s
   if [[ -z $token ]]; then
     if [[ ! -t 0 ]]; then
       skip '5 health: no terminal for the password prompt (set YAMS_HUB_TOKEN or use --skip-health)'
@@ -321,11 +451,14 @@ check_health() {
   fi
   token=''
   docker_s=$(health_status "$json" docker)
+  updater_s=$(health_status "$json" updater)
   shelf_s=$(health_status "$json" shelfmark)
-  if [[ $docker_s == up && $shelf_s == up ]]; then
-    pass '5 health: docker up (proxy self-test passed), shelfmark up'
+  # docker=up: the gateway got through socket-proxy-hub's source ACL and the self-test passed;
+  # updater=up: its GET /healthz passed UPDATER_ALLOWED_SOURCES and the token check.
+  if [[ $docker_s == up && $updater_s == up && $shelf_s == up ]]; then
+    pass '5 health: docker up (proxy reached through its source ACL, self-test passed), updater up (source allow-list and token accepted), shelfmark up'
   else
-    fail "5 health: docker ${docker_s:-unknown}, shelfmark ${shelf_s:-unknown} (both must be up)"
+    fail "5 health: docker ${docker_s:-unknown}, updater ${updater_s:-unknown}, shelfmark ${shelf_s:-unknown} (all must be up)"
   fi
   if command -v jq >/dev/null && [[ -n $json ]]; then
     note "services: $(jq -r '[.services[]? | "\(.id)=\(.status)"] | join(" ")' <<<"$json")"

@@ -5,13 +5,27 @@
 #   * The three services go under its existing `services:` key.
 #   * `yams_network` (172.28.0.0/24) is the stack's existing network; 172.28.0.49 must be unused
 #     (README "Before you start").
+#   * `deploy.sh` installs /opt/yams/monitoring/yams-hub/socket-proxy-hub.haproxy.cfg (from socket-proxy-hub/haproxy.cfg).
+#
+# Control-plane protection (ARCHITECTURE §6, "Why internal: true is not enough"): on Zenith, UGOS puts
+# `-A DOCKER-USER ! -i docker0 ! -o docker0 -j ACCEPT` before Docker's own isolation rules, so EVERY container can
+# reach yams_hub_ctl by IP and the network has internet egress, `internal: true` notwithstanding. The host firewall is
+# UGOS's and is not touched. Instead, the fixed addresses below let the proxy (haproxy source ACL) and the updater
+# (UPDATER_ALLOWED_SOURCES) refuse every peer but the gateway, 172.30.250.2 (and their own loopback). A peer from
+# another bridge arrives with its own address or, masqueraded, as the bridge gateway .1: never as .2. Change an
+# address here only together with HUB_CTL_* in deploy.sh and verify.sh, the ACL in socket-proxy-hub/haproxy.cfg and
+# UPDATER_ALLOWED_SOURCES (deploy/test/deploy_test.sh checks they agree).
 #
 # This file is also a valid compose fragment on its own, so it can be checked before merging:
 #   docker compose -p yams -f docker-compose.yaml -f docker-compose.custom.yaml -f /tmp/docker-compose.hub.yaml config -q
 
 networks:
   yams_hub_ctl:
-    internal: true            # no outside access, no other container
+    internal: true            # intent only: UGOS's DOCKER-USER ACCEPT defeats it (see above); not relied upon
+    ipam:
+      config:
+        - subnet: 172.30.250.0/29     # .1 bridge gateway, .2 yams-hub, .3 socket-proxy-hub, .4 yams-hub-updater
+          gateway: 172.30.250.1
 
 services:
   yams-hub:
@@ -34,13 +48,17 @@ services:
     read_only: true
     cap_drop: [ALL]
     security_opt: ["no-new-privileges:true"]
+    # yams-hub sits on both networks; it must never route between them (defence in depth: the ACLs below already
+    # refuse anything that is not 172.30.250.2, and this also holds if UGOS's firewall rules change).
+    sysctls: [net.ipv4.ip_forward=0]
     depends_on: [socket-proxy-hub]
     labels:
       - com.centurylinklabs.watchtower.enable=false        # local image; deployed by deploy.sh
     networks:
       yams_network:
         ipv4_address: 172.28.0.49
-      yams_hub_ctl: {}
+      yams_hub_ctl:
+        ipv4_address: 172.30.250.2   # the only source the proxy and the updater accept
 
   socket-proxy-hub:
     image: lscr.io/linuxserver/socket-proxy:3.4.7-r0-ls105   # pinned (template reviewed); pin @sha256 at deploy
@@ -55,14 +73,27 @@ services:
       - ALLOW_RESTARTS=1
       - ALLOW_START=1
       - POST=0
+      - DISABLE_IPV6=1          # bind :2375 (IPv4), so the source ACL sees plain IPv4 peers
       - TZ=${TZ}
-    volumes: [/var/run/docker.sock:/var/run/docker.sock:ro]
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      # The image's template plus a source ACL (only 172.30.250.2, and its own loopback, may connect); the entrypoint renders it
+      # into /run/haproxy/haproxy.cfg. Installed by deploy.sh; re-diff it against the image on every bump.
+      # create_host_path: false, so a missing file fails the start instead of Docker creating a directory there.
+      - type: bind
+        source: /opt/yams/monitoring/yams-hub/socket-proxy-hub.haproxy.cfg
+        target: /templates/haproxy.cfg
+        read_only: true
+        bind:
+          create_host_path: false
     read_only: true
     tmpfs: [/run]
     labels:
       - com.centurylinklabs.watchtower.monitor-only=true   # never auto-updated
     restart: unless-stopped
-    networks: [yams_hub_ctl]
+    networks:
+      yams_hub_ctl:
+        ipv4_address: 172.30.250.3
 
   yams-hub-updater:
     image: yams-hub-updater:latest
@@ -74,10 +105,13 @@ services:
     stop_grace_period: 17m
     environment:
       - UPDATER_TOKEN_FILE=/run/secrets/updater.env
+      - UPDATER_ALLOWED_SOURCES=172.30.250.2    # the gateway only (403 before the token check); loopback always
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /opt/yams:/opt/yams:ro
       - /opt/yams/monitoring/secrets/yams-hub-updater.env:/run/secrets/updater.env:ro
     labels:
       - com.centurylinklabs.watchtower.enable=false
-    networks: [yams_hub_ctl]
+    networks:
+      yams_hub_ctl:
+        ipv4_address: 172.30.250.4

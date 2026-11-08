@@ -8,6 +8,8 @@ library;
 
 import 'dart:convert';
 
+import 'source_allow_list.dart';
+
 /// `{service}` and deny-list entries must match this (compose service names).
 final serviceNamePattern = RegExp(r'^[a-z0-9][a-z0-9_.-]*$');
 
@@ -105,6 +107,7 @@ final class UpdaterConfig {
     this.stepTimeout = const Duration(minutes: 15),
     this.allowListRefresh = const Duration(minutes: 10),
     this.tokenFile = defaultTokenFile,
+    this.allowedSources,
   }) : composeFiles = List.unmodifiable(
          composeFiles ??
              [
@@ -150,6 +153,16 @@ final class UpdaterConfig {
       );
     }
 
+    SourceAllowList? allowedSources;
+    final sourcesText = _nonEmpty(env['UPDATER_ALLOWED_SOURCES']);
+    if (sourcesText != null) {
+      try {
+        allowedSources = SourceAllowList.parse(sourcesText);
+      } on FormatException catch (e) {
+        throw UpdaterConfigException('UPDATER_ALLOWED_SOURCES: ${e.message}');
+      }
+    }
+
     return UpdaterConfig(
       token: token,
       port: port,
@@ -157,6 +170,7 @@ final class UpdaterConfig {
       projectDir: projectDir,
       deny: parseDenyList(env['UPDATER_DENY']),
       tokenFile: tokenFile,
+      allowedSources: allowedSources,
     );
   }
 
@@ -173,10 +187,16 @@ final class UpdaterConfig {
   final Duration stepTimeout;
   final Duration allowListRefresh;
 
+  /// `UPDATER_ALLOWED_SOURCES`: the peers that may connect (loopback always
+  /// may). Null when unset: then any peer that reaches the port gets as far
+  /// as the token check (the pre-2026-11-08 behaviour; `serve` warns).
+  final SourceAllowList? allowedSources;
+
   @override
   String toString() =>
       'UpdaterConfig(port: $port, project: $projectName, dir: $projectDir, '
-      'files: $composeFiles, deny: ${deny.toList()..sort()})';
+      'files: $composeFiles, deny: ${deny.toList()..sort()}, '
+      'allowedSources: ${allowedSources ?? 'any (unset)'})';
 }
 
 String? _nonEmpty(String? v) {

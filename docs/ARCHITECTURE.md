@@ -19,8 +19,11 @@ YAMS Hub is an all-in-one control centre for the YAMS media stack on the UGreen 
 | `updater/` (`yams_hub_updater`) | Tiny Dart HTTP service that runs `docker compose pull` + `up -d --no-deps` for one service. The only privileged piece. | NAS, container `yams-hub-updater` |
 | `socket-proxy-hub` | Second lscr socket-proxy with the minimal write flags (restart/start/stop, logs). | NAS |
 
-`socket-proxy-hub` and `yams-hub-updater` sit **only** on a private internal network `yams_hub_ctl`; the gateway is the
-only container on both `yams_network` and `yams_hub_ctl` (section 6). No other container can reach the control plane.
+`socket-proxy-hub` and `yams-hub-updater` sit **only** on the control network `yams_hub_ctl` (172.30.250.0/29, fixed
+addresses); the gateway is the only container on both `yams_network` and `yams_hub_ctl` (section 6). Network
+membership alone does **not** keep other containers out on Zenith (UGOS's `DOCKER-USER` ACCEPT bypasses Docker's
+isolation, section 6), so both refuse every peer except the gateway's address 172.30.250.2: the proxy with a
+haproxy source ACL, the updater with `UPDATER_ALLOWED_SOURCES` (then its bearer token).
 
 Goals:
 - Monitoring (host, containers, uptime, VPN, health), requests (Seerr), library management (Sonarr/Radarr, including
@@ -54,7 +57,7 @@ flowchart LR
       G --> Q[gluetun:8081 qBittorrent] & GL[gluetun:8000 control]
       G --> UK[uptime-kuma] & W[watchtower] & ABS[audiobookshelf] & K[kavita] & SM[shelfmark]
     end
-    subgraph yams_hub_ctl internal
+    subgraph yams_hub_ctl ["yams_hub_ctl 172.30.250.0/29 (source ACLs: only 172.30.250.2)"]
       G --> SP[socket-proxy-hub:2375] --> D[(docker.sock ro)]
       G --> U[yams-hub-updater] --> D2[(docker.sock rw)]
     end
@@ -288,9 +291,9 @@ goes in compose `environment:`.
 | `JELLYSTAT_URL` / `JELLYSTAT_API_KEY` (S) | `http://jellystat:3000` | |
 | `QBIT_URL` / `QBIT_USERNAME` / `QBIT_PASSWORD` (S) | `http://gluetun:8081` | |
 | `GLUETUN_URL` | `http://gluetun:8000` | no secret |
-| `DOCKER_URL` | `http://socket-proxy-hub:2375` | no secret; reachable only over `yams_hub_ctl` |
+| `DOCKER_URL` | `http://socket-proxy-hub:2375` | no secret; on `yams_hub_ctl`, the proxy accepts only the gateway's 172.30.250.2 |
 | `WATCHTOWER_URL` / `WATCHTOWER_TOKEN` (S) | `http://watchtower:8080` | |
-| `UPDATER_URL` / `UPDATER_TOKEN` (S) | `http://yams-hub-updater:8080` | reachable only over `yams_hub_ctl`; token ≥ 32 bytes |
+| `UPDATER_URL` / `UPDATER_TOKEN` (S) | `http://yams-hub-updater:8080` | on `yams_hub_ctl`, the updater accepts only 172.30.250.2 (`UPDATER_ALLOWED_SOURCES`); token ≥ 32 bytes |
 | `UPTIME_KUMA_URL` / `UPTIME_KUMA_SLUG` | `http://uptime-kuma:3001` / `zenith` | no secret |
 | `ABS_URL` / `ABS_API_KEY` (S) | `http://audiobookshelf:80` | |
 | `KAVITA_URL` / `KAVITA_API_KEY` (S) | `http://kavita:5000` | Kavita Auth Key (header `x-api-key`) |
@@ -884,13 +887,17 @@ Unit-tested with a Prowlarr download URL (`.../download?apikey=...&link=...`), a
   (integrations/system.md §2). With `POST=0` the proxy refuses container create/delete/update, image pulls and exec,
   so a compromised gateway cannot get root on the NAS through Docker. `ALLOW_RESTARTS` also opens `/kill`; the gateway
   never calls it. The existing read-only `socket-proxy` stays as is for Homepage and Uptime Kuma.
-- **Network isolation:** `socket-proxy-hub` is attached **only** to the internal network `yams_hub_ctl`, which only the
-  gateway and the updater join (section 6). Containers on `yams_network` (qBittorrent/gluetun, Jellyfin, flaresolverr,
-  shelfmark, ...) cannot reach it, so the gateway's locked/confirm lists cannot be bypassed by talking to the proxy
-  directly.
+- **Network isolation:** `socket-proxy-hub` is attached **only** to `yams_hub_ctl`, which only the gateway and the
+  updater join (section 6). Because UGOS defeats Docker's inter-network isolation (section 6, "Why `internal: true`
+  is not enough"), the proxy does not rely on that: it runs the image's haproxy template plus
+  `acl from_hub src 172.30.250.2 127.0.0.1` / `tcp-request connection reject if !from_hub`
+  (`deploy/socket-proxy-hub/haproxy.cfg`, `DISABLE_IPV6=1`), so containers on `yams_network`
+  (qBittorrent/gluetun, Jellyfin, flaresolverr, shelfmark, ...) get their connection dropped and the gateway's
+  locked/confirm lists cannot be bypassed by talking to the proxy directly.
 - **Image pinned** to `lscr.io/linuxserver/socket-proxy:3.4.7-r0-ls105` (the version whose `haproxy.cfg` was reviewed;
   pin by digest at deploy time) with label `com.centurylinklabs.watchtower.monitor-only=true`, so Watchtower never
-  silently swaps the template. Every bump repeats the template review of system.md §2.1.
+  silently swaps the template. Every bump repeats the template review of system.md §2.1 and re-diffs our
+  `deploy/socket-proxy-hub/haproxy.cfg` against the new upstream `/templates/haproxy.cfg` (it replaces it).
 - **Start-up self-test** (core, `core/docker/proxy_self_test.dart`, and every 6 h): `POST /v1.54/containers/create`
   (empty JSON body), `POST /v1.54/images/create?fromImage=yams-hub-selftest-nonexistent` and
   `DELETE /v1.54/containers/yams-hub-selftest-nonexistent` must all return **403** from the proxy. If any returns
@@ -928,7 +935,13 @@ Two mechanisms (integrations/system.md §3):
      (both are static binaries; Docker 29.4.3 / API 1.54 on Zenith). Runs as root (needs the socket).
    - Mounts: `/var/run/docker.sock:/var/run/docker.sock`, `/opt/yams:/opt/yams:ro` (every `env_file` of the stack lives
      under `/opt/yams`), `/opt/yams/monitoring/secrets/yams-hub-updater.env:/run/secrets/updater.env:ro`. Network
-     **`yams_hub_ctl` only**, no published port.
+     **`yams_hub_ctl` only** (172.30.250.4), no published port.
+   - Source allow-list: `UPDATER_ALLOWED_SOURCES` (comma/space-separated addresses or CIDRs; compose sets
+     `172.30.250.2`). The outermost middleware reads the TCP peer from shelf's `shelf.io.connection_info` and answers
+     every other peer a bare `403 {"error":"forbidden"}` before logging, auth and routing (fails closed when the
+     connection info is missing). Loopback is always allowed, so the in-container `HEALTHCHECK` keeps working. A
+     malformed entry stops the updater from starting; when the variable is unset it starts with a warning and only
+     the token protects it (back-compat). Refusals are logged at WARNING, at most once a minute per address.
    - Token: read from `UPDATER_TOKEN_FILE` (default `/run/secrets/updater.env`, `UPDATER_TOKEN='...'` line), never from
      the environment. The updater **refuses to start** unless the token is ≥ 32 bytes.
    - Auth: `Authorization: Bearer <token>` compared in constant time. **Every** request without it gets 401, including
@@ -962,7 +975,7 @@ Assets: upstream API keys (in the gateway's secrets file), the ability to delete
 | Attacker has | They can | They cannot |
 |---|---|---|
 | Network access only (LAN or tailnet) | Reach the login endpoint (rate-limited, lockouts, CPU-bounded by the verify semaphore), `/ping`, the static web files | Anything else; every `/api/v1` route except ping/login/refresh needs a token. They also cannot use the hub's cookies from another port on the same host (cookies are scoped to `/yh/...`, GETs need `X-YAMS-Client`). |
-| A container on `yams_network` (e.g. a compromised qBittorrent, Jellyfin, flaresolverr or shelfmark) | Read every container's `Config.Env` through the **existing** read-only `socket-proxy` (pre-existing exposure of the Homepage-era keys); call the hub's public routes | Reach `socket-proxy-hub` or the updater (they are only on `yams_hub_ctl`); read the hub's own secrets (bind-mounted file, not in `Config.Env`); stop/restart containers |
+| A container on `yams_network` (e.g. a compromised qBittorrent, Jellyfin, flaresolverr or shelfmark) | Read every container's `Config.Env` through the **existing** read-only `socket-proxy` (pre-existing exposure of the Homepage-era keys); call the hub's public routes; open TCP connections to `yams_hub_ctl` by IP (UGOS routes them, section 6) | Use `socket-proxy-hub` (connection dropped by its source ACL) or the updater (403 before the token check): only 172.30.250.2 is accepted; read the hub's own secrets (bind-mounted file, not in `Config.Env`); stop/restart containers |
 | A stolen **member** token | Read dashboards, library, downloads, stats (own playback history only); create Seerr requests as that member (pending) | Any write in Library/Activity/Indexers/Subtitles/Containers, logs, health-check output, audit, users |
 | A stolen **admin** token | Everything the app can do: delete series/movies with files (typed confirm is client-side, so a scripted attacker can pass `confirm=true`), delete torrents, stop/restart/update containers except locked ones, approve requests | Read any upstream API key or password, run arbitrary commands, create containers, mount host paths, pull arbitrary images (proxy `POST=0`, self-tested at start-up; the updater only runs `compose pull/up` for allow-listed services and the fixed command `docker exec recyclarr recyclarr sync`, no arbitrary exec), stop or restart the gateway, its proxy or the updater (locked, resolved by exact name, 404 for ids/prefixes) |
 | Code execution inside `yams-hub` | Use the secrets file directly against the services; call the updater with its token; restart/stop any container through `socket-proxy-hub` (bypassing the gateway's own lists); read the host `/proc/1/net/dev` | Write to Docker beyond restart/start/stop/kill (proxy flags); make the updater do more than pull/up of allow-listed compose services or the fixed recyclarr sync; read other processes' cmdline/environ (no host `/proc` mount) |
@@ -972,11 +985,17 @@ Residual risks (accepted, documented): `ALLOW_RESTARTS` implies `/kill`; `CONTAI
 read by a gateway compromise); the existing `socket-proxy` exposes `Config.Env` of the other containers to
 `yams_network` (a pre-existing Homepage-era issue; moving those keys out of env is outside this project); Shelfmark
 runs `auth_mode: none` on the LAN, so any LAN/tailnet client is its admin (its own UI already allows this; the hub
-never calls its side-effecting routes `/api/restart`, `/api/debug`, `/api/localdownload`, or any write).
+never calls its side-effecting routes `/api/restart`, `/api/debug`, `/api/localdownload`, or any write). The
+control plane's isolation rests on source addresses, not on network membership (UGOS bypasses Docker's isolation):
+a container on another network could only pass as 172.30.250.2 by spoofing, which needs `NET_RAW` and still cannot
+complete a TCP handshake (the replies go to the real gateway), or by being given that address on `yams_hub_ctl`,
+which needs container create/connect rights that no proxy grants. `yams_hub_ctl` also has internet egress on Zenith
+(`internal: true` is defeated too); neither the proxy nor the updater needs or uses it.
 
 Mitigations: short access tokens, revocable sessions (Settings > Sessions shows device, platform, last seen, IP),
 refresh reuse detection, server proof on untrusted networks, audit log of every write (sanitised), server-side
-confirmation and policy switches, locked containers resolved by exact name, control plane on an internal network,
+confirmation and policy switches, locked containers resolved by exact name, control plane behind source-address ACLs
+(proxy haproxy ACL, updater allow-list, then its token) on a fixed-address network,
 non-root gateway user (uid **64090**, unused on Zenith) with read-only root filesystem and `cap_drop: ALL`, secrets in a
 bind-mounted 0400 file (never in `Config.Env`, DTOs or logs), `redactSecrets` everywhere, upstream errors scrubbed,
 image proxy validation and SVG ban, SSRF-safe remote fetches, Jellystat's dangerous routes (`/api/keys`,
@@ -1051,7 +1070,11 @@ never edited.
 ```yaml
 networks:
   yams_hub_ctl:
-    internal: true            # no outside access, no other container
+    internal: true            # intent only: UGOS's DOCKER-USER ACCEPT defeats it (see below); not relied upon
+    ipam:
+      config:
+        - subnet: 172.30.250.0/29     # .1 bridge gateway, .2 yams-hub, .3 socket-proxy-hub, .4 yams-hub-updater
+          gateway: 172.30.250.1
 
 services:
   yams-hub:
@@ -1077,7 +1100,11 @@ services:
     depends_on: [socket-proxy-hub]
     labels:
       - com.centurylinklabs.watchtower.enable=false        # local image; deployed by deploy.sh
-    networks: [yams_network, yams_hub_ctl]
+    networks:
+      yams_network:
+        ipv4_address: 172.28.0.49
+      yams_hub_ctl:
+        ipv4_address: 172.30.250.2   # the only source the proxy and the updater accept
 
   socket-proxy-hub:
     image: lscr.io/linuxserver/socket-proxy:3.4.7-r0-ls105   # pinned (template reviewed); pin @sha256 at deploy
@@ -1092,42 +1119,111 @@ services:
       - ALLOW_RESTARTS=1
       - ALLOW_START=1
       - POST=0
+      - DISABLE_IPV6=1          # bind :2375 (IPv4), so the source ACL sees plain IPv4 peers
       - TZ=${TZ}
-    volumes: [/var/run/docker.sock:/var/run/docker.sock:ro]
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      # The image's template plus a source ACL (only 172.30.250.2 may connect); the entrypoint still renders it
+      # into /run/haproxy/haproxy.cfg. Installed by deploy.sh; re-diff it against the image on every bump.
+      # create_host_path: false, so a missing file fails the start instead of Docker creating a directory there.
+      - type: bind
+        source: /opt/yams/monitoring/yams-hub/socket-proxy-hub.haproxy.cfg
+        target: /templates/haproxy.cfg
+        read_only: true
+        bind:
+          create_host_path: false
     read_only: true
     tmpfs: [/run]
     labels:
       - com.centurylinklabs.watchtower.monitor-only=true   # never auto-updated
     restart: unless-stopped
-    networks: [yams_hub_ctl]
+    networks:
+      yams_hub_ctl:
+        ipv4_address: 172.30.250.3
 
   yams-hub-updater:
     image: yams-hub-updater:latest
     container_name: yams-hub-updater
     restart: unless-stopped
+    # On SIGTERM the updater lets a running job finish its current step (at most 15 min + 10 s kill grace) so a
+    # `compose up` of a stack service is never cut between "remove old" and "start new". Docker must not SIGKILL
+    # it earlier. Idle, it exits at once. Keep longer than shutdownDrainTimeout (updater/lib/src/app.dart, 16 min).
+    stop_grace_period: 17m
     environment:
       - UPDATER_TOKEN_FILE=/run/secrets/updater.env
+      - UPDATER_ALLOWED_SOURCES=172.30.250.2    # the gateway only (403 before the token check); loopback always
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /opt/yams:/opt/yams:ro
       - /opt/yams/monitoring/secrets/yams-hub-updater.env:/run/secrets/updater.env:ro
     labels:
       - com.centurylinklabs.watchtower.enable=false
-    networks: [yams_hub_ctl]
+    networks:
+      yams_hub_ctl:
+        ipv4_address: 172.30.250.4
 ```
 
 `DOCKER_URL=http://socket-proxy-hub:2375` and `UPDATER_URL=http://yams-hub-updater:8080` keep working because the
-gateway shares `yams_hub_ctl` with both. Because `yams_hub_ctl` is `internal`, the updater has no internet route of
-its own: `docker compose pull` is performed by the Docker daemon (host network), not by the updater container, so
-pulls still work.
+gateway shares `yams_hub_ctl` with both; the gateway's connections to them leave from its address on that network,
+172.30.250.2, the only source both accept. `docker compose pull` is performed by the Docker daemon (host network),
+not by the updater container, so pulls never depend on the container's own routes.
+
+**Why `internal: true` is not enough (live finding, first deploy 2026-11-08, Docker 29.4.3, iptables-nft).** UGOS
+installs, in the filter table,
+
+```
+-A DOCKER-USER -j UG_FORWARD
+-A DOCKER-USER ! -i docker0 ! -o docker0 -j ACCEPT
+```
+
+`DOCKER-USER` runs before `DOCKER-FORWARD`, so Docker's `DOCKER-INTERNAL` and inter-bridge isolation rules never
+apply: every container on `yams_network` (172.28.0.0/24) could reach the containers on the "internal"
+`yams_yams_hub_ctl` by IP (prowlarr got HTTP 200 from socket-proxy-hub `GET /containers/json` at 172.18.0.2:2375),
+and the internal network had internet egress. The host firewall is owned by UGOS and is **not** modified (fragile; a
+mistake could break the live stack). A peer on another bridge reaches `yams_hub_ctl` with either its own container
+address or, when Docker's per-bridge `MASQUERADE` rule rewrites it (likely for `yams_network`), the control bridge's
+gateway address 172.30.250.1; neither can ever be the gateway's 172.30.250.2, which makes source-address checks
+reliable (refusal logs may name .1 rather than the real sender). The protection model is therefore:
+
+1. `yams_hub_ctl` has a fixed IPAM subnet, 172.30.250.0/29 (gateway .1), and static addresses: `yams-hub`
+   172.30.250.2, `socket-proxy-hub` .3, `yams-hub-updater` .4. `internal: true` stays (it documents the intent and
+   is honoured where Docker's rules do apply) but nothing relies on it.
+2. `socket-proxy-hub` mounts `deploy/socket-proxy-hub/haproxy.cfg` (installed by `deploy.sh` as
+   `/opt/yams/monitoring/yams-hub/socket-proxy-hub.haproxy.cfg`, read-only, over `/templates/haproxy.cfg`): the
+   upstream template verbatim plus `acl from_hub src 172.30.250.2 127.0.0.1` and
+   `tcp-request connection reject if !from_hub` right after the bind line (127.0.0.1 is only reachable from the
+   proxy's own network namespace; it keeps a localhost `HEALTHCHECK` of a future image working). The image's
+   entrypoint still renders the template; `DISABLE_IPV6=1` makes the bind `:2375`, so `src` is plain IPv4. Re-diff
+   the file against upstream on every image bump. `deploy.sh` recreates the proxy whenever what it serves
+   (`/run/haproxy/haproxy.cfg`) differs from HEAD's template, and after every deploy of the proxy proves the ACL is
+   in effect (the host gets no HTTP answer from .3:2375); otherwise it stops the proxy and fails.
+3. `yams-hub-updater` has `UPDATER_ALLOWED_SOURCES=172.30.250.2` (section 5.17): 403 to every other peer before
+   the token check; loopback always allowed (healthcheck).
+4. The updater's bearer token, as before. Egress from `yams_hub_ctl` is **not** blocked (accepted: neither
+   container needs it, and blocking it would mean touching UGOS's firewall).
+5. Defence in depth: `yams-hub`, the only container on both networks, runs with `net.ipv4.ip_forward=0`, so it never
+   routes between `yams_network` and `yams_hub_ctl`, whatever UGOS's rules become.
+
+Changing the subnet of an existing network is impossible in compose; the one-time migration (stop and remove the
+three hub containers and `yams_yams_hub_ctl`, then `up`) is `deploy.sh --migrate-ctl-network` or the commands it
+prints (deploy/README.md, "Upgrade: fixed control network"). The addresses appear in `docker-compose.hub.yaml`,
+`deploy.sh`, `verify.sh` and `haproxy.cfg`; `deploy/test/deploy_test.sh` fails when they disagree.
 
 `/volume1/mediashare/config/yams-hub` must be owned by uid 64090 with mode 0700. Without sudo, create it with
 `docker run --rm -v /volume1/mediashare/config:/c alpine sh -c 'mkdir -p /c/yams-hub && chown 64090:64090 /c/yams-hub && chmod 700 /c/yams-hub'`
 (the same trick sets the secrets file's owner and mode, section 9).
 
 **Deploy verification** (run once after the first `up -d`; `deploy/verify.sh` does all of it and prints PASS/FAIL):
-1. `docker exec prowlarr curl -s -m 3 http://socket-proxy-hub:2375/_ping` **must fail** (name not resolvable / no route),
-   and likewise `http://yams-hub-updater:8080/healthz`.
+1. Test what actually answers, not network membership: from prowlarr (`yams_network`) and from the host,
+   `curl http://172.30.250.3:2375/_ping` (and `/containers/json`, and by name) **must fail** without any HTTP status
+   (connection dropped by the source ACL), and `http://172.30.250.4:8080/healthz` / `/services` must answer **403**
+   or fail (a 401 would mean only the token stands in the way). Only curl's "refused/dropped" exits (7, 28, 52, 56;
+   6 for the by-name URLs) count, and prowlarr must first reach the hub's own `/api/v1/ping`, so a broken probe
+   cannot pass. `yams_yams_hub_ctl` has 172.30.250.0/29, the three containers have their fixed addresses and are
+   its only members, proxy and updater are on no other network, no container shares a hub container's network
+   namespace (`network_mode: container:`), and the rendered `/run/haproxy/haproxy.cfg` binds exactly `:2375` and has
+   exactly one `acl from_hub src 172.30.250.2 127.0.0.1` (haproxy ORs repeated acl lines) and the reject rule. The
+   gateway's own access is item 5.
 2. `ss -ltnp | grep 8090` shows `0.0.0.0:8090` and **no** `[::]:8090`. From outside the LAN, an IPv6 connection to the
    NAS's global address on 8090 must fail.
 3. `docker inspect -f '{{.Config.Env}}' yams-hub` contains no key, token, password or hash (only the non-secret
@@ -1135,7 +1231,8 @@ pulls still work.
 4. Inside the gateway: `/host/proc/1/net/dev` lists `eth0` and `tailscale0` (if the single-file bind does not track the
    host netns on UGOS, fall back to `/proc:/host/proc:ro` with `HOST_NET_DEV=/host/proc/1/net/dev` and record it);
    `/sys/class/hwmon/*/name` contains `coretemp`.
-5. `GET /api/v1/health` shows docker `up` (the proxy self-test passed) and `shelfmark` `up`.
+5. `GET /api/v1/health` shows docker `up` (the gateway got through the proxy's ACL and the self-test passed), updater
+   `up` (its `/healthz` passed `UPDATER_ALLOWED_SOURCES` and the token) and `shelfmark` `up`.
 6. `docker inspect --format '{{.Name}} {{.Config.OpenStdin}}' $(docker ps -q)` prints `false` for every container.
 7. `/api/v1/ping` answers on `http://192.168.10.183:8090` and on the Tailscale URL.
 
@@ -1613,9 +1710,14 @@ resolved; most minors too. Summary of what changed:
 **Blockers**
 | Issue | Resolution |
 |---|---|
-| Control plane reachable from every container on `yams_network` (socket-proxy-hub with restart/start/kill, updater) | New internal network `yams_hub_ctl`; proxy and updater live only there, the gateway joins both (§6, §5.16). Deploy check: `docker exec prowlarr curl http://socket-proxy-hub:2375/_ping` must fail. §5.18 rewritten. |
+| Control plane reachable from every container on `yams_network` (socket-proxy-hub with restart/start/kill, updater) | New network `yams_hub_ctl`; proxy and updater live only there, the gateway joins both (§6, §5.16). **Superseded on 2026-11-08 by the live finding below:** network membership does not isolate on Zenith; the proxy and the updater now refuse every source but the gateway's fixed 172.30.250.2. |
 | `material_ui` split (go_router 18, cached_network_image 4, dynamic_color 2) | Pinned pre-migration versions (`go_router ^17.5.0`, `cached_network_image ^3.4.1`, `dynamic_color ^1.9.0`, riverpod `<3.5.0`), all files import `flutter/material.dart`; verified in a probe app (analyze clean, web build OK) (§2.1, §7.1). |
 | Dockerfile `-o /out/...` without `/out` | `mkdir -p /out` in both Dockerfiles; docker build smoke in `tool/check_all.sh` and core-gateway acceptance (§5.17, §5.20). |
+
+**Live finding (first deploy on Zenith, 2026-11-08)**
+| Issue | Resolution |
+|---|---|
+| `verify.sh` check 1 failed: prowlarr reached `socket-proxy-hub` (HTTP 200 on `GET /containers/json`) and the updater by IP. UGOS's `-A DOCKER-USER ! -i docker0 ! -o docker0 -j ACCEPT` runs before Docker's `DOCKER-FORWARD`, so `internal: true` and inter-bridge isolation never apply; the internal network also has egress. | Host iptables left alone (owned by UGOS). Fixed subnet 172.30.250.0/29 with static addresses; haproxy source ACL in our copy of the proxy template (`tcp-request connection reject` unless `src 172.30.250.2` or the proxy's own loopback, `DISABLE_IPV6=1`; re-rendered and proven by `deploy.sh` after every proxy deploy); updater `UPDATER_ALLOWED_SOURCES` (403 before auth, loopback allowed, warning when unset); token unchanged. `internal: true` and the absence of egress are no longer relied upon. `verify.sh` check 1 now probes from prowlarr and the host; check 5 proves the gateway still gets through (docker and updater `up`). One-time network migration via `deploy.sh --migrate-ctl-network` (§6, §5.16, §5.17, §5.18). |
 
 **Security (major)**
 | Issue | Resolution |

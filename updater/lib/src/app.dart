@@ -96,9 +96,17 @@ Future<int> runServe(Map<String, String> env, {ProcessRunner? runner}) async {
     allowList: allowList,
     jobs: jobs,
     commands: commands,
+    allowedSources: config.allowedSources,
   );
 
   _log.info('yams-hub-updater $updaterVersion starting: $config');
+  if (config.allowedSources == null) {
+    _log.warning(
+      'UPDATER_ALLOWED_SOURCES is not set: any container that can reach this '
+      'port gets as far as the token check. On Zenith set it to the '
+      "gateway's fixed address (deploy/docker-compose.hub.yaml)",
+    );
+  }
   await allowList.start();
 
   final server =
