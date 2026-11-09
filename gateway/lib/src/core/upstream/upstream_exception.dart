@@ -102,8 +102,16 @@ class UpstreamException implements Exception {
   }
 
   @override
-  String toString() =>
-      '$runtimeType(${service.name} $method $path${status == null ? '' : ' $status'})';
+  String toString() {
+    // Redacted texts from the upstream body ([message] is redacted in the constructor).
+    final details = [
+      ?message,
+      for (final v in validation.take(3))
+        redactSecrets('${v.field}: ${v.message}'),
+    ];
+    return '$runtimeType(${service.name} $method $path${status == null ? '' : ' $status'}'
+        '${details.isEmpty ? '' : ': ${details.join('; ')}'})';
+  }
 }
 
 /// Connection refused, DNS failure, reset (503 `upstream_unavailable`).
