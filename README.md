@@ -32,6 +32,8 @@ for:
 
 When it finishes, open `http://<server-ip>:8090` and sign in as `admin`.
 
+Unattended: `./install.sh --answers FILE` takes the answers from a `KEY=value` file instead (see `./install.sh -h`).
+
 To build somewhere else, run `./build.sh` there, then copy `app/build/web` into the server's checkout before you run
 `./install.sh`.
 
