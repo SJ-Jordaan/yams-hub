@@ -83,7 +83,8 @@ tool/sandbox/run.sh down                     # remove it
 
 - **What it is** (`tool/sandbox/compose.yaml`): the stock YAMS layout under compose project `sbx-yams`: the linuxserver
   images at `:latest`, `yams_network` with fixed addresses (subnet `172.29.213.0/24`, `SANDBOX_SUBNET` to move it),
-  jellyfin and VPN-off qBittorrent on `sbx-yams_default`, a busybox stand-in for gluetun, plus Seerr. Its
+  jellyfin and VPN-off qBittorrent on `sbx-yams_default`, a busybox stand-in for gluetun (VPN off it restarts
+  forever like an unconfigured stock gluetun; VPN on it serves the two control routes the hub reads), plus Seerr. Its
   INSTALL_DIRECTORY and MEDIA_DIRECTORY live under `${SANDBOX_DIR:-~/.cache/yams-hub-sandbox}`; the apps listen on
   `127.0.0.1:2xxxx` only. It uses the real container names (`sonarr`, `yams-hub`, ...) and the hub's control network
   `172.30.250.0/29`, so `up` refuses to run where those belong to something else.
@@ -93,11 +94,13 @@ tool/sandbox/run.sh down                     # remove it
   `$SANDBOX_DIR/secrets.env`), then runs it again to prove a re-run changes nothing outside the hub.
 - **test** (`smoke.py`, stdlib only) logs in (bearer and cookie flows), calls every page's API and fails on upstream
   errors, missing or unhealthy services, an empty calendar or library. It also restricts Sonarr's Allowed Hosts
-  (issue #2), records what the hub reports and restores it.
+  (issue #2): the hub must notice (health or calendar) and recover after the restore; whether it names the cause is
+  only recorded.
 - **screens** (`screens.py`) needs Playwright: it uses `~/development/perf-venv` and `~/development/ms-playwright` when
   present (`SANDBOX_PYTHON` to choose another); without it the step is skipped with a warning.
 - **down** removes only what carries the sandbox's compose labels (and the hub install inside `$SANDBOX_DIR`), plus
-  `$SANDBOX_DIR`. Pulled and built images stay cached.
+  the files `up` created in `$SANDBOX_DIR`. `up` only uses a new or empty `SANDBOX_DIR`. Pulled and built images stay
+  cached.
 
 CI (`.github/workflows/sandbox.yml`) runs the install unit tests, `./build.sh` and `run.sh all` for both variants on
 pull requests, on pushes to main that touch the hub, weekly (the upstream images are `:latest`) and on demand. No

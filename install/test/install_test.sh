@@ -452,6 +452,12 @@ test_answers_file_is_checked() {
   check 'says chmod' contains "$out" 'readable by others'
   check 'nothing written' test ! -e "$yams/yams-hub"
 
+  chmod 640 "$work/answers"
+  install --answers "$work/answers" </dev/null
+  check 'group-readable: exit 1' test "$status" -eq 1
+  check 'group-readable: says chmod 600' contains "$out" 'chmod 600'
+  check 'still nothing written' test ! -e "$yams/yams-hub"
+
   answers "$work/answers" "ADMIN_PASWORD=$PASSWORD"
   install --answers "$work/answers" </dev/null
   check 'unknown key: exit 1' test "$status" -eq 1
@@ -498,6 +504,9 @@ if command -v shellcheck >/dev/null; then
     printf 'FAIL shellcheck\n'
     fail=$((fail + 1))
   fi
+elif [[ ${CI:-} == true ]]; then
+  printf 'FAIL shellcheck (not installed, and CI=true: it must run in CI)\n'
+  fail=$((fail + 1))
 else
   printf 'skip shellcheck (not installed)\n'
 fi

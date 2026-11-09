@@ -7,6 +7,15 @@ services:
     ports: !reset []
     depends_on: [gluetun]
 
+  # A working stand-in: it answers GET /v1/publicip/ip and /v1/openvpn/portforwarded on :8000 (text/plain JSON,
+  # like gluetun) and reports healthy.
   gluetun:
+    command: ["httpd", "-f", "-v", "-p", "8000", "-h", "/www"]
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8000/v1/publicip/ip"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
     ports:
       - 127.0.0.1:28081:8081

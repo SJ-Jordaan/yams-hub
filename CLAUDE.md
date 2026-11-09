@@ -17,6 +17,8 @@ provides the same versions. Never run `pub upgrade`; the lock files are committe
 (cd updater && dart analyze --fatal-infos && dart test)
 (cd app && flutter analyze && flutter test)
 bash install/test/install_test.sh      # install.sh against a fake docker (runs shellcheck when installed)
+  # no local shellcheck? CI=true fails on a skipped one; or: docker run --rm -v "$PWD:/mnt:ro" -w /mnt \
+  #   koalaman/shellcheck:v0.11.0 -x install.sh build.sh install/test/*.sh tool/sandbox/run.sh
 bash deploy/test/deploy_test.sh        # the maintainer's deploy scripts against fakes
 tool/check_all.sh                      # all the Dart/Flutter checks plus the Docker image smoke builds
 ./build.sh && tool/sandbox/run.sh      # end to end: real install.sh + hub against a disposable stock YAMS

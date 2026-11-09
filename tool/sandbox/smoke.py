@@ -5,8 +5,10 @@ Logs in with the bearer flow (and checks the cookie flow), calls the API of ever
   - no upstream errors (no `upstream_*` error code, no dashboard card or section in status "error");
   - every expected service is configured in /server and "up" in /health;
   - this month's calendar has items, the library has the seeded shows and movies, qBittorrent answers;
-  - VPN on: /vpn reads the gluetun stand-in; VPN off: gluetun is not configured.
-Then the regression check for issue #2 (Sonarr "Allowed Hosts" without the container name), which only reports.
+  - VPN on: /vpn reads the gluetun stand-in; VPN off: gluetun is not configured and restarts forever (stock YAMS),
+    and /containers and /dashboard still show no errors.
+Then the regression check for issue #2 (Sonarr "Allowed Hosts" without the container name): the hub must notice and
+recover; whether it names the cause (the feature request of #2) is only reported.
 
 Prints a table, writes $SANDBOX_ARTIFACTS/smoke-<variant>.json, and on failure prints `docker logs yams-hub`.
 """
@@ -232,10 +234,16 @@ def run_checks(hub: Hub) -> None:
         hub.amend(True, f"{host.get('cpu', {}).get('cores')} cores, uptime {host.get('uptimeSeconds')} s")
     cont = hub.get("containers", "/containers")
     if cont:
-        names = {c.get("name") for c in cont.get("items", [])}
-        want = ["sonarr", "radarr", "jellyfin", "qbittorrent", "yams-hub"]
-        missing = [n for n in want if n not in names]
-        hub.amend(not missing, f"{len(names)} containers" + (f"; MISSING {missing}" if missing else ""))
+        by_name = {c.get("name"): c for c in cont.get("items", [])}
+        want = ["sonarr", "radarr", "jellyfin", "qbittorrent", "gluetun", "yams-hub"]
+        missing = [n for n in want if n not in by_name]
+        hub.amend(not missing, f"{len(by_name)} containers" + (f"; MISSING {missing}" if missing else ""))
+        g = by_name.get("gluetun") or {}
+        # VPN off, gluetun restarts forever (as in stock YAMS); VPN on, the stand-in runs.
+        want_states = ("running",) if VARIANT == "vpn-on" else ("restarting", "exited")
+        hub.get("containers: gluetun detail", "/containers/gluetun")
+        hub.amend(g.get("state") in want_states,
+                  f"state {g.get('state')} ({g.get('statusText')}), want {'/'.join(want_states)}")
     hub.get("media: now playing", "/media/now-playing")
 
 
@@ -245,8 +253,14 @@ def run_checks(hub: Hub) -> None:
 # "400 Bad Request - Invalid Hostname" (HTML) to every request whose Host is not listed (127.0.0.1 still works).
 # ----------------------------------------------------------------------------------------------------------------
 def issue2(hub: Hub) -> dict:
+    """Breaks Sonarr for the hub the way issue #2 did, and checks that the hub (a) notices and (b) recovers.
+
+    Whether the hub names the cause (Allowed Hosts) or only reports a bare 400 is recorded, not asserted: that is the
+    feature work of issue #2. Not noticing at all, or not recovering after the restore, is a failure.
+    """
     result: dict = {"setting": "Sonarr Settings > General > Allowed Hosts (API config/host allowedHosts)"}
-    sonarr = Client(base("sonarr"), {"X-Api-Key": arr_key("sonarr")})
+    key = arr_key("sonarr")
+    sonarr = Client(base("sonarr"), {"X-Api-Key": key})
     cfg = sonarr.get("/api/v3/config/host").json()
     if not cfg or "allowedHosts" not in cfg:
         result["error"] = "Sonarr's config/host has no allowedHosts field"
@@ -260,43 +274,96 @@ def issue2(hub: Hub) -> dict:
         docker("restart", "sonarr")
         wait_until("Sonarr after restart", lambda: sonarr.get("/api/v3/system/status").ok, timeout=180)
 
+    def as_hub() -> int:
+        """Sonarr's answer to the Host header the hub sends (http://sonarr:8989)."""
+        return sonarr.get("/api/v3/system/status", headers={"Host": "sonarr:8989"}).status
+
+    def sonarr_health() -> dict:
+        r = hub.c.get("/health", timeout=60)
+        return next((x for x in (r.json() or {}).get("services", []) if x["id"] == "sonarr"), {})
+
+    windows = iter(range(1000))
+
+    def fresh_calendar_source() -> dict:
+        """sources.sonarr of a calendar window nobody asked for yet (the hub caches the calendar per window)."""
+        start = dt.date.today() + dt.timedelta(days=60 + 7 * next(windows))
+        r = hub.c.get("/calendar", query={"start": start.isoformat(),
+                                          "end": (start + dt.timedelta(days=6)).isoformat()}, timeout=60)
+        return (r.json() or {}).get("sources", {}).get("sonarr") or {"status": f"absent (HTTP {r.status})"}
+
+    restored = False
     try:
         put_hosts("localhost")
         result["applied"] = "allowedHosts=localhost, Sonarr restarted"
-        # /health is cached for 30 s and /library/tv for 60 s: poll until the hub sees the change.
-        def sonarr_health():
-            r = hub.c.get("/health", timeout=60)
-            sh = next((x for x in (r.json() or {}).get("services", []) if x["id"] == "sonarr"), {})
-            return sh if sh.get("status") not in (None, "up") else None
+        result["sonarr_as_hub_http"] = as_hub()
+        result["setting_effective"] = result["sonarr_as_hub_http"] == 400
+        # /health is cached for 30 s: poll until the hub's health of Sonarr changes (or 75 s pass).
         try:
-            sh = wait_until("the hub's health of Sonarr to change", sonarr_health, timeout=75, interval=5)
+            sh = wait_until("the hub's health of Sonarr to change",
+                            lambda: (x := sonarr_health()).get("status") not in (None, "up") and x,
+                            timeout=75, interval=5)
         except Fatal:
-            sh = {"status": "up", "message": "still up after 75 s"}
-        try:
-            lib = wait_until("/library/tv to fail", lambda: (x := hub.c.get("/library/tv", timeout=60)).status != 200
-                             and x, timeout=90, interval=5)
-        except Fatal:
-            lib = hub.c.get("/library/tv", timeout=60)
-        # A window nobody asked for yet (the calendar is cached per window).
-        nxt = (dt.date.today().replace(day=1) + dt.timedelta(days=40)).replace(day=1)
-        cal = hub.c.get("/calendar", query={"start": nxt.isoformat(), "end": (nxt + dt.timedelta(days=6)).isoformat()},
-                        timeout=60)
+            sh = sonarr_health()
+        cal = fresh_calendar_source()
+        # /library/tv serves its cached list while Sonarr fails (by design); record whether it says so.
+        lib = hub.c.get("/library/tv", timeout=60)
         body = lib.json() if isinstance(lib.json(), dict) else {}
         err = body.get("error") or {}
         result["library_tv"] = {"status": lib.status, "code": err.get("code"), "message": err.get("message"),
-                                "details": err.get("details"), "stale": body.get("stale"),
-                                "items": len(body.get("items") or [])}
-        result["calendar_sonarr_source"] = (cal.json() or {}).get("sources", {}).get("sonarr")
+                                "stale": body.get("stale"), "items": len(body.get("items") or [])}
+        result["calendar_sonarr_source"] = cal
         result["health_sonarr"] = {"status": sh.get("status"), "message": sh.get("message")}
-        hub_text = json.dumps([result["library_tv"], result["calendar_sonarr_source"], result["health_sonarr"]]).lower()
+        result["hub_noticed"] = sh.get("status") != "up" or cal.get("status") == "error"
+        hub_text = json.dumps([result["library_tv"], cal, result["health_sonarr"]]).lower()
         result["mentions_allowed_hosts"] = "allowed host" in hub_text or "hostname" in hub_text
     finally:
         put_hosts(original)
+        restored = True
         result["restored"] = f"allowedHosts={original!r}, Sonarr restarted"
-    # The hub recovers by itself once Sonarr accepts it again.
-    wait_until("the hub reading Sonarr again", lambda: hub.c.get("/library/tv", timeout=30).ok, timeout=120)
-    result["recovered"] = True
+    # The hub must recover by itself once Sonarr accepts it again: health up, and a fresh calendar window reads it.
+    result["sonarr_as_hub_http_after_restore"] = as_hub()
+    try:
+        wait_until("the hub's health of Sonarr to be up again", lambda: sonarr_health().get("status") == "up",
+                   timeout=120, interval=5)
+        src = wait_until("a fresh calendar window to read Sonarr again",
+                         lambda: (x := fresh_calendar_source()).get("status") == "ok" and x, timeout=60, interval=5)
+        result["recovered"] = True
+        result["calendar_sonarr_source_after"] = {"status": src.get("status")}
+    except Fatal as e:
+        result["recovered"] = False
+        result["recovery_error"] = str(e)
+    result["restored_ok"] = restored
     return result
+
+
+def issue2_rows(r: dict) -> None:
+    if "error" in r:
+        record("issue #2: Sonarr Allowed Hosts", False, r["error"])
+        return
+    health = r.get("health_sonarr") or {}
+    cal = r.get("calendar_sonarr_source") or {}
+    cal_msg = (cal.get("error") or {}).get("message")
+    seen = f"health {health.get('status')} {health.get('message')!r}; calendar {cal.get('status')} {cal_msg!r}"
+    if not r.get("setting_effective"):
+        # Sonarr no longer rejects the hub with this setting: nothing for the hub to notice.
+        rows.append(("issue #2: hub notices", str(r.get("sonarr_as_hub_http", "")), "",
+                     f"note Sonarr answered Host sonarr:8989 with {r.get('sonarr_as_hub_http')} under "
+                     f"allowedHosts=localhost (expected 400); {seen}"))
+    else:
+        record("issue #2: hub notices", bool(r.get("hub_noticed")),
+               seen if r.get("hub_noticed") else f"the hub did not notice Sonarr rejecting it: {seen}",
+               r.get("sonarr_as_hub_http", ""))
+    verdict = ("names the cause" if r.get("mentions_allowed_hosts")
+               else "reports only a bare 400 (issue #2 feature work still open)")
+    lib = r.get("library_tv") or {}
+    rows.append(("issue #2: names the cause", "", "",
+                 f"note {verdict}; library/tv served {lib.get('items')} cached items with HTTP {lib.get('status')}, "
+                 f"stale={lib.get('stale')}"))
+    record("issue #2: hub recovers", bool(r.get("recovered")),
+           "health up and a fresh calendar window ok after the restore" if r.get("recovered")
+           else f"{r.get('recovery_error')} (Sonarr answers the hub's Host with "
+                f"{r.get('sonarr_as_hub_http_after_restore')})",
+           r.get("sonarr_as_hub_http_after_restore", ""))
 
 
 def print_table() -> None:
@@ -328,14 +395,7 @@ def main() -> int:
             r = {"error": str(e)}
             failures.append(f"issue #2 check could not run or restore: {e}")
         report["issue2"] = r
-        lib = r.get("library_tv", {})
-        verdict = ("names the cause" if r.get("mentions_allowed_hosts")
-                   else "reports only a bare 400 (issue #2, feature work still open)")
-        health = r.get("health_sonarr") or {}
-        rows.append(("issue #2: Sonarr Allowed Hosts", str(lib.get("status", "")), "",
-                     f"note library/tv: {lib.get('code')} {lib.get('message')!r}; health: {health.get('status')} "
-                     f"{health.get('message')!r}; calendar: {(r.get('calendar_sonarr_source') or {}).get('status')}; "
-                     f"{verdict}"))
+        issue2_rows(r)
 
     print_table()
     for n in notes:

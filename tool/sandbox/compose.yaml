@@ -11,8 +11,9 @@
 # Changed for the sandbox:
 #   - the network gets the project-scoped name sbx-yams_yams_network and the subnet from .env (SBX_SUBNET);
 #   - host ports are high and bound to 127.0.0.1, so nothing clashes with the dev machine;
-#   - gluetun is a stand-in (busybox) that keeps a network namespace alive and answers the two gluetun control
-#     routes the hub reads, from static files; there is no VPN;
+#   - gluetun is a stand-in (busybox). VPN off it exits after 2 s and restarts forever, like a stock gluetun with no
+#     VPN set up; VPN on (compose.vpn-on.yaml) it keeps a network namespace alive and answers the two gluetun control
+#     routes the hub reads, from static files; there is no VPN either way;
 #   - seerr is added (stock YAMS has none; many installs add it).
 services:
   jellyfin:
@@ -112,20 +113,14 @@ services:
       yams_network:
         ipv4_address: ${SBX_NET_PREFIX}.17
 
-  # Stand-in for qmcgaw/gluetun: no VPN, no NET_ADMIN. It answers GET /v1/publicip/ip and
-  # /v1/openvpn/portforwarded on :8000 (text/plain JSON, like gluetun) and reports healthy.
+  # Stand-in for qmcgaw/gluetun: no VPN, no NET_ADMIN. Here (VPN off) it fails like a gluetun without VPN
+  # credentials, so it is "restarting" most of the time; compose.vpn-on.yaml turns it into the working stand-in.
   gluetun:
     image: busybox:1.37
     container_name: gluetun
-    command: ["httpd", "-f", "-v", "-p", "8000", "-h", "/www"]
+    command: ["sh", "-c", "echo 'ERROR VPN settings: no VPN set up (sandbox stand-in, VPN_ENABLED=n)' >&2; sleep 2; exit 1"]
     volumes:
       - ${INSTALL_DIRECTORY}/config/gluetun/www:/www:ro
-    healthcheck:
-      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8000/v1/publicip/ip"]
-      interval: 10s
-      timeout: 3s
-      retries: 3
-      start_period: 5s
     restart: unless-stopped
     networks:
       yams_network:

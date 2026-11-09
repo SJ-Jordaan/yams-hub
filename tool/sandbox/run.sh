@@ -10,7 +10,7 @@
 #   test     smoke test of every hub page's API (smoke.py), plus the issue #2 Allowed Hosts check
 #   screens  Playwright screenshots into the artifacts dir (optional: a failure only warns)
 #   logs     save every sandbox and hub container's log into the artifacts dir
-#   down     remove what the sandbox created: its containers, networks, volumes and $SANDBOX_DIR
+#   down     remove what the sandbox created: its containers, networks, volumes and its files in $SANDBOX_DIR
 #   all      down, up, seed, install, test, screens, logs, down (the default). KEEP=1 skips the last down.
 #
 # Environment:
@@ -179,13 +179,19 @@ gen_password() { head -c 18 /dev/urandom | base64 | tr '+/' '-_' | tr -d '=\n'; 
 cmd_up() {
   step "up: compose project $PROJECT in $SANDBOX_DIR"
   preflight
-  mkdir -p "$SANDBOX_DIR" "$STATE" "$SANDBOX_ARTIFACTS"
+  # The marker lets `down` delete the directory, so it only ever goes into a new or empty one.
+  if [[ ! -f $MARKER && -e $SANDBOX_DIR ]] && [[ ! -d $SANDBOX_DIR || -n $(ls -A -- "$SANDBOX_DIR") ]]; then
+    die "$SANDBOX_DIR exists and is not a sandbox (no marker): pick a new or empty SANDBOX_DIR"
+  fi
+  mkdir -p "$SANDBOX_DIR"
   : >"$MARKER"
+  mkdir -p "$STATE" "$SANDBOX_ARTIFACTS"
   local svc
   for svc in "${SBX_CONTAINERS[@]}"; do mkdir -p "$YAMS/config/$svc"; done
   mkdir -p "$MEDIA/tvshows" "$MEDIA/movies" "$MEDIA/downloads/torrents"
-  rm -rf "$YAMS/config/gluetun/www"
-  cp -R "$HERE/gluetun-www" "$YAMS/config/gluetun/www"
+  # In place: a running gluetun stand-in bind-mounts this directory, and a replaced directory would leave it empty.
+  mkdir -p "$YAMS/config/gluetun/www"
+  cp -R "$HERE/gluetun-www/." "$YAMS/config/gluetun/www/"
   chmod -R a+rX "$YAMS/config/gluetun/www"
   cp "$HERE/compose.yaml" "$YAMS/docker-compose.yaml"
   local vpn=n
@@ -328,10 +334,16 @@ cmd_down() {
   mapfile -t ids < <(docker volume ls -q --filter "label=com.docker.compose.project=$PROJECT")
   ((${#ids[@]} == 0)) || docker volume rm "${ids[@]}" >/dev/null
   # The directory holds files owned by root and the hub's uid (written by install.sh): delete through a container.
+  # Only what cmd_up creates; the directory itself goes only when nothing else is left in it.
   if [[ -f $MARKER ]]; then
-    docker run --rm --network none -v "$SANDBOX_DIR:/m" "$ALPINE_IMAGE" sh -c 'rm -rf /m/..?* /m/.[!.]* /m/*'
-    rmdir "$SANDBOX_DIR"
-    echo "removed $SANDBOX_DIR"
+    docker run --rm --network none -v "$SANDBOX_DIR:/m" "$ALPINE_IMAGE" \
+      rm -rf /m/yams /m/media /m/state /m/secrets.env
+    rm -f "$MARKER"
+    if rmdir "$SANDBOX_DIR" 2>/dev/null; then
+      echo "removed $SANDBOX_DIR"
+    else
+      warn "removed the sandbox's files; $SANDBOX_DIR still holds files it did not create, so it stays"
+    fi
   elif [[ -e $SANDBOX_DIR ]]; then
     warn "$SANDBOX_DIR has no sandbox marker; not deleting it"
   fi

@@ -10,7 +10,7 @@
 #   ./install.sh --answers FILE   answer the questions from FILE instead of the terminal (unattended installs)
 #   ./install.sh -h               this help
 #
-# The answers file has KEY=value lines (# comments allowed) and must not be readable by others. A missing key is
+# The answers file has KEY=value lines (# comments allowed) and must be readable only by you (chmod 600). A missing key is
 # the same as pressing Enter. Keys: YAMS_DIR, PORT, ADMIN_USERNAME, ADMIN_PASSWORD, UPTIME_KUMA_SLUG and the secret
 # names of the hub's env file (JELLYFIN_API_KEY, QBIT_USERNAME, QBIT_PASSWORD, JELLYSTAT_API_KEY, ABS_API_KEY,
 # KAVITA_API_KEY, and SONARR/RADARR/PROWLARR/BAZARR/SEERR_API_KEY when they cannot be read automatically).
@@ -118,8 +118,9 @@ answer_keys=${answer_keys//$'\n'/ }
 load_answers() { # FILE
   local f=$1 line k v n=0 perms
   [[ -f $f && -r $f ]] || die "cannot read the answers file $f"
-  perms=$(stat -c %a -- "$f" 2>/dev/null || echo 0)
-  if ((8#$perms & 4)); then die "the answers file $f is readable by others (chmod 600 it)"; fi
+  perms=$(stat -c %a -- "$f" 2>/dev/null) && [[ $perms =~ ^[0-7]{3,4}$ ]] ||
+    die "cannot check the permissions of the answers file $f"
+  if ((8#$perms & 8#077)); then die "the answers file $f is readable by others (it must be readable only by you: chmod 600)"; fi
   while IFS= read -r line || [[ -n $line ]]; do
     n=$((n + 1))
     line=${line%$'\r'}
