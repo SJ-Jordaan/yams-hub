@@ -95,6 +95,25 @@ Set<String> parseDenyList(String? raw) {
   return out;
 }
 
+/// Parses `UPDATER_COMPOSE_FILES` (comma separated absolute paths, in `-f`
+/// order). Null when unset or empty: then [UpdaterConfig] uses
+/// `$projectDir/docker-compose.yaml` and `$projectDir/docker-compose.custom.yaml`.
+List<String>? parseComposeFiles(String? raw) {
+  final files = [
+    for (final part in (raw ?? '').split(','))
+      if (part.trim().isNotEmpty) part.trim(),
+  ];
+  if (files.isEmpty) return null;
+  for (final f in files) {
+    if (!f.startsWith('/')) {
+      throw UpdaterConfigException(
+        'UPDATER_COMPOSE_FILES entry "$f" is not an absolute path',
+      );
+    }
+  }
+  return files;
+}
+
 /// Immutable updater settings.
 final class UpdaterConfig {
   UpdaterConfig({
@@ -153,6 +172,8 @@ final class UpdaterConfig {
       );
     }
 
+    final composeFiles = parseComposeFiles(env['UPDATER_COMPOSE_FILES']);
+
     SourceAllowList? allowedSources;
     final sourcesText = _nonEmpty(env['UPDATER_ALLOWED_SOURCES']);
     if (sourcesText != null) {
@@ -168,6 +189,7 @@ final class UpdaterConfig {
       port: port,
       projectName: projectName,
       projectDir: projectDir,
+      composeFiles: composeFiles,
       deny: parseDenyList(env['UPDATER_DENY']),
       tokenFile: tokenFile,
       allowedSources: allowedSources,

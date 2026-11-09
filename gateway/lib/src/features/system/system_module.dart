@@ -34,6 +34,8 @@ class SystemModule extends FeatureModule {
             sysDir: ctx.config.hostSys,
             netDevPath: ctx.config.hostNetDev,
             volumePath: ctx.config.dataDir,
+            volumeMount: ctx.config.hostVolumeMount,
+            diskDevice: ctx.config.hostDiskDevice,
             clock: ctx.clock,
             log: ctx.log,
           ),
@@ -125,6 +127,7 @@ class SystemModule extends FeatureModule {
       volume: storage == null
           ? null
           : SystemCardVolume(
+              mount: storage.mount,
               totalBytes: storage.totalBytes,
               usedBytes: storage.usedBytes,
               usedPercent: storage.usedPercent,

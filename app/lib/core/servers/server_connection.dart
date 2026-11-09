@@ -58,7 +58,7 @@ class ServerConnection {
   final ConnectionStatus status;
   final ServerProfile? profile;
 
-  /// The hub root in use (`http://192.168.10.183:8090`). Only set once the URL
+  /// The hub root in use (`http://192.168.1.10:8090`). Only set once the URL
   /// passed resolution: no request (and no token) goes anywhere before that.
   final Uri? baseUrl;
   final ApiTransport transport;

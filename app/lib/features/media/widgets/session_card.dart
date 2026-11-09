@@ -25,7 +25,7 @@ String? sessionSubline(NowPlayingSession s) {
   return s.year?.toString();
 }
 
-/// "Zenith Greyrat · Xiaomi TV Box".
+/// "Ada · Living room TV".
 String sessionWho(NowPlayingSession s) =>
     [if (s.userName.isNotEmpty) s.userName, if (s.deviceName.isNotEmpty) s.deviceName].join(' · ');
 

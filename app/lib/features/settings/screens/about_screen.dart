@@ -86,7 +86,7 @@ class AboutScreen extends ConsumerWidget {
                 context: context,
                 applicationName: appTitle,
                 applicationVersion: appVersion,
-                applicationLegalese: 'A companion for the YAMS media stack on Zenith.',
+                applicationLegalese: 'A companion for the YAMS media stack.',
               ),
             ),
           ],

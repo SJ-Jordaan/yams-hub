@@ -18,7 +18,7 @@ import 'server_proof.dart';
 
 /// Sends `GET /api/v1/ping` to a hub root URL.
 abstract interface class ServerPingClient {
-  /// Pings [base] (a hub root such as `http://192.168.10.183:8090`). Throws an
+  /// Pings [base] (a hub root such as `http://192.168.1.10:8090`). Throws an
   /// [ApiException] on failure.
   Future<ServerPing> ping(Uri base, {String? nonce, String? sessionId, Duration? timeout});
 }

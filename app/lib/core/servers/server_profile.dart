@@ -17,7 +17,7 @@ class ServerProfile {
 
   factory ServerProfile.fromJson(JsonMap j) => ServerProfile(
     id: req(readString(j['id']), 'id'),
-    name: readString(j['name']) ?? 'Zenith',
+    name: readString(j['name']) ?? 'YAMS',
     urls: [
       for (final s in readStringList(j['urls'])) ?parseServerUrl(s),
     ],

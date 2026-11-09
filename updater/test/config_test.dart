@@ -137,6 +137,38 @@ void main() {
       expect(c.deny, {'yams-hub', 'jellyfin', 'yams-hub-updater'});
     });
 
+    test('UPDATER_COMPOSE_FILES replaces the default compose files', () {
+      final c = UpdaterConfig.fromEnvironment(const {
+        'UPDATER_PROJECT_DIR': '/srv/yams',
+        'UPDATER_COMPOSE_FILES': ' /srv/yams/docker-compose.yaml , ',
+      }, readFile: (_) => "UPDATER_TOKEN='$_token'");
+      expect(c.composeFiles, ['/srv/yams/docker-compose.yaml']);
+      expect(
+        ComposeCommands(c).configServices(),
+        containsAllInOrder([
+          '--project-directory',
+          '/srv/yams',
+          '-f',
+          '/srv/yams/docker-compose.yaml',
+          'config',
+        ]),
+      );
+      expect(
+        ComposeCommands(c).configServices(),
+        isNot(contains('/srv/yams/docker-compose.custom.yaml')),
+      );
+      final blank = UpdaterConfig.fromEnvironment(const {
+        'UPDATER_COMPOSE_FILES': ' ',
+      }, readFile: (_) => "UPDATER_TOKEN='$_token'");
+      expect(blank.composeFiles, hasLength(2), reason: 'blank: the default');
+      expect(
+        () => UpdaterConfig.fromEnvironment(const {
+          'UPDATER_COMPOSE_FILES': 'docker-compose.yaml',
+        }, readFile: (_) => "UPDATER_TOKEN='$_token'"),
+        throwsA(isA<UpdaterConfigException>()),
+      );
+    });
+
     test('invalid port is an error', () {
       expect(
         () => UpdaterConfig.fromEnvironment(const {

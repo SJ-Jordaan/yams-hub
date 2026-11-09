@@ -45,4 +45,7 @@ String _usage(ArgParser parser) =>
     'Usage: yams-hub-updater [serve | healthcheck]\n'
     'Environment: UPDATER_TOKEN_FILE (default ${UpdaterConfig.defaultTokenFile}), '
     'UPDATER_PORT (8080), UPDATER_DENY (${defaultDenyList.join(',')}), '
-    'UPDATER_LOG_LEVEL (info)\n${parser.usage}';
+    'UPDATER_LOG_LEVEL (info), UPDATER_PROJECT_DIR (/opt/yams), '
+    'UPDATER_PROJECT_NAME (yams), UPDATER_COMPOSE_FILES (comma separated; '
+    'default docker-compose.yaml + docker-compose.custom.yaml in the project '
+    'dir), UPDATER_ALLOWED_SOURCES\n${parser.usage}';

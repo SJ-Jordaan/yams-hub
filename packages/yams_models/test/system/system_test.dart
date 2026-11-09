@@ -287,6 +287,21 @@ void main() {
       expect(c.raid!.redundant, isFalse);
       expect(c.monitors!.total, 21);
       expect(c.cpuSparkline, hasLength(3));
+      expect(c.volume!.mount, isNull, reason: 'gateways before 2026-11-09');
+    });
+
+    test('the volume carries its mount when the gateway sends it', () {
+      final sample = <String, Object?>{
+        ..._card,
+        'volume': {
+          'mount': '/srv/media',
+          'totalBytes': 10,
+          'usedBytes': 5,
+          'usedPercent': 50.0,
+        },
+      };
+      final c = expectRoundTrip(sample, SystemCard.fromJson, (c) => c.toJson());
+      expect(c.volume!.mount, '/srv/media');
     });
 
     test('optional parts are omitted', () {

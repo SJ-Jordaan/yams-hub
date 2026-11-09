@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:yams_hub/core/api/api_client.dart';
-import 'package:yams_hub/core/servers/onboarding_screen.dart' show UrlProbe;
+import 'package:yams_hub/core/servers/onboarding_screen.dart' show UrlProbe, defaultServerUrl;
 import 'package:yams_hub/core/settings/app_settings.dart';
 import 'package:yams_hub/features/settings/data/settings_api.dart';
 import 'package:yams_hub/features/settings/providers/settings_providers.dart';
@@ -140,6 +140,14 @@ void main() {
   });
 
   group('server profiles', () {
+    test('the default address is the page origin on web and empty elsewhere', () {
+      expect(defaultServerUrl(web: false, base: Uri.parse('http://10.0.0.2:8090/home')), '');
+      expect(defaultServerUrl(web: true, base: Uri.parse('http://10.0.0.2:8090/home?x=1#y')), 'http://10.0.0.2:8090');
+      expect(defaultServerUrl(web: true, base: Uri.parse('https://hub.example.com/')), 'https://hub.example.com');
+      expect(defaultServerUrl(web: true, base: Uri.parse('file:///index.html')), '');
+      expect(defaultServerUrl(), '', reason: 'tests run on the VM, not the web');
+    });
+
     UrlProbe ok(String instanceId) =>
         UrlProbe.ok(buildPing(instanceId: instanceId), const Duration(milliseconds: 12));
     const failed = UrlProbe.failed("Can't reach the hub.");

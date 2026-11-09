@@ -301,6 +301,8 @@ goes in compose `environment:`.
 | `HOST_SYS` | `/sys` | the container's own sysfs shows the host hwmon devices; no bind mount (a bind of `/sys/class/hwmon` alone leaves its relative symlinks dangling, verified on Zenith) |
 | `HOST_NET_DEV` | `/host/proc/1/net/dev` | host network counters (bind mount of that one file, section 6) |
 | `RECYCLARR_LOG_DIR` | `/host/recyclarr-logs` | |
+| `HOST_VOLUME_MOUNT` | `/volume1` | host path the data volume usage (`statvfs` of the data dir) is reported as |
+| `HOST_DISK_DEVICE` | `dm-0` | `/proc/diskstats` device of the data volume; empty disables disk I/O |
 
 Host-global procfs files (`/proc/stat`, `meminfo`, `loadavg`, `uptime`, `cpuinfo`, `diskstats`, `mdstat`) are read from
 the container's **own** `/proc` (procfs is not namespaced for these). The whole host `/proc` is not mounted.
@@ -948,6 +950,8 @@ Two mechanisms (integrations/system.md §3):
      unknown paths (no route probing). Request bodies are never logged.
    - Allow-list: on start and every 10 min it runs
      `docker compose -p yams --project-directory /opt/yams -f /opt/yams/docker-compose.yaml -f /opt/yams/docker-compose.custom.yaml config --services`.
+     `UPDATER_PROJECT_DIR`, `UPDATER_PROJECT_NAME` and `UPDATER_COMPOSE_FILES` (comma-separated absolute paths) change
+     the project; `install.sh` sets them from the YAMS containers' compose labels.
      Deny-list (env `UPDATER_DENY`, default `yams-hub,yams-hub-updater,socket-proxy-hub`): locally built images cannot
      be pulled, and the pinned socket proxy is only bumped after a template review. `{service}` is re-validated against
      `^[a-z0-9][a-z0-9_.-]*$` **and** the allow-list.

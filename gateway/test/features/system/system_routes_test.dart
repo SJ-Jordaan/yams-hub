@@ -51,6 +51,20 @@ Future<void> _twoSamples(TestHub hub) async {
 }
 
 void main() {
+  test('HOST_VOLUME_MOUNT and HOST_DISK_DEVICE reach the sampler', () async {
+    final hub = TestHub(
+      env: const {
+        'HOST_VOLUME_MOUNT': '/srv/media',
+        'HOST_DISK_DEVICE': 'sda1',
+      },
+    );
+    addTearDown(hub.close);
+    await hub.ready;
+    final sampler = systemModuleOf(hub).sampler;
+    expect(sampler.volumeMount, '/srv/media');
+    expect(sampler.diskDevice, 'sda1');
+  });
+
   group('GET /system/host', () {
     late TestHub hub;
     setUp(() => hub = systemTestHub());
@@ -406,6 +420,7 @@ void main() {
       expect(c.uptimeSeconds, 10322);
       expect(c.volume!.usedPercent, 48.8);
       expect(c.volume!.totalBytes, 7904532574208);
+      expect(c.volume!.mount, '/volume1');
       expect(c.raid!.level, 'raid0');
       expect(c.raid!.redundant, isFalse);
       expect(c.net!.rxBps, eth0RxDelta ~/ 5);

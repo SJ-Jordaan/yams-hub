@@ -98,7 +98,7 @@ class SystemCardView extends StatelessWidget {
           ProgressBar(
             key: const Key('systemCard.volume'),
             value: volume.usedPercent / 100,
-            label: '/volume1',
+            label: volume.mount ?? 'Storage',
             trailing:
                 '${formatBytes(volume.usedBytes)} / ${formatBytes(volume.totalBytes)} · ${formatPercent(volume.usedPercent)}',
             tone: toneForUsage(volume.usedPercent / 100),

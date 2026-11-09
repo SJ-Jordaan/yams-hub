@@ -155,7 +155,7 @@ class ShellScaffold extends ConsumerWidget {
   }
 }
 
-/// "Can't reach Zenith (tried LAN and Tailscale)" with Retry and Server
+/// "Can't reach YAMS (tried LAN and Tailscale)" with Retry and Server
 /// settings, shown while no URL of the active profile answers (APP.md §2.1).
 class OfflineBanner extends ConsumerWidget {
   const OfflineBanner({super.key});

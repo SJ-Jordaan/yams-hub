@@ -1,3 +1,5 @@
+> This folder is the maintainer's own NAS deployment. To run YAMS Hub on your own YAMS server, use `./install.sh` (see the [README](../README.md)).
+
 # Deploying YAMS Hub to Zenith
 
 Everything in this folder runs either on the dev machine (`deploy.sh`) or on the NAS (`make_hub_env.sh`,

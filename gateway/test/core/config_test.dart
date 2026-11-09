@@ -102,6 +102,25 @@ EMPTY=''
       expect(c.hostSys, '/sys');
       expect(c.hostNetDev, '/host/proc/1/net/dev');
       expect(c.jellyfinAdminUserId, isNull, reason: 'auto-detected');
+      expect(c.hostVolumeMount, '/volume1');
+      expect(c.hostDiskDevice, 'dm-0');
+    });
+
+    test('HOST_VOLUME_MOUNT and HOST_DISK_DEVICE describe a generic host', () {
+      final c = ConfigLoader.load({
+        'HOST_VOLUME_MOUNT': '/srv/media',
+        'HOST_DISK_DEVICE': '',
+      });
+      expect(c.hostVolumeMount, '/srv/media');
+      expect(c.hostDiskDevice, '', reason: 'empty: no disk I/O');
+      expect(
+        ConfigLoader.load({'HOST_DISK_DEVICE': 'sda1'}).hostDiskDevice,
+        'sda1',
+      );
+      expect(
+        () => ConfigLoader.load({'HOST_VOLUME_MOUNT': ' '}),
+        throwsA(isA<ConfigException>()),
+      );
     });
 
     test('an empty URL disables a service; bad URLs are errors', () {

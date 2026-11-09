@@ -8,6 +8,7 @@ import 'package:yams_models/yams_models.dart';
 
 import '../api/api_exception.dart';
 import '../app_info.dart';
+import '../platform/platform.dart';
 import '../routing/paths.dart';
 import '../theme/theme.dart';
 import 'network_kind.dart';
@@ -16,8 +17,23 @@ import 'server_profile.dart';
 import 'server_resolver.dart';
 import 'server_store.dart';
 
-/// Default LAN URL of Zenith.
-const defaultLanUrl = 'http://192.168.10.183:8090';
+/// Example hub address shown as a hint.
+const lanUrlHint = 'http://<server-ip>:8090';
+
+/// Example Tailscale address shown as a hint.
+const tailscaleUrlHint = 'http://<server>.<tailnet>.ts.net:8090';
+
+/// Profile name used when none is entered.
+const defaultServerName = 'YAMS';
+
+/// The address prefilled for a new server. On web it is the page's own
+/// origin (the gateway serves the web app); on Android and iOS it is empty.
+String defaultServerUrl({bool? web, Uri? base}) {
+  if (!(web ?? isWeb)) return '';
+  final b = base ?? Uri.base;
+  if ((b.scheme != 'http' && b.scheme != 'https') || b.host.isEmpty) return '';
+  return Uri(scheme: b.scheme, host: b.host, port: b.hasPort ? b.port : null).toString();
+}
 
 /// Result of testing one URL.
 @immutable
@@ -69,8 +85,8 @@ class OnboardingScreen extends ConsumerStatefulWidget {
 }
 
 class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
-  final _name = TextEditingController(text: 'Zenith');
-  final _lan = TextEditingController(text: defaultLanUrl);
+  final _name = TextEditingController(text: defaultServerName);
+  final _lan = TextEditingController(text: defaultServerUrl());
   final _tailscale = TextEditingController();
   Map<Uri, UrlProbe> _probes = {};
   bool _busy = false;
@@ -151,7 +167,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     final instanceId = winner.value.ping!.instanceId;
     final store = ref.read(serverStoreProvider.notifier);
     final existing = ref.read(serverStoreProvider).profiles.where((p) => p.instanceId == instanceId).firstOrNull;
-    final name = _name.text.trim().isEmpty ? 'Zenith' : _name.text.trim();
+    final name = _name.text.trim().isEmpty ? defaultServerName : _name.text.trim();
     store.upsert(
       ServerProfile(
         id: existing?.id ?? ServerStore.newId(),
@@ -192,7 +208,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                   _UrlField(
                     controller: _lan,
                     label: 'LAN URL',
-                    hint: defaultLanUrl,
+                    hint: lanUrlHint,
                     probe: _probeFor(_lan),
                     onChanged: () => setState(() {}),
                   ),
@@ -200,7 +216,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                   _UrlField(
                     controller: _tailscale,
                     label: 'Tailscale URL (optional)',
-                    hint: 'http://zenith.<tailnet>.ts.net:8090',
+                    hint: tailscaleUrlHint,
                     probe: _probeFor(_tailscale),
                     onChanged: () => setState(() {}),
                   ),

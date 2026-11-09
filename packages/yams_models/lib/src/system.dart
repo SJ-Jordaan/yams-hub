@@ -720,22 +720,27 @@ final class SystemCard {
 /// [SystemCard.volume].
 final class SystemCardVolume {
   const SystemCardVolume({
+    this.mount,
     required this.totalBytes,
     required this.usedBytes,
     required this.usedPercent,
   });
 
   factory SystemCardVolume.fromJson(JsonMap j) => SystemCardVolume(
+    mount: readString(j['mount']),
     totalBytes: readInt(j['totalBytes']) ?? 0,
     usedBytes: readInt(j['usedBytes']) ?? 0,
     usedPercent: readDouble(j['usedPercent']) ?? 0,
   );
 
+  /// Host path the numbers describe (null from gateways before 2026-11-09).
+  final String? mount;
   final int totalBytes;
   final int usedBytes;
   final double usedPercent;
 
   JsonMap toJson() => {
+    'mount': ?mount,
     'totalBytes': totalBytes,
     'usedBytes': usedBytes,
     'usedPercent': usedPercent,

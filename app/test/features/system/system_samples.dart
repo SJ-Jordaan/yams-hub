@@ -155,7 +155,7 @@ SystemCard buildSystemCard({bool raidHealthy = true, int down = 0, bool tailscal
   memUsedBytes: 5123432448,
   memTotalBytes: 8059052032,
   uptimeSeconds: 10322,
-  volume: const SystemCardVolume(totalBytes: 7904532574208, usedBytes: 3855598743552, usedPercent: 48.8),
+  volume: const SystemCardVolume(mount: '/volume1', totalBytes: 7904532574208, usedBytes: 3855598743552, usedPercent: 48.8),
   raid: SystemCardRaid(
     level: 'raid0',
     state: raidHealthy ? 'active' : 'inactive',

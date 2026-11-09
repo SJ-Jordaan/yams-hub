@@ -100,6 +100,8 @@ final class HubConfig {
     required this.hostNetDev,
     required this.recyclarrLogDir,
     required this.policyConfig,
+    this.hostVolumeMount = '/volume1',
+    this.hostDiskDevice = 'dm-0',
     this.procDir = '/proc',
     this.trustedProxies,
     this.sources = const {},
@@ -142,6 +144,14 @@ final class HubConfig {
   final String hostSys;
   final String hostNetDev;
   final String recyclarrLogDir;
+
+  /// `HOST_VOLUME_MOUNT`: the host path the data volume's usage is reported
+  /// as (the gateway measures `statvfs` of its data dir, which lives on it).
+  final String hostVolumeMount;
+
+  /// `HOST_DISK_DEVICE`: the `/proc/diskstats` device of the data volume
+  /// (empty: no disk I/O).
+  final String hostDiskDevice;
 
   /// Directory of the host-global procfs files (the container's own `/proc`).
   final String procDir;
@@ -209,6 +219,8 @@ final class HubConfig {
     hostSys: hostSys ?? this.hostSys,
     hostNetDev: hostNetDev ?? this.hostNetDev,
     recyclarrLogDir: recyclarrLogDir ?? this.recyclarrLogDir,
+    hostVolumeMount: hostVolumeMount,
+    hostDiskDevice: hostDiskDevice,
     procDir: procDir ?? this.procDir,
     policyConfig: policyConfig ?? this.policyConfig,
     sources: sources,
@@ -543,6 +555,9 @@ abstract final class ConfigLoader {
       errors.add('UPTIME_KUMA_SLUG must be a status page slug');
     }
 
+    final volumeMount = setting('HOST_VOLUME_MOUNT', '/volume1');
+    if (volumeMount.isEmpty) errors.add('HOST_VOLUME_MOUNT must not be empty');
+
     var policyConfig = PolicyConfig();
     if (policyFileContents != null) {
       final policyErrors = <String>[];
@@ -574,6 +589,8 @@ abstract final class ConfigLoader {
       hostSys: setting('HOST_SYS', '/sys'),
       hostNetDev: setting('HOST_NET_DEV', '/host/proc/1/net/dev'),
       recyclarrLogDir: setting('RECYCLARR_LOG_DIR', '/host/recyclarr-logs'),
+      hostVolumeMount: volumeMount,
+      hostDiskDevice: setting('HOST_DISK_DEVICE', 'dm-0'),
       policyConfig: policyConfig,
       sources: Map.unmodifiable(sources),
       secretsFileFound: secretsFileContents != null,

@@ -9,7 +9,8 @@ import 'package:go_router/go_router.dart';
 import 'package:yams_hub/core/auth/auth_controller.dart';
 import 'package:yams_hub/core/routing/paths.dart';
 import 'package:yams_hub/core/servers/network_kind.dart';
-import 'package:yams_hub/core/servers/onboarding_screen.dart' show UrlProbe, defaultLanUrl, probeServerUrl;
+import 'package:yams_hub/core/servers/onboarding_screen.dart'
+    show UrlProbe, defaultServerName, defaultServerUrl, lanUrlHint, probeServerUrl, tailscaleUrlHint;
 import 'package:yams_hub/core/servers/server_connection.dart';
 import 'package:yams_hub/core/servers/server_profile.dart';
 import 'package:yams_hub/core/servers/server_store.dart';
@@ -86,11 +87,11 @@ class _ServerEditorScreenState extends ConsumerState<ServerEditorScreen> {
     super.initState();
     _existing = widget.profileId == newServerId ? null : ref.read(serverStoreProvider).byId(widget.profileId);
     final p = _existing;
-    _name.text = p?.name ?? 'Zenith';
+    _name.text = p?.name ?? defaultServerName;
     for (final u in p?.urls ?? const <Uri>[]) {
       _rows.add(_UrlRow(_nextRowId++, u.toString()));
     }
-    if (_rows.isEmpty) _rows.add(_UrlRow(_nextRowId++, p == null ? defaultLanUrl : ''));
+    if (_rows.isEmpty) _rows.add(_UrlRow(_nextRowId++, p == null ? defaultServerUrl() : ''));
   }
 
   @override
@@ -189,7 +190,7 @@ class _ServerEditorScreenState extends ConsumerState<ServerEditorScreen> {
     final existing = _existing;
     final winner = probes.entries.where((e) => e.value.ok).firstOrNull?.key;
     final lastGood = existing?.lastGoodUrl != null && urls.contains(existing!.lastGoodUrl) ? existing.lastGoodUrl : winner;
-    final name = _name.text.trim().isEmpty ? 'Zenith' : _name.text.trim();
+    final name = _name.text.trim().isEmpty ? defaultServerName : _name.text.trim();
     final profile = ServerProfile(
       id: existing?.id ?? ServerStore.newId(),
       name: name,
@@ -394,7 +395,7 @@ class _UrlRowEditor extends StatelessWidget {
                   onChanged: (_) => onChanged(),
                   decoration: InputDecoration(
                     labelText: kind == null ? 'Address ${index + 1}' : '${kind.label} address',
-                    hintText: index == 0 ? defaultLanUrl : 'http://zenith.<tailnet>.ts.net:8090',
+                    hintText: index == 0 ? lanUrlHint : tailscaleUrlHint,
                     errorText: row.invalid ? 'Not a valid http(s) URL' : null,
                     suffixIcon: probe == null
                         ? null

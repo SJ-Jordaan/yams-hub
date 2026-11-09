@@ -32,7 +32,7 @@ String? validateBaseUrl(String input) {
   if (s.isEmpty) return null;
   final uri = Uri.tryParse(s.contains('://') ? s : 'http://$s');
   if (uri == null || uri.host.isEmpty || (uri.scheme != 'http' && uri.scheme != 'https')) {
-    return 'Enter an http(s) address, e.g. http://192.168.10.183:8096';
+    return 'Enter an http(s) address, e.g. http://192.168.1.10:8096';
   }
   if (uri.hasQuery || uri.hasFragment) return 'Leave out ? and # parts';
   return null;

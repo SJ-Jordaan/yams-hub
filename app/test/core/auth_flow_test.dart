@@ -105,7 +105,9 @@ void main() {
       prefsValues: {ServerStore.storageKey: '{"profiles": []}'},
     );
     expect(location(app), '/onboarding');
-    // Default LAN URL is prefilled; add a Tailscale URL that is down.
+    // Nothing is prefilled outside the web build: enter the LAN URL and a Tailscale URL.
+    expect(find.text('http://<server-ip>:8090'), findsOneWidget, reason: 'hint');
+    await tester.enterText(find.widgetWithText(TextField, 'LAN URL'), '$testLanUrl');
     await tester.enterText(find.widgetWithText(TextField, 'Tailscale URL (optional)'), 'http://zenith.example.ts.net:8090');
     await tester.tap(find.text('Test'));
     await settle(tester);
@@ -128,6 +130,7 @@ void main() {
       signedIn: false,
       prefsValues: {ServerStore.storageKey: '{"profiles": []}'},
     );
+    await tester.enterText(find.widgetWithText(TextField, 'LAN URL'), '$testLanUrl');
     await tester.enterText(find.widgetWithText(TextField, 'Tailscale URL (optional)'), 'http://zenith.example.ts.net:8090');
     await tester.tap(find.text('Continue'));
     await settle(tester);

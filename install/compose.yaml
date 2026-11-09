@@ -1,0 +1,112 @@
+# YAMS Hub: template for install.sh, which renders it into <YAMS dir>/yams-hub/compose.yaml.
+# Edit this file in the repo, not the rendered copy (install.sh overwrites it). The double-at-sign placeholders are filled in by install.sh.
+#
+# A compose project of its own ("yams-hub"): YAMS's compose files are never touched. It joins the YAMS network as an
+# external network and adds a small control network for the Docker socket proxy and the updater.
+#
+# Control plane: only the gateway may talk to socket-proxy-hub (restart/start/stop containers) and yams-hub-updater
+# (compose pull/up). Some NAS firewalls defeat `internal: true`, so the fixed addresses below let the proxy (source ACL
+# in socket-proxy-hub.haproxy.cfg) and the updater (UPDATER_ALLOWED_SOURCES) refuse every peer but 172.30.250.2.
+# install.sh aborts when 172.30.250.0/29 overlaps another Docker network or a host route.
+name: yams-hub
+
+networks:
+  yams:
+    external: true
+    name: @@YAMS_NETWORK@@
+  yams_hub_ctl:
+    name: yams-hub_ctl
+    internal: true
+    driver_opts:
+      com.docker.network.bridge.name: br-yams-hub
+    ipam:
+      config:
+        - subnet: 172.30.250.0/29     # .1 bridge gateway, .2 yams-hub, .3 socket-proxy-hub, .4 yams-hub-updater
+          gateway: 172.30.250.1
+
+services:
+  yams-hub:
+    image: yams-hub:latest
+    container_name: yams-hub
+    restart: unless-stopped
+    user: "64090:64090"
+    environment:                                   # non-secret settings only (secrets: the bind-mounted file)
+      - TZ=@@TZ@@
+      - YAMS_HUB_TZ_OFFSET=@@TZ_OFFSET@@
+      - YAMS_HUB_DATA_DIR=/data
+      - YAMS_HUB_SECRETS_FILE=/run/secrets/yams-hub.env
+      - HOST_SYS=/sys
+      - HOST_NET_DEV=/host/proc/1/net/dev
+      - HOST_VOLUME_MOUNT=@@MEDIA_DIRECTORY@@        # /data lives on it, so statvfs(/data) is its usage
+      - HOST_DISK_DEVICE=@@DISK_DEVICE@@
+@@SERVICE_ENV@@
+    ports: ["0.0.0.0:@@PORT@@:8080"]
+    volumes:
+      - @@DATA_DIR@@:/data
+      - @@HUB_DIR@@/secrets/yams-hub.env:/run/secrets/yams-hub.env:ro
+      - /proc/1/net/dev:/host/proc/1/net/dev:ro    # host NIC counters only
+@@RECYCLARR_MOUNT@@
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    sysctls: [net.ipv4.ip_forward=0]               # on both networks; never routes between them
+    depends_on: [socket-proxy-hub]
+    labels:
+      - com.centurylinklabs.watchtower.enable=false  # local image, updated by install.sh --update
+    networks:
+@@YAMS_NETWORK_ENTRY@@
+      yams_hub_ctl:
+        ipv4_address: 172.30.250.2                 # the only source the proxy and the updater accept
+
+  socket-proxy-hub:
+    image: lscr.io/linuxserver/socket-proxy:3.4.7-r0-ls105@sha256:823dda971e9a3951257eb251586a804199819fe1587c35faa43adc7b52a2ff16
+    container_name: socket-proxy-hub
+    environment:
+      - CONTAINERS=1
+      - EVENTS=1
+      - INFO=1
+      - PING=1
+      - VERSION=1
+      - ALLOW_LOGS=1
+      - ALLOW_RESTARTS=1
+      - ALLOW_START=1
+      - POST=0
+      - DISABLE_IPV6=1                             # IPv4 bind, so the source ACL sees plain IPv4 peers
+      - TZ=@@TZ@@
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - type: bind                                 # the image's template plus the source ACL
+        source: @@HUB_DIR@@/socket-proxy-hub.haproxy.cfg
+        target: /templates/haproxy.cfg
+        read_only: true
+        bind:
+          create_host_path: false
+    read_only: true
+    tmpfs: [/run]
+    labels:
+      - com.centurylinklabs.watchtower.monitor-only=true
+    restart: unless-stopped
+    networks:
+      yams_hub_ctl:
+        ipv4_address: 172.30.250.3
+
+  yams-hub-updater:
+    image: yams-hub-updater:latest
+    container_name: yams-hub-updater
+    restart: unless-stopped
+    stop_grace_period: 17m                         # lets a running update finish its step
+    environment:
+      - UPDATER_TOKEN_FILE=/run/secrets/updater.env
+      - UPDATER_ALLOWED_SOURCES=172.30.250.2       # the gateway only; loopback always
+      - UPDATER_PROJECT_NAME=@@YAMS_PROJECT@@
+      - UPDATER_PROJECT_DIR=@@YAMS_DIR@@
+      - UPDATER_COMPOSE_FILES=@@YAMS_COMPOSE_FILES@@
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - @@YAMS_DIR@@:@@YAMS_DIR@@:ro                # YAMS's compose files and .env, at the same path
+      - @@HUB_DIR@@/secrets/updater.env:/run/secrets/updater.env:ro
+    labels:
+      - com.centurylinklabs.watchtower.enable=false
+    networks:
+      yams_hub_ctl:
+        ipv4_address: 172.30.250.4
