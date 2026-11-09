@@ -70,9 +70,9 @@ def seed_jellyfin(sec: dict[str, str]) -> None:
             ("POST", "/Startup/Complete", None),
         ]
         for method, path, body in steps:
-            # The first calls can answer 503 while Jellyfin finishes starting.
-            r = wait_until(f"Jellyfin {path}", lambda: (x := jf.request(method, path, body)).status != 503 and x,
-                           timeout=60)
+            # Right after start Jellyfin can answer 503 or drop the connection while it finishes starting.
+            r = wait_until(f"Jellyfin {path}",
+                           lambda: (x := jf.request(method, path, body)).status not in (0, 503) and x, timeout=90)
             if not r.ok:
                 raise Fatal(f"Jellyfin {method} {path}: HTTP {r.status} {r.text()[:200]}")
         log("  startup wizard completed")

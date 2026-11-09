@@ -30,7 +30,7 @@ set -euo pipefail
 
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO="$(cd "$HERE/../.." && pwd)"
-PROJECT=sbx-yams
+PROJECT='sbx-yams'
 SBX_CONTAINERS=(jellyfin qbittorrent sonarr radarr bazarr prowlarr gluetun seerr)
 HUB_CONTAINERS=(yams-hub socket-proxy-hub yams-hub-updater)
 ALPINE_IMAGE=${ALPINE_IMAGE:-alpine:3.22}
@@ -58,7 +58,7 @@ die() {
 warn() { printf '%sWARNING: %s%s\n' "$yellow" "$*" "$reset" >&2; }
 step() { printf '\n%s==> [%s] %s%s\n' "$bold" "$variant" "$*" "$reset"; }
 
-variant=vpn-off
+variant='vpn-off'
 commands=()
 while (($#)); do
   case "$1" in
