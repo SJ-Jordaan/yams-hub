@@ -1,0 +1,83 @@
+# End-to-end test on a disposable stock-YAMS server (tool/sandbox/run.sh): builds the web app, starts the sandbox
+# YAMS stack, seeds it through the apps' APIs, runs the real ./install.sh unattended, then smoke-tests every page's
+# API and takes screenshots. Once with the VPN off and once with qBittorrent behind gluetun (VPN on).
+# Uses no secrets. Logs, smoke results and screenshots are uploaded as artifacts, also when a job fails.
+name: Sandbox
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+    paths:
+      - gateway/**
+      - app/**
+      - packages/**
+      - updater/**
+      - install.sh
+      - install/**
+      - build.sh
+      - tool/sandbox/**
+      - .github/workflows/sandbox.yml
+  schedule:
+    - cron: '17 4 * * 1' # Mondays: catches breaking changes in the :latest upstream images
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sandbox-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  sandbox:
+    name: sandbox (${{ matrix.variant }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        variant: [vpn-off, vpn-on]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Sandbox paths
+        run: |
+          {
+            echo "SANDBOX_DIR=$RUNNER_TEMP/yams-hub-sandbox"
+            echo "SANDBOX_ARTIFACTS=$RUNNER_TEMP/sandbox-artifacts"
+            echo "SANDBOX_PYTHON=$RUNNER_TEMP/playwright-venv/bin/python"
+          } >>"$GITHUB_ENV"
+
+      - name: install.sh unit tests and shellcheck
+        run: |
+          bash install/test/install_test.sh
+          shellcheck -x tool/sandbox/run.sh
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.47.9
+          channel: stable
+          cache: true # the SDK and the pub cache
+
+      - name: Build the web app
+        run: ./build.sh
+
+      - name: Playwright (screenshots are optional)
+        continue-on-error: true
+        run: |
+          python3 -m venv "$RUNNER_TEMP/playwright-venv"
+          "$SANDBOX_PYTHON" -m pip install --quiet playwright==1.64.1
+          "$SANDBOX_PYTHON" -m playwright install --with-deps chromium
+
+      - name: Sandbox (${{ matrix.variant }})
+        run: tool/sandbox/run.sh --variant ${{ matrix.variant }} all
+
+      - name: Upload logs and screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sandbox-${{ matrix.variant }}
+          path: ${{ env.SANDBOX_ARTIFACTS }}
+          if-no-files-found: warn
+          retention-days: 14

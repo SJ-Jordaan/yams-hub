@@ -388,6 +388,95 @@ test_unreachable_container_stays_off() {
   check 'jellyfin off' grep -qx '      - JELLYFIN_URL=' <<<"$(hubfile compose.yaml)"
 }
 
+# answers FILE KEY=value...: an answers file (0600) for --answers.
+answers() {
+  local f=$1
+  shift
+  rm -f -- "$f"
+  (umask 077 && printf '%s\n' '# answers for install.sh' "$@" >"$f")
+}
+
+test_answers_file_first_install() {
+  answers "$work/answers" JELLYFIN_API_KEY=jellyfin-key-a QBIT_USERNAME=qbuser "QBIT_PASSWORD='qb pass'" \
+    PORT=9001 '' ADMIN_USERNAME=Ada "ADMIN_PASSWORD=$PASSWORD"
+  # stdin must not be read in answers mode: these lines would be wrong answers.
+  install --answers "$work/answers" <<<"$(printf '%s\n' wrong-1 wrong-2 wrong-3 wrong-4 wrong-5 wrong-6)"
+  local compose env
+  compose=$(hubfile compose.yaml) env=$(hubfile secrets/yams-hub.env)
+  check 'exit 0' test "$status" -eq 0
+  check 'jellyfin key' grep -qx "JELLYFIN_API_KEY='jellyfin-key-a'" <<<"$env"
+  check 'qbit user' grep -qx "QBIT_USERNAME='qbuser'" <<<"$env"
+  check 'qbit password, quotes stripped' grep -qx "QBIT_PASSWORD='qb pass'" <<<"$env"
+  check 'port' contains "$compose" '"0.0.0.0:9001:8080"'
+  check 'admin lower-cased' grep -qx "YAMS_HUB_ADMIN_USERNAME='ada'" <<<"$env"
+  check 'password hashed from stdin' grep -qx "hash-password stdin=${#PASSWORD}" "$st/hashed"
+  check 'auto keys still read' grep -qx "SONARR_API_KEY='$SONARR_KEY'" <<<"$env"
+  check 'stdin not used' not_contains "$env" wrong-
+  check 'password not in argv' not_contains "$(calls)" "$PASSWORD"
+  check 'password not printed' not_contains "$out" "$PASSWORD"
+  check 'qbit password not printed' not_contains "$out" 'qb pass'
+}
+
+test_answers_file_missing_keys_are_enter() {
+  answers "$work/answers" "ADMIN_PASSWORD=$PASSWORD"
+  install --answers="$work/answers" </dev/null
+  local env
+  env=$(hubfile secrets/yams-hub.env)
+  check 'exit 0' test "$status" -eq 0
+  check 'default port' contains "$(hubfile compose.yaml)" '"0.0.0.0:8090:8080"'
+  check 'default admin' grep -qx "YAMS_HUB_ADMIN_USERNAME='admin'" <<<"$env"
+  check 'jellyfin skipped' not_contains "$env" JELLYFIN_API_KEY
+  check 'qbit skipped' not_contains "$env" QBIT_
+}
+
+test_answers_file_reconfigure_clears_and_keeps() {
+  install <<<"$(first_answers)"
+  answers "$work/answers" JELLYFIN_API_KEY=jellyfin-key-b QBIT_PASSWORD=-
+  : >"$st/calls"
+  install --reconfigure --answers "$work/answers" </dev/null
+  local env
+  env=$(hubfile secrets/yams-hub.env)
+  check 'exit 0' test "$status" -eq 0
+  check 'new jellyfin key' grep -qx "JELLYFIN_API_KEY='jellyfin-key-b'" <<<"$env"
+  check 'kept qbit user' grep -qx "QBIT_USERNAME='qbuser'" <<<"$env"
+  check 'cleared qbit password' not_contains "$env" QBIT_PASSWORD
+  check 'kept the admin' contains "$env" YAMS_HUB_ADMIN_PASSWORD_HASH
+  check 'recreated the hub' contains "$(calls)" 'up -d --no-deps --force-recreate yams-hub'
+}
+
+test_answers_file_is_checked() {
+  answers "$work/answers" "ADMIN_PASSWORD=$PASSWORD"
+  chmod 644 "$work/answers"
+  install --answers "$work/answers" </dev/null
+  check 'world-readable: exit 1' test "$status" -eq 1
+  check 'says chmod' contains "$out" 'readable by others'
+  check 'nothing written' test ! -e "$yams/yams-hub"
+
+  chmod 640 "$work/answers"
+  install --answers "$work/answers" </dev/null
+  check 'group-readable: exit 1' test "$status" -eq 1
+  check 'group-readable: says chmod 600' contains "$out" 'chmod 600'
+  check 'still nothing written' test ! -e "$yams/yams-hub"
+
+  answers "$work/answers" "ADMIN_PASWORD=$PASSWORD"
+  install --answers "$work/answers" </dev/null
+  check 'unknown key: exit 1' test "$status" -eq 1
+  check 'names the key and line' contains "$out" 'line 2: unknown key ADMIN_PASWORD'
+  check 'value not printed' not_contains "$out" "$PASSWORD"
+
+  answers "$work/answers" 'not a pair'
+  install --answers "$work/answers" </dev/null
+  check 'bad line: exit 1' test "$status" -eq 1
+
+  install --answers "$work/missing" </dev/null
+  check 'missing file: exit 1' test "$status" -eq 1
+
+  install --update --answers "$work/answers" </dev/null
+  check 'not with --update' test "$status" -eq 2
+  install --answers </dev/null
+  check 'needs a file' test "$status" -eq 2
+}
+
 test_uninstall_keeps_data_and_purge_asks() {
   install <<<"$(first_answers)"
   install --uninstall </dev/null
@@ -415,6 +504,9 @@ if command -v shellcheck >/dev/null; then
     printf 'FAIL shellcheck\n'
     fail=$((fail + 1))
   fi
+elif [[ ${CI:-} == true ]]; then
+  printf 'FAIL shellcheck (not installed, and CI=true: it must run in CI)\n'
+  fail=$((fail + 1))
 else
   printf 'skip shellcheck (not installed)\n'
 fi

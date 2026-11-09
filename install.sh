@@ -7,7 +7,13 @@
 #   ./install.sh --reconfigure    ask again for the keys that cannot be read automatically
 #   ./install.sh --uninstall      remove the hub containers (keeps its data; add --purge to delete it too)
 #   ./install.sh --dry-run        detect and show what would be done; changes nothing
+#   ./install.sh --answers FILE   answer the questions from FILE instead of the terminal (unattended installs)
 #   ./install.sh -h               this help
+#
+# The answers file has KEY=value lines (# comments allowed) and must be readable only by you (chmod 600). A missing key is
+# the same as pressing Enter. Keys: YAMS_DIR, PORT, ADMIN_USERNAME, ADMIN_PASSWORD, UPTIME_KUMA_SLUG and the secret
+# names of the hub's env file (JELLYFIN_API_KEY, QBIT_USERNAME, QBIT_PASSWORD, JELLYSTAT_API_KEY, ABS_API_KEY,
+# KAVITA_API_KEY, and SONARR/RADARR/PROWLARR/BAZARR/SEERR_API_KEY when they cannot be read automatically).
 #
 # Needs bash, docker with compose v2 and GNU grep; run it as root or as a user in the docker group.
 # It writes <YAMS dir>/yams-hub/ (compose project "yams-hub") and <media dir>/config/yams-hub/ only.
@@ -28,16 +34,24 @@ CTL_BRIDGE=br-yams-hub
 CTL_SUBNET=172.30.250.0/29
 DEFAULT_PORT=8090
 
-mode=install reconfigure=0 purge=0 dry_run=0
-for arg in "$@"; do
+mode=install reconfigure=0 purge=0 dry_run=0 answers_file=''
+while (($#)); do
+  arg=$1
+  shift
   case "$arg" in
+    --answers)
+      (($#)) || { echo '--answers needs a file' >&2; exit 2; }
+      answers_file=$1
+      shift
+      ;;
+    --answers=*) answers_file=${arg#--answers=} ;;
     --update) mode=update ;;
     --uninstall) mode=uninstall ;;
     --reconfigure) reconfigure=1 ;;
     --purge) purge=1 ;;
     --dry-run) dry_run=1 ;;
     -h | --help)
-      sed -n '2,15p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'
+      sed -n '2,20p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'
       exit 0
       ;;
     *)
@@ -52,6 +66,10 @@ if ((purge)) && [[ $mode != uninstall ]]; then
 fi
 if ((reconfigure)) && [[ $mode != install ]]; then
   echo '--reconfigure does not go with --update or --uninstall' >&2
+  exit 2
+fi
+if [[ -n $answers_file && $mode != install ]]; then
+  echo '--answers does not go with --update or --uninstall' >&2
   exit 2
 fi
 
@@ -91,12 +109,39 @@ read_file() {
   docker run --rm --network none -v "$dir:/m:ro" "$ALPINE_IMAGE" sh -euc 'cat "/m/$1"' sh "$(basename -- "$f")" 2>/dev/null
 }
 
-# A prompt: from the terminal (secrets without echo) or, without one, a line of stdin.
-ask() { # PROMPT [DEFAULT] -> REPLY
-  local p=$1 def=${2-}
+# Answers (--answers FILE): KEY=value lines that answer the prompts below instead of the terminal or stdin. A key
+# that is not in the file answers like Enter. The file is read with the `read` builtin, so no value is ever in argv.
+declare -A answers=()
+answer_keys=' YAMS_DIR PORT ADMIN_USERNAME ADMIN_PASSWORD UPTIME_KUMA_SLUG JELLYFIN_API_KEY JELLYSTAT_API_KEY QBIT_USERNAME
+  QBIT_PASSWORD ABS_API_KEY KAVITA_API_KEY SONARR_API_KEY RADARR_API_KEY PROWLARR_API_KEY BAZARR_API_KEY SEERR_API_KEY '
+answer_keys=${answer_keys//$'\n'/ }
+load_answers() { # FILE
+  local f=$1 line k v n=0 perms
+  [[ -f $f && -r $f ]] || die "cannot read the answers file $f"
+  perms=$(stat -c %a -- "$f" 2>/dev/null) && [[ $perms =~ ^[0-7]{3,4}$ ]] ||
+    die "cannot check the permissions of the answers file $f"
+  if ((8#$perms & 8#077)); then die "the answers file $f is readable by others (it must be readable only by you: chmod 600)"; fi
+  while IFS= read -r line || [[ -n $line ]]; do
+    n=$((n + 1))
+    line=${line%$'\r'}
+    [[ $line =~ ^[[:space:]]*(#|$) ]] && continue
+    [[ $line =~ ^([A-Z][A-Z0-9_]*)=(.*)$ ]] || die "$f line $n: expected KEY=value"
+    k=${BASH_REMATCH[1]} v=${BASH_REMATCH[2]}
+    [[ $answer_keys == *" $k "* ]] || die "$f line $n: unknown key $k"
+    if [[ $v =~ ^\'(.*)\'$ || $v =~ ^\"(.*)\"$ ]]; then v=${BASH_REMATCH[1]}; fi
+    answers[$k]=$v
+  done <"$f"
+  unset line v
+}
+
+# A prompt: from the answers file, the terminal (secrets without echo) or, without one, a line of stdin.
+ask() { # KEY PROMPT [DEFAULT] -> REPLY
+  local p=$2 def=${3-}
   [[ -n $def ]] && p="$p [$def]"
   REPLY=''
-  if [[ -t 0 ]]; then
+  if [[ -n $answers_file ]]; then
+    REPLY=${answers[${1:-_}]-}
+  elif [[ -t 0 ]]; then
     IFS= read -rp "$p: " REPLY || true
   else
     IFS= read -r REPLY || true
@@ -104,10 +149,12 @@ ask() { # PROMPT [DEFAULT] -> REPLY
   REPLY=${REPLY%$'\r'}
   [[ -n $REPLY ]] || REPLY=$def
 }
-ask_secret() { # PROMPT -> REPLY
+ask_secret() { # KEY PROMPT -> REPLY
   REPLY=''
-  if [[ -t 0 ]]; then
-    IFS= read -rsp "$1: " REPLY || true
+  if [[ -n $answers_file ]]; then
+    REPLY=${answers[${1:-_}]-}
+  elif [[ -t 0 ]]; then
+    IFS= read -rsp "$2: " REPLY || true
     printf '\n' >&2
   else
     IFS= read -r REPLY || true
@@ -145,8 +192,10 @@ overlaps() { # NET/PREFIX CANDIDATE -> 0 when they share an address (IPv6 candid
 # ---------------------------------------------------------------------------------------------
 # Preflight
 # ---------------------------------------------------------------------------------------------
+[[ -z $answers_file ]] || load_answers "$answers_file"
 command -v docker >/dev/null || die 'docker not found'
 docker info >/dev/null 2>&1 || die 'cannot talk to the Docker daemon (run as root or as a user in the docker group)'
+# shellcheck disable=SC2016 # literal backticks
 docker compose version >/dev/null 2>&1 || die 'docker compose v2 is required (the `docker compose` plugin)'
 if ! grep -qP 'x' <<<'x' 2>/dev/null; then die 'GNU grep with -P is required'; fi
 if [[ $mode != uninstall ]]; then
@@ -170,7 +219,7 @@ IFS='|' read -r yams_project yams_dir yams_files <<<"$labels"
 [[ $yams_files != '<no value>' ]] || yams_files=''
 if [[ -z $yams_dir || ! -d $yams_dir ]]; then
   if [[ $mode == install ]] && ((!dry_run)); then
-    ask 'YAMS install directory (INSTALL_DIRECTORY)' /opt/yams
+    ask YAMS_DIR 'YAMS install directory (INSTALL_DIRECTORY)' /opt/yams
     yams_dir=$REPLY
   else
     yams_dir=/opt/yams
@@ -213,7 +262,7 @@ if [[ $mode == uninstall ]]; then
   fi
   if ((purge)); then
     info "This deletes the hub's users, settings and secrets ($HUB_DIR and $DATA_DIR)."
-    ask 'Type purge to confirm'
+    ask '' 'Type purge to confirm'
     [[ $REPLY == purge ]] || die 'not confirmed; nothing was changed'
   fi
   step "docker compose -p $PROJECT down"
@@ -379,7 +428,7 @@ prompt_secret() {
   fi
   [[ -n ${existing[$key]-} ]] && keep=' (Enter keeps the current one, - clears it)'
   info "  $label: $hint$keep"
-  ask_secret "  $label (Enter skips)"
+  ask_secret "$key" "  $label (Enter skips)"
   if [[ -z $REPLY && -n ${existing[$key]-} ]]; then
     put "$key" "${existing[$key]}" kept
   elif [[ -n $REPLY && $REPLY != - ]]; then
@@ -433,6 +482,7 @@ note_found() {
 }
 
 for svc in sonarr radarr prowlarr; do
+  # shellcheck disable=SC2015 # skip the service when it is missing or unreachable
   exists "$svc" && note_found "$svc" || continue
   svc_port=$(case $svc in sonarr) echo 8989 ;; radarr) echo 7878 ;; prowlarr) echo 9696 ;; esac)
   var=${svc^^}
@@ -510,7 +560,7 @@ uptime_slug=$(conf_get UPTIME_KUMA_SLUG)
 if exists uptime-kuma && note_found uptime-kuma; then
   if ((prompting)); then
     info '  Uptime Kuma status page slug: the part after /status/ in the page address'
-    ask '  Uptime Kuma status page slug (Enter skips)' "$uptime_slug"
+    ask UPTIME_KUMA_SLUG '  Uptime Kuma status page slug (Enter skips)' "$uptime_slug"
     uptime_slug=$REPLY
   fi
   [[ $uptime_slug =~ ^[A-Za-z0-9_-]{1,64}$ ]] || uptime_slug=''
@@ -559,10 +609,11 @@ port=$(conf_get PORT)
 if [[ -z $port ]]; then
   port=$DEFAULT_PORT
   if ((interactive)); then
-    ask 'Port for YAMS Hub' "$DEFAULT_PORT"
+    ask PORT 'Port for YAMS Hub' "$DEFAULT_PORT"
     port=$REPLY
   fi
 fi
+# shellcheck disable=SC2015 # die when either test fails
 [[ $port =~ ^[0-9]+$ ]] && ((port >= 1 && port <= 65535)) || die "not a port number: $port"
 if command -v ss >/dev/null && [[ ${cstate[yams-hub]-} != running || $port != "$(conf_get PORT)" ]]; then
   if ss -Htln 2>/dev/null | awk -v p="$port" '$4 ~ ("[:.]" p "$") { found = 1 } END { exit !found }'; then
@@ -578,14 +629,14 @@ if [[ -n ${existing[YAMS_HUB_ADMIN_PASSWORD_HASH]-} ]]; then
   put YAMS_HUB_ADMIN_PASSWORD_HASH "${existing[YAMS_HUB_ADMIN_PASSWORD_HASH]}" kept
 elif ((interactive)) && ! read_file "$DATA_DIR/users.json" >/dev/null 2>&1; then
   step 'Admin account'
-  ask 'Admin username' admin
+  ask ADMIN_USERNAME 'Admin username' admin
   admin=${REPLY,,}
   [[ $admin =~ ^[a-z0-9._-]{2,32}$ ]] || die 'the username may only use a-z, 0-9, . _ - (2 to 32 characters)'
   put YAMS_HUB_ADMIN_USERNAME "$admin" entered
-  ask_secret 'Admin password (at least 10 characters)'
+  ask_secret ADMIN_PASSWORD 'Admin password (at least 10 characters)'
   password=$REPLY
-  if [[ -t 0 ]]; then
-    ask_secret 'Repeat the password'
+  if [[ -z $answers_file && -t 0 ]]; then
+    ask_secret '' 'Repeat the password'
     [[ $REPLY == "$password" ]] || die 'the passwords do not match'
   fi
   REPLY=''

@@ -21,6 +21,7 @@ by the tests are in [`fixtures/`](../fixtures/).
 | `install.sh`, `install/` | – | Installs the hub next to a stock YAMS install (compose template, tests with a fake docker) |
 | `deploy/` | – | The maintainer's own NAS deployment: compose snippet, env builder, verification and deploy scripts |
 | `tool/check_all.sh` | – | Analyze + test every package, then smoke-build the Docker images |
+| `tool/sandbox/` | – | Disposable stock-YAMS stack for end-to-end tests of `install.sh` and the hub (`run.sh`) |
 
 There is no pub workspace: each package resolves on its own with `path:` dependencies, so the gateway image never needs
 the Flutter SDK.
@@ -44,6 +45,7 @@ tool/check_all.sh            # everything
 tool/check_all.sh --skip-docker
 bash install/test/install_test.sh
 bash deploy/test/deploy_test.sh
+tool/sandbox/run.sh          # end to end against a disposable YAMS (see "Testing changes")
 ```
 
 The script analyzes `packages/yams_models` first (a duplicate public model name breaks every package), then runs
@@ -62,6 +64,53 @@ Per package:
 ```
 
 Tests never call live services; they use fakes and the fixtures.
+
+## Testing changes
+
+Unit tests (above) use fakes. To see a change work against real services, use the sandbox: a disposable stock-YAMS
+server on this machine that the real `./install.sh` and hub run against (needs Docker with compose v2, Python 3 and
+internet for the images and the Sonarr/Radarr lookups).
+
+```sh
+./build.sh                                   # the web build install.sh needs
+tool/sandbox/run.sh                          # all: down, up, seed, install, test, screens, logs, down (~10 min)
+tool/sandbox/run.sh --variant vpn-on         # qBittorrent behind gluetun (network_mode: service:gluetun)
+KEEP=1 tool/sandbox/run.sh                   # leave it running: hub on http://127.0.0.1:28090 (admin)
+tool/sandbox/run.sh up seed install          # or step by step; each step is idempotent
+tool/sandbox/run.sh test                     # re-run the smoke test only
+tool/sandbox/run.sh down                     # remove it
+```
+
+- **What it is** (`tool/sandbox/compose.yaml`): the stock YAMS layout under compose project `sbx-yams`: the linuxserver
+  images at `:latest`, `yams_network` with fixed addresses (subnet `172.29.213.0/24`, `SANDBOX_SUBNET` to move it),
+  jellyfin and VPN-off qBittorrent on `sbx-yams_default`, a busybox stand-in for gluetun (VPN off it restarts
+  forever like an unconfigured stock gluetun; VPN on it serves the two control routes the hub reads), plus Seerr. Its
+  INSTALL_DIRECTORY and MEDIA_DIRECTORY live under `${SANDBOX_DIR:-~/.cache/yams-hub-sandbox}`; the apps listen on
+  `127.0.0.1:2xxxx` only. It uses the real container names (`sonarr`, `yams-hub`, ...) and the hub's control network
+  `172.30.250.0/29`, so `up` refuses to run where those belong to something else.
+- **seed** (`seed.py`) configures the apps through their APIs only: Jellyfin wizard, API key and libraries, the
+  qBittorrent password, root folders and three real shows and movies, Prowlarr apps, Bazarr, Seerr.
+- **install** runs `./install.sh --answers <file>` (the unattended mode; passwords are throwaway values generated into
+  `$SANDBOX_DIR/secrets.env`), then runs it again to prove a re-run changes nothing outside the hub.
+- **test** (`smoke.py`, stdlib only) logs in (bearer and cookie flows), calls every page's API and fails on upstream
+  errors, missing or unhealthy services, an empty calendar or library. It also restricts Sonarr's Allowed Hosts
+  (issue #2): the hub must notice (health or calendar) and recover after the restore; whether it names the cause is
+  only recorded.
+- **screens** (`screens.py`) needs Playwright: it uses `~/development/perf-venv` and `~/development/ms-playwright` when
+  present (`SANDBOX_PYTHON` to choose another); without it the step is skipped with a warning.
+- **down** removes only what carries the sandbox's compose labels (and the hub install inside `$SANDBOX_DIR`), plus
+  the files `up` created in `$SANDBOX_DIR`. `up` only uses a new or empty `SANDBOX_DIR`. Pulled and built images stay
+  cached.
+
+CI (`.github/workflows/sandbox.yml`) runs the install unit tests, `./build.sh` and `run.sh all` for both variants on
+pull requests, on pushes to main that touch the hub, weekly (the upstream images are `:latest`) and on demand. No
+secrets are used.
+
+Debugging a failure: the artifacts (CI: the `sandbox-<variant>` artifact; locally `$SANDBOX_DIR-artifacts`) hold the
+install logs, `smoke-<variant>.json`, every container's log (`logs-<variant>/`) and the screenshots. Locally, re-run
+with `KEEP=1`, then poke at the hub (`http://127.0.0.1:28090`, admin password in `$SANDBOX_DIR/secrets.env`), the
+apps (`127.0.0.1:28989` Sonarr, `27878` Radarr, `29696` Prowlarr, `26767` Bazarr, `28096` Jellyfin, `28081`
+qBittorrent, `25055` Seerr) and `docker logs yams-hub`; `run.sh test` re-runs only the checks.
 
 ## Run locally
 

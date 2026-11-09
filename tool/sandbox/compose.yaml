@@ -1,0 +1,151 @@
+# Sandbox YAMS stack for tool/sandbox/run.sh: the stock YAMS layout (https://gitlab.com/rogs/yams,
+# docker-compose.example.yaml) with throwaway data. run.sh copies this file to $SANDBOX_DIR/yams/docker-compose.yaml
+# (the sandbox's INSTALL_DIRECTORY, next to its .env) and starts it as compose project "sbx-yams", so install.sh finds
+# it through the containers' compose labels exactly like a real YAMS install.
+#
+# Kept from stock YAMS:
+#   - container names (install.sh detects services by them) and the linuxserver images at :latest;
+#   - yams_network with fixed addresses for the *arrs, prowlarr, bazarr and gluetun;
+#   - jellyfin and (VPN off) qbittorrent WITHOUT a networks: key, so compose puts them on "<project>_default";
+#   - gluetun is always defined; VPN_ENABLED in .env decides whether it is used (compose.vpn-on.yaml).
+# Changed for the sandbox:
+#   - the network gets the project-scoped name sbx-yams_yams_network and the subnet from .env (SBX_SUBNET);
+#   - host ports are high and bound to 127.0.0.1, so nothing clashes with the dev machine;
+#   - gluetun is a stand-in (busybox). VPN off it exits after 2 s and restarts forever, like a stock gluetun with no
+#     VPN set up; VPN on (compose.vpn-on.yaml) it keeps a network namespace alive and answers the two gluetun control
+#     routes the hub reads, from static files; there is no VPN either way;
+#   - seerr is added (stock YAMS has none; many installs add it).
+services:
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: jellyfin
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - VERSION=docker
+    volumes:
+      - ${MEDIA_DIRECTORY}:/data
+      - ${INSTALL_DIRECTORY}/config/jellyfin:/config
+    ports:
+      - 127.0.0.1:28096:8096
+    restart: unless-stopped
+
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - WEBUI_PORT=8081
+    volumes:
+      - ${MEDIA_DIRECTORY}:/data
+      - ${INSTALL_DIRECTORY}/config/qbittorrent:/config
+    ports:
+      - 127.0.0.1:28081:8081
+    restart: unless-stopped
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${MEDIA_DIRECTORY}:/data
+      - ${INSTALL_DIRECTORY}/config/sonarr:/config
+    ports:
+      - 127.0.0.1:28989:8989
+    restart: unless-stopped
+    networks:
+      yams_network:
+        ipv4_address: ${SBX_NET_PREFIX}.13
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${MEDIA_DIRECTORY}:/data
+      - ${INSTALL_DIRECTORY}/config/radarr:/config
+    ports:
+      - 127.0.0.1:27878:7878
+    restart: unless-stopped
+    networks:
+      yams_network:
+        ipv4_address: ${SBX_NET_PREFIX}.14
+
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${MEDIA_DIRECTORY}:/data
+      - ${INSTALL_DIRECTORY}/config/bazarr:/config
+    ports:
+      - 127.0.0.1:26767:6767
+    restart: unless-stopped
+    networks:
+      yams_network:
+        ipv4_address: ${SBX_NET_PREFIX}.16
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${INSTALL_DIRECTORY}/config/prowlarr:/config
+    ports:
+      - 127.0.0.1:29696:9696
+    restart: unless-stopped
+    networks:
+      yams_network:
+        ipv4_address: ${SBX_NET_PREFIX}.17
+
+  # Stand-in for qmcgaw/gluetun: no VPN, no NET_ADMIN. Here (VPN off) it fails like a gluetun without VPN
+  # credentials, so it is "restarting" most of the time; compose.vpn-on.yaml turns it into the working stand-in.
+  gluetun:
+    image: busybox:1.37
+    container_name: gluetun
+    command: ["sh", "-c", "echo 'ERROR VPN settings: no VPN set up (sandbox stand-in, VPN_ENABLED=n)' >&2; sleep 2; exit 1"]
+    volumes:
+      - ${INSTALL_DIRECTORY}/config/gluetun/www:/www:ro
+    restart: unless-stopped
+    networks:
+      yams_network:
+        ipv4_address: ${SBX_NET_PREFIX}.18
+
+  seerr:
+    image: ghcr.io/seerr-team/seerr:latest
+    container_name: seerr
+    init: true
+    user: ${PUID}:${PGID}
+    environment:
+      - TZ=${TZ}
+      - LOG_LEVEL=info
+    volumes:
+      - ${INSTALL_DIRECTORY}/config/seerr:/app/config
+    ports:
+      - 127.0.0.1:25055:5055
+    restart: unless-stopped
+    networks:                                     # also on the default network, where jellyfin is
+      yams_network:
+        ipv4_address: ${SBX_NET_PREFIX}.21
+      default: {}
+
+networks:
+  yams_network:
+    ipam:
+      config:
+        - subnet: ${SBX_NET_PREFIX}.0/24

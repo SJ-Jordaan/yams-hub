@@ -1,0 +1,21 @@
+# The VPN-on layout of stock YAMS (VPN_ENABLED=y): qBittorrent shares gluetun's network namespace
+# (network_mode: service:gluetun), so its Web UI port is published on gluetun. run.sh adds this file with
+# --variant vpn-on; install.sh then reaches qBittorrent as http://gluetun:8081.
+services:
+  qbittorrent:
+    network_mode: service:gluetun
+    ports: !reset []
+    depends_on: [gluetun]
+
+  # A working stand-in: it answers GET /v1/publicip/ip and /v1/openvpn/portforwarded on :8000 (text/plain JSON,
+  # like gluetun) and reports healthy.
+  gluetun:
+    command: ["httpd", "-f", "-v", "-p", "8000", "-h", "/www"]
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8000/v1/publicip/ip"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    ports:
+      - 127.0.0.1:28081:8081
