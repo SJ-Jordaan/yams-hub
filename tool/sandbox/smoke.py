@@ -18,6 +18,7 @@ from __future__ import annotations
 import datetime as dt
 import json
 import os
+import re
 import sys
 import time
 
@@ -242,7 +243,11 @@ def run_checks(hub: Hub) -> None:
         # VPN off, gluetun restarts forever (as in stock YAMS); VPN on, the stand-in runs.
         want_states = ("running",) if VARIANT == "vpn-on" else ("restarting", "exited")
         hub.get("containers: gluetun detail", "/containers/gluetun")
-        hub.amend(g.get("state") in want_states,
+        state_ok = g.get("state") in want_states
+        # VPN off, the crash-looping stand-in is "running" for ~2 s between restarts; a probe can land in that window.
+        if VARIANT != "vpn-on" and g.get("state") == "running":
+            state_ok = bool(re.match(r"Up (Less than a second|\d+ seconds?)\b", g.get("statusText") or ""))
+        hub.amend(state_ok,
                   f"state {g.get('state')} ({g.get('statusText')}), want {'/'.join(want_states)}")
     hub.get("media: now playing", "/media/now-playing")
 
