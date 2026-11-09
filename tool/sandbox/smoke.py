@@ -401,27 +401,25 @@ def issue2_rows(r: dict) -> None:
     health = r.get("health_sonarr") or {}
     cal = r.get("calendar_sonarr_source") or {}
     cal_err = cal.get("error") or {}
-    seen = f"health {health.get('status')} {health.get('message')!r}; calendar {cal.get('status')} " \
-           f"{cal_err.get('code')} {cal_err.get('message')!r}"
-    if not r.get("setting_effective"):
-        # Sonarr no longer rejects the hub with this setting: nothing for the hub to name.
-        rows.append(("issue #2: names the cause", str(r.get("sonarr_as_hub_http", "")), "",
-                     f"note Sonarr answered Host sonarr:8989 with {r.get('sonarr_as_hub_http')} under "
-                     f"allowedHosts=localhost after a restart (expected 400); {seen}"))
-    else:
-        want = "rejects the hub's hostname 'sonarr'"
-        record("issue #2: names the cause (health)", health.get("status") == "degraded"
-               and want in (health.get("message") or "") and HOSTS_FIX in (health.get("message") or ""),
-               f"health {health.get('status')} {health.get('message')!r}", r.get("sonarr_as_hub_http", ""))
-        record("issue #2: names the cause (calendar)", cal.get("status") == "error"
-               and cal_err.get("code") == "upstream_host_rejected" and want in (cal_err.get("message") or ""),
-               f"calendar {cal.get('status')} {cal_err.get('code')} {cal_err.get('message')!r}")
-        rd = r.get("rejected_dashboard") or {}
-        ra = rd.get("alert") or {}
-        lib_msgs = rd.get("sonarr_health") or []
-        record("issue #2: names the cause (dashboard)", ra.get("severity") == "error"
-               and want in (ra.get("message") or "") and any(want in m for m in lib_msgs),
-               f"alert {ra.get('severity')} {ra.get('title')!r}; library card {lib_msgs}")
+    # Sonarr must really reject the hub after the restart, or the checks below would test nothing: this is a
+    # check of its own (a Sonarr image that stops filtering, or a restart race, fails the run instead of
+    # skipping the rejected-hostname path).
+    record("issue #2: Sonarr rejects the hub after restart", bool(r.get("setting_effective")),
+           f"Sonarr answered Host sonarr:8989 with {r.get('sonarr_as_hub_http')} under allowedHosts=localhost "
+           "after a restart (expected 400)", r.get("sonarr_as_hub_http", ""))
+    want = "rejects the hub's hostname 'sonarr'"
+    record("issue #2: names the cause (health)", health.get("status") == "degraded"
+           and want in (health.get("message") or "") and HOSTS_FIX in (health.get("message") or ""),
+           f"health {health.get('status')} {health.get('message')!r}", r.get("sonarr_as_hub_http", ""))
+    record("issue #2: names the cause (calendar)", cal.get("status") == "error"
+           and cal_err.get("code") == "upstream_host_rejected" and want in (cal_err.get("message") or ""),
+           f"calendar {cal.get('status')} {cal_err.get('code')} {cal_err.get('message')!r}")
+    rd = r.get("rejected_dashboard") or {}
+    ra = rd.get("alert") or {}
+    lib_msgs = rd.get("sonarr_health") or []
+    record("issue #2: names the cause (dashboard)", ra.get("severity") == "error"
+           and want in (ra.get("message") or "") and any(want in m for m in lib_msgs),
+           f"alert {ra.get('severity')} {ra.get('title')!r}; library card {lib_msgs}")
     lib = r.get("library_tv") or {}
     rows.append(("issue #2: library/tv while rejected", str(lib.get("status", "")), "",
                  f"note served {lib.get('items')} cached items (ItemList has no stale flag; up to 10 min)"))

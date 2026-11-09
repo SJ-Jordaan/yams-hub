@@ -92,6 +92,11 @@ final class UpstreamResponse {
       allowedHostsServices.contains(service) &&
       isInvalidHostnameResponse(status, bodyBytes);
 
+  /// Throws [UpstreamHostRejected] when [isHostRejected]. For callers that
+  /// read a 4xx body themselves (Prowlarr's 400 test results, download
+  /// errors): the rejection page must not pass for their own error.
+  UpstreamResponse ensureHostAccepted() => isHostRejected ? ensureOk() : this;
+
   /// The body as UTF-8 text.
   String text() => utf8.decode(bodyBytes, allowMalformed: true);
 

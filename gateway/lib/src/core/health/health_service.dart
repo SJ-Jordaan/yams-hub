@@ -100,11 +100,15 @@ final class AllowedHostsCheck {
 }
 
 final class _Probe {
-  const _Probe(this.status, {this.version, this.message});
+  const _Probe(this.status, {this.version, this.message, this.latency});
 
   final ServiceHealthStatus status;
   final String? version;
   final String? message;
+
+  /// The time of the call that answers "is it up" when the probe makes
+  /// others too (the *arrs' `/ping`); null means the whole probe.
+  final Duration? latency;
 }
 
 /// Probes every service in parallel (3 s timeout each) and caches the report
@@ -436,11 +440,12 @@ final class HealthService {
       }
     }
     sw.stop();
-    if (result.status == ServiceHealthStatus.up && sw.elapsed > _slow) {
+    final latency = result.latency ?? sw.elapsed;
+    if (result.status == ServiceHealthStatus.up && latency > _slow) {
       result = _Probe(
         ServiceHealthStatus.degraded,
         version: result.version,
-        message: 'Slow response (${sw.elapsedMilliseconds} ms)',
+        message: 'Slow response (${latency.inMilliseconds} ms)',
       );
     }
     final message = result.message;
@@ -450,7 +455,7 @@ final class HealthService {
       status: result.status,
       latencyMs: result.status == ServiceHealthStatus.disabled
           ? null
-          : sw.elapsedMilliseconds,
+          : latency.inMilliseconds,
       version: result.version,
       message: message == null ? null : redactSecrets(message),
       checkedAt: _clock.now(),
@@ -485,14 +490,22 @@ final class HealthService {
   /// Sonarr, Radarr, Prowlarr: `/ping`, the version, and the Allowed Hosts
   /// check (issue #2), which turns a rejected or soon-rejected hostname into
   /// `degraded` with a message that says how to fix it.
+  ///
+  /// The latency (and the slow threshold) is the `/ping` time alone. The
+  /// probe waits for the Allowed Hosts read only until [_probeTimeout] has
+  /// passed since it started; a slower read finishes in the background and
+  /// the probe uses the last known result, so the check never makes a slow
+  /// *arr look slower or time out.
   Future<_Probe> _probeArr(ServiceId id) async {
     final c = _up[id];
+    final sw = Stopwatch()..start();
     final ping = await c.send(
       'GET',
       '/ping',
       timeout: _probeTimeout,
       maxBytes: 1 << 20,
     );
+    final latency = sw.elapsed;
     if (ping.isHostRejected) {
       final check = AllowedHostsCheck(
         id,
@@ -500,23 +513,38 @@ final class HealthService {
         AllowedHostsState.rejected,
       );
       _allowedHosts.put(id, check);
-      return _Probe(ServiceHealthStatus.degraded, message: check.message);
+      return _Probe(
+        ServiceHealthStatus.degraded,
+        message: check.message,
+        latency: latency,
+      );
     }
     // Accepted again (fixed and restarted): forget the rejection.
     if (_allowedHosts.peek(id)?.state == AllowedHostsState.rejected) {
       _allowedHosts.invalidate(id);
     }
     if (ping.status == 401 || ping.status == 403) {
-      return const _Probe(
+      return _Probe(
         ServiceHealthStatus.degraded,
         message: 'Credentials rejected',
+        latency: latency,
       );
     }
     if (!ping.ok) {
-      return _Probe(ServiceHealthStatus.down, message: 'HTTP ${ping.status}');
+      return _Probe(
+        ServiceHealthStatus.down,
+        message: 'HTTP ${ping.status}',
+        latency: latency,
+      );
     }
     final prefix = id == ServiceId.prowlarr ? '/api/v1' : '/api/v3';
-    final hostsCheck = allowedHosts(id); // never throws
+    final budget = _probeTimeout - sw.elapsed;
+    final hostsCheck = allowedHosts(id).timeout(
+      budget.isNegative ? Duration.zero : budget,
+      onTimeout: () =>
+          _allowedHosts.peek(id) ??
+          AllowedHostsCheck(id, c.baseUrl.host, AllowedHostsState.ok),
+    ); // never throws
     final probe = await _withVersion(
       id,
       () => _jsonVersion(
@@ -532,9 +560,15 @@ final class HealthService {
         ServiceHealthStatus.degraded,
         version: probe.version,
         message: hosts.message,
+        latency: latency,
       );
     }
-    return probe;
+    return _Probe(
+      probe.status,
+      version: probe.version,
+      message: probe.message,
+      latency: latency,
+    );
   }
 
   Future<String?> _version(

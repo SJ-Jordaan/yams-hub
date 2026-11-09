@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -433,6 +434,42 @@ void main() {
       expect(h.of(ServiceId.radarr)!.status, ServiceHealthStatus.up);
       expect(h.of(ServiceId.radarr)!.message, isNull);
       expect(h.of(ServiceId.sonarr)!.status, ServiceHealthStatus.degraded);
+    });
+
+    test('Allowed Hosts: the config/host read never slows or times out the '
+        'probe; latency is the /ping time', () async {
+      final f = hub.fakes;
+      f.on(ServiceId.sonarr, 'GET', '/ping', (_) async {
+        await Future<void>.delayed(const Duration(milliseconds: 1500));
+        return FakeResponse.json({'status': 'OK'});
+      });
+      f.onFixture(
+        ServiceId.sonarr,
+        'GET',
+        '/api/v3/system/status',
+        'arr/sonarr_system_status.json',
+      );
+      final hostRead = Completer<void>();
+      f.on(ServiceId.sonarr, 'GET', '/api/v3/config/host', (_) async {
+        await Future<void>.delayed(const Duration(milliseconds: 2800));
+        hostRead.complete();
+        return FakeResponse.json({'allowedHosts': 'nas.lan'});
+      });
+
+      var h = HealthReport.fromJson((await hub.get('/api/v1/health')).map);
+      var sonarr = h.of(ServiceId.sonarr)!;
+      expect(sonarr.status, ServiceHealthStatus.up, reason: sonarr.message);
+      expect(sonarr.latencyMs, lessThan(2000));
+
+      // The read finished in the background: the next probe uses it.
+      await hostRead.future;
+      await Future<void>.delayed(Duration.zero);
+      hub.clock.advance(const Duration(seconds: 31));
+      h = HealthReport.fromJson((await hub.get('/api/v1/health')).map);
+      sonarr = h.of(ServiceId.sonarr)!;
+      expect(sonarr.status, ServiceHealthStatus.degraded);
+      expect(sonarr.message, contains('will reject the hub'));
+      expect(sonarr.latencyMs, lessThan(2000));
     });
 
     test('/health probes every service; statuses and versions', () async {

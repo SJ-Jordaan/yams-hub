@@ -268,6 +268,9 @@ final class LibraryReleaseRoutes {
             body: {'guid': ref.guid, 'indexerId': ref.indexerId},
             timeout: grabTimeout,
           );
+    } on UpstreamHostRejected catch (e) {
+      // Its status is 400, which below would pass for a refused release.
+      throw e.toApiException(resourceNotFound: false);
     } on UpstreamException catch (e) {
       if (e.isNotFound) {
         // The *arr's own 30 min cache expired.

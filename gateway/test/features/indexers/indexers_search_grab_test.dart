@@ -371,6 +371,33 @@ void main() {
       expect(adds, isEmpty);
     });
 
+    test('a Prowlarr host rejection is upstream_host_rejected', () async {
+      _searchReturns(hub.fakes, [
+        _result(
+          downloadUrl: 'http://prowlarr:9696/4/download?apikey=$_apiKey&link=e',
+        ),
+      ]);
+      final release = (await _search(hub)).single;
+      hub.fakes.on(
+        ServiceId.prowlarr,
+        'GET',
+        '/4/download',
+        (_) => FakeResponse.bytes(
+          fixtureBytes('arr/servarr_error_400_invalid_hostname.html'),
+          status: 400,
+          contentType: 'text/html',
+        ),
+      );
+      final r = await _grab(hub, release);
+      expect(r.status, 502, reason: r.body);
+      expect(r.errorCode, 'upstream_host_rejected');
+      expect(
+        readMap(r.map['error'])!['message'],
+        contains('Allowed Hosts, add prowlarr.test'),
+      );
+      expect(adds, isEmpty);
+    });
+
     test('a Prowlarr download error never echoes its message', () async {
       _searchReturns(hub.fakes, [
         _result(

@@ -780,7 +780,7 @@ running job (HTTP 202 with the same id).
 
 | Service | Probe | Version from |
 |---|---|---|
-| sonarr / radarr / prowlarr | `GET /ping` (+ `system/status` every 10 min for the version, + `config/host` `allowedHosts` every minute: API.md §2.5) | `version` |
+| sonarr / radarr / prowlarr | `GET /ping` (+ `system/status` every 10 min for the version, + `config/host` `allowedHosts` every minute, never past the probe's 3 s: API.md §2.5; latency is `/ping` alone) | `version` |
 | bazarr | `GET /api/system/ping` | `/api/system/status` `bazarr_version` |
 | seerr | `GET /api/v1/status` | `version` |
 | jellyfin | `GET /System/Info/Public` | `Version` |

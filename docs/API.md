@@ -300,7 +300,9 @@ non-empty list that does not accept the hub's hostname (exact, case-insensitive;
 always pass) is saved but not active yet, because the *arr applies it at its next restart. The service is then
 `degraded` with "Sonarr's saved Allowed Hosts (localhost) leaves out 'sonarr', the hostname the hub uses: Sonarr will
 reject the hub after its next restart. In Sonarr → Settings → General → Allowed Hosts, add sonarr (or clear the
-list)." Bazarr has no such setting.
+list)." The probe waits for that read only until its 3 s timeout; a slower read finishes in the background and the
+next probe uses it. For these three, `latencyMs` and the 2 s "Slow response" threshold are the `/ping` time alone.
+Bazarr has no such setting.
 
 ### 2.6 Jobs
 

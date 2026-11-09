@@ -161,7 +161,7 @@ final class ReleaseGrabber {
       return _fromRemote(resolved, grabMaxRedirects - 1);
     }
     if (!response.ok) {
-      if (status == 401 || status == 403) {
+      if (status == 401 || status == 403 || response.isHostRejected) {
         try {
           response.ensureOk();
         } on UpstreamException catch (e) {
