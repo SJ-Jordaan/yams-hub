@@ -2,8 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:yams_hub/core/widgets/formatters.dart';
 import 'package:yams_models/yams_models.dart';
 
+import '../../support/builders.dart';
 import '../../support/fake_api.dart';
 import '../../support/pump_hub_app.dart';
 import 'requests_samples.dart';
@@ -98,7 +100,9 @@ void main() {
 
     expect(find.text('Audio out of sync from 12:30'), findsOneWidget);
     expect(find.text('Looking into it'), findsOneWidget);
-    expect(find.text('Reported by Zenith Greyrat · 1 day ago'), findsOneWidget);
+    // The screen formats against the real clock; the sample issue was created a day before testNow.
+    final reported = formatRelative(testNow.subtract(const Duration(days: 1)));
+    expect(find.text('Reported by Zenith Greyrat · $reported'), findsOneWidget);
 
     await tester.enterText(find.widgetWithText(TextField, 'Add a comment'), 'Still happening on S2E6');
     await tester.tap(find.byTooltip('Send'));
