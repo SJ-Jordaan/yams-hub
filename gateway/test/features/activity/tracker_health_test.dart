@@ -1,6 +1,7 @@
 // Issue #1: qBittorrent's `has_tracker_error` is set when any one tracker
 // fails; the hub only reports a tracker error when no tracker works.
 import 'package:test/test.dart';
+import 'package:yams_hub_gateway/src/features/activity/maindata.dart';
 import 'package:yams_hub_gateway/src/features/activity/tracker_health.dart';
 
 import '../../support/test_hub.dart';
@@ -85,15 +86,50 @@ void main() {
     expect(trackerCalls(), 2);
   });
 
-  test('updating and not-contacted trackers do not count as working', () async {
+  test('updating or not-contacted trackers leave it undecided', () async {
+    // qBittorrent shows a working tracker as "updating" while it announces
+    // (a new or resumed torrent, Reannounce): no error yet, re-read soon.
     trackers[plainHash] = [
       _tracker('dead', 5),
       _tracker('busy', 3),
-      _tracker('new', 1),
-      _tracker('off', 0),
+      _tracker('new', 1, tier: 1),
+      _tracker('off', 0, tier: 2),
     ];
+    trackers[radarrHash] = [_tracker('dead', 5), _tracker('off', 0)];
+    expect(await torrentErrors(), {radarrHash: true});
+    expect(trackerCalls(plainHash), 1);
+
+    // The busy tracker settles as working: still no error.
+    trackers[plainHash] = [_tracker('dead', 5), _tracker('busy', 2)];
+    hub.clock.advance(trackerHealthRetry);
+    await torrentErrors();
+    await pumpEventQueue();
+    expect(trackerCalls(plainHash), 2);
+    expect(await torrentErrors(), {radarrHash: true});
+  });
+
+  test('a list that stays pending becomes an error', () async {
+    trackers[plainHash] = [_tracker('dead', 5), _tracker('busy', 3)];
     trackers[radarrHash] = [_tracker('ok', 2), _tracker('dead', 5)];
+    expect(await torrentErrors(), isEmpty);
+    // Re-read every retry delay; no working tracker for the pending limit.
+    for (
+      var t = Duration.zero;
+      t < trackerHealthPendingLimit;
+      t += trackerHealthRetry
+    ) {
+      hub.clock.advance(trackerHealthRetry);
+      await torrentErrors();
+      await pumpEventQueue();
+    }
     expect(await torrentErrors(), {plainHash: true});
+    final calls = trackerCalls(plainHash);
+    expect(calls, greaterThan(2));
+    // Settled: re-read after the TTL, not the retry delay.
+    hub.clock.advance(trackerHealthRetry);
+    await torrentErrors();
+    await pumpEventQueue();
+    expect(trackerCalls(plainHash), calls);
   });
 
   test('the unified queue and the dashboard use the same rule', () async {
@@ -196,4 +232,79 @@ void main() {
       expect(trackerCalls(), 4);
     },
   );
+
+  group('TrackerHealth', () {
+    QbitView view(Set<String> flagged) => QbitView(
+      torrents: {
+        for (final h in [plainHash, radarrHash])
+          h: {
+            'name': h,
+            'state': 'downloading',
+            'has_tracker_error': flagged.contains(h),
+          },
+      },
+      serverState: const {},
+      categories: const {},
+      tags: const [],
+      updatedAt: DateTime.utc(2026, 11, 9),
+      stale: false,
+    );
+
+    test('a verdict survives the flag dropping for a tick', () async {
+      // qBittorrent clears the flag while the dead tracker re-announces.
+      await hub.ready;
+      final health = TrackerHealth(hub.ctx);
+      trackers[plainHash] = [_tracker('dead', 5), _tracker('ok', 2)];
+      expect(await health.trackerWorking(view({plainHash})), {plainHash});
+      expect(await health.trackerWorking(view({})), isEmpty);
+      hub.clock.advance(const Duration(seconds: 3));
+      // Back: the cached verdict answers at once, nothing is read again.
+      expect(await health.trackerWorking(view({plainHash})), {plainHash});
+      expect(trackerCalls(plainHash), 1);
+
+      // Unflagged past its TTL and a grace period: forgotten.
+      expect(await health.trackerWorking(view({})), isEmpty);
+      hub.clock.advance(trackerHealthTtl * 2);
+      expect(await health.trackerWorking(view({})), isEmpty);
+      trackers[plainHash] = [_tracker('dead', 5)];
+      expect(await health.trackerWorking(view({plainHash})), isEmpty);
+      expect(trackerCalls(plainHash), 2);
+    });
+
+    test('the detail read records the same verdict', () async {
+      await hub.ready;
+      final health = TrackerHealth(hub.ctx);
+      expect(TrackerListHealth.of([]), TrackerListHealth.failing);
+      expect(
+        health.record(plainHash, [
+          TrackerInfo(
+            url: 'udp://a',
+            tier: 0,
+            status: TrackerInfoStatus.updating,
+          ),
+          TrackerInfo(
+            url: 'udp://b',
+            tier: 0,
+            status: TrackerInfoStatus.trackerError,
+          ),
+        ]),
+        isTrue,
+      );
+      expect(
+        health.record(plainHash, [
+          TrackerInfo(
+            url: 'udp://b',
+            tier: 0,
+            status: TrackerInfoStatus.trackerError,
+          ),
+          TrackerInfo(
+            url: 'udp://c',
+            tier: 0,
+            status: TrackerInfoStatus.disabled,
+          ),
+        ]),
+        isFalse,
+      );
+    });
+  });
 }

@@ -165,8 +165,7 @@ final class TorrentRoutes {
       for (final t in parts[2] is List ? parts[2] as List : const <Object?>[])
         ?readMap(t),
     ]);
-    _s.trackers.record(hash, trackers);
-    final working = anyTrackerWorking(trackers);
+    final working = _s.trackers.record(hash, trackers);
     final view = await viewFuture;
     final raw = view?.torrents[hash] ?? torrentFromProperties(props);
     final summary =

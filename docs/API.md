@@ -835,9 +835,12 @@ Each torrent also carries `direction: "download"|"upload"` (state ends in DL/`do
 Times from unix seconds (`-1` → null).
 `hasTrackerError`: qBittorrent's `has_tracker_error` (any one tracker in status 5) **and no tracker working** (status 2;
 issue #1). The gateway reads `torrents/trackers` only for flagged torrents (verdict cached 2 min and re-read in the
-background, 4 reads at a time; a torrent seen flagged for the first time waits up to 2 s, a failed read keeps the flag
-and retries after 15 s). Older gateways sent the raw flag; `TorrentDetail.hasTrackerError` in yams_models re-checks it
-against the detail's trackers.
+background, 4 reads at a time, newly flagged torrents first; a torrent seen flagged for the first time waits up to 2 s,
+a failed read keeps the flag and retries after 15 s). qBittorrent shows a working tracker as "updating" (3) while it
+announces, so a list with no working tracker but one updating or not contacted (1) is undecided: no error, re-read
+after 15 s, and an error only once it has had no working tracker for 2 min. A torrent whose flag drops keeps its
+verdict until 2 min past its expiry (qBittorrent clears the flag while the failing tracker re-announces). Older
+gateways sent the raw flag; `TorrentDetail.hasTrackerError` in yams_models re-checks it against the detail's trackers.
 
 **TransferState**:
 ```json
