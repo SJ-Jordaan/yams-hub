@@ -1,0 +1,101 @@
+# Builds the signed Android APKs on every push to main that touches the app, and publishes them as a GitHub
+# release. Stable download links (always the newest build):
+#   https://github.com/SJ-Jordaan/yams-hub/releases/latest/download/yams-hub-arm64.apk
+#   https://github.com/SJ-Jordaan/yams-hub/releases/latest/download/yams-hub-armv7.apk
+#
+# Signing needs four repository secrets (Settings > Secrets and variables > Actions):
+#   ANDROID_KEYSTORE_BASE64   base64 of the release .jks
+#   ANDROID_KEYSTORE_PASSWORD storePassword from key.properties
+#   ANDROID_KEY_ALIAS         keyAlias
+#   ANDROID_KEY_PASSWORD      keyPassword
+# Without them the job fails rather than publishing a debug-signed APK (which could not update an installed app).
+name: Android APK
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - app/**
+      - packages/**
+      - .github/workflows/android-apk.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: android-apk
+  cancel-in-progress: true
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.47.9
+          channel: stable
+          cache: true
+
+      - name: Release key
+        env:
+          KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          STORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          if [ -z "$KEYSTORE_BASE64" ] || [ -z "$STORE_PASSWORD" ] || [ -z "$KEY_ALIAS" ] || [ -z "$KEY_PASSWORD" ]; then
+            echo "::error::Release signing secrets are missing (see the comment at the top of this workflow)."
+            exit 1
+          fi
+          umask 077
+          printf '%s' "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/release.jks"
+          {
+            printf 'storeFile=%s\n' "$RUNNER_TEMP/release.jks"
+            printf 'storePassword=%s\n' "$STORE_PASSWORD"
+            printf 'keyAlias=%s\n' "$KEY_ALIAS"
+            printf 'keyPassword=%s\n' "$KEY_PASSWORD"
+          } > "$RUNNER_TEMP/key.properties"
+          echo "YAMS_HUB_KEY_PROPERTIES=$RUNNER_TEMP/key.properties" >> "$GITHUB_ENV"
+
+      - name: Build
+        working-directory: app
+        run: |
+          flutter pub get
+          # versionCode must grow with every build so a new APK installs over the old one.
+          flutter build apk --release --split-per-abi --build-number=$((GITHUB_RUN_NUMBER + 1))
+          out=build/app/outputs/flutter-apk
+          mkdir -p "$RUNNER_TEMP/dist"
+          cp "$out/app-arm64-v8a-release.apk"   "$RUNNER_TEMP/dist/yams-hub-arm64.apk"
+          cp "$out/app-armeabi-v7a-release.apk" "$RUNNER_TEMP/dist/yams-hub-armv7.apk"
+          cp "$out/app-x86_64-release.apk"      "$RUNNER_TEMP/dist/yams-hub-x86_64.apk"
+          (cd "$RUNNER_TEMP/dist" && sha256sum *.apk > SHA256SUMS)
+          echo "VERSION=$(grep -m1 '^version:' pubspec.yaml | sed 's/version: *//; s/+.*//')" >> "$GITHUB_ENV"
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: apk-${{ github.run_number }}
+          target_commitish: ${{ github.sha }}
+          name: YAMS Hub ${{ env.VERSION }} (build ${{ github.run_number }})
+          make_latest: 'true'
+          body: |
+            Android build of ${{ github.sha }}.
+
+            **Most phones:** download `yams-hub-arm64.apk`. Older 32-bit phones: `yams-hub-armv7.apk`.
+            Open it on the phone and allow installing from this source when asked.
+          files: |
+            ${{ runner.temp }}/dist/*.apk
+            ${{ runner.temp }}/dist/SHA256SUMS
+
+      - name: Remove key
+        if: always()
+        run: rm -f "$RUNNER_TEMP/release.jks" "$RUNNER_TEMP/key.properties"

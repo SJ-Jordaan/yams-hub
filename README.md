@@ -37,9 +37,12 @@ To build somewhere else, run `./build.sh` there, then copy `app/build/web` into 
 
 ## Phone
 
-- **Android:** run `./build.sh --apk` (needs the Android SDK and a JDK) and install
-  `app/build/app/outputs/flutter-apk/app-arm64-v8a-release.apk`, or ask the maintainer for the APK. On first start,
-  enter `http://<server-ip>:8090`.
+- **Android:** on the phone, download
+  [yams-hub-arm64.apk](https://github.com/SJ-Jordaan/yams-hub/releases/latest/download/yams-hub-arm64.apk)
+  (older 32-bit phones: [yams-hub-armv7.apk](https://github.com/SJ-Jordaan/yams-hub/releases/latest/download/yams-hub-armv7.apk);
+  all builds: [Releases](https://github.com/SJ-Jordaan/yams-hub/releases)), open it and allow the install. On first
+  start, enter `http://<server-ip>:8090`. To update, install the newer APK over it. To build it yourself:
+  `./build.sh --apk` (needs the Android SDK and a JDK).
 - **iPhone:** open `http://<server-ip>:8090` in Safari, then tap Share > Add to Home Screen.
 
 Away from home, use a VPN such as Tailscale. Do not open the port on your router.
