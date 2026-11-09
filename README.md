@@ -9,14 +9,15 @@ containers next to YAMS and does not change YAMS's own setup.
 - A YAMS server set up with the standard YAMS installer (Linux, Docker with compose v2).
 - `git` on the server.
 - To build: an x64 Linux or macOS machine. The server itself works. `./build.sh` downloads Flutter (about 1 GB, once)
-  if it is not already installed.
+  if it is not already installed; that needs `curl`, `unzip` and `xz` (Debian/Ubuntu:
+  `apt install git curl unzip xz-utils`).
 
 ## Install
 
-On the server, as root or as a user in the `docker` group:
+On the server, as root or as a user in the `docker` group (ask the maintainer for the repository URL):
 
 ```sh
-git clone <repo-url> yams-hub
+git clone <repository-url> yams-hub
 cd yams-hub
 ./build.sh
 ./install.sh

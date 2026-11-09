@@ -110,8 +110,8 @@ ssh nas 'cd /opt/yams && docker compose -p yams -f docker-compose.yaml -f docker
 builds `/opt/yams/monitoring/secrets/yams-hub.env` (and the updater's env) from the existing secrets without printing
 them, and `deploy/verify.sh` checks the topology after the first deploy (ARCHITECTURE §6, §9).
 
-The hub listens on host port **8090, IPv4 only**: `http://192.168.10.183:8090` on the LAN and
-`http://zenith.<tailnet>.ts.net:8090` over Tailscale (no router ports are opened; ARCHITECTURE §8). On untrusted Wi-Fi
+The hub listens on host port **8090, IPv4 only**: `http://<server-ip>:8090` on the LAN and
+`http://<server>.<tailnet>.ts.net:8090` over Tailscale (no router ports are opened; ARCHITECTURE §8). On untrusted Wi-Fi
 use the Tailscale URL.
 
 Mobile: `flutter build apk --release` for Android (sideload). On iOS the supported default is the gateway-served web

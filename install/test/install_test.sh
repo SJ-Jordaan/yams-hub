@@ -102,6 +102,10 @@ EOF
   for n in sonarr radarr prowlarr bazarr jellyfin gluetun qbittorrent sabnzbd portainer watchtower; do container "$n"; done
   echo 'homepage 172.28.0.249/24' >>"$st/nets/yams_network.containers" # a user's extra with a high address
   echo "container:cid-gluetun" >"$st/c/qbittorrent/netmode"
+  # Stock YAMS gives jellyfin no `networks:` key, so compose puts it on the project's default network.
+  echo 172.18.0.0/16 >"$st/nets/yams_default.subnet"
+  echo yams_default >"$st/c/jellyfin/networks"
+  echo yams_default >"$st/c/jellyfin/netmode"
   printf 'PUID=1000\nWEBUI_PORT=8081\n' >"$st/c/qbittorrent/env"
   local svc key
   for svc in sonarr radarr prowlarr; do
@@ -178,6 +182,8 @@ test_first_install_on_stock_yams() {
   check 'no uptime kuma' grep -qx '      - UPTIME_KUMA_URL=' <<<"$compose"
   # rendering
   check 'external YAMS network' contains "$compose" $'    external: true\n    name: yams_network'
+  check 'joins yams_default for jellyfin' contains "$compose" $'  net_yams_default:\n    external: true\n    name: yams_default'
+  check 'hub on yams_default' contains "$compose" $'        ipv4_address: 172.28.0.248\n      net_yams_default: {}'
   check 'fixed control subnet' contains "$compose" '- subnet: 172.30.250.0/29'
   check 'free high address (not .250 of the compose file, not .249 in use)' contains "$compose" $'      yams:\n        ipv4_address: 172.28.0.248'
   check 'volume label' contains "$compose" "- HOST_VOLUME_MOUNT=$media"
@@ -241,7 +247,11 @@ test_seerr_extras_and_no_vpn() {
   "radarr": [ { "apiKey": "not-this-one" } ]
 }
 EOF
-  echo yams_network >"$st/c/qbittorrent/netmode" # VPN disabled: qBittorrent on the YAMS network
+  # VPN disabled: no network_mode for qBittorrent, so it is on yams_default; gluetun is defined but restarts.
+  sed -i 's/^VPN_ENABLED=.*/VPN_ENABLED=n/' "$yams/.env"
+  echo yams_default >"$st/c/qbittorrent/netmode"
+  echo yams_default >"$st/c/qbittorrent/networks"
+  echo restarting >"$st/c/gluetun/state"
   printf 'WEBUI_PORT=8080\n' >"$st/c/qbittorrent/env"
   # Jellyfin key, qBittorrent user + password, Uptime Kuma slug, Kavita key, port, admin, password.
   install <<<"$(printf '%s\n' '' qbuser qbpass home kavita-key 9000 ada "$PASSWORD")"
@@ -251,6 +261,8 @@ EOF
   check 'seerr' contains "$compose" '- SEERR_URL=http://jellyseerr:5055'
   check 'seerr main.apiKey' grep -qx "SEERR_API_KEY='$SEERR_KEY'" <<<"$env"
   check 'qbittorrent direct' contains "$compose" '- QBIT_URL=http://qbittorrent:8080'
+  check 'no gluetun without the VPN' grep -qx '      - GLUETUN_URL=' <<<"$compose"
+  check 'joins yams_default once' test "$(grep -c '^  net_yams_default:' <<<"$compose")" -eq 1
   check 'kavita' contains "$compose" '- KAVITA_URL=http://kavita:5000'
   check 'kavita key' grep -qx "KAVITA_API_KEY='kavita-key'" <<<"$env"
   check 'uptime kuma slug' contains "$compose" '- UPTIME_KUMA_SLUG=home'
@@ -274,6 +286,7 @@ test_rerun_keeps_secrets_without_prompts() {
   check 'same secrets' test "$(grep -v '^#' <<<"$env1")" == "$(grep -v '^#' <<<"$env2")"
   check 'no new hash' test ! -e "$st/hashed"
   check 'same port' contains "$(hubfile compose.yaml)" '"0.0.0.0:8090:8080"'
+  check 'no forced recreate' not_contains "$(calls)" '--force-recreate yams-hub'
 }
 
 test_update_rebuilds_and_recreates_the_hub_only() {
@@ -292,6 +305,7 @@ test_update_rebuilds_and_recreates_the_hub_only() {
 test_reconfigure_asks_again() {
   install <<<"$(first_answers)"
   # Jellyfin key: new value; qBittorrent user: keep; password: clear.
+  : >"$st/calls"
   install --reconfigure <<<"$(printf '%s\n' jellyfin-key-2 '' -)"
   local env
   env=$(hubfile secrets/yams-hub.env)
@@ -300,6 +314,8 @@ test_reconfigure_asks_again() {
   check 'kept qbit user' grep -qx "QBIT_USERNAME='qbuser'" <<<"$env"
   check 'cleared qbit password' not_contains "$env" QBIT_PASSWORD
   check 'kept the admin' contains "$env" YAMS_HUB_ADMIN_PASSWORD_HASH
+  check 'recreated the hub for the new key' contains "$(calls)" 'up -d --no-deps --force-recreate yams-hub'
+  check 'updater left alone' not_contains "$(calls)" '--force-recreate yams-hub-updater'
 }
 
 test_control_subnet_overlap_aborts() {
@@ -361,12 +377,14 @@ test_emby_disables_jellyfin() {
   check 'qbit user still right' grep -qx "QBIT_USERNAME='qbuser'" <<<"$(hubfile secrets/yams-hub.env)"
 }
 
-test_container_off_the_yams_network_stays_off() {
-  echo yams_default >"$st/c/jellyfin/networks"
+test_unreachable_container_stays_off() {
+  echo host >"$st/c/jellyfin/netmode" # e.g. network_mode: host
+  : >"$st/c/jellyfin/networks"
   # qBittorrent user + password, port, admin, password (no Jellyfin question).
   install <<<"$(printf '%s\n' qbuser qbpass '' '' "$PASSWORD")"
   check 'exit 0' test "$status" -eq 0
-  check 'warns' contains "$out" 'jellyfin is not on yams_network'
+  check 'warns' contains "$out" 'jellyfin uses network_mode host'
+  check 'no extra network' not_contains "$(hubfile compose.yaml)" net_yams_default
   check 'jellyfin off' grep -qx '      - JELLYFIN_URL=' <<<"$(hubfile compose.yaml)"
 }
 

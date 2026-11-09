@@ -56,7 +56,12 @@ download_flutter() {
       ;;
     *) die "no Flutter SDK download for $os/$arch: build on an x64 Linux or a macOS machine and copy app/build/web over" ;;
   esac
-  command -v curl >/dev/null || die 'curl is needed to download Flutter'
+  # Checked before the download: curl fetches it, tar needs xz (Linux), and Flutter itself needs git and unzip.
+  local t missing=()
+  for t in curl git unzip; do command -v "$t" >/dev/null || missing+=("$t"); done
+  if [[ $archive == *.tar.xz ]] && ! command -v xz >/dev/null; then missing+=(xz); fi
+  ((${#missing[@]} == 0)) ||
+    die "Flutter needs: ${missing[*]} (Debian/Ubuntu: apt install curl git unzip xz-utils)"
   echo "Flutter $FLUTTER_VERSION was not found; downloading the official SDK (about 1 GB, once):"
   echo "  $RELEASES/stable/$archive"
   echo "  -> $CACHE/flutter"
@@ -69,7 +74,8 @@ download_flutter() {
   if [[ $archive == *.zip ]]; then
     unzip -q "$tmp/sdk" -d "$tmp/x"
   else
-    tar -xJf "$tmp/sdk" -C "$tmp/x"
+    # As root, tar would keep the archive's owner (uid 1000), and git then refuses the SDK checkout as "dubious".
+    tar --no-same-owner -xJf "$tmp/sdk" -C "$tmp/x"
   fi
   rm -rf -- "$CACHE/flutter"
   mv "$tmp/x/flutter" "$CACHE/flutter"

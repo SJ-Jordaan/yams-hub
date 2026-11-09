@@ -2,7 +2,8 @@
 # Edit this file in the repo, not the rendered copy (install.sh overwrites it). The double-at-sign placeholders are filled in by install.sh.
 #
 # A compose project of its own ("yams-hub"): YAMS's compose files are never touched. It joins the YAMS network as an
-# external network and adds a small control network for the Docker socket proxy and the updater.
+# external network (and, when needed, YAMS's "<project>_default" network, where stock YAMS puts jellyfin) and adds a
+# small control network for the Docker socket proxy and the updater.
 #
 # Control plane: only the gateway may talk to socket-proxy-hub (restart/start/stop containers) and yams-hub-updater
 # (compose pull/up). Some NAS firewalls defeat `internal: true`, so the fixed addresses below let the proxy (source ACL
@@ -14,6 +15,7 @@ networks:
   yams:
     external: true
     name: @@YAMS_NETWORK@@
+@@EXTRA_NETWORKS@@
   yams_hub_ctl:
     name: yams-hub_ctl
     internal: true

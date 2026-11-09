@@ -349,17 +349,18 @@ put() { # KEY VALUE SOURCE
   source_of[$1]=$3
 }
 
-# Existing secrets (re-runs). The files are 0400 and not ours: read them through the helper.
+# Existing secrets (re-runs). The files are 0400 and not ours: read them through the helper. The old text is kept to
+# tell whether the containers must be recreated (they read the files at start, through a single-file bind mount).
+old_hub_env='' old_updater_env=''
 if [[ -d $SECRETS ]]; then
-  for f in "$HUB_ENV" "$UPDATER_ENV"; do
-    text=$(read_file "$f" 2>/dev/null || true)
-    while IFS= read -r line; do
-      if [[ $line =~ ^([A-Za-z_][A-Za-z0-9_]*)=\'([^\']*)\'[[:space:]]*$ ]]; then
-        existing[${BASH_REMATCH[1]}]=${BASH_REMATCH[2]}
-      fi
-    done <<<"$text"
-  done
-  unset text line
+  old_hub_env=$(read_file "$HUB_ENV" 2>/dev/null || true)
+  old_updater_env=$(read_file "$UPDATER_ENV" 2>/dev/null || true)
+  while IFS= read -r line; do
+    if [[ $line =~ ^([A-Za-z_][A-Za-z0-9_]*)=\'([^\']*)\'[[:space:]]*$ ]]; then
+      existing[${BASH_REMATCH[1]}]=${BASH_REMATCH[2]}
+    fi
+  done <<<"$old_hub_env"$'\n'"$old_updater_env"
+  unset line
 fi
 [[ $mode != update || -n ${existing[UPDATER_TOKEN]-} ]] || die "cannot read $UPDATER_ENV: run ./install.sh (without --update)"
 first_run=1
@@ -400,18 +401,34 @@ auto_secret() {
 }
 
 found=()
-on_yams_net() {
-  local nets
-  nets=$(docker inspect -f '{{range $k, $v := .NetworkSettings.Networks}}{{$k}} {{end}}' "$1" 2>/dev/null || true)
-  [[ " $nets " == *" $yams_net "* ]]
+# Networks the hub joins besides the YAMS one. Stock YAMS leaves jellyfin (and qBittorrent with the VPN off) without a
+# `networks:` key, so compose puts them on "<project>_default"; the hub joins that network too (no fixed address).
+declare -A extra_nets=()
+# reach NAME TARGET: 0 when the hub can reach NAME by name through TARGET's networks (TARGET is NAME, or the container
+# whose network NAME shares); joins TARGET's network when it is not the YAMS one.
+reach() {
+  local target=$2 mode n first=''
+  mode=$(docker inspect -f '{{.HostConfig.NetworkMode}}' "$target" 2>/dev/null || true)
+  if [[ $mode == host || $mode == none ]]; then
+    warn "$1 uses network_mode $mode, so the hub cannot reach it by name; leaving it off"
+    return 1
+  fi
+  while read -r n; do
+    [[ -z $n || $n == bridge || $n == host || $n == none ]] && continue
+    [[ $n == "$yams_net" || -n ${extra_nets[$n]-} ]] && return 0
+    if [[ -z $first && $n =~ ^[A-Za-z0-9_.-]+$ ]]; then first=$n; fi
+  done < <(docker inspect -f '{{range $k, $v := .NetworkSettings.Networks}}{{$k}}{{"\n"}}{{end}}' "$target" 2>/dev/null || true)
+  if [[ -n $first ]]; then
+    extra_nets[$first]=1
+    return 0
+  fi
+  warn "$1 is not on a user-defined Docker network, so the hub cannot reach it; leaving it off"
+  return 1
 }
 # note_found NAME [NETWORK_CONTAINER]: notes a detected container; fails (with a warning) when the hub cannot reach it.
 note_found() {
   local s=${cstate[$1]}
-  if ! on_yams_net "${2:-$1}"; then
-    warn "$1 is not on $yams_net, so the hub cannot reach it; leaving it off"
-    return 1
-  fi
+  reach "$1" "${2:-$1}" || return 1
   if [[ $s == running ]]; then found+=("$1"); else found+=("$1 ($s)"); fi
 }
 
@@ -475,7 +492,11 @@ if exists qbittorrent && note_found qbittorrent "$qbit_host"; then
   prompt_secret QBIT_PASSWORD 'qBittorrent password' 'the qBittorrent Web UI password' spaces
 fi
 
-if exists gluetun && note_found gluetun; then
+# Stock YAMS defines gluetun even when the VPN was not set up (it then restarts forever): VPN_ENABLED decides.
+vpn=$(env_get VPN_ENABLED)
+vpn=${vpn,,}
+if [[ $vpn == y || $vpn == yes || $vpn == true || ( -z $vpn && ${cstate[gluetun]-} == running ) ]] &&
+  exists gluetun && note_found gluetun; then
   url[GLUETUN_URL]=http://gluetun:8000
 fi
 
@@ -606,11 +627,20 @@ if [[ -n $hub_ip ]]; then
 else
   net_entry=$'\n'"      yams: {}"
 fi
+extra_defs=''
+while read -r n; do
+  [[ -n $n ]] || continue
+  k=net_${n//[^A-Za-z0-9_]/_}
+  extra_defs+=$'\n'"  $k:"$'\n'"    external: true"$'\n'"    name: $n"
+  net_entry+=$'\n'"      $k: {}"
+  info "also joins:    $n (where some YAMS containers are)"
+done < <(printf '%s\n' "${!extra_nets[@]}" | sort)
 
 tpl=$(<"$ROOT/install/compose.yaml")
 tpl=${tpl//$'\n'@@SERVICE_ENV@@/$service_env}
 tpl=${tpl//$'\n'@@RECYCLARR_MOUNT@@/$recyclarr_mount}
 tpl=${tpl//$'\n'@@YAMS_NETWORK_ENTRY@@/$net_entry}
+tpl=${tpl//$'\n'@@EXTRA_NETWORKS@@/$extra_defs}
 tpl=${tpl//@@YAMS_NETWORK@@/$yams_net}
 tpl=${tpl//@@TZ@@/$TZ_NAME}
 tpl=${tpl//@@TZ_OFFSET@@/$tz_offset}
@@ -700,16 +730,18 @@ write_file() { # TARGET MODE (content on stdin)
   chmod "$2" "$tmp"
   mv -f -- "$tmp" "$1"
 }
-write_secrets() { # TARGET KEYS...
-  local target=$1 k
-  shift
-  {
-    printf "# Written by install.sh. KEY='value' lines.\n"
-    for k in "$@"; do
-      if [[ -n ${out[$k]-} ]]; then printf "%s='%s'\n" "$k" "${out[$k]}"; fi
-    done
-  } | write_file "$target" 0600
+render_secrets() { # KEYS... -> the file text (printf is a builtin: no secret in argv)
+  local k
+  printf "# Written by install.sh. KEY='value' lines.\n"
+  for k in "$@"; do
+    if [[ -n ${out[$k]-} ]]; then printf "%s='%s'\n" "$k" "${out[$k]}"; fi
+  done
 }
+new_hub_env=$(render_secrets "${order[@]}")
+new_updater_env=$(render_secrets UPDATER_TOKEN)
+hub_env_changed=0 updater_env_changed=0
+[[ $new_hub_env == "$old_hub_env" ]] || hub_env_changed=1
+[[ $new_updater_env == "$old_updater_env" ]] || updater_env_changed=1
 
 old_cfg=$(cat -- "$HUB_DIR/socket-proxy-hub.haproxy.cfg" 2>/dev/null || true)
 write_file "$HUB_DIR/socket-proxy-hub.haproxy.cfg" 0644 <"$ROOT/deploy/socket-proxy-hub/haproxy.cfg"
@@ -717,8 +749,9 @@ cfg_changed=0
 [[ $old_cfg == "$(cat -- "$ROOT/deploy/socket-proxy-hub/haproxy.cfg")" ]] || cfg_changed=1
 printf '%s\n' "$compose_text" | write_file "$COMPOSE" 0644
 printf '%s\n' "$conf_text" | write_file "$CONF" 0644
-write_secrets "$HUB_ENV" "${order[@]}"
-write_secrets "$UPDATER_ENV" UPDATER_TOKEN
+printf '%s\n' "$new_hub_env" | write_file "$HUB_ENV" 0600
+printf '%s\n' "$new_updater_env" | write_file "$UPDATER_ENV" 0600
+unset new_hub_env new_updater_env old_hub_env old_updater_env
 lock_files
 helper "$MEDIA/config" "mkdir -p /m/yams-hub && chown $HUB_UID:$HUB_UID /m/yams-hub && chmod 0700 /m/yams-hub"
 
@@ -741,6 +774,14 @@ compose_hub up -d || up_failed=1
 if ((!up_failed && cfg_changed)) && [[ -n ${cstate[socket-proxy-hub]-} ]]; then
   # A new template only takes effect when the proxy's entrypoint renders it again.
   compose_hub up -d --no-deps --force-recreate socket-proxy-hub || up_failed=1
+fi
+# New secrets only reach a running container when it starts again: the file was replaced (a new inode) and is read
+# at start. Compose sees no change of its own, so recreate the container that uses it.
+if ((!up_failed && hub_env_changed)) && [[ -n ${cstate[yams-hub]-} ]]; then
+  compose_hub up -d --no-deps --force-recreate yams-hub || up_failed=1
+fi
+if ((!up_failed && updater_env_changed)) && [[ -n ${cstate[yams-hub-updater]-} ]]; then
+  compose_hub up -d --no-deps --force-recreate yams-hub-updater || up_failed=1
 fi
 after=$(snapshot) || die 'docker ps failed'
 
