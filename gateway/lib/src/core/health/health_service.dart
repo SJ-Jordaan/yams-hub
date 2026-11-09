@@ -202,12 +202,13 @@ final class HealthService {
   /// Anything else (not configured, other errors, an *arr without the
   /// setting) counts as ok: the other probes report those.
   Future<AllowedHostsCheck> allowedHosts(ServiceId id) {
+    if (!allowedHostsServices.contains(id)) {
+      return Future.value(AllowedHostsCheck(id, '', AllowedHostsState.ok));
+    }
     final c = _up[id];
     final host = c.baseUrl.host;
     final ok = AllowedHostsCheck(id, host, AllowedHostsState.ok);
-    if (!allowedHostsServices.contains(id) || !c.configured) {
-      return Future.value(ok);
-    }
+    if (!c.configured) return Future.value(ok);
     return _allowedHosts.value(id, () async {
       try {
         final prefix = id == ServiceId.prowlarr ? '/api/v1' : '/api/v3';
