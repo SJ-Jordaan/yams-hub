@@ -14,10 +14,10 @@ containers next to YAMS and does not change YAMS's own setup.
 
 ## Install
 
-On the server, as root or as a user in the `docker` group (ask the maintainer for the repository URL):
+On the server, as root or as a user in the `docker` group:
 
 ```sh
-git clone <repository-url> yams-hub
+git clone https://github.com/SJ-Jordaan/yams-hub.git
 cd yams-hub
 ./build.sh
 ./install.sh
