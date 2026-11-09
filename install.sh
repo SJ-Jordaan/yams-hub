@@ -194,6 +194,7 @@ overlaps() { # NET/PREFIX CANDIDATE -> 0 when they share an address (IPv6 candid
 [[ -z $answers_file ]] || load_answers "$answers_file"
 command -v docker >/dev/null || die 'docker not found'
 docker info >/dev/null 2>&1 || die 'cannot talk to the Docker daemon (run as root or as a user in the docker group)'
+# shellcheck disable=SC2016 # literal backticks
 docker compose version >/dev/null 2>&1 || die 'docker compose v2 is required (the `docker compose` plugin)'
 if ! grep -qP 'x' <<<'x' 2>/dev/null; then die 'GNU grep with -P is required'; fi
 if [[ $mode != uninstall ]]; then
@@ -480,6 +481,7 @@ note_found() {
 }
 
 for svc in sonarr radarr prowlarr; do
+  # shellcheck disable=SC2015 # skip the service when it is missing or unreachable
   exists "$svc" && note_found "$svc" || continue
   svc_port=$(case $svc in sonarr) echo 8989 ;; radarr) echo 7878 ;; prowlarr) echo 9696 ;; esac)
   var=${svc^^}
@@ -610,6 +612,7 @@ if [[ -z $port ]]; then
     port=$REPLY
   fi
 fi
+# shellcheck disable=SC2015 # die when either test fails
 [[ $port =~ ^[0-9]+$ ]] && ((port >= 1 && port <= 65535)) || die "not a port number: $port"
 if command -v ss >/dev/null && [[ ${cstate[yams-hub]-} != running || $port != "$(conf_get PORT)" ]]; then
   if ss -Htln 2>/dev/null | awk -v p="$port" '$4 ~ ("[:.]" p "$") { found = 1 } END { exit !found }'; then

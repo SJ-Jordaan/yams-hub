@@ -91,6 +91,7 @@ case "$1" in
     if [[ $entry == /app/yams-hub && $1 == hash-password ]]; then
       IFS= read -r pw || true
       echo "hash-password stdin=${#pw}" >>"$st/hashed"
+      # shellcheck disable=SC2016 # a literal hash
       echo 'pbkdf2-sha256$600000$c2FsdHNhbHQ$aGFzaGhhc2g'
       exit 0
     fi

@@ -172,6 +172,8 @@ print("; ".join(out))
   fi
 }
 
+# secret KEY: a value from $SANDBOX_DIR/secrets.env.
+secret() { grep -m1 "^$1=" "$SANDBOX_DIR/secrets.env" | cut -d= -f2-; }
 gen_password() { head -c 18 /dev/urandom | base64 | tr '+/' '-_' | tr -d '=\n'; }
 
 cmd_up() {
@@ -243,17 +245,15 @@ cmd_install() {
   local answers=$STATE/answers
   (
     umask 077
-    # shellcheck disable=SC1091
-    source "$SANDBOX_DIR/secrets.env"
     {
       echo '# install.sh answers for the sandbox'
       echo "YAMS_DIR=$YAMS"
       echo "PORT=$SANDBOX_HUB_PORT"
       echo "JELLYFIN_API_KEY=$key"
-      echo "QBIT_USERNAME=$SBX_QBIT_USER"
-      echo "QBIT_PASSWORD=$SBX_QBIT_PASSWORD"
-      echo "ADMIN_USERNAME=$SBX_ADMIN_USER"
-      echo "ADMIN_PASSWORD=$SBX_ADMIN_PASSWORD"
+      echo "QBIT_USERNAME=$(secret SBX_QBIT_USER)"
+      echo "QBIT_PASSWORD=$(secret SBX_QBIT_PASSWORD)"
+      echo "ADMIN_USERNAME=$(secret SBX_ADMIN_USER)"
+      echo "ADMIN_PASSWORD=$(secret SBX_ADMIN_PASSWORD)"
     } >"$answers"
   )
   mkdir -p "$SANDBOX_ARTIFACTS"
@@ -320,13 +320,13 @@ cmd_down() {
   fi
   # The YAMS stack: by compose file when it is still there, then anything left with the project's labels.
   if [[ -f $YAMS/docker-compose.yaml ]]; then compose_sbx down -v --remove-orphans || true; fi
-  local ids
-  ids=$(docker ps -aq --filter "label=com.docker.compose.project=$PROJECT")
-  [[ -z $ids ]] || docker rm -f $ids >/dev/null
-  ids=$(docker network ls -q --filter "label=com.docker.compose.project=$PROJECT")
-  [[ -z $ids ]] || docker network rm $ids >/dev/null
-  ids=$(docker volume ls -q --filter "label=com.docker.compose.project=$PROJECT")
-  [[ -z $ids ]] || docker volume rm $ids >/dev/null
+  local ids=()
+  mapfile -t ids < <(docker ps -aq --filter "label=com.docker.compose.project=$PROJECT")
+  ((${#ids[@]} == 0)) || docker rm -f "${ids[@]}" >/dev/null
+  mapfile -t ids < <(docker network ls -q --filter "label=com.docker.compose.project=$PROJECT")
+  ((${#ids[@]} == 0)) || docker network rm "${ids[@]}" >/dev/null
+  mapfile -t ids < <(docker volume ls -q --filter "label=com.docker.compose.project=$PROJECT")
+  ((${#ids[@]} == 0)) || docker volume rm "${ids[@]}" >/dev/null
   # The directory holds files owned by root and the hub's uid (written by install.sh): delete through a container.
   if [[ -f $MARKER ]]; then
     docker run --rm --network none -v "$SANDBOX_DIR:/m" "$ALPINE_IMAGE" sh -c 'rm -rf /m/..?* /m/.[!.]* /m/*'
@@ -342,7 +342,13 @@ cmd_down() {
 run_all() {
   local rc=0 self=("$HERE/run.sh" --variant "$variant")
   "${self[@]}" down
-  "${self[@]}" up && "${self[@]}" seed && "${self[@]}" install && "${self[@]}" test || rc=$?
+  local step
+  for step in up seed install test; do
+    if ! "${self[@]}" "$step"; then
+      rc=1
+      break
+    fi
+  done
   if ((rc == 0)); then "${self[@]}" screens || true; fi
   "${self[@]}" logs || true
   if [[ ${KEEP:-0} == 1 ]]; then
@@ -361,6 +367,12 @@ run_all() {
 for c in "${commands[@]}"; do
   case $c in
     all) run_all ;;
-    *) "cmd_$c" ;;
+    up) cmd_up ;;
+    seed) cmd_seed ;;
+    install) cmd_install ;;
+    test) cmd_test ;;
+    screens) cmd_screens ;;
+    logs) cmd_logs ;;
+    down) cmd_down ;;
   esac
 done
