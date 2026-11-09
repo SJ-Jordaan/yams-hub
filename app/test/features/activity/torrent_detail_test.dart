@@ -38,6 +38,55 @@ void main() {
       expect(find.text('E01.mkv', findRichText: true), findsNothing);
     });
 
+    group('tracker error chip (issue #1)', () {
+      const working = TrackerInfo(url: 'udp://ok.example:80', tier: 0, status: TrackerInfoStatus.working);
+      const dead = TrackerInfo(url: 'udp://dead.example:80', tier: 1, status: TrackerInfoStatus.trackerError);
+      const down = TrackerInfo(url: 'udp://down.example:80', tier: 2, status: TrackerInfoStatus.unreachable);
+
+      Future<void> pumpDetail(WidgetTester tester, {required bool flag, required List<TrackerInfo> trackers}) async {
+        final detail = buildDetail(
+          summary: buildTorrent(hasTrackerError: flag),
+          trackers: trackers,
+        );
+        final api = activityFakeApi()..getJson('/torrents/$seedHash', detail.toJson());
+        await pumpHubApp(tester, api: api, location: '/activity/torrent/$seedHash');
+      }
+
+      Future<void> scrollToTrackers(WidgetTester tester) => tester.scrollUntilVisible(
+        find.text('udp://dead.example:80'),
+        300,
+        scrollable: _scrollOf('torrentDetailList'),
+      );
+
+      testWidgets('no chip while another tracker works, even with the raw flag of an older gateway', (tester) async {
+        await pumpDetail(tester, flag: true, trackers: const [working, dead, down]);
+        expect(find.byKey(const ValueKey('torrentTrackerError')), findsNothing);
+        await scrollToTrackers(tester);
+        // The softer signal: a quiet count on the trackers card and each tracker's own status.
+        expect(find.text('2 of 3 failing'), findsOneWidget);
+        expect(find.text('Tracker error'), findsOneWidget);
+        expect(find.text('Unreachable'), findsOneWidget);
+      });
+
+      testWidgets('the chip shows when no tracker works', (tester) async {
+        await pumpDetail(tester, flag: true, trackers: const [dead, down]);
+        expect(find.byKey(const ValueKey('torrentTrackerError')), findsOneWidget);
+        await scrollToTrackers(tester);
+        expect(find.text('2 of 2 failing'), findsOneWidget);
+      });
+
+      testWidgets('healthy trackers: no chip and no count', (tester) async {
+        await pumpDetail(tester, flag: false, trackers: const [working]);
+        expect(find.byKey(const ValueKey('torrentTrackerError')), findsNothing);
+        await tester.scrollUntilVisible(
+          find.text('udp://ok.example:80'),
+          300,
+          scrollable: _scrollOf('torrentDetailList'),
+        );
+        expect(find.byKey(const ValueKey('trackersFailing')), findsNothing);
+      });
+    });
+
     testWidgets('404 says the torrent no longer exists', (tester) async {
       final api = activityFakeApi()
         ..on(

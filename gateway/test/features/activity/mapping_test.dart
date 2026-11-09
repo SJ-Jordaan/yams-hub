@@ -99,6 +99,53 @@ void main() {
       expect(torrentSummaryOf('ab', {'upspeed': 4}), isNull);
     });
 
+    test('a tracker error counts only without a working tracker (#1)', () {
+      final raw = {..._map(torrents[sonarrHash]), 'has_tracker_error': true};
+      expect(qbitTrackerErrorFlag(raw), isTrue);
+      expect(torrentSummaryOf(sonarrHash, raw)!.hasTrackerError, isTrue);
+      expect(
+        torrentSummaryOf(
+          sonarrHash,
+          raw,
+          trackerWorking: true,
+        )!.hasTrackerError,
+        isFalse,
+      );
+      // The `tracker` field is no evidence either way (qBittorrent 5.x
+      // falls back to the first tracker's URL when none works).
+      expect(raw['tracker'], isNotEmpty);
+      final clean = _map(torrents[sonarrHash]);
+      expect(qbitTrackerErrorFlag(clean), isFalse);
+      expect(torrentSummaryOf(sonarrHash, clean)!.hasTrackerError, isFalse);
+    });
+
+    test('the view lists flagged hashes and masks the working ones', () {
+      final view = QbitView(
+        torrents: {
+          sonarrHash: {
+            ..._map(torrents[sonarrHash]),
+            'has_tracker_error': true,
+          },
+          plainHash: {..._map(torrents[plainHash]), 'has_tracker_error': true},
+          radarrHash: _map(torrents[radarrHash]),
+        },
+        serverState: const {},
+        categories: const {},
+        tags: const [],
+        updatedAt: DateTime.utc(2026, 11, 8),
+        stale: false,
+      );
+      expect(
+        view.trackerErrorFlagged(),
+        unorderedEquals([sonarrHash, plainHash]),
+      );
+      final errors = {
+        for (final t in view.summaries(trackerWorking: {sonarrHash}))
+          t.hash: t.hasTrackerError,
+      };
+      expect(errors, {sonarrHash: false, plainHash: true, radarrHash: false});
+    });
+
     test('filters follow the WebUI semantics', () {
       final all = [
         for (final e in torrents.entries)

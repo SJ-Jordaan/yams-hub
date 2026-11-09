@@ -476,6 +476,44 @@ void main() {
       expect(d.files.single.priority, TorrentFilePriority.normal);
     });
 
+    test('a tracker error counts only when no tracker works (issue #1)', () {
+      JsonMap tracker(String status) => {
+        'url': 'udp://t$status.example:80',
+        'tier': 0,
+        'status': status,
+      };
+      TorrentDetail withTrackers(List<String> statuses, {bool flag = true}) =>
+          TorrentDetail.fromJson({
+            ...detail,
+            'summary': {..._torrent, 'hasTrackerError': flag},
+            'trackers': [for (final s in statuses) tracker(s)],
+          });
+
+      // One failing tracker next to a working one (an older gateway sends
+      // qBittorrent's raw flag): no error, one failing tracker.
+      final partial = withTrackers(['working', 'trackerError', 'notWorking']);
+      expect(partial.summary.hasTrackerError, isTrue);
+      expect(partial.hasTrackerError, isFalse);
+      expect(partial.failingTrackers, 2);
+      // Nothing works: the error stands.
+      final none = withTrackers(['trackerError', 'updating', 'unreachable']);
+      expect(none.hasTrackerError, isTrue);
+      expect(none.failingTrackers, 2);
+      // No flag, no error, whatever the trackers say.
+      expect(
+        withTrackers(['trackerError'], flag: false).hasTrackerError,
+        false,
+      );
+      expect(anyTrackerWorking(const []), isFalse);
+      expect(
+        [
+          for (final s in TrackerInfoStatus.values)
+            if (s.isFailing) s.name,
+        ],
+        ['notWorking', 'trackerError', 'unreachable'],
+      );
+    });
+
     test('share-limit actions use their wire names', () {
       expect(ShareLimitsAction.byDefault.toJson(), 'default');
       expect(

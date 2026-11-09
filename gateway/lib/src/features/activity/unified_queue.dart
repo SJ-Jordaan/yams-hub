@@ -374,16 +374,20 @@ String _serviceLabel(ArrService s) =>
     s == ArrService.sonarr ? 'Sonarr' : 'Radarr';
 
 /// Merges the torrent snapshot (null when qBittorrent failed) with the
-/// *arr queue groups.
+/// *arr queue groups. [trackerWorking]: see [QbitView.summaries].
 List<QueueRow> buildQueueRows({
   required QbitView? qbit,
+  Set<String> trackerWorking = const {},
   required List<ArrQueueGroup> groups,
   required ImageUrls images,
   required bool admin,
   String Function(String) redact = redactSecrets,
 }) {
   final torrents = <String, TorrentSummary>{
-    for (final t in qbit?.summaries() ?? const <TorrentSummary>[]) t.hash: t,
+    for (final t
+        in qbit?.summaries(trackerWorking: trackerWorking) ??
+            const <TorrentSummary>[])
+      t.hash: t,
   };
   final byHash = <String, List<(ArrQueueGroup, QueueArrEntry)>>{};
   final orphans = <(ArrQueueGroup, QueueArrEntry)>[];

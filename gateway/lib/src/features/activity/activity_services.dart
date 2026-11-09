@@ -9,6 +9,7 @@ import 'activity_history.dart';
 import 'maindata.dart';
 import 'manual_import.dart';
 import 'qbit_mapping.dart';
+import 'tracker_health.dart';
 import 'unified_queue.dart';
 import 'vpn_status.dart';
 
@@ -42,6 +43,7 @@ final class QueueComputation {
 final class ActivityServices {
   ActivityServices(this.ctx)
     : maindata = QbitMaindata(ctx),
+      trackers = TrackerHealth(ctx),
       queues = ArrQueueSources(ctx),
       _limits = ctx.caches.ttl<int, TransferLimits>(
         'activity.transfer.limits',
@@ -67,6 +69,9 @@ final class ActivityServices {
 
   final FeatureContext ctx;
   final QbitMaindata maindata;
+
+  /// Whether flagged torrents still have a working tracker (issue #1).
+  final TrackerHealth trackers;
   final ArrQueueSources queues;
   late final ManualImportService imports;
   late final ActivityHistory history;
@@ -151,11 +156,13 @@ final class ActivityServices {
   /// are reported per source.
   Future<QueueComputation> computeQueue(ApiRequest req) async {
     QbitView? view;
+    var trackerWorking = const <String>{};
     SectionStatus qbitStatus;
     Object? qbitError;
     final arrFuture = queues.loadAll();
     try {
       view = await maindata.read();
+      trackerWorking = await trackers.trackerWorking(view);
       qbitStatus = const SectionStatus.ok();
     } catch (e) {
       qbitError = e;
@@ -170,6 +177,7 @@ final class ActivityServices {
     };
     final rows = buildQueueRows(
       qbit: view,
+      trackerWorking: trackerWorking,
       groups: groupQueueRecords([
         for (final a in arr)
           if (a.ok) a,

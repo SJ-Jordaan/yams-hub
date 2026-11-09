@@ -69,9 +69,23 @@ List<String> splitQbitTags(Object? v) => [
 
 double _round3(double v) => (v * 1000).round() / 1000;
 
+/// qBittorrent's `has_tracker_error` (maindata only): set when any one
+/// tracker of the torrent is in status 5, even if others work.
+bool qbitTrackerErrorFlag(JsonMap t) =>
+    readBool(t['has_tracker_error']) ?? false;
+
 /// Maps a torrent of the maindata snapshot (or `torrents/info`); null when
 /// the entry is incomplete (a delta for a torrent the snapshot never saw).
-TorrentSummary? torrentSummaryOf(String hash, JsonMap t) {
+///
+/// [trackerWorking]: another tracker of the torrent works, so
+/// qBittorrent's tracker-error flag is not an error (issue #1). The `tracker`
+/// field cannot tell: qBittorrent 5.x falls back to the first tracker's URL
+/// and libtorrent keeps the last tracker that ever worked.
+TorrentSummary? torrentSummaryOf(
+  String hash,
+  JsonMap t, {
+  bool trackerWorking = false,
+}) {
   final name = readString(t['name']);
   final raw = readString(t['state']);
   if (name == null || raw == null) return null;
@@ -106,7 +120,7 @@ TorrentSummary? torrentSummaryOf(String hash, JsonMap t) {
     lastActivityAt: qbitTime(t['last_activity']),
     forceStart: readBool(t['force_start']) ?? false,
     queuePosition: (priority == null || priority <= 0) ? null : priority,
-    hasTrackerError: readBool(t['has_tracker_error']) ?? false,
+    hasTrackerError: qbitTrackerErrorFlag(t) && !trackerWorking,
     hasTrackerWarning: readBool(t['has_tracker_warning']) ?? false,
     protected: tags.contains(protectTag),
     managedBy: managedByOf(category),

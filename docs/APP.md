@@ -382,7 +382,8 @@ Needs attention / All.
 
 **Torrents tab** — interval 2 s (`GET /torrents?filter=&category=&sort=`): filter chips (All, Downloading, Seeding,
 Stopped, Stalled, Errored), category dropdown, sort menu, search field (local). Row: name, state icon + colour, progress,
-size, ratio, ↓/↑ speed, ETA, category chip, "Keep" shield icon. Multi-select (long-press, admin): Start, Stop, Force
+size, ratio, ↓/↑ speed, ETA, category chip, "Keep" shield icon, a red tracker icon when `hasTrackerError` (no tracker
+works; one failing tracker among working ones is not an error). Multi-select (long-press, admin): Start, Stop, Force
 start, Recheck, Reannounce, Set category, Add/remove tag, Delete (§2.4, handles `managed_by_arr`).
 Admin FAB **"Add torrent"** → the Add-torrent sheet (§6.4). Empty: "qBittorrent has no torrents".
 
@@ -391,14 +392,16 @@ Imported / Failed / Deleted, service segmented All / Sonarr / Radarr. Row as in 
 opens the Library item.
 
 ### 6.2 Torrent detail `/activity/torrent/:hash` — interval 2 s
-`GET /torrents/{hash}`. Header: name, state chip, big progress, ↓/↑ speeds, ETA, ratio. Sections:
+`GET /torrents/{hash}`. Header: name, state chip, "Tracker error" chip only when no tracker works
+(`TorrentDetail.hasTrackerError`), big progress, ↓/↑ speeds, ETA, ratio. Sections:
 - General (KeyValueList): size, downloaded/uploaded, seeds/peers (connected/total), added/completed, save path, pieces,
   time active, seeding time, category, tags, comment.
 - Share limits (admin editable sheet): Use global / Unlimited / Custom (ratio, seeding minutes, inactive minutes, action)
   → `PUT /torrents/{hash}/share-limits`; the actions "Remove" and "Remove with files" go through the 428 →
   ConfirmDialog → `confirm=true` flow (§2.4).
 - Files: tree-ish list (path segments), progress, size, priority dropdown (admin; Skip/Normal/High/Max).
-- Trackers: host (the gateway already strips paths/passkeys), status chip, message, seeds/peers.
+- Trackers: host (the gateway already strips paths/passkeys), status chip, message, seeds/peers; the card header says
+  "N of M failing" when some trackers fail (not an error while another works).
 - *arr link card when managed: "Tracked by Sonarr: <series> S04" → Library.
 - Actions (admin): Stop/Start, Force start, Recheck, Reannounce, Protect toggle, Set category, Delete.
 - 404 → "Torrent no longer exists" (decluttarr may have removed it) + Back.

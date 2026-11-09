@@ -83,7 +83,13 @@ class _DetailBody extends ConsumerWidget {
                   StatusChip(label: torrentStateLabel(t.state), tone: tone, icon: torrentStateIcon(t.state)),
                   if (t.forceStart) const StatusChip(label: 'Forced', tone: StatusTone.info),
                   if (t.protected) const StatusChip(label: 'Keep', icon: Icons.shield, tone: StatusTone.info),
-                  if (t.hasTrackerError) const StatusChip(label: 'Tracker error', tone: StatusTone.error),
+                  // Only when no tracker works (issue #1); d.trackers shows the failing ones.
+                  if (d.hasTrackerError)
+                    const StatusChip(
+                      key: ValueKey('torrentTrackerError'),
+                      label: 'Tracker error',
+                      tone: StatusTone.error,
+                    ),
                 ],
               ),
               const SizedBox(height: 12),
@@ -136,7 +142,7 @@ class _DetailBody extends ConsumerWidget {
         const SizedBox(height: 12),
         _ShareLimitsCard(detail: d, editable: admin),
         if (d.files.isNotEmpty) ...[const SizedBox(height: 12), _FilesCard(detail: d, editable: admin)],
-        if (d.trackers.isNotEmpty) ...[const SizedBox(height: 12), _TrackersCard(trackers: d.trackers)],
+        if (d.trackers.isNotEmpty) ...[const SizedBox(height: 12), _TrackersCard(detail: d)],
       ],
     );
   }
@@ -380,14 +386,25 @@ class _FilePath extends StatelessWidget {
 }
 
 class _TrackersCard extends StatelessWidget {
-  const _TrackersCard({required this.trackers});
+  const _TrackersCard({required this.detail});
 
-  final List<TrackerInfo> trackers;
+  final TorrentDetail detail;
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final trackers = detail.trackers;
+    final failing = detail.failingTrackers;
     return SectionCard(
       title: 'Trackers',
+      // Some failing while others work is not an error: a quiet count only.
+      trailing: failing == 0
+          ? null
+          : Text(
+              '$failing of ${trackers.length} failing',
+              key: const ValueKey('trackersFailing'),
+              style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+            ),
       padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
       child: Column(
         children: [

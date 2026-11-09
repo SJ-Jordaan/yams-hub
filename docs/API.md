@@ -833,6 +833,11 @@ Each torrent also carries `direction: "download"|"upload"` (state ends in DL/`do
 `etaSeconds` null when upstream is 8640000. `tags` split from the comma string. `queuePosition` null when priority 0.
 `protected` = tags contain `Keep`. `managedBy`: `sonarr` for category `tv-sonarr`, `radarr` for `radarr`, else null.
 Times from unix seconds (`-1` → null).
+`hasTrackerError`: qBittorrent's `has_tracker_error` (any one tracker in status 5) **and no tracker working** (status 2;
+issue #1). The gateway reads `torrents/trackers` only for flagged torrents (verdict cached 2 min and re-read in the
+background, 4 reads at a time; a torrent seen flagged for the first time waits up to 2 s, a failed read keeps the flag
+and retries after 15 s). Older gateways sent the raw flag; `TorrentDetail.hasTrackerError` in yams_models re-checks it
+against the detail's trackers.
 
 **TransferState**:
 ```json
@@ -868,7 +873,8 @@ page, where its manual-import dialog lives; admins only, empty for members). `ca
 - `state`: torrent state, except `importPending`/`importBlocked`/`failedPending`/`failed` tracked states which win
   (values: TorrentState plus `importPending`, `importBlocked`, `importing`, `failed`, `delayed`, `completed`).
 - `needsAttention`: tracked status warning/error, tracked state importBlocked/importPending/failedPending/failed, torrent
-  state error, or tracker error. `attention`: the first reason (`importBlocked`, `importPending`, `failed`, `trackerError`, `error`, `warning`).
+  state error, or tracker error (`torrent.hasTrackerError`: no tracker working; the dashboard card's `counts.attention`
+  and `filter=attention` use the same rows). `attention`: the first reason (`importBlocked`, `importPending`, `failed`, `trackerError`, `error`, `warning`).
 - `messages` = flattened `statusMessages[].messages` (plus `errorMessage`), max 5.
 
 ### 8.2 Unified queue

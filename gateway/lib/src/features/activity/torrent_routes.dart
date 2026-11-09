@@ -103,8 +103,9 @@ final class TorrentRoutes {
     final tag = req.queryString('tag');
     final q = req.queryString('q')?.toLowerCase();
     final view = await _s.maindata.read();
+    final working = await _s.trackers.trackerWorking(view);
     final items = [
-      for (final t in view.summaries())
+      for (final t in view.summaries(trackerWorking: working))
         if (torrentMatchesFilter(filter, t) &&
             (category == null || t.category == category) &&
             (tag == null || t.tags.contains(tag)) &&
@@ -160,10 +161,16 @@ final class TorrentRoutes {
       rethrow;
     }
     final props = readMap(parts[0]) ?? const {};
+    final trackers = trackersOf([
+      for (final t in parts[2] is List ? parts[2] as List : const <Object?>[])
+        ?readMap(t),
+    ]);
+    _s.trackers.record(hash, trackers);
+    final working = anyTrackerWorking(trackers);
     final view = await viewFuture;
     final raw = view?.torrents[hash] ?? torrentFromProperties(props);
     final summary =
-        torrentSummaryOf(hash, raw) ??
+        torrentSummaryOf(hash, raw, trackerWorking: working) ??
         torrentSummaryOf(hash, torrentFromProperties(props));
     if (summary == null) {
       throw ApiException.notFound('Torrent no longer exists.');
@@ -211,11 +218,7 @@ final class TorrentRoutes {
               in parts[1] is List ? parts[1] as List : const <Object?>[])
             if (readMap(f) case final m?) torrentFileOf(m),
         ],
-        trackers: trackersOf([
-          for (final t
-              in parts[2] is List ? parts[2] as List : const <Object?>[])
-            ?readMap(t),
-        ]),
+        trackers: trackers,
         arr: entries,
       ).toJson(),
     );
