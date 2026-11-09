@@ -344,6 +344,48 @@ void main() {
       },
     );
 
+    test(
+      'Sonarr rejecting the hub\'s hostname names Allowed Hosts (issue #2)',
+      () async {
+        hub.fakes.on(
+          ServiceId.sonarr,
+          'GET',
+          _calendar,
+          (_) => FakeResponse.bytes(
+            fixtureBytes('arr/servarr_error_400_invalid_hostname.html'),
+            status: 400,
+            contentType: 'text/html',
+          ),
+        );
+        final r = await hub.get(
+          '/api/v1/calendar?start=2026-11-07&end=2026-11-21',
+        );
+        expect(r.status, 200);
+        final sonarr = (r.map['sources'] as JsonMap)['sonarr'] as JsonMap;
+        expect(sonarr['status'], 'error');
+        final error = sonarr['error'] as JsonMap;
+        expect(error['code'], 'upstream_host_rejected');
+        expect(error['service'], 'sonarr');
+        expect(error['details'], {
+          'upstreamStatus': 400,
+          'host': 'sonarr.test',
+        });
+        expect(
+          error['message'],
+          "Sonarr rejects the hub's hostname 'sonarr.test'. In Sonarr → "
+          'Settings → General → Allowed Hosts, add sonarr.test (or clear the '
+          'list), then restart Sonarr.',
+        );
+
+        // Episodes only: the whole response is that error.
+        final only = await hub.get(
+          '/api/v1/calendar?start=2026-11-21&end=2026-11-28&types=episode',
+        );
+        expect(only.status, 502);
+        expect(only.errorCode, 'upstream_host_rejected');
+      },
+    );
+
     test('an upstream 404 is not reported as not_found', () async {
       hub.fakes.on(
         ServiceId.sonarr,

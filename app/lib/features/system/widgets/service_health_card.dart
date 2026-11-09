@@ -95,7 +95,7 @@ class ServiceHealthRow extends StatelessWidget {
                 children: [
                   Text(health.name, style: theme.textTheme.bodyMedium),
                   if (message != null && message.isNotEmpty)
-                    Text(message, style: muted, maxLines: 2, overflow: TextOverflow.ellipsis),
+                    Text(message, style: muted, maxLines: 4, overflow: TextOverflow.ellipsis),
                 ],
               ),
             ),

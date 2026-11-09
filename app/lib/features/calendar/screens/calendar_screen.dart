@@ -204,14 +204,18 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
     );
   }
 
-  List<Widget> _banners(CalendarAgenda agenda) => [
-    if (agenda.refreshError != null) StaleBanner(onRetry: _refresh),
-    if (agenda.failedSources.isNotEmpty)
-      StaleBanner(
-        message: "${agenda.failedSources.join(' and ')} couldn't be loaded · their items are missing",
-        onRetry: _refresh,
-      ),
-  ];
+  List<Widget> _banners(CalendarAgenda agenda) {
+    final unexplained = [
+      for (final s in agenda.failedSources)
+        if (!agenda.sourceHints.containsKey(s)) s,
+    ];
+    return [
+      if (agenda.refreshError != null) StaleBanner(onRetry: _refresh),
+      for (final hint in agenda.sourceHints.values) StaleBanner(message: hint, onRetry: _refresh),
+      if (unexplained.isNotEmpty)
+        StaleBanner(message: "${unexplained.join(' and ')} couldn't be loaded · their items are missing", onRetry: _refresh),
+    ];
+  }
 
   Widget _monthGrid(CalendarAgenda? agenda, CalendarRange range, DateTime now) {
     final today = agenda?.today ?? CalendarDates.of(now);

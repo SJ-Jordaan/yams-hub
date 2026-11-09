@@ -239,6 +239,29 @@ void main() {
     expect(find.text('Retry'), findsOneWidget);
   });
 
+  testWidgets('ErrorView: a hostname rejected by Allowed Hosts says how to fix it (issue #2)', (tester) async {
+    const message = "Sonarr rejects the hub's hostname 'sonarr'. In Sonarr → Settings → General → Allowed Hosts, add sonarr (or clear the list), then restart Sonarr.";
+    await tester.pumpWidget(
+      wrap(
+        ErrorView(
+          error: const ApiError(
+            code: ApiErrorCode.upstreamHostRejected,
+            message: message,
+            status: 502,
+            service: ServiceId.sonarr,
+            details: {'upstreamStatus': 400, 'host': 'sonarr'},
+          ),
+          onRetry: () {},
+        ),
+      ),
+    );
+    expect(find.text('Sonarr blocks the hub'), findsOneWidget);
+    expect(find.text(message), findsOneWidget, reason: 'the service is not appended again');
+    expect(find.byIcon(Icons.dns_outlined), findsOneWidget);
+    expect(find.text('Retry'), findsOneWidget);
+    expect(ApiException.from(const ApiError(code: 'upstream_host_rejected', message: 'm', status: 502)).isHostRejected, isTrue);
+  });
+
   testWidgets('AsyncValueView keeps data and shows the stale banner when a refresh fails', (tester) async {
     var calls = 0;
     final provider = FutureProvider<String>((ref) async {

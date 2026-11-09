@@ -13,6 +13,7 @@ import '../cache/ttl_cache.dart';
 import '../clock.dart';
 import '../docker/proxy_self_test.dart';
 import '../log/redact.dart';
+import '../upstream/allowed_hosts.dart';
 import '../upstream/upstream_client.dart';
 import '../upstream/upstream_exception.dart';
 import '../upstream/upstreams.dart';
@@ -35,6 +36,67 @@ final class ServerFeatureFlags {
     containerLogs: containerLogs,
     containerActions: selfTest.actionsAllowed,
   );
+}
+
+/// What the hub knows about an *arr's Allowed Hosts setting (issue #2).
+enum AllowedHostsState {
+  /// Empty, or lists the hub's hostname (or the setting is not readable).
+  ok,
+
+  /// Saved without the hub's hostname but not active yet: the *arr rejects
+  /// the hub after its next restart.
+  pending,
+
+  /// Active: the *arr answers the hub with `400 Invalid Hostname`.
+  rejected,
+}
+
+/// The result of an Allowed Hosts check of [service] for [host] (the hostname
+/// of the hub's URL for it).
+final class AllowedHostsCheck {
+  const AllowedHostsCheck(
+    this.service,
+    this.host,
+    this.state, {
+    this.allowedHosts = '',
+  });
+
+  final ServiceId service;
+  final String host;
+  final AllowedHostsState state;
+
+  /// The saved value (for [AllowedHostsState.pending]).
+  final String allowedHosts;
+
+  /// The user-facing explanation, null when [state] is ok.
+  String? get message => switch (state) {
+    AllowedHostsState.ok => null,
+    AllowedHostsState.pending => hostPendingMessage(
+      service,
+      host,
+      allowedHosts,
+    ),
+    AllowedHostsState.rejected => hostRejectedMessage(service, host),
+  };
+
+  /// The dashboard alert (`<service>.allowedHosts`), null when ok.
+  Alert? alert({required String feature, required String route}) {
+    final text = message;
+    if (text == null) return null;
+    final name = service.displayName;
+    final rejected = state == AllowedHostsState.rejected;
+    return Alert(
+      id: '${service.name}.allowedHosts',
+      severity: rejected ? AlertSeverity.error : AlertSeverity.warning,
+      source: service,
+      feature: feature,
+      title: rejected
+          ? "$name rejects the hub's hostname"
+          : '$name will reject the hub after its next restart',
+      message: text,
+      route: route,
+    );
+  }
 }
 
 final class _Probe {
@@ -63,13 +125,23 @@ final class HealthService {
        _versions = caches.ttl<ServiceId, String?>(
          'health.versions',
          const Duration(minutes: 10),
+       ),
+       _allowedHosts = caches.ttl<ServiceId, AllowedHostsCheck>(
+         'health.allowedHosts',
+         allowedHostsTtl,
        );
+
+  /// How long an Allowed Hosts check is reused (the health probe and the
+  /// dashboard cards share it: at most one `config/host` read per *arr per
+  /// minute).
+  static const allowedHostsTtl = Duration(minutes: 1);
 
   final HubConfig _config;
   final Upstreams _up;
   final Clock _clock;
   final TtlCache<int, HealthReport> _report;
   final TtlCache<ServiceId, String?> _versions;
+  final TtlCache<ServiceId, AllowedHostsCheck> _allowedHosts;
 
   /// The Docker proxy self-test (container actions are disabled until it
   /// passes).
@@ -121,6 +193,58 @@ final class HealthService {
 
   /// Drops the cached report.
   void invalidate() => _report.clear();
+
+  /// The Allowed Hosts check of Sonarr, Radarr or Prowlarr (cached
+  /// [allowedHostsTtl]; never throws). Reads `allowedHosts` from
+  /// `config/host` with the gateway's key: a saved list without the hub's
+  /// hostname is [AllowedHostsState.pending] (the *arr applies it at its next
+  /// restart), a `400 Invalid Hostname` answer [AllowedHostsState.rejected].
+  /// Anything else (not configured, other errors, an *arr without the
+  /// setting) counts as ok: the other probes report those.
+  Future<AllowedHostsCheck> allowedHosts(ServiceId id) {
+    final c = _up[id];
+    final host = c.baseUrl.host;
+    final ok = AllowedHostsCheck(id, host, AllowedHostsState.ok);
+    if (!allowedHostsServices.contains(id) || !c.configured) {
+      return Future.value(ok);
+    }
+    return _allowedHosts.value(id, () async {
+      try {
+        final prefix = id == ServiceId.prowlarr ? '/api/v1' : '/api/v3';
+        // The body also holds the API key and passwords: only allowedHosts
+        // is read, and the body is never logged.
+        final r = await c.send(
+          'GET',
+          '$prefix/config/host',
+          timeout: _probeTimeout,
+          maxBytes: 256 * 1024,
+        );
+        if (r.isHostRejected) {
+          return AllowedHostsCheck(id, host, AllowedHostsState.rejected);
+        }
+        if (!r.ok) return ok;
+        final saved = readString(readMap(_tryJson(r))?['allowedHosts']);
+        if (saved == null || allowedHostsAccepts(saved, host)) return ok;
+        return AllowedHostsCheck(
+          id,
+          host,
+          AllowedHostsState.pending,
+          allowedHosts: saved,
+        );
+      } on Object catch (e) {
+        _log.fine('allowed hosts check of ${id.name} failed: $e');
+        return ok;
+      }
+    });
+  }
+
+  /// The dashboard alert of [allowedHosts] for [id] (null when ok; never
+  /// throws).
+  Future<Alert?> allowedHostsAlert(
+    ServiceId id, {
+    required String feature,
+    required String route,
+  }) async => (await allowedHosts(id)).alert(feature: feature, route: route);
 
   /// Runs the self-test and the capability probes now, then every 6 h. While
   /// the Docker proxy is unreachable the self-test is retried every
@@ -357,6 +481,61 @@ final class HealthService {
     return null;
   }
 
+  /// Sonarr, Radarr, Prowlarr: `/ping`, the version, and the Allowed Hosts
+  /// check (issue #2), which turns a rejected or soon-rejected hostname into
+  /// `degraded` with a message that says how to fix it.
+  Future<_Probe> _probeArr(ServiceId id) async {
+    final c = _up[id];
+    final ping = await c.send(
+      'GET',
+      '/ping',
+      timeout: _probeTimeout,
+      maxBytes: 1 << 20,
+    );
+    if (ping.isHostRejected) {
+      final check = AllowedHostsCheck(
+        id,
+        c.baseUrl.host,
+        AllowedHostsState.rejected,
+      );
+      _allowedHosts.put(id, check);
+      return _Probe(ServiceHealthStatus.degraded, message: check.message);
+    }
+    // Accepted again (fixed and restarted): forget the rejection.
+    if (_allowedHosts.peek(id)?.state == AllowedHostsState.rejected) {
+      _allowedHosts.invalidate(id);
+    }
+    if (ping.status == 401 || ping.status == 403) {
+      return const _Probe(
+        ServiceHealthStatus.degraded,
+        message: 'Credentials rejected',
+      );
+    }
+    if (!ping.ok) {
+      return _Probe(ServiceHealthStatus.down, message: 'HTTP ${ping.status}');
+    }
+    final prefix = id == ServiceId.prowlarr ? '/api/v1' : '/api/v3';
+    final hostsCheck = allowedHosts(id); // never throws
+    final probe = await _withVersion(
+      id,
+      () => _jsonVersion(
+        c,
+        '$prefix/system/status',
+        (j) => readString(j['version']),
+      ),
+    );
+    final hosts = await hostsCheck;
+    if (probe.status == ServiceHealthStatus.up &&
+        hosts.state != AllowedHostsState.ok) {
+      return _Probe(
+        ServiceHealthStatus.degraded,
+        version: probe.version,
+        message: hosts.message,
+      );
+    }
+    return probe;
+  }
+
   Future<String?> _version(
     ServiceId id,
     Future<String?> Function() load,
@@ -389,18 +568,7 @@ final class HealthService {
   Future<_Probe> _probe(ServiceId id) async {
     switch (id) {
       case ServiceId.sonarr || ServiceId.radarr || ServiceId.prowlarr:
-        final c = _up[id];
-        final fail = await _get(c, '/ping');
-        if (fail != null) return fail;
-        final prefix = id == ServiceId.prowlarr ? '/api/v1' : '/api/v3';
-        return _withVersion(
-          id,
-          () => _jsonVersion(
-            c,
-            '$prefix/system/status',
-            (j) => readString(j['version']),
-          ),
-        );
+        return _probeArr(id);
       case ServiceId.bazarr:
         final c = _up.bazarr;
         final fail = await _get(c, '/api/system/ping');

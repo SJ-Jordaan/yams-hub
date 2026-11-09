@@ -94,8 +94,9 @@ tool/sandbox/run.sh down                     # remove it
   `$SANDBOX_DIR/secrets.env`), then runs it again to prove a re-run changes nothing outside the hub.
 - **test** (`smoke.py`, stdlib only) logs in (bearer and cookie flows), calls every page's API and fails on upstream
   errors, missing or unhealthy services, an empty calendar or library. It also restricts Sonarr's Allowed Hosts
-  (issue #2): the hub must notice (health or calendar) and recover after the restore; whether it names the cause is
-  only recorded.
+  (issue #2): saved but before Sonarr restarts, health and the dashboard must warn; after the restart, health, the
+  calendar and the library card must name the cause (`upstream_host_rejected`); after the restore, the hub must
+  recover.
 - **screens** (`screens.py`) needs Playwright: it uses `~/development/perf-venv` and `~/development/ms-playwright` when
   present (`SANDBOX_PYTHON` to choose another); without it the step is skipped with a warning.
 - **down** removes only what carries the sandbox's compose labels (and the hub install inside `$SANDBOX_DIR`), plus

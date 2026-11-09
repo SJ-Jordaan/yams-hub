@@ -24,6 +24,7 @@ class ErrorView extends StatelessWidget {
     return switch (e.code) {
       ApiErrorCode.upstreamUnavailable || ApiErrorCode.upstreamTimeout => Icons.cloud_off,
       ApiErrorCode.serviceNotConfigured => Icons.settings,
+      ApiErrorCode.upstreamHostRejected => Icons.dns_outlined,
       ApiErrorCode.forbidden || ApiErrorCode.policyDenied => Icons.lock_outline,
       ApiErrorCode.notFound => Icons.search_off,
       ApiErrorCode.notImplemented => Icons.construction_outlined,
@@ -36,6 +37,7 @@ class ErrorView extends StatelessWidget {
     if (e.isNotConfigured) return 'Not configured on the hub';
     if (e.isNotImplemented) return 'Not available yet';
     if (e.isNetwork) return "Can't reach the hub";
+    if (e.isHostRejected) return "${e.service?.displayName ?? 'The service'} blocks the hub";
     return 'Something went wrong';
   }
 
@@ -47,7 +49,8 @@ class ErrorView extends StatelessWidget {
     final service = e.service;
     final detail = [
       if (e.message.isNotEmpty && e.message != titleFor(e)) e.message,
-      if (service != null && service != ServiceId.unknown) service.displayName,
+      // The host-rejected message already names the service.
+      if (service != null && service != ServiceId.unknown && !e.isHostRejected) service.displayName,
     ].join(' · ');
 
     final children = <Widget>[

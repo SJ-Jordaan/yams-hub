@@ -316,6 +316,125 @@ void main() {
       expect(health.dockerProxy.actionsAllowed, isTrue);
     });
 
+    test('Allowed Hosts (issue #2): rejected and saved-but-not-restarted are '
+        'degraded with the fix; the check is cached for a minute', () async {
+      final f = hub.fakes;
+      FakeResponse invalidHostname(FakeRequest _) => FakeResponse.bytes(
+        fixtureBytes('arr/servarr_error_400_invalid_hostname.html'),
+        status: 400,
+        contentType: 'text/html',
+      );
+      FakeResponse pong(FakeRequest _) => FakeResponse.json({'status': 'OK'});
+      // Sonarr: the saved list leaves the hub out, Sonarr has not restarted.
+      f.on(ServiceId.sonarr, 'GET', '/ping', pong);
+      f.onFixture(
+        ServiceId.sonarr,
+        'GET',
+        '/api/v3/system/status',
+        'arr/sonarr_system_status.json',
+      );
+      f.on(
+        ServiceId.sonarr,
+        'GET',
+        '/api/v3/config/host',
+        (_) => FakeResponse.json({
+          'allowedHosts': 'localhost,nas.lan',
+          'apiKey': 'secret-sonarr-api-key',
+          'password': 'secret-password',
+        }),
+      );
+      // Radarr: active, rejects the hub.
+      var radarrRejects = true;
+      f.on(
+        ServiceId.radarr,
+        'GET',
+        '/ping',
+        (r) => radarrRejects ? invalidHostname(r) : pong(r),
+      );
+      // Prowlarr: lists the hub's hostname.
+      f.on(ServiceId.prowlarr, 'GET', '/ping', pong);
+      f.on(
+        ServiceId.prowlarr,
+        'GET',
+        '/api/v1/config/host',
+        (_) => FakeResponse.json({'allowedHosts': 'localhost, PROWLARR.test'}),
+      );
+
+      var h = HealthReport.fromJson((await hub.get('/api/v1/health')).map);
+      final sonarr = h.of(ServiceId.sonarr)!;
+      expect(sonarr.status, ServiceHealthStatus.degraded);
+      expect(sonarr.version, '4.0.20.3014');
+      expect(
+        sonarr.message,
+        "Sonarr's saved Allowed Hosts (localhost, nas.lan) leaves out "
+        "'sonarr.test', the hostname the hub uses: Sonarr will reject the "
+        'hub after its next restart. In Sonarr → Settings → General → '
+        'Allowed Hosts, add sonarr.test (or clear the list).',
+      );
+      final radarr = h.of(ServiceId.radarr)!;
+      expect(radarr.status, ServiceHealthStatus.degraded);
+      expect(
+        radarr.message,
+        "Radarr rejects the hub's hostname 'radarr.test'. In Radarr → "
+        'Settings → General → Allowed Hosts, add radarr.test (or clear the '
+        'list), then restart Radarr.',
+      );
+      expect(h.of(ServiceId.prowlarr)!.status, ServiceHealthStatus.up);
+      expect(
+        jsonEncode(h.toJson()),
+        isNot(contains('secret-')),
+        reason: 'only allowedHosts is read from config/host',
+      );
+
+      // The dashboard cards reuse the cached checks (no second read).
+      final health = hub.hub.health;
+      final reads = f.calls.where((c) => c.path.endsWith('/config/host'));
+      expect(reads.length, 2);
+      final sonarrAlert = (await health.allowedHostsAlert(
+        ServiceId.sonarr,
+        feature: 'library',
+        route: '/library',
+      ))!;
+      expect(sonarrAlert.id, 'sonarr.allowedHosts');
+      expect(sonarrAlert.severity, AlertSeverity.warning);
+      expect(
+        sonarrAlert.title,
+        'Sonarr will reject the hub after its next restart',
+      );
+      expect(sonarrAlert.message, sonarr.message);
+      final radarrAlert = (await health.allowedHostsAlert(
+        ServiceId.radarr,
+        feature: 'library',
+        route: '/library',
+      ))!;
+      expect(radarrAlert.severity, AlertSeverity.error);
+      expect(radarrAlert.title, "Radarr rejects the hub's hostname");
+      expect(
+        await health.allowedHostsAlert(
+          ServiceId.prowlarr,
+          feature: 'indexers',
+          route: '/indexers',
+        ),
+        isNull,
+      );
+      expect(f.calls.where((c) => c.path.endsWith('/config/host')).length, 2);
+
+      // Radarr fixed and restarted: up again with the next report, without
+      // waiting for the check to expire.
+      radarrRejects = false;
+      f.on(
+        ServiceId.radarr,
+        'GET',
+        '/api/v3/config/host',
+        (_) => FakeResponse.json({'allowedHosts': ''}),
+      );
+      hub.clock.advance(const Duration(seconds: 31));
+      h = HealthReport.fromJson((await hub.get('/api/v1/health')).map);
+      expect(h.of(ServiceId.radarr)!.status, ServiceHealthStatus.up);
+      expect(h.of(ServiceId.radarr)!.message, isNull);
+      expect(h.of(ServiceId.sonarr)!.status, ServiceHealthStatus.degraded);
+    });
+
     test('/health probes every service; statuses and versions', () async {
       final f = hub.fakes;
       f.on(

@@ -114,6 +114,10 @@ abstract final class ApiErrorCode {
   static const notImplemented = 'not_implemented';
   static const upstreamError = 'upstream_error';
   static const upstreamAuthFailed = 'upstream_auth_failed';
+
+  /// Sonarr/Radarr/Prowlarr refused the hub's `Host` because their "Allowed
+  /// Hosts" setting leaves it out (`400 Invalid Hostname`); `details.host`.
+  static const upstreamHostRejected = 'upstream_host_rejected';
   static const upstreamBadResponse = 'upstream_bad_response';
   static const upstreamUnavailable = 'upstream_unavailable';
   static const serviceNotConfigured = 'service_not_configured';

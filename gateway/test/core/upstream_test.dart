@@ -9,6 +9,7 @@ import 'package:yams_hub_gateway/yams_hub_gateway.dart';
 import 'package:yams_models/yams_models.dart';
 
 import '../support/fake_upstreams.dart';
+import '../support/fixtures.dart';
 
 void main() {
   late FakeUpstreams fakes;
@@ -223,6 +224,109 @@ void main() {
         }
       },
     );
+
+    test('Allowed Hosts: "400 Invalid Hostname" from an *arr names the cause (issue #2)', () async {
+      FakeResponse invalidHostname(FakeRequest _) => FakeResponse.bytes(
+        fixtureBytes('arr/servarr_error_400_invalid_hostname.html'),
+        status: 400,
+        contentType: 'text/html',
+      );
+      for (final (svc, path, host) in [
+        (ServiceId.sonarr, '/api/v3/calendar', 'sonarr.test'),
+        (ServiceId.radarr, '/api/v3/movie', 'radarr.test'),
+        (ServiceId.prowlarr, '/api/v1/indexer', 'prowlarr.test'),
+      ]) {
+        fakes.on(svc, 'GET', path, invalidHostname);
+        try {
+          await up[svc].getJson(path);
+          fail('expected an exception');
+        } on UpstreamHostRejected catch (e) {
+          expect(e.status, 400);
+          expect(e.host, host);
+          final api = e.toApiException(resourceNotFound: false);
+          expect(api.status, 502);
+          expect(api.code, ApiErrorCode.upstreamHostRejected);
+          expect(api.service, svc);
+          expect(api.details, {'upstreamStatus': 400, 'host': host});
+          final name = svc.displayName;
+          expect(
+            api.message,
+            "$name rejects the hub's hostname '$host'. In $name → Settings "
+            '→ General → Allowed Hosts, add $host (or clear the list), then '
+            'restart $name.',
+          );
+        }
+      }
+      // Raw responses say so too (the health probe reads them).
+      final r = await up.sonarr.send('GET', '/api/v3/calendar');
+      expect(r.isHostRejected, isTrue);
+      expect(r.host, 'sonarr.test');
+
+      // Other 400s and other services keep the generic mapping.
+      fakes.on(
+        ServiceId.sonarr,
+        'GET',
+        '/api/v3/episode',
+        (_) => FakeResponse.fixture(
+          'arr/sonarr_error_400_badrequest.json',
+          status: 400,
+        ),
+      );
+      await expectLater(
+        up.sonarr.getJson('/api/v3/episode'),
+        throwsA(
+          isA<UpstreamException>()
+              .having((e) => e is UpstreamHostRejected, 'host', isFalse)
+              .having(
+                (e) => e.toApiException().code,
+                'code',
+                ApiErrorCode.upstreamError,
+              ),
+        ),
+      );
+      fakes.on(ServiceId.bazarr, 'GET', '/api/badges', invalidHostname);
+      await expectLater(
+        up.bazarr.getJson('/api/badges'),
+        throwsA(isNot(isA<UpstreamHostRejected>())),
+      );
+    });
+
+    test('Allowed Hosts matching follows the *arrs', () {
+      // Checked against Sonarr 4 / Radarr 6 / Prowlarr 2 (tool/sandbox).
+      final cases = <(String, String, bool)>[
+        ('', 'sonarr', true),
+        ('  ', 'sonarr', true),
+        ('localhost', 'sonarr', false),
+        ('localhost', 'localhost', true),
+        ('foo', '127.0.0.1', true),
+        ('foo', '[::1]', true),
+        ('localhost, sonarr', 'sonarr', true),
+        ('foo;Sonarr', 'sonarr', true),
+        ('SONARR', 'sonarr', true),
+        (' foo , bar ', 'bar', true),
+        ('*.example.com', 'a.example.com', true),
+        ('*.example.com', 'example.com', false),
+        ('*', 'sonarr', true),
+        ('10.0.0.1', '172.17.0.2', false),
+        ('172.17.0.2', '172.17.0.2', true),
+        ('sonarr.lan', 'sonarr', false),
+      ];
+      for (final (list, host, accepted) in cases) {
+        expect(
+          allowedHostsAccepts(list, host),
+          accepted,
+          reason: '"$list" vs $host',
+        );
+      }
+      expect(isInvalidHostnameResponse(400, utf8.encode('{}')), isFalse);
+      expect(
+        isInvalidHostnameResponse(
+          403,
+          fixtureBytes('arr/servarr_error_400_invalid_hostname.html'),
+        ),
+        isFalse,
+      );
+    });
 
     test('mapping table', () async {
       Future<ApiException> mapped(int status, Object body) async {

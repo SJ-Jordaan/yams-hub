@@ -87,6 +87,25 @@ void main() {
     expect(find.text("Radarr couldn't be loaded · its items are missing"), findsOneWidget);
   });
 
+  testWidgets('a source refused by Allowed Hosts shows the fix instead (issue #2)', (tester) async {
+    const message = "Sonarr rejects the hub's hostname 'sonarr'. In Sonarr → Settings → General → Allowed Hosts, add sonarr (or clear the list), then restart Sonarr.";
+    await _pumpCard(
+      tester,
+      Section.ok(
+        const CalendarCard(items: [], countNext7Days: 0).toJson(),
+        fetchedAt: calendarTestNow.toUtc(),
+        error: const ApiError(
+          code: ApiErrorCode.upstreamHostRejected,
+          message: message,
+          status: 502,
+          service: ServiceId.sonarr,
+        ),
+      ),
+    );
+    expect(find.text(message), findsOneWidget);
+    expect(find.textContaining("couldn't be loaded"), findsNothing);
+  });
+
   testWidgets('a stale card shows no failure note (the frame badges it)', (tester) async {
     await _pumpCard(
       tester,
