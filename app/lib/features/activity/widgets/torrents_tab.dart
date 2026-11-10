@@ -318,7 +318,8 @@ class TorrentTile extends StatelessWidget {
                 Text('ETA ${formatEta(t.etaSeconds)}', style: small),
               if (t.category != null) StatusChip(label: t.category!, dense: true),
               if (t.protected) Icon(Icons.shield, size: 14, color: colors.info, semanticLabel: 'Protected'),
-              if (t.hasTrackerError) Icon(Icons.wifi_tethering_error, size: 14, color: colors.error),
+              if (t.hasTrackerError)
+                Icon(Icons.wifi_tethering_error, size: 14, color: colors.error, semanticLabel: 'Tracker error'),
             ],
           ),
         ],

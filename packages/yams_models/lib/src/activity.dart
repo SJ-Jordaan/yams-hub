@@ -144,6 +144,9 @@ final class TorrentSummary {
 
   /// Queue position; null when not queued.
   final int? queuePosition;
+
+  /// A tracker reports an error and no tracker works (a gateway older than
+  /// issue #1 sends qBittorrent's raw flag: any tracker failing).
   final bool hasTrackerError;
   final bool hasTrackerWarning;
 
@@ -1370,11 +1373,21 @@ enum TrackerInfoStatus {
   static TrackerInfoStatus fromQbit(int? v) =>
       (v == null || v < 0 || v > 6) ? unknown : values[v];
 
+  /// The last announce failed (qBittorrent 4, 5 and 6).
+  bool get isFailing =>
+      this == notWorking || this == trackerError || this == unreachable;
+
   static TrackerInfoStatus fromJson(Object? v) =>
       readEnum(v, TrackerInfoStatus.values, TrackerInfoStatus.unknown);
 
   String toJson() => name;
 }
+
+/// Whether any of [trackers] works. A torrent's tracker error only counts
+/// when none does: qBittorrent sets `has_tracker_error` when any one tracker
+/// fails, even if the others announce fine (issue #1).
+bool anyTrackerWorking(Iterable<TrackerInfo> trackers) =>
+    trackers.any((t) => t.status == TrackerInfoStatus.working);
 
 /// One tracker. [url] is reduced to `scheme://host[:port]` (announce URLs of
 /// private trackers embed passkeys).
@@ -1489,6 +1502,14 @@ final class TorrentDetail {
 
   /// The *arr queue records of this torrent.
   final List<QueueArrEntry> arr;
+
+  /// [TorrentSummary.hasTrackerError] checked against [trackers], so the
+  /// rule also holds with a gateway that sends qBittorrent's raw flag.
+  bool get hasTrackerError =>
+      summary.hasTrackerError && !anyTrackerWorking(trackers);
+
+  /// Trackers whose last announce failed.
+  int get failingTrackers => trackers.where((t) => t.status.isFailing).length;
 
   JsonMap toJson() => compactJson({
     'summary': summary.toJson(),

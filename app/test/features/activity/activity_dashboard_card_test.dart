@@ -44,6 +44,24 @@ void main() {
     expect(find.text('VPN · France · port 36681 ✓'), findsOneWidget);
   });
 
+  testWidgets('a tracker-error item is labelled in red', (tester) async {
+    final item = buildDownloadingItem();
+    final card = ActivityCard(
+      counts: const ActivityCardCounts(downloading: 1, seeding: 0, stalled: 0, attention: 1),
+      top: [
+        QueueItem.fromJson({
+          ...item.toJson(),
+          'needsAttention': true,
+          'attention': QueueAttention.trackerError.toJson(),
+        }),
+      ],
+    );
+    await tester.pumpWidget(_wrap(ActivityDashboardCard(section: buildSection(card.toJson()))));
+    final label = find.text('Tracker error');
+    expect(label, findsOneWidget);
+    expect(tester.widget<Text>(label).style?.color, StatusColors.of(tester.element(label)).error);
+  });
+
   testWidgets('VPN down is shown in red', (tester) async {
     final card = ActivityCard(vpn: buildVpn(status: VpnConnectionState.down));
     await tester.pumpWidget(_wrap(ActivityDashboardCard(section: buildSection(card.toJson()))));

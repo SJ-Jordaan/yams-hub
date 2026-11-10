@@ -36,9 +36,21 @@ final class QbitView {
   /// The last tick failed (or the first tick did not answer in time).
   final bool stale;
 
-  /// Mapped torrents (incomplete delta entries are skipped).
-  List<TorrentSummary> summaries() => [
-    for (final e in torrents.entries) ?torrentSummaryOf(e.key, e.value),
+  /// Hashes qBittorrent flags with `has_tracker_error`.
+  Iterable<String> trackerErrorFlagged() => [
+    for (final e in torrents.entries)
+      if (qbitTrackerErrorFlag(e.value)) e.key,
+  ];
+
+  /// Mapped torrents (incomplete delta entries are skipped). [trackerWorking]:
+  /// flagged hashes that still have a working tracker (TrackerHealth).
+  List<TorrentSummary> summaries({Set<String> trackerWorking = const {}}) => [
+    for (final e in torrents.entries)
+      ?torrentSummaryOf(
+        e.key,
+        e.value,
+        trackerWorking: trackerWorking.contains(e.key),
+      ),
   ];
 }
 

@@ -20,6 +20,7 @@ TorrentSummary buildTorrent({
   String? category,
   List<String> tags = const [],
   int upBps = 686561,
+  bool hasTrackerError = false,
 }) => TorrentSummary(
   hash: hash,
   name: name,
@@ -42,6 +43,7 @@ TorrentSummary buildTorrent({
   addedAt: testNow.subtract(const Duration(days: 1)),
   protected: tags.contains('Keep'),
   managedBy: category == 'tv-sonarr' ? ArrService.sonarr : null,
+  hasTrackerError: hasTrackerError,
 );
 
 QueueArrEntry buildArrEntry({bool admin = true, QueueTrackedState state = QueueTrackedState.importPending}) =>
@@ -208,7 +210,13 @@ ManualImportCandidates buildCandidates() => const ManualImportCandidates(
   ],
 );
 
-TorrentDetail buildDetail({TorrentSummary? summary, List<QueueArrEntry> arr = const []}) => TorrentDetail(
+TorrentDetail buildDetail({
+  TorrentSummary? summary,
+  List<QueueArrEntry> arr = const [],
+  List<TrackerInfo> trackers = const [
+    TrackerInfo(url: 'http://nyaa.tracker.wf:7777', tier: 0, status: TrackerInfoStatus.working, seeds: 305, peers: 100),
+  ],
+}) => TorrentDetail(
   summary: summary ?? buildTorrent(),
   savePath: '/data/downloads/torrents',
   pieceSizeBytes: 2097152,
@@ -238,9 +246,7 @@ TorrentDetail buildDetail({TorrentSummary? summary, List<QueueArrEntry> arr = co
       priority: TorrentFilePriority.normal,
     ),
   ],
-  trackers: const [
-    TrackerInfo(url: 'http://nyaa.tracker.wf:7777', tier: 0, status: TrackerInfoStatus.working, seeds: 305, peers: 100),
-  ],
+  trackers: trackers,
   arr: arr,
 );
 

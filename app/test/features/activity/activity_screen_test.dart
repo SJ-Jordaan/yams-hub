@@ -252,6 +252,28 @@ void main() {
       expect(find.text('Added to qBittorrent'), findsOneWidget);
     });
 
+    testWidgets('the tracker error icon follows the gateway flag', (tester) async {
+      final api = activityFakeApi()
+        ..getJson(
+          '/torrents',
+          buildTorrentList(
+            items: [
+              buildTorrent(hasTrackerError: true),
+              buildTorrent(hash: sonarrHash, name: 'Healthy trackers', category: 'tv-sonarr'),
+            ],
+          ).toJson(),
+        );
+      await pumpHubApp(tester, api: api, location: '/activity?tab=torrents');
+      await settle(tester);
+      expect(find.byIcon(Icons.wifi_tethering_error), findsOneWidget);
+      expect(tester.widget<Icon>(find.byIcon(Icons.wifi_tethering_error)).semanticLabel, 'Tracker error');
+      final row = find.ancestor(of: find.byIcon(Icons.wifi_tethering_error), matching: find.byType(ListTile));
+      expect(
+        find.descendant(of: row, matching: find.text('Cyberpunk.Edgerunners.S02E01.1080p.WEB-DL')),
+        findsOneWidget,
+      );
+    });
+
     testWidgets('search filters locally; members get no FAB', (tester) async {
       final api = activityFakeApi(role: Role.member);
       await pumpHubApp(tester, api: api, role: Role.member, location: '/activity?tab=torrents');

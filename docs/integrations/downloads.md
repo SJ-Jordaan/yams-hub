@@ -203,9 +203,9 @@ Full real objects are in `qbittorrent_torrents_info.json`. Types:
 | `share_limits_mode` | string | `Default \| MatchAny \| MatchAll` (new) |
 | `popularity` | double | new in 5.x |
 | `availability` | double | `-1` when seeding |
-| `tracker` | string | current working tracker URL |
+| `tracker` | string | documented as "first tracker with working status, empty if none works", but **not usable as a health signal**: libtorrent keeps the last tracker that ever worked, and qBittorrent ≥ 5.1 falls back to the first tracker's URL when that is empty |
 | `trackers_count` | int | |
-| `has_tracker_error`, `has_tracker_warning`, `has_other_announce_error` | bool | new; useful for an "issues" badge |
+| `has_tracker_error`, `has_tracker_warning`, `has_other_announce_error` | bool | `sync/maindata` only (WebAPI 2.11.7), not `torrents/info`. Any one tracker decides: `has_tracker_error` = some tracker in status 5, `has_other_announce_error` = some tracker in 4 or 6, `has_tracker_warning` = a working tracker with a message. One dead tracker among many healthy ones sets `has_tracker_error`, so the gateway checks `torrents/trackers` for a working one (API.md, TorrentSummary) |
 | `magnet_uri` | string | |
 | `comment`, `created_by` | string | |
 | `time_active`, `seeding_time` | int seconds | |
