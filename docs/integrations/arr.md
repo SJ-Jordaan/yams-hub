@@ -29,6 +29,11 @@ Without a key, `/api/v3/*` returns **401** even from a private address. "Disable
 
 **Health warnings to surface:** both apps currently report `AllowedHostsCheck` (Allowed Hosts not configured). If the
 user ever sets Allowed Hosts, the gateway's requests use the `Host: sonarr` / `Host: radarr` names, so those names must be in the list.
+Verified behaviour (issue #2, `tool/sandbox/smoke.py`): `allowedHosts` in `config/host` (comma or semicolon separated;
+names or IPs, no port or scheme; `*.domain` accepted, a bare `*` refused by validation) is applied only at restart; then
+an unlisted `Host` gets `400 Bad Request - Invalid Hostname` (HTML, `fixtures/arr/servarr_error_400_invalid_hostname.html`)
+on every path including `/ping`; `localhost`, `127.0.0.1` and `[::1]` always pass. The gateway maps it to
+`upstream_host_rejected` and warns while a saved list is not active yet (API.md §2.5).
 
 **Response encoding:** JSON, camelCase, `Content-Type: application/json; charset=utf-8`. gzip is supported (`Vary: Accept-Encoding`),
 so **always send `Accept-Encoding: gzip`**. With it, Radarr `/movie` drops from 1.47 MB to 418 KB and Sonarr `/series` from 304 KB to 75 KB.

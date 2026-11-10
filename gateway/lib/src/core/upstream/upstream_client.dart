@@ -14,6 +14,7 @@ import '../../config/config.dart';
 import '../../version.dart';
 import '../log/log.dart';
 import '../log/redact.dart';
+import 'allowed_hosts.dart';
 import 'body_reader.dart';
 import 'multipart.dart';
 import 'upstream_exception.dart';
@@ -67,12 +68,16 @@ final class UpstreamResponse {
     required this.status,
     required this.headers,
     required this.bodyBytes,
+    this.host,
   });
 
   final ServiceId service;
   final String method;
   final String path;
   final int status;
+
+  /// The hostname the request was sent to (the `Host` header without port).
+  final String? host;
 
   /// Lower-case header names.
   final Map<String, String> headers;
@@ -81,6 +86,16 @@ final class UpstreamResponse {
   bool get ok => status >= 200 && status < 300;
 
   String? get contentType => headers['content-type'];
+
+  /// The service refused the hub's `Host` header (Allowed Hosts, issue #2).
+  bool get isHostRejected =>
+      allowedHostsServices.contains(service) &&
+      isInvalidHostnameResponse(status, bodyBytes);
+
+  /// Throws [UpstreamHostRejected] when [isHostRejected]. For callers that
+  /// read a 4xx body themselves (Prowlarr's 400 test results, download
+  /// errors): the rejection page must not pass for their own error.
+  UpstreamResponse ensureHostAccepted() => isHostRejected ? ensureOk() : this;
 
   /// The body as UTF-8 text.
   String text() => utf8.decode(bodyBytes, allowMalformed: true);
@@ -105,19 +120,39 @@ final class UpstreamResponse {
   /// Throws the mapped [UpstreamException] unless the status is 2xx.
   UpstreamResponse ensureOk() {
     if (ok) return this;
-    throw errorFor(service, method, path, status, bodyBytes, contentType);
+    throw errorFor(
+      service,
+      method,
+      path,
+      status,
+      bodyBytes,
+      contentType,
+      host: host,
+    );
   }
 }
 
-/// Builds the [UpstreamException] for a non-2xx response.
+/// Builds the [UpstreamException] for a non-2xx response. [host] is the
+/// hostname the request went to (for [UpstreamHostRejected]; defaults to the
+/// service's container name).
 UpstreamException errorFor(
   ServiceId service,
   String method,
   String path,
   int status,
   List<int> body,
-  String? contentType,
-) {
+  String? contentType, {
+  String? host,
+}) {
+  if (allowedHostsServices.contains(service) &&
+      isInvalidHostnameResponse(status, body)) {
+    return UpstreamHostRejected(
+      service: service,
+      method: method,
+      path: path,
+      host: host ?? service.name,
+    );
+  }
   final extracted = extractUpstreamError(
     status,
     body,
@@ -420,6 +455,7 @@ class UpstreamClient {
             status: streamed.statusCode,
             headers: _lower(streamed.headers),
             bodyBytes: Uint8List(0),
+            host: uri.host,
           );
         }
         throw UpstreamBadResponse(
@@ -437,6 +473,7 @@ class UpstreamClient {
         status: streamed.statusCode,
         headers: _lower(streamed.headers),
         bodyBytes: bytes,
+        host: uri.host,
       );
     } on UpstreamException {
       rethrow;
@@ -496,6 +533,7 @@ class UpstreamClient {
           streamed.statusCode,
           bytes,
           streamed.headers['content-type'],
+          host: uri.host,
         );
       }
       _log.fine(

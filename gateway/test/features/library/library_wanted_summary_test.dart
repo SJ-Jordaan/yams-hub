@@ -357,9 +357,101 @@ void main() {
           hosts['title'],
           'Sonarr: Allowed Hosts is not configured, Sonarr will accept requests for any hostname or IP address',
         );
+        expect(
+          hosts['message'],
+          endsWith(
+            'If you set Allowed Hosts, include sonarr.test (the hostname the '
+            'hub uses), then restart Sonarr.',
+          ),
+        );
         final queue = alerts['radarr.queue.errors']!;
         expect(queue['severity'], 'warning');
         expect(queue['route'], '/activity');
+      },
+    );
+
+    test('Allowed Hosts (issue #2): a rejected Sonarr says why, a saved list '
+        'without the hub warns before the restart', () async {
+      hub.fakes
+        ..on(
+          ServiceId.sonarr,
+          '*',
+          RegExp(r'^/api/v3/'),
+          (_) => FakeResponse.bytes(
+            fixtureBytes('arr/servarr_error_400_invalid_hostname.html'),
+            status: 400,
+            contentType: 'text/html',
+          ),
+        )
+        ..on(
+          ServiceId.radarr,
+          'GET',
+          '/api/v3/config/host',
+          (_) => FakeResponse.json({'allowedHosts': 'localhost'}),
+        );
+      final r = await hub.get('/api/v1/dashboard?cards=library');
+      expect(r.status, 200);
+      final card = (r.map['cards']! as Map)['library'] as Map;
+      expect(card['status'], 'ok');
+      final sonarr = LibraryCard.fromJson((card['data'] as Map).cast()).sonarr;
+      expect(
+        sonarr.health.single.message,
+        "Sonarr rejects the hub's hostname 'sonarr.test'. In Sonarr → "
+        'Settings → General → Allowed Hosts, add sonarr.test (or clear the '
+        'list), then restart Sonarr.',
+      );
+      final alerts = {
+        for (final a in r.map['alerts']! as List) (a as Map)['id']: a,
+      };
+      final rejected = alerts['sonarr.allowedHosts']!;
+      expect(rejected['severity'], 'error');
+      expect(rejected['title'], "Sonarr rejects the hub's hostname");
+      expect(rejected['message'], sonarr.health.single.message);
+      expect(rejected['route'], '/library');
+      expect(rejected['dismissible'], isFalse);
+      final pending = alerts['radarr.allowedHosts']!;
+      expect(pending['severity'], 'warning');
+      expect(
+        pending['title'],
+        'Radarr will reject the hub after its next restart',
+      );
+      expect(pending['message'], contains("leaves out 'radarr.test'"));
+
+      // The checks are cached: a second dashboard does not read config/host.
+      final reads = hub.fakes.calls
+          .where((c) => c.path == '/api/v3/config/host')
+          .length;
+      await hub.get('/api/v1/dashboard?cards=library');
+      expect(
+        hub.fakes.calls.where((c) => c.path == '/api/v3/config/host').length,
+        reads,
+      );
+    });
+
+    test(
+      'both *arrs rejecting the hub: the card error names the cause',
+      () async {
+        for (final svc in [ServiceId.sonarr, ServiceId.radarr]) {
+          hub.fakes.on(
+            svc,
+            '*',
+            RegExp('^/'),
+            (_) => FakeResponse.bytes(
+              fixtureBytes('arr/servarr_error_400_invalid_hostname.html'),
+              status: 400,
+              contentType: 'text/html',
+            ),
+          );
+        }
+        final r = await hub.get('/api/v1/dashboard?cards=library');
+        final dash = DashboardResponse.fromJson(r.map);
+        final card = dash.cards[DashboardCardKeys.library]!;
+        expect(card.status, SectionState.error);
+        expect(card.error?.code, ApiErrorCode.upstreamHostRejected);
+        expect(card.error?.message, startsWith("Sonarr rejects the hub's"));
+        final summary = await hub.get('$_base/summary');
+        expect(summary.status, 502);
+        expect(summary.errorCode, 'upstream_host_rejected');
       },
     );
 

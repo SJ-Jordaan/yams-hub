@@ -368,10 +368,58 @@ void main() {
       expect(hosts.severity, AlertSeverity.info);
       expect(hosts.dismissible, isTrue);
       expect(hosts.route, '/indexers');
+      expect(
+        hosts.message,
+        'If you set Allowed Hosts, include prowlarr.test (the hostname the hub '
+        'uses), then restart Prowlarr.',
+      );
+      expect(byId.containsKey('prowlarr.allowedHosts'), isFalse);
       // Covered by the per-indexer alert.
       expect(
         byId.containsKey('prowlarr.health.IndexerLongTermStatusCheck'),
         isFalse,
+      );
+    });
+
+    test('Allowed Hosts (issue #2): warns before Prowlarr restarts, then '
+        'names the cause', () async {
+      hub.fakes.on(
+        ServiceId.prowlarr,
+        'GET',
+        '/api/v1/config/host',
+        (_) => FakeResponse.json({'allowedHosts': 'localhost'}),
+      );
+      var r = await hub.get('/api/v1/dashboard?cards=indexers');
+      var dash = DashboardResponse.fromJson(r.map);
+      final pending = dash.alerts.firstWhere(
+        (a) => a.id == 'prowlarr.allowedHosts',
+      );
+      expect(pending.severity, AlertSeverity.warning);
+      expect(pending.feature, 'indexers');
+      expect(pending.route, '/indexers');
+      expect(pending.message, contains("leaves out 'prowlarr.test'"));
+
+      // Restarted: every call is refused.
+      hub.fakes.on(
+        ServiceId.prowlarr,
+        '*',
+        RegExp('^/'),
+        (_) => FakeResponse.bytes(
+          fixtureBytes('arr/servarr_error_400_invalid_hostname.html'),
+          status: 400,
+          contentType: 'text/html',
+        ),
+      );
+      hub.clock.advance(const Duration(minutes: 11));
+      r = await hub.get('/api/v1/dashboard?cards=indexers');
+      dash = DashboardResponse.fromJson(r.map);
+      final section = dash.cards[DashboardCardKeys.indexers]!;
+      expect(section.error?.code, ApiErrorCode.upstreamHostRejected);
+      expect(
+        section.error?.message,
+        "Prowlarr rejects the hub's hostname 'prowlarr.test'. In Prowlarr → "
+        'Settings → General → Allowed Hosts, add prowlarr.test (or clear the '
+        'list), then restart Prowlarr.',
       );
     });
 

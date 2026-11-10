@@ -175,6 +175,10 @@ class ApiException implements Exception {
   /// Not configured on the hub (`503 service_not_configured`).
   bool get isNotConfigured => code == ApiErrorCode.serviceNotConfigured;
 
+  /// Sonarr/Radarr/Prowlarr refuse the hub's hostname (their Allowed Hosts
+  /// setting, `502 upstream_host_rejected`); [message] says how to fix it.
+  bool get isHostRejected => code == ApiErrorCode.upstreamHostRejected;
+
   /// Stub route or card (`501 not_implemented`).
   bool get isNotImplemented => code == ApiErrorCode.notImplemented;
 

@@ -295,6 +295,33 @@ void main() {
       expect(r.body, isNot(contains('NzbDrone')));
     });
 
+    test(
+      'a host rejection by the *arr is 502 upstream_host_rejected',
+      () async {
+        final token = await search();
+        hub.fakes.on(
+          ServiceId.sonarr,
+          'POST',
+          '/api/v3/release',
+          (_) => FakeResponse.bytes(
+            fixtureBytes('arr/servarr_error_400_invalid_hostname.html'),
+            status: 400,
+            contentType: 'text/html',
+          ),
+        );
+        final r = await hub.post(
+          '$_base/releases/grab',
+          body: {'releaseId': token},
+        );
+        expect(r.status, 502, reason: r.body);
+        expect(r.errorCode, 'upstream_host_rejected');
+        expect(
+          readMap(r.map['error'])!['message'],
+          contains('Allowed Hosts, add sonarr.test'),
+        );
+      },
+    );
+
     test('body validation and roles', () async {
       expect(
         (await hub.post(

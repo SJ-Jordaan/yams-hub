@@ -330,6 +330,11 @@ class IndexersModule extends FeatureModule {
 
   @override
   Future<DashboardContribution?> dashboard(ApiRequest req) async {
+    final hostsAlert = ctx.health.allowedHostsAlert(
+      ServiceId.prowlarr,
+      feature: id,
+      route: _indexersRoute,
+    );
     final snap = await guardUpstream(repo.snapshot);
     final stats = await repo.stats24h();
     final now = ctx.clock.now();
@@ -353,6 +358,7 @@ class IndexersModule extends FeatureModule {
       queries24h: stats?.totalQueries,
     );
     final alerts = <Alert>[
+      ?await hostsAlert,
       for (final i in failing)
         Alert(
           id: 'prowlarr.indexer.${i.id}',
@@ -395,6 +401,12 @@ class IndexersModule extends FeatureModule {
       source: ServiceId.prowlarr,
       feature: id,
       title: 'Prowlarr: ${h.message}',
+      message: allowedHosts
+          ? allowedHostsHint(
+              ServiceId.prowlarr,
+              ctx.upstreams.prowlarr.baseUrl.host,
+            )
+          : null,
       route: _indexersRoute,
       dismissible: allowedHosts,
     );

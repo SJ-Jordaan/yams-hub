@@ -188,7 +188,7 @@ class _HealthSummary extends StatelessWidget {
             dense: true,
             leading: StatusDot(tone: toneForHealth(s.status)),
             title: Text(s.name),
-            subtitle: s.message == null ? null : Text(s.message!, maxLines: 2, overflow: TextOverflow.ellipsis),
+            subtitle: s.message == null ? null : Text(s.message!, maxLines: 4, overflow: TextOverflow.ellipsis),
             trailing: StatusChip.health(s.status, dense: true),
           ),
         ExpansionTile(

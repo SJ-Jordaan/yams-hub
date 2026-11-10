@@ -159,6 +159,32 @@ void main() {
       expect(agenda.failedSources, ['Radarr']);
       expect(agenda.refreshError, isNotNull);
     });
+
+    test('keeps the fix of a source refused by Allowed Hosts (issue #2)', () {
+      const message = "Sonarr rejects the hub's hostname 'sonarr'. In Sonarr → Settings → General → Allowed Hosts, add sonarr (or clear the list), then restart Sonarr.";
+      final agenda = buildCalendarAgenda(
+        today: day(11, 8),
+        range: CalendarRange(start: day(11, 7)),
+        windows: [
+          AsyncValue.data(
+            _response(
+              windows[0].start,
+              windows[0].end,
+              sampleItems(),
+              sources: const CalendarSources(
+                sonarr: SectionStatus.failure(
+                  ApiError(code: ApiErrorCode.upstreamHostRejected, message: message, status: 502),
+                ),
+                radarr: SectionStatus.failure(ApiError(code: 'upstream_unavailable', message: 'x', status: 503)),
+              ),
+            ),
+          ),
+        ],
+        filters: _defaultFilters,
+      );
+      expect(agenda.failedSources, ['Sonarr', 'Radarr']);
+      expect(agenda.sourceHints, {'Sonarr': message});
+    });
   });
 
   group('layout', () {

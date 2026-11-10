@@ -7,6 +7,7 @@ import 'package:yams_models/yams_models.dart';
 
 import '../http/api_exception.dart';
 import '../log/redact.dart';
+import 'allowed_hosts.dart';
 
 /// One field problem reported by an upstream (`propertyName`/`errorMessage`
 /// and similar shapes).
@@ -173,6 +174,35 @@ final class UpstreamBadResponse extends UpstreamException {
   @override
   String toString() =>
       'UpstreamBadResponse(${service.name} $method $path: $reason)';
+}
+
+/// Sonarr, Radarr or Prowlarr refused the hub's `Host` header
+/// (`400 Bad Request - Invalid Hostname`): their "Allowed Hosts" setting
+/// leaves out [host], the hostname of the hub's URL for the service
+/// (502 `upstream_host_rejected`).
+final class UpstreamHostRejected extends UpstreamException {
+  UpstreamHostRejected({
+    required super.service,
+    required super.method,
+    required super.path,
+    required this.host,
+  }) : super(status: 400, message: hostRejectedMessage(service, host));
+
+  final String host;
+
+  @override
+  ApiException toApiException({bool resourceNotFound = true}) => ApiException(
+    502,
+    ApiErrorCode.upstreamHostRejected,
+    hostRejectedMessage(service, host),
+    service: service,
+    details: {'upstreamStatus': 400, 'host': host},
+  );
+
+  @override
+  String toString() =>
+      'UpstreamHostRejected(${service.name} $method $path: Host $host not in '
+      'Allowed Hosts)';
 }
 
 /// The service has no URL/secret in the gateway config

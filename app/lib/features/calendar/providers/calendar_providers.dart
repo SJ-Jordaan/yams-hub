@@ -169,6 +169,7 @@ class CalendarAgenda {
     this.moreError,
     this.canLoadMore = false,
     this.failedSources = const [],
+    this.sourceHints = const {},
     this.refreshError,
   });
 
@@ -194,6 +195,10 @@ class CalendarAgenda {
 
   /// Services whose part of the agenda is missing ("Radarr").
   final List<String> failedSources;
+
+  /// For failed sources whose error says how to fix it (Allowed Hosts,
+  /// `upstream_host_rejected`): service name → that message.
+  final Map<String, String> sourceHints;
 
   /// A background refresh failed; the data shown is older.
   final Object? refreshError;
@@ -251,12 +256,17 @@ CalendarAgenda buildCalendarAgenda({
   final next = loaded.length < windows.length ? windows[loaded.length] : null;
 
   final failed = <String>{};
+  final hints = <String, String>{};
   var staleUpstream = false;
   final items = <CalendarItem>[];
   for (final r in loaded) {
     for (final (name, status) in [('Sonarr', r.sources.sonarr), ('Radarr', r.sources.radarr)]) {
       if (status == null) continue;
-      if (status.status == SectionState.error) failed.add(name);
+      if (status.status == SectionState.error) {
+        failed.add(name);
+        final error = status.error;
+        if (error != null && error.code == ApiErrorCode.upstreamHostRejected) hints[name] = error.message;
+      }
       if (status.isOk && status.error != null) staleUpstream = true;
     }
     for (final i in r.items) {
@@ -290,6 +300,7 @@ CalendarAgenda buildCalendarAgenda({
     moreError: next != null && next.hasError ? next.error : null,
     canLoadMore: range.canLoadMore,
     failedSources: failed.toList(),
+    sourceHints: hints,
     refreshError: refreshError ?? (staleUpstream ? const _UpstreamStale() : null),
   );
 }

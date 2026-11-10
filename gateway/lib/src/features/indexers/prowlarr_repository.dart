@@ -255,6 +255,7 @@ final class ProwlarrRepository {
           timeout: prowlarrLongTimeout,
         );
         if (r.ok) return IndexerTestResult(id: id, valid: true);
+        r.ensureHostAccepted();
         if (r.status == 400) {
           return IndexerTestResult(
             id: id,
@@ -274,6 +275,7 @@ final class ProwlarrRepository {
       timeout: prowlarrLongTimeout,
     );
     if (!r.ok && r.status != 400) r.ensureOk();
+    r.ensureHostAccepted();
     final body = r.json();
     if (body is! List) {
       throw UpstreamBadResponse(

@@ -211,6 +211,33 @@ void main() {
       expect(job.error?.code, 'upstream_error');
     });
 
+    test(
+      'a host rejection fails the job with the fix, not a test failure',
+      () async {
+        hub.fakes.on(
+          ServiceId.prowlarr,
+          'POST',
+          '/api/v1/indexer/test',
+          (_) => FakeResponse.bytes(
+            fixtureBytes('arr/servarr_error_400_invalid_hostname.html'),
+            status: 400,
+            contentType: 'text/html',
+          ),
+        );
+        final r = await hub.post('/api/v1/indexers/15/test');
+        final job = await _finished(
+          hub,
+          readMap(r.map['job'])!['id']! as String,
+        );
+        expect(job.status, JobStatus.failed);
+        expect(job.error?.code, ApiErrorCode.upstreamHostRejected);
+        expect(
+          job.error?.message,
+          contains('Allowed Hosts, add prowlarr.test'),
+        );
+      },
+    );
+
     test('is admin only', () async {
       final r = await hub.post('/api/v1/indexers/4/test', as: TestAs.member);
       expect(r.status, 403);
@@ -264,6 +291,24 @@ void main() {
       final idA = readMap(a.map['job'])!['id'];
       expect(readMap(b.map['job'])!['id'], idA);
       await _finished(hub, idA! as String);
+    });
+
+    test('a host rejection fails the job with the fix', () async {
+      hub.fakes.on(
+        ServiceId.prowlarr,
+        'POST',
+        '/api/v1/indexer/testall',
+        (_) => FakeResponse.bytes(
+          fixtureBytes('arr/servarr_error_400_invalid_hostname.html'),
+          status: 400,
+          contentType: 'text/html',
+        ),
+      );
+      final r = await hub.post('/api/v1/indexers/test-all');
+      final job = await _finished(hub, readMap(r.map['job'])!['id']! as String);
+      expect(job.status, JobStatus.failed);
+      expect(job.error?.code, ApiErrorCode.upstreamHostRejected);
+      expect(job.error?.message, contains('Allowed Hosts, add prowlarr.test'));
     });
 
     test('a non-list body fails the job', () async {

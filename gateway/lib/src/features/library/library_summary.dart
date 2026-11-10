@@ -18,8 +18,12 @@ String _firstSentence(String message) {
   return s.endsWith('.') ? s.substring(0, s.length - 1) : s;
 }
 
-/// The dashboard alerts of a summary (API.md §7.11).
-List<Alert> libraryAlerts(LibrarySummary summary) {
+/// The dashboard alerts of a summary (API.md §7.11). [hubHosts]: the
+/// hostname of the hub's URL for each *arr (for the Allowed Hosts hint).
+List<Alert> libraryAlerts(
+  LibrarySummary summary, {
+  Map<ArrService, String> hubHosts = const {},
+}) {
   final out = <Alert>[];
   for (final (svc, s) in [
     (ArrService.sonarr, summary.sonarr),
@@ -37,6 +41,7 @@ List<Alert> libraryAlerts(LibrarySummary summary) {
         continue;
       }
       final allowedHosts = h.source == 'AllowedHostsCheck';
+      final host = hubHosts[svc];
       out.add(
         Alert(
           id: '${svc.name}.health.${h.source}',
@@ -48,7 +53,9 @@ List<Alert> libraryAlerts(LibrarySummary summary) {
           source: svc.serviceId,
           feature: 'library',
           title: '$name: ${_firstSentence(h.message)}',
-          message: h.message,
+          message: allowedHosts && host != null
+              ? '${h.message} ${allowedHostsHint(svc.serviceId, host)}'
+              : h.message,
           route: '/library',
           dismissible: allowedHosts,
         ),
@@ -107,10 +114,28 @@ final class LibrarySummaryRoutes {
 
   Future<DashboardContribution> card(ApiRequest req) async {
     _requireConfigured();
+    final health = data.ctx.health;
+    // Never throw (a failing summary keeps its own error mapping).
+    final hostAlerts = [
+      for (final id in [ServiceId.sonarr, ServiceId.radarr])
+        health.allowedHostsAlert(id, feature: 'library', route: '/library'),
+    ];
     final r = await data.summary();
+    final sonarrHosts = await hostAlerts[0];
+    final radarrHosts = await hostAlerts[1];
     return DashboardContribution(
       data: LibraryCard.fromSummary(r.value).toJson(),
-      alerts: libraryAlerts(r.value),
+      alerts: [
+        ?sonarrHosts,
+        ?radarrHosts,
+        ...libraryAlerts(
+          r.value,
+          hubHosts: {
+            ArrService.sonarr: data.sonarr.baseUrl.host,
+            ArrService.radarr: data.radarr.baseUrl.host,
+          },
+        ),
+      ],
       stale: r.stale,
       fetchedAt: r.fetchedAt,
       error: r.stale ? _toApiError(r.error, req.requestId) : null,

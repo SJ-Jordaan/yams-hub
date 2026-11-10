@@ -91,6 +91,7 @@ Every error response has this body:
 | 421 | `bad_request` | `Host` header not allowed (DNS-rebinding guard) |
 | 502 | `upstream_error` | upstream returned an unexpected error; `details.upstreamStatus` |
 | 502 | `upstream_auth_failed` | upstream rejected the gateway's key/credentials |
+| 502 | `upstream_host_rejected` | Sonarr/Radarr/Prowlarr answered `400 Bad Request - Invalid Hostname`: their **Allowed Hosts** setting leaves out the hostname of the hub's URL for them (issue #2). `details: {upstreamStatus: 400, host: string}`; `message` says how to fix it, e.g. "Sonarr rejects the hub's hostname 'sonarr'. In Sonarr → Settings → General → Allowed Hosts, add sonarr (or clear the list), then restart Sonarr." Older apps show it like `upstream_error`. |
 | 502 | `upstream_bad_response` | upstream body could not be parsed |
 | 503 | `upstream_unavailable` | upstream not reachable |
 | 503 | `service_not_configured` | the service has no URL/key in the gateway config |
@@ -291,6 +292,17 @@ Cache 30 s. 200 **HealthReport** [server]:
 **ServiceHealth** [server]: `id: ServiceId`, `name`, `status: "up"|"degraded"|"down"|"disabled"`, `latencyMs: int?`,
 `version: string?`, `message: string?` (redacted), `checkedAt`. Includes `shelfmark` (`GET /api/health`). `overall`: `up` if all configured services are up, `down` if more
 than half are down, else `degraded`. Probes: ARCHITECTURE §5.10.
+
+**Allowed Hosts** (Sonarr, Radarr, Prowlarr; issue #2): when `/ping` answers `400 Invalid Hostname` the service is
+`degraded` with the `upstream_host_rejected` message. Otherwise the probe also reads `allowedHosts` from
+`config/host` (cached 1 min, shared with the `library` and `indexers` cards; nothing else of that body is read): a
+non-empty list that does not accept the hub's hostname (exact, case-insensitive; `*.domain` wildcards; loopback names
+always pass) is saved but not active yet, because the *arr applies it at its next restart. The service is then
+`degraded` with "Sonarr's saved Allowed Hosts (localhost) leaves out 'sonarr', the hostname the hub uses: Sonarr will
+reject the hub after its next restart. In Sonarr → Settings → General → Allowed Hosts, add sonarr (or clear the
+list)." The probe waits for that read only until its 3 s timeout; a slower read finishes in the background and the
+next probe uses it. For these three, `latencyMs` and the 2 s "Slow response" threshold are the `/ping` time alone.
+Bazarr has no such setting.
 
 ### 2.6 Jobs
 
@@ -802,8 +814,11 @@ Reads: member. Everything else (including release search, which runs indexer que
 `{"sonarr": ArrSummary, "radarr": ArrSummary}` (same DTO as §7.7, `health` included).
 Alerts: one per health message with `type` warning/error, id `{service}.health.{source}`, severity = type, route
 `/library`; except `IndexerLongTermStatusCheck`/`IndexerStatusCheck` (covered by the indexers card) and
-`AllowedHostsCheck` (severity downgraded to info, dismissible). Queue errors → warning `{service}.queue.errors`
-route `/activity`.
+`AllowedHostsCheck` (severity downgraded to info, dismissible; its message gets "If you set Allowed Hosts, include
+sonarr (the hostname the hub uses), then restart Sonarr."). Queue errors → warning `{service}.queue.errors`
+route `/activity`. Allowed Hosts (§2.5): `{service}.allowedHosts`, warning "Sonarr will reject the hub after its next
+restart" while the saved list leaves the hub out, error "Sonarr rejects the hub's hostname" once it is active; the
+`message` is the fix.
 
 ---
 
@@ -1100,7 +1115,8 @@ Reads: member. Writes, search and grab: admin.
 `{"total": int, "enabled": int, "failing": [{"id": int, "name": string, "disabledTill": Instant?}], "grabs24h": int?, "queries24h": int?}`
 (24 h numbers from `indexerstats?startDate=now-24h`, cached 10 min; omitted on failure).
 Alerts: `prowlarr.indexer.<id>` (warning, "Indexer Uindex failing, retry at 19:06", route `/indexers`); Prowlarr health
-warnings/errors as `prowlarr.health.<source>` (AllowedHostsCheck as info).
+warnings/errors as `prowlarr.health.<source>` (AllowedHostsCheck as info, with the hint to include `prowlarr`);
+`prowlarr.allowedHosts` as in §7.11.
 
 ---
 

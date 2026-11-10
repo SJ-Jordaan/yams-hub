@@ -110,8 +110,11 @@ class _StaleBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = StatusColors.of(context).warning;
     final since = section.fetchedAt;
+    final cached = since == null ? 'Showing cached data' : 'Showing data from ${formatRelative(since)}';
+    // A refresh refused by Allowed Hosts says how to fix it (issue #2).
+    final error = section.error;
     return Tooltip(
-      message: since == null ? 'Showing cached data' : 'Showing data from ${formatRelative(since)}',
+      message: error != null && error.code == ApiErrorCode.upstreamHostRejected ? '$cached\n${error.message}' : cached,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),
         child: Row(

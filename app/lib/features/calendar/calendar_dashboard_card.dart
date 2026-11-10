@@ -42,7 +42,9 @@ class CalendarDashboardCard extends ConsumerWidget {
                 const SizedBox(width: 6),
                 Expanded(
                   child: Text(
-                    "${partial.service?.displayName ?? 'A source'} couldn't be loaded · its items are missing",
+                    partial.code == ApiErrorCode.upstreamHostRejected
+                        ? partial.message
+                        : "${partial.service?.displayName ?? 'A source'} couldn't be loaded · its items are missing",
                     style: theme.textTheme.bodySmall?.copyWith(color: muted),
                   ),
                 ),

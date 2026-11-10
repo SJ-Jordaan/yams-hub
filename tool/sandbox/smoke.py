@@ -7,8 +7,9 @@ Logs in with the bearer flow (and checks the cookie flow), calls the API of ever
   - this month's calendar has items, the library has the seeded shows and movies, qBittorrent answers;
   - VPN on: /vpn reads the gluetun stand-in; VPN off: gluetun is not configured and restarts forever (stock YAMS),
     and /containers and /dashboard still show no errors.
-Then the regression check for issue #2 (Sonarr "Allowed Hosts" without the container name): the hub must notice and
-recover; whether it names the cause (the feature request of #2) is only reported.
+Then the check for issue #2 (Sonarr "Allowed Hosts" without the container name): before Sonarr restarts the hub must
+warn (health and dashboard), after the restart it must name the cause and the fix (health, calendar, library card,
+dashboard alert), and after the restore it must recover.
 
 Prints a table, writes $SANDBOX_ARTIFACTS/smoke-<variant>.json, and on failure prints `docker logs yams-hub`.
 """
@@ -252,11 +253,17 @@ def run_checks(hub: Hub) -> None:
 # ASP.NET's host filtering is set up at start, so Sonarr must restart for a change to apply; it then answers
 # "400 Bad Request - Invalid Hostname" (HTML) to every request whose Host is not listed (127.0.0.1 still works).
 # ----------------------------------------------------------------------------------------------------------------
-def issue2(hub: Hub) -> dict:
-    """Breaks Sonarr for the hub the way issue #2 did, and checks that the hub (a) notices and (b) recovers.
+HOSTS_FIX = "Settings → General → Allowed Hosts"
 
-    Whether the hub names the cause (Allowed Hosts) or only reports a bare 400 is recorded, not asserted: that is the
-    feature work of issue #2. Not noticing at all, or not recovering after the restore, is a failure.
+
+def issue2(hub: Hub) -> dict:
+    """Breaks Sonarr for the hub the way issue #2 did, in three phases, and records what the hub says in each:
+
+    1. saved, Sonarr not restarted: Sonarr still accepts the hub; health and the dashboard must warn (pending);
+    2. restarted: Sonarr rejects the hub; health, a fresh calendar window and the library card must name the cause
+       (`upstream_host_rejected`, the Allowed Hosts fix) and the dashboard must raise the error alert;
+    3. restored and restarted: the hub must recover by itself.
+    issue2_rows() turns the result into checks.
     """
     result: dict = {"setting": "Sonarr Settings > General > Allowed Hosts (API config/host allowedHosts)"}
     key = arr_key("sonarr")
@@ -267,10 +274,12 @@ def issue2(hub: Hub) -> dict:
         return result
     original = cfg.get("allowedHosts", "")
 
-    def put_hosts(value: str) -> None:
+    def save_hosts(value: str) -> None:
         r = sonarr.put("/api/v3/config/host", {**cfg, "allowedHosts": value})
         if not r.ok:
             raise Fatal(f"Sonarr PUT config/host: HTTP {r.status} {r.text()[:200]}")
+
+    def restart_sonarr() -> None:
         docker("restart", "sonarr")
         wait_until("Sonarr after restart", lambda: sonarr.get("/api/v3/system/status").ok, timeout=180)
 
@@ -281,6 +290,38 @@ def issue2(hub: Hub) -> dict:
     def sonarr_health() -> dict:
         r = hub.c.get("/health", timeout=60)
         return next((x for x in (r.json() or {}).get("services", []) if x["id"] == "sonarr"), {})
+
+    def health_says(*parts: str):
+        """Polls /health (cached 30 s; the Allowed Hosts check 1 min) until Sonarr is degraded with all parts."""
+        def check():
+            x = sonarr_health()
+            msg = x.get("message") or ""
+            return x.get("status") == "degraded" and all(p in msg for p in parts) and x
+        try:
+            return wait_until(f"the hub's health of Sonarr to say {parts!r}", check, timeout=150, interval=5)
+        except Fatal:
+            return sonarr_health()
+
+    def dashboard_library() -> dict:
+        r = hub.c.get("/dashboard", query={"cards": "library"}, timeout=60)
+        body = r.json() if isinstance(r.json(), dict) else {}
+        alert = next((a for a in body.get("alerts", []) if a.get("id") == "sonarr.allowedHosts"), None)
+        card = (body.get("cards") or {}).get("library") or {}
+        health = (((card.get("data") or {}).get("sonarr") or {}).get("health")) or []
+        return {"alert": None if alert is None else {k: alert.get(k) for k in ("severity", "title", "message")},
+                "sonarr_health": [h.get("message") for h in health if h.get("type") == "error"],
+                "card_status": card.get("status")}
+
+    def dashboard_alert(severity: str) -> dict:
+        """Polls the dashboard until the alert has [severity] (and, for the error, the library card the cause)."""
+        def check():
+            d = dashboard_library()
+            card_ok = severity != "error" or any("rejects the hub" in m for m in d["sonarr_health"])
+            return d["alert"] and d["alert"]["severity"] == severity and card_ok and d
+        try:
+            return wait_until(f"the dashboard's sonarr.allowedHosts {severity} alert", check, timeout=90, interval=5)
+        except Fatal:
+            return dashboard_library()
 
     windows = iter(range(1000))
 
@@ -293,40 +334,45 @@ def issue2(hub: Hub) -> dict:
 
     restored = False
     try:
-        put_hosts("localhost")
+        # Phase 1: saved, not restarted.
+        save_hosts("localhost")
+        result["pending_sonarr_as_hub_http"] = as_hub()
+        sh = health_says("Allowed Hosts", "leaves out 'sonarr'", "after its next restart", HOSTS_FIX)
+        result["pending_health_sonarr"] = {"status": sh.get("status"), "message": sh.get("message")}
+        result["pending_dashboard"] = dashboard_alert("warning")
+
+        # Phase 2: restarted, the setting applies.
+        restart_sonarr()
         result["applied"] = "allowedHosts=localhost, Sonarr restarted"
         result["sonarr_as_hub_http"] = as_hub()
         result["setting_effective"] = result["sonarr_as_hub_http"] == 400
-        # /health is cached for 30 s: poll until the hub's health of Sonarr changes (or 75 s pass).
-        try:
-            sh = wait_until("the hub's health of Sonarr to change",
-                            lambda: (x := sonarr_health()).get("status") not in (None, "up") and x,
-                            timeout=75, interval=5)
-        except Fatal:
-            sh = sonarr_health()
+        sh = health_says("rejects the hub's hostname 'sonarr'", HOSTS_FIX, "then restart Sonarr")
+        result["health_sonarr"] = {"status": sh.get("status"), "message": sh.get("message")}
         cal = fresh_calendar_source()
-        # /library/tv serves its cached list while Sonarr fails (by design); record whether it says so.
+        result["calendar_sonarr_source"] = cal
+        result["rejected_dashboard"] = dashboard_alert("error")
+        # /library/tv serves its cached list while Sonarr fails (ItemList has no stale flag); recorded only.
         lib = hub.c.get("/library/tv", timeout=60)
         body = lib.json() if isinstance(lib.json(), dict) else {}
         err = body.get("error") or {}
         result["library_tv"] = {"status": lib.status, "code": err.get("code"), "message": err.get("message"),
                                 "stale": body.get("stale"), "items": len(body.get("items") or [])}
-        result["calendar_sonarr_source"] = cal
-        result["health_sonarr"] = {"status": sh.get("status"), "message": sh.get("message")}
-        result["hub_noticed"] = sh.get("status") != "up" or cal.get("status") == "error"
-        hub_text = json.dumps([result["library_tv"], cal, result["health_sonarr"]]).lower()
-        result["mentions_allowed_hosts"] = "allowed host" in hub_text or "hostname" in hub_text
     finally:
-        put_hosts(original)
+        save_hosts(original)
+        restart_sonarr()
         restored = True
         result["restored"] = f"allowedHosts={original!r}, Sonarr restarted"
-    # The hub must recover by itself once Sonarr accepts it again: health up, and a fresh calendar window reads it.
+    # Phase 3: the hub must recover by itself once Sonarr accepts it again: health up without a message, a fresh
+    # calendar window reads it, and the dashboard alert is gone.
     result["sonarr_as_hub_http_after_restore"] = as_hub()
     try:
-        wait_until("the hub's health of Sonarr to be up again", lambda: sonarr_health().get("status") == "up",
+        wait_until("the hub's health of Sonarr to be up again",
+                   lambda: (x := sonarr_health()).get("status") == "up" and not x.get("message"),
                    timeout=120, interval=5)
         src = wait_until("a fresh calendar window to read Sonarr again",
                          lambda: (x := fresh_calendar_source()).get("status") == "ok" and x, timeout=60, interval=5)
+        wait_until("the dashboard's sonarr.allowedHosts alert to clear",
+                   lambda: dashboard_library()["alert"] is None, timeout=90, interval=5)
         result["recovered"] = True
         result["calendar_sonarr_source_after"] = {"status": src.get("status")}
     except Fatal as e:
@@ -340,27 +386,47 @@ def issue2_rows(r: dict) -> None:
     if "error" in r:
         record("issue #2: Sonarr Allowed Hosts", False, r["error"])
         return
+    # Phase 1: the proactive warning.
+    ph = r.get("pending_health_sonarr") or {}
+    pending_ok = (ph.get("status") == "degraded" and "after its next restart" in (ph.get("message") or "")
+                  and HOSTS_FIX in (ph.get("message") or ""))
+    record("issue #2: warns before restart (health)", pending_ok and r.get("pending_sonarr_as_hub_http") == 200,
+           f"Sonarr still answers the hub {r.get('pending_sonarr_as_hub_http')}; health {ph.get('status')} "
+           f"{ph.get('message')!r}", r.get("pending_sonarr_as_hub_http", ""))
+    pa = (r.get("pending_dashboard") or {}).get("alert") or {}
+    record("issue #2: warns before restart (dashboard)", pa.get("severity") == "warning"
+           and "after its next restart" in (pa.get("title") or ""), f"alert {pa or None}")
+
+    # Phase 2: the clear error everywhere.
     health = r.get("health_sonarr") or {}
     cal = r.get("calendar_sonarr_source") or {}
-    cal_msg = (cal.get("error") or {}).get("message")
-    seen = f"health {health.get('status')} {health.get('message')!r}; calendar {cal.get('status')} {cal_msg!r}"
-    if not r.get("setting_effective"):
-        # Sonarr no longer rejects the hub with this setting: nothing for the hub to notice.
-        rows.append(("issue #2: hub notices", str(r.get("sonarr_as_hub_http", "")), "",
-                     f"note Sonarr answered Host sonarr:8989 with {r.get('sonarr_as_hub_http')} under "
-                     f"allowedHosts=localhost (expected 400); {seen}"))
-    else:
-        record("issue #2: hub notices", bool(r.get("hub_noticed")),
-               seen if r.get("hub_noticed") else f"the hub did not notice Sonarr rejecting it: {seen}",
-               r.get("sonarr_as_hub_http", ""))
-    verdict = ("names the cause" if r.get("mentions_allowed_hosts")
-               else "reports only a bare 400 (issue #2 feature work still open)")
+    cal_err = cal.get("error") or {}
+    # Sonarr must really reject the hub after the restart, or the checks below would test nothing: this is a
+    # check of its own (a Sonarr image that stops filtering, or a restart race, fails the run instead of
+    # skipping the rejected-hostname path).
+    record("issue #2: Sonarr rejects the hub after restart", bool(r.get("setting_effective")),
+           f"Sonarr answered Host sonarr:8989 with {r.get('sonarr_as_hub_http')} under allowedHosts=localhost "
+           "after a restart (expected 400)", r.get("sonarr_as_hub_http", ""))
+    want = "rejects the hub's hostname 'sonarr'"
+    record("issue #2: names the cause (health)", health.get("status") == "degraded"
+           and want in (health.get("message") or "") and HOSTS_FIX in (health.get("message") or ""),
+           f"health {health.get('status')} {health.get('message')!r}", r.get("sonarr_as_hub_http", ""))
+    record("issue #2: names the cause (calendar)", cal.get("status") == "error"
+           and cal_err.get("code") == "upstream_host_rejected" and want in (cal_err.get("message") or ""),
+           f"calendar {cal.get('status')} {cal_err.get('code')} {cal_err.get('message')!r}")
+    rd = r.get("rejected_dashboard") or {}
+    ra = rd.get("alert") or {}
+    lib_msgs = rd.get("sonarr_health") or []
+    record("issue #2: names the cause (dashboard)", ra.get("severity") == "error"
+           and want in (ra.get("message") or "") and any(want in m for m in lib_msgs),
+           f"alert {ra.get('severity')} {ra.get('title')!r}; library card {lib_msgs}")
     lib = r.get("library_tv") or {}
-    rows.append(("issue #2: names the cause", "", "",
-                 f"note {verdict}; library/tv served {lib.get('items')} cached items with HTTP {lib.get('status')}, "
-                 f"stale={lib.get('stale')}"))
+    rows.append(("issue #2: library/tv while rejected", str(lib.get("status", "")), "",
+                 f"note served {lib.get('items')} cached items (ItemList has no stale flag; up to 10 min)"))
+
+    # Phase 3: recovery.
     record("issue #2: hub recovers", bool(r.get("recovered")),
-           "health up and a fresh calendar window ok after the restore" if r.get("recovered")
+           "health up, a fresh calendar window ok and the alert gone after the restore" if r.get("recovered")
            else f"{r.get('recovery_error')} (Sonarr answers the hub's Host with "
                 f"{r.get('sonarr_as_hub_http_after_restore')})",
            r.get("sonarr_as_hub_http_after_restore", ""))

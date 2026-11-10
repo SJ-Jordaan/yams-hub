@@ -649,6 +649,7 @@ class UpstreamClient {
 | connection refused / DNS / reset | 503 `upstream_unavailable` |
 | timeout | 504 `upstream_timeout` |
 | 401/403 from upstream (bad key) | 502 `upstream_auth_failed` |
+| 400 `Invalid Hostname` from Sonarr/Radarr/Prowlarr (Allowed Hosts, `UpstreamHostRejected`) | 502 `upstream_host_rejected` with `details.host` |
 | 404 | 404 `not_found` (only when the gateway path addressed that upstream resource; otherwise 502) |
 | 400 / 422 with validation array | 422 `validation_failed` with `fields` |
 | other 4xx | 502 `upstream_error` with `details.upstreamStatus` |
@@ -779,7 +780,7 @@ running job (HTTP 202 with the same id).
 
 | Service | Probe | Version from |
 |---|---|---|
-| sonarr / radarr / prowlarr | `GET /ping` (+ `system/status` every 10 min for the version) | `version` |
+| sonarr / radarr / prowlarr | `GET /ping` (+ `system/status` every 10 min for the version, + `config/host` `allowedHosts` every minute, never past the probe's 3 s: API.md §2.5; latency is `/ping` alone) | `version` |
 | bazarr | `GET /api/system/ping` | `/api/system/status` `bazarr_version` |
 | seerr | `GET /api/v1/status` | `version` |
 | jellyfin | `GET /System/Info/Public` | `Version` |
