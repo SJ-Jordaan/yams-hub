@@ -13,6 +13,7 @@ import 'images/image_urls.dart';
 import 'jobs/job_registry.dart';
 import 'log/redact.dart';
 import 'services/jellyfin_info.dart';
+import 'services/private_content.dart';
 import 'services/seerr_identity.dart';
 import 'store/json_file_store.dart';
 import 'upstream/remote_fetcher.dart';
@@ -35,6 +36,7 @@ export 'images/image_urls.dart';
 export 'jobs/job_registry.dart';
 export 'log/redact.dart';
 export 'services/jellyfin_info.dart';
+export 'services/private_content.dart';
 export 'services/seerr_identity.dart';
 export 'store/json_file_store.dart';
 export 'upstream/allowed_hosts.dart';
@@ -59,6 +61,7 @@ final class FeatureContext {
     required this.images,
     required this.remoteHttp,
     required this.jellyfin,
+    required this.privacy,
     required this.seerrIdentity,
     required this.seerrSettings,
     required this.health,
@@ -95,6 +98,9 @@ final class FeatureContext {
   /// Jellyfin server id, admin user id and item links.
   final JellyfinServerInfo jellyfin;
 
+  /// The `PRIVATE_*` settings and which Jellyfin items/users they hide.
+  final PrivateContent privacy;
+
   /// Hub user → Seerr user (shared with core).
   final SeerrIdentityResolver seerrIdentity;
 
@@ -127,6 +133,7 @@ final class FeatureContext {
     images: images,
     remoteHttp: remoteHttp,
     jellyfin: jellyfin,
+    privacy: privacy,
     seerrIdentity: seerrIdentity,
     seerrSettings: seerrSettings,
     health: health,

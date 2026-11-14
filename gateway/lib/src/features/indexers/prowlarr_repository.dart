@@ -103,12 +103,49 @@ final class ProwlarrRepository {
       ),
     );
     final results = await Future.wait([indexers, statuses, tags]);
-    return ProwlarrSnapshot(
-      indexers: parseIndexers(results[0]),
-      statuses: parseStatuses(results[1]),
-      tags: parseTags(results[2]),
-      health: await health ?? const [],
+    final snap = withoutPrivateIndexers(
+      ProwlarrSnapshot(
+        indexers: parseIndexers(results[0]),
+        statuses: parseStatuses(results[1]),
+        tags: parseTags(results[2]),
+        health: await health ?? const [],
+      ),
+      ctx.config.privateContent.prowlarrTag,
     );
+    if (snap.privateTagMissing != _warnedTagMissing) {
+      _warnedTagMissing = snap.privateTagMissing;
+      if (snap.privateTagMissing) {
+        ctx.log.warning(
+          'PRIVATE_PROWLARR_TAG: Prowlarr has no tag '
+          '"${ctx.config.privateContent.prowlarrTag}"; no indexer is hidden',
+        );
+      }
+    }
+    return snap;
+  }
+
+  bool _warnedTagMissing = false;
+
+  /// Ids of the private indexers (`PRIVATE_PROWLARR_TAG`); no call when the
+  /// tag is unset. Throws when Prowlarr cannot be read (nothing can be
+  /// shown safely then).
+  Future<Set<int>> hiddenIds() async {
+    if (!ctx.config.privateContent.hasProwlarrTag) return const {};
+    return (await snapshot()).value.hiddenIds;
+  }
+
+  /// Ids of the indexers that are not private.
+  Future<List<int>> publicIds() async => [
+    for (final i in (await snapshot()).value.indexers) ?readInt(i['id']),
+  ];
+
+  static ApiException _noIndexer() =>
+      ApiException.notFound('Indexer not found.');
+
+  /// `404` when one of [ids] is a private indexer.
+  Future<void> ensureNotPrivate(Iterable<int> ids) async {
+    final hidden = await guardUpstream(hiddenIds);
+    if (ids.any(hidden.contains)) throw _noIndexer();
   }
 
   /// Indexer names by id, or an empty map when Prowlarr is unreachable.
@@ -146,12 +183,20 @@ final class ProwlarrRepository {
   Future<ProwlarrStatsWindow> _loadStats(Duration window) async {
     final to = _now;
     final from = to.subtract(window);
+    final hidden = await hiddenIds();
     final body = await _prowlarr.getJson(
       '/api/v1/indexerstats',
       query: {'startDate': instantToJson(from), 'endDate': instantToJson(to)},
       timeout: prowlarrListTimeout,
     );
-    return ProwlarrStatsWindow(from: from, to: to, byIndexer: parseStats(body));
+    return ProwlarrStatsWindow(
+      from: from,
+      to: to,
+      byIndexer: {
+        for (final e in parseStats(body).entries)
+          if (!hidden.contains(e.key)) e.key: e.value,
+      },
+    );
   }
 
   Future<T?> _bestEffort<T>(String name, Future<T> Function() load) async {
@@ -188,6 +233,7 @@ final class ProwlarrRepository {
   /// The full Prowlarr resource of indexer [id] (with `fields`), uncached;
   /// a Prowlarr 404 is `404 not_found`.
   Future<JsonMap> rawIndexer(int id, {bool cached = false}) async {
+    await ensureNotPrivate([id]);
     Future<JsonMap> load() async {
       try {
         final body = await _prowlarr.getJson(
@@ -224,6 +270,7 @@ final class ProwlarrRepository {
   /// `PUT /api/v1/indexer/bulk` (Prowlarr answers 202; any 2xx is accepted).
   Future<void> bulkUpdate(List<int> ids, {bool? enabled, int? priority}) =>
       guardUpstream(() async {
+        await ensureNotPrivate(ids);
         final r = await _prowlarr.send(
           'PUT',
           '/api/v1/indexer/bulk',
@@ -286,9 +333,11 @@ final class ProwlarrRepository {
         reason: 'testall body is not a list',
       );
     }
+    final hidden = await hiddenIds();
     return [
       for (final e in body)
-        if (readMap(e) case final m? when readInt(m['id']) != null)
+        if (readMap(e) case final m?
+            when readInt(m['id']) != null && !hidden.contains(readInt(m['id'])))
           IndexerTestResult(
             id: readInt(m['id'])!,
             valid: readBool(m['isValid']) ?? false,
@@ -341,6 +390,19 @@ final class ProwlarrRepository {
   }) {
     final key = '$page|$pageSize|${type?.name}|$successful|$indexerId';
     return guardUpstream(() async {
+      final hidden = await hiddenIds();
+      if (indexerId != null && hidden.contains(indexerId)) throw _noIndexer();
+      // With private indexers, ask only for the others (paging stays right).
+      final Object? indexers =
+          indexerId ?? (hidden.isEmpty ? null : await publicIds());
+      if (indexers is List && indexers.isEmpty) {
+        return PagedList<IndexerHistoryItem>.of(
+          items: const [],
+          page: page,
+          pageSize: pageSize,
+          total: 0,
+        );
+      }
       final result = await _history.get(key, () async {
         final names = this.names();
         final body = readMap(
@@ -353,7 +415,7 @@ final class ProwlarrRepository {
               'sortDirection': 'descending',
               'eventType': type?.upstreamEventType,
               'successful': successful,
-              'indexerIds': indexerId,
+              'indexerIds': indexers,
             },
             timeout: prowlarrListTimeout,
           ),
@@ -363,7 +425,9 @@ final class ProwlarrRepository {
         return PagedList.of(
           items: [
             for (final r in readList(body['records'], (m) => m))
-              if (readInt(r['id']) != null && readInstant(r['date']) != null)
+              if (readInt(r['id']) != null &&
+                  readInstant(r['date']) != null &&
+                  !hidden.contains(readInt(r['indexerId'])))
                 mapHistoryRecord(r, byId),
           ],
           page: page,
@@ -400,18 +464,33 @@ final class ProwlarrRepository {
     required List<int> categories,
     required int limit,
   }) => guardUpstream(() async {
+    final hidden = await hiddenIds();
+    var ids = indexerIds;
+    if (hidden.isNotEmpty) {
+      if (ids.any(hidden.contains)) throw _noIndexer();
+      // "All indexers" must not include the private ones.
+      if (ids.isEmpty) {
+        ids = await publicIds();
+        if (ids.isEmpty) return const <JsonMap>[];
+      }
+    }
     final body = await _prowlarr.getJson(
       '/api/v1/search',
       query: {
         'query': query,
         'type': type,
-        if (indexerIds.isNotEmpty) 'indexerIds': indexerIds,
+        if (ids.isNotEmpty) 'indexerIds': ids,
         if (categories.isNotEmpty) 'categories': categories,
         'limit': limit,
       },
       timeout: prowlarrLongTimeout,
     );
     if (body is! List) throw const FormatException('search results');
-    return [for (final e in body) ?readMap(e)];
+    return [
+      for (final e in body)
+        if (readMap(e) case final m?
+            when !hidden.contains(readInt(m['indexerId'])))
+          m,
+    ];
   });
 }

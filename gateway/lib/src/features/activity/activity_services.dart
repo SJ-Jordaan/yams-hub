@@ -108,16 +108,18 @@ final class ActivityServices {
       qbit.getJson('/api/v2/torrents/tags'),
     ]);
     final cats = readMap(results[0]) ?? const {};
+    final privacy = ctx.config.privateContent;
     final list = [
       for (final e in cats.entries)
-        TorrentCategory(
-          name: readString(readMap(e.value)?['name']) ?? e.key,
-          savePath: switch (readString(readMap(e.value)?['savePath'])) {
-            final p? when p.isNotEmpty => p,
-            _ => null,
-          },
-          readOnly: readOnlyCategories.contains(e.key),
-        ),
+        if (!privacy.isPrivateCategory(e.key))
+          TorrentCategory(
+            name: readString(readMap(e.value)?['name']) ?? e.key,
+            savePath: switch (readString(readMap(e.value)?['savePath'])) {
+              final p? when p.isNotEmpty => p,
+              _ => null,
+            },
+            readOnly: readOnlyCategories.contains(e.key),
+          ),
     ]..sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
     final tags = readStringList(results[1])
       ..sort((a, b) => a.toLowerCase().compareTo(b.toLowerCase()));
@@ -195,6 +197,44 @@ final class ActivityServices {
       stale: (view?.stale ?? false) || arr.any((a) => a.stale),
     );
   }
+
+  /// `404` when one of [hashes] is in a private category
+  /// (`PRIVATE_QBIT_CATEGORIES`): the hub acts as if it did not exist.
+  /// Hashes the snapshot does not know yet are checked with
+  /// `torrents/info`.
+  Future<void> ensureNotPrivate(Iterable<String> hashes) async {
+    final privacy = ctx.config.privateContent;
+    if (!privacy.hasCategories) return;
+    final view = await maindata.read();
+    final unknown = <String>[];
+    for (final h in hashes) {
+      final hash = h.toLowerCase();
+      if (view.hiddenHashes.contains(hash)) throw _noTorrent();
+      if (!view.torrents.containsKey(hash)) unknown.add(hash);
+    }
+    if (unknown.isEmpty) return;
+    final Object? body;
+    try {
+      body = await qbit.getJson(
+        '/api/v2/torrents/info',
+        query: {'hashes': unknown.join('|')},
+      );
+    } on UpstreamException catch (e) {
+      throw e.toApiException(resourceNotFound: false);
+    }
+    for (final t in body is List ? body : const <Object?>[]) {
+      if (privacy.isPrivateCategory(readString(readMap(t)?['category']))) {
+        throw _noTorrent();
+      }
+    }
+  }
+
+  static ApiException _noTorrent() => const ApiException(
+    404,
+    ApiErrorCode.notFound,
+    'Torrent no longer exists.',
+    service: ServiceId.qbittorrent,
+  );
 
   /// POSTs a qBittorrent form. With [addressed] an upstream 404 means the
   /// addressed torrent does not exist; 409 is qBittorrent refusing the

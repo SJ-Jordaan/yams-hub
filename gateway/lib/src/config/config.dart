@@ -12,9 +12,11 @@ import '../core/http/trusted_proxies.dart';
 import '../core/log/log.dart';
 import '../core/notify/discord_webhook.dart' show parseDiscordWebhookUrl;
 import 'policy.dart';
+import 'private_content.dart';
 import 'secrets_file.dart';
 
 export 'policy.dart';
+export 'private_content.dart';
 
 /// Where a configuration value came from (`check-config` prints it; values are
 /// never printed).
@@ -106,6 +108,7 @@ final class HubConfig {
     this.procDir = '/proc',
     this.trustedProxies,
     this.discordAlertWebhookUrl,
+    this.privateContent = PrivateContentSettings.none,
     this.sources = const {},
     this.secretsFileFound = false,
     this.policyFileFound = false,
@@ -164,6 +167,11 @@ final class HubConfig {
   /// Never logged or printed.
   final Uri? discordAlertWebhookUrl;
 
+  /// `PRIVATE_JELLYFIN_LIBRARIES`, `PRIVATE_JELLYFIN_USERS`,
+  /// `PRIVATE_QBIT_CATEGORIES`, `PRIVATE_PROWLARR_TAG`: content the hub never
+  /// shows to anyone (all unset: nothing is hidden).
+  final PrivateContentSettings privateContent;
+
   /// Which source each variable came from (keys are variable names).
   final Map<String, ConfigSource> sources;
   final bool secretsFileFound;
@@ -207,6 +215,7 @@ final class HubConfig {
     bool? trustProxy,
     TrustedProxies? trustedProxies,
     Uri? discordAlertWebhookUrl,
+    PrivateContentSettings? privateContent,
   }) => HubConfig(
     port: port,
     dataDir: dataDir ?? this.dataDir,
@@ -233,6 +242,7 @@ final class HubConfig {
     policyConfig: policyConfig ?? this.policyConfig,
     discordAlertWebhookUrl:
         discordAlertWebhookUrl ?? this.discordAlertWebhookUrl,
+    privateContent: privateContent ?? this.privateContent,
     sources: sources,
     secretsFileFound: secretsFileFound,
     policyFileFound: policyFileFound,
@@ -584,6 +594,14 @@ abstract final class ConfigLoader {
       }
     }
 
+    // Optional; names only, never secret.
+    final privateContent = PrivateContentSettings.parse(
+      jellyfinLibraries: value('PRIVATE_JELLYFIN_LIBRARIES'),
+      jellyfinUsers: value('PRIVATE_JELLYFIN_USERS'),
+      qbitCategories: value('PRIVATE_QBIT_CATEGORIES'),
+      prowlarrTag: value('PRIVATE_PROWLARR_TAG'),
+    );
+
     var policyConfig = PolicyConfig();
     if (policyFileContents != null) {
       final policyErrors = <String>[];
@@ -619,6 +637,7 @@ abstract final class ConfigLoader {
       hostDiskDevice: setting('HOST_DISK_DEVICE', 'dm-0'),
       policyConfig: policyConfig,
       discordAlertWebhookUrl: discordWebhook,
+      privateContent: privateContent,
       sources: Map.unmodifiable(sources),
       secretsFileFound: secretsFileContents != null,
       policyFileFound: policyFileContents != null,

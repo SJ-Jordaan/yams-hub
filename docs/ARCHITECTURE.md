@@ -306,6 +306,10 @@ goes in compose `environment:`.
 | `RECYCLARR_LOG_DIR` | `/host/recyclarr-logs` | |
 | `HOST_VOLUME_MOUNT` | `/volume1` | host path the data volume usage (`statvfs` of the data dir) is reported as |
 | `HOST_DISK_DEVICE` | `dm-0` | `/proc/diskstats` device of the data volume; empty disables disk I/O |
+| `PRIVATE_JELLYFIN_LIBRARIES` | unset | optional comma-separated Jellyfin library (virtual folder) names, any case, e.g. `Adult`: never shown (5.2.2) |
+| `PRIVATE_JELLYFIN_USERS` | unset | optional comma-separated Jellyfin user names, any case: never shown (5.2.2) |
+| `PRIVATE_QBIT_CATEGORIES` | unset | optional comma-separated qBittorrent categories, any case, e.g. `whisparr` (also hides `whisparr/...`): never shown (5.2.2) |
+| `PRIVATE_PROWLARR_TAG` | unset | optional Prowlarr tag label, any case, e.g. `private`: indexers carrying it are ignored (5.2.2) |
 
 Host-global procfs files (`/proc/stat`, `meminfo`, `loadavg`, `uptime`, `cpuinfo`, `diskstats`, `mdstat`) are read from
 the container's **own** `/proc` (procfs is not namespaced for these). The whole host `/proc` is not mounted.
@@ -354,6 +358,62 @@ remoteImageHosts: [artworks.thetvdb.com, image.tmdb.org, assets.fanart.tv, stati
 ```
 
 All keys optional; the values above are the defaults compiled into `HubConfig`.
+
+#### 5.2.2 Private content (`PRIVATE_*`, optional)
+
+Content that exists on the server but that the hub never shows, to anyone, admins included (it is watched in
+Jellyfin directly). The four settings are names, not secrets: put them in the hub's env file (`yams-hub.env`; both
+`install.sh` and `deploy/make_hub_env.sh` keep lines they did not write, and `install.sh --answers` takes them as
+keys, `-` clears one) or in the container's `environment:`, then recreate the `yams-hub` container. With all of
+them unset nothing is hidden and no extra upstream call is made.
+
+```sh
+PRIVATE_JELLYFIN_LIBRARIES='Adult'
+PRIVATE_JELLYFIN_USERS=''          # e.g. 'Private Viewer'
+PRIVATE_QBIT_CATEGORIES='whisparr'
+PRIVATE_PROWLARR_TAG='private'
+```
+
+- **Jellyfin libraries**: left out of `GET /media/jellyfin` (libraries, Jellystat sizes); their items are subtracted
+  from the counts (one `/Items?parentId=&recursive=true&includeItemTypes=<type>&limit=0` per library and type,
+  never below 0). Recently added skips them; every item list (recently added, including the global `/Items`
+  fallback, continue watching, next up, now playing) drops an item whose `Path` is in a private library's
+  `Locations`, whose parent/series/season is the library, or, when the answer says neither, that
+  `/Items?ids=&fields=Path,ParentId` places there. Verdicts are cached for 10 min, so an item moved into or out of a
+  private library can keep its old verdict that long. `/img/jellyfin/<id>` answers 404 for a private
+  item or library, cached or not. Jellystat: the library's views, top-library row and plays leave the stats; top
+  movies/series, popular series, history rows and a user's "last watched" of a private item are dropped. If
+  Jellyfin is not configured, every Jellystat item is treated as private.
+- **Jellyfin users**: Jellystat rows are matched by Jellyfin user id (`/Users`, so a user renamed since stays
+  private) as well as by name (name only when Jellyfin cannot be read). Their sessions leave now playing (playback/message commands to them answer 404), their rows
+  leave the Jellystat users, top users and history, they are not listed by `GET /admin/jellyfin-users` (nor
+  importable to Seerr) and `/img/jellyfin-user/<id>` answers 404.
+- **qBittorrent categories**: a category also covers its subcategories (`whisparr` hides `whisparr/4k`). Torrents in
+  them leave the snapshot every activity route reads (torrent list,
+  unified queue, counts, tracker health, dashboard), the categories lists leave them out, and every per-torrent
+  route (`GET /torrents/{hash}`, share limits, file priority, `POST /torrents/actions` with any such hash) answers
+  404 without calling qBittorrent (a hash the snapshot does not know yet is checked with `torrents/info`). Global
+  speeds and the session totals of `server_state` stay as qBittorrent reports them.
+- **Prowlarr tag**: indexers carrying it leave the indexer snapshot (list, detail and test 404, bulk update 404,
+  test-all results, dashboard card and alerts, Prowlarr health messages naming one as a whole word, so `EZ` does not drop a message about `EZTV`), the stats, the history (it asks
+  Prowlarr for the other indexers only; `indexerId=` of a private one is 404) and manual search ("all indexers"
+  means the others; naming a private one is 404; results from one are dropped). The Discord indexer alert (5.7.1)
+  counts only the other indexers.
+
+A name that matches nothing hides nothing. When a `PRIVATE_JELLYFIN_LIBRARIES` name matches no library (a typo or a
+renamed library), or Prowlarr has no tag called `PRIVATE_PROWLARR_TAG`, the gateway logs a warning and the dashboard
+shows admins (never members) a warning alert that names the setting and the unmatched value
+(`privacy.jellyfin.libraries`, `privacy.prowlarr.tag`).
+
+Known gaps, accepted:
+
+- Jellystat per-user `TotalPlays` / `TotalWatchTime` of public users, and the totals that carry no library or item
+  (play methods, clients, weekday and hour), still count private plays.
+- A Jellystat item that no longer exists in Jellyfin cannot be placed. Use a private user for those plays.
+- Raw container logs (admin-only troubleshooting) and the Decluttarr page can contain private names. Containers are
+  listed like any other, a Whisparr container included.
+- qBittorrent tags used only by private torrents still appear in the tag list.
+- Item verdicts are cached for 10 minutes (see above).
 
 ### 5.3 HTTP pipeline
 

@@ -16,6 +16,7 @@ import '../http/api_request.dart';
 import '../http/api_response.dart';
 import '../http/api_router.dart';
 import '../images/image_urls.dart';
+import '../services/private_content.dart';
 import '../services/seerr_identity.dart';
 import '../upstream/upstream_exception.dart';
 import '../upstream/upstreams.dart';
@@ -27,6 +28,7 @@ final class AdminRoutes {
     required this.audit,
     required this.upstreams,
     required this.seerrIdentity,
+    required this.privacy,
     required this.images,
     required this.clock,
   });
@@ -35,6 +37,9 @@ final class AdminRoutes {
   final AuditLog audit;
   final Upstreams upstreams;
   final SeerrIdentityResolver seerrIdentity;
+
+  /// Private Jellyfin users are never listed (nor imported).
+  final PrivateContent privacy;
   final ImageUrls images;
   final Clock clock;
 
@@ -298,6 +303,7 @@ final class AdminRoutes {
       final m = readMap(e);
       final id = normaliseJellyfinId(readString(m?['Id']));
       if (m == null || id == null) continue;
+      if (privacy.isPrivateUserName(readString(m['Name']))) continue;
       final policy = readMap(m['Policy']);
       final seerr = bySeerrJf[id];
       out.add(

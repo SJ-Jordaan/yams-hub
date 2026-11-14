@@ -14,7 +14,9 @@
 # the same as pressing Enter. Keys: YAMS_DIR, PORT, ADMIN_USERNAME, ADMIN_PASSWORD, UPTIME_KUMA_SLUG and the secret
 # names of the hub's env file (JELLYFIN_API_KEY, QBIT_USERNAME, QBIT_PASSWORD, JELLYSTAT_API_KEY, ABS_API_KEY,
 # KAVITA_API_KEY, and SONARR/RADARR/PROWLARR/BAZARR/SEERR_API_KEY when they cannot be read automatically), plus the
-# optional DISCORD_ALERT_WEBHOOK_URL (one Discord message when most Prowlarr indexers fail).
+# optional DISCORD_ALERT_WEBHOOK_URL (one Discord message when most Prowlarr indexers fail) and the optional, never
+# prompted PRIVATE_JELLYFIN_LIBRARIES, PRIVATE_JELLYFIN_USERS, PRIVATE_QBIT_CATEGORIES and PRIVATE_PROWLARR_TAG
+# (content the hub never shows; comma-separated names, - clears one; see docs/ARCHITECTURE.md 5.2).
 #
 # Needs bash, docker with compose v2 and GNU grep; run it as root or as a user in the docker group.
 # It writes <YAMS dir>/yams-hub/ (compose project "yams-hub") and <media dir>/config/yams-hub/ only.
@@ -115,7 +117,8 @@ read_file() {
 declare -A answers=()
 answer_keys=' YAMS_DIR PORT ADMIN_USERNAME ADMIN_PASSWORD UPTIME_KUMA_SLUG JELLYFIN_API_KEY JELLYSTAT_API_KEY QBIT_USERNAME
   QBIT_PASSWORD ABS_API_KEY KAVITA_API_KEY SONARR_API_KEY RADARR_API_KEY PROWLARR_API_KEY BAZARR_API_KEY SEERR_API_KEY
-  DISCORD_ALERT_WEBHOOK_URL '
+  DISCORD_ALERT_WEBHOOK_URL PRIVATE_JELLYFIN_LIBRARIES PRIVATE_JELLYFIN_USERS PRIVATE_QBIT_CATEGORIES
+  PRIVATE_PROWLARR_TAG '
 answer_keys=${answer_keys//$'\n'/ }
 load_answers() { # FILE
   local f=$1 line k v n=0 perms
@@ -383,6 +386,7 @@ order=(
   SONARR_API_KEY RADARR_API_KEY PROWLARR_API_KEY BAZARR_API_KEY SEERR_API_KEY
   JELLYFIN_API_KEY JELLYSTAT_API_KEY QBIT_USERNAME QBIT_PASSWORD
   WATCHTOWER_TOKEN UPDATER_TOKEN ABS_API_KEY KAVITA_API_KEY DISCORD_ALERT_WEBHOOK_URL
+  PRIVATE_JELLYFIN_LIBRARIES PRIVATE_JELLYFIN_USERS PRIVATE_QBIT_CATEGORIES PRIVATE_PROWLARR_TAG
 )
 url_order=(
   SONARR_URL RADARR_URL PROWLARR_URL BAZARR_URL SEERR_URL JELLYFIN_URL JELLYSTAT_URL QBIT_URL GLUETUN_URL
@@ -654,6 +658,17 @@ if [[ ${source_of[DISCORD_ALERT_WEBHOOK_URL]-} == entered &&
   ! ${out[DISCORD_ALERT_WEBHOOK_URL]} =~ ^https://(discord|discordapp)\.com/api/(v[0-9]+/)?webhooks/[0-9]+/[A-Za-z0-9_.-]+/?$ ]]; then
   die 'the Discord webhook must look like https://discord.com/api/webhooks/<id>/<token>; re-run and paste it again'
 fi
+
+# Optional private content (names the hub never shows). Never prompted: set from the answers file (- clears one),
+# otherwise kept.
+for key in PRIVATE_JELLYFIN_LIBRARIES PRIVATE_JELLYFIN_USERS PRIVATE_QBIT_CATEGORIES PRIVATE_PROWLARR_TAG; do
+  if [[ -n $answers_file && -n ${answers[$key]-} ]]; then
+    if [[ ${answers[$key]} != - ]]; then put "$key" "${answers[$key]}" entered; fi
+  elif [[ -n ${existing[$key]-} ]]; then
+    put "$key" "${existing[$key]}" kept
+  fi
+done
+unset key
 
 if [[ -n ${existing[UPDATER_TOKEN]-} ]]; then
   put UPDATER_TOKEN "${existing[UPDATER_TOKEN]}" kept
