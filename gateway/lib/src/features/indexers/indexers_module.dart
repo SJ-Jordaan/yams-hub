@@ -407,6 +407,19 @@ class IndexersModule extends FeatureModule {
     );
     final alerts = <Alert>[
       ?await hostsAlert,
+      if (req.isAdmin && snap.value.privateTagMissing)
+        Alert(
+          id: 'privacy.prowlarr.tag',
+          severity: AlertSeverity.warning,
+          source: ServiceId.prowlarr,
+          feature: id,
+          title: 'PRIVATE_PROWLARR_TAG matches no Prowlarr tag',
+          message:
+              'Prowlarr has no tag "${ctx.config.privateContent.prowlarrTag}", '
+              'so no indexer is hidden. Fix the tag (in Prowlarr or the hub '
+              'env file) and recreate the hub container.',
+          route: _indexersRoute,
+        ),
       for (final i in failing)
         Alert(
           id: 'prowlarr.indexer.${i.id}',

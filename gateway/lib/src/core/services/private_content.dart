@@ -3,6 +3,7 @@
 /// here calls an upstream and every check answers "public".
 library;
 
+import 'package:logging/logging.dart';
 import 'package:yams_models/yams_models.dart';
 
 import '../../config/config.dart';
@@ -44,6 +45,8 @@ final class PrivateLibraries {
     return p;
   }
 }
+
+final _log = Logger('core.privacy');
 
 /// The library ids an item may be filed under (`ParentId` of a movie in
 /// the library root, `SeriesId`/`SeasonId` of an episode, ...).
@@ -104,10 +107,32 @@ final class PrivateContent {
     return libs;
   }
 
+  /// `PRIVATE_JELLYFIN_LIBRARIES` names that matched no Jellyfin library in
+  /// the last `/Library/VirtualFolders` answer (sorted; nothing of them is
+  /// hidden, so the dashboard warns admins).
+  List<String> get unmatchedLibraries => _unmatched;
+  List<String> _unmatched = const [];
+
   /// The private libraries of a `/Library/VirtualFolders` answer.
   PrivateLibraries librariesOf(List<JsonMap> folders) {
     final ids = <String>{};
     final locations = <String>[];
+    if (hidesLibraries) {
+      final names = {
+        for (final f in folders) ?readString(f['Name'])?.trim().toLowerCase(),
+      };
+      final unmatched = [
+        for (final n in settings.jellyfinLibraries)
+          if (!names.contains(n)) n,
+      ]..sort();
+      if (unmatched.join(',') != _unmatched.join(',') && unmatched.isNotEmpty) {
+        _log.warning(
+          'PRIVATE_JELLYFIN_LIBRARIES: no Jellyfin library is named '
+          '${unmatched.map((n) => '"$n"').join(', ')}; nothing of it is hidden',
+        );
+      }
+      _unmatched = List.unmodifiable(unmatched);
+    }
     for (final f in folders) {
       if (!settings.isPrivateLibrary(readString(f['Name']))) continue;
       if (normaliseJellyfinId(readString(f['ItemId'])) case final id?) {

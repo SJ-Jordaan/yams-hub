@@ -300,13 +300,15 @@ class MediaModule extends FeatureModule {
             ),
       recentlyAdded: shared?.recentlyAdded.take(8).toList() ?? const [],
     );
+    final unmatched = ctx.privacy.unmatchedLibraries;
     return DashboardContribution(
       data: card.toJson(),
-      alerts: mediaAlerts(
-        books: books,
-        pendingRestart: restart,
-        shelfmark: shelf,
-      ),
+      alerts: [
+        ...mediaAlerts(books: books, pendingRestart: restart, shelfmark: shelf),
+        // Admins only: a member never learns the setting exists.
+        if (req.isAdmin && shared != null && unmatched.isNotEmpty)
+          privateLibrariesAlert(unmatched),
+      ],
       stale: np.stale,
       fetchedAt: np.fetchedAt,
       error: np.stale && np.error != null
@@ -317,6 +319,21 @@ class MediaModule extends FeatureModule {
 
   bool _configured(ServiceId id) => ctx.config.isConfigured(id);
 }
+
+/// `PRIVATE_JELLYFIN_LIBRARIES` names no existing library: nothing of it is
+/// hidden.
+Alert privateLibrariesAlert(List<String> unmatched) => Alert(
+  id: 'privacy.jellyfin.libraries',
+  severity: AlertSeverity.warning,
+  source: ServiceId.jellyfin,
+  feature: 'media',
+  title: 'PRIVATE_JELLYFIN_LIBRARIES matches no Jellyfin library',
+  message:
+      'No Jellyfin library is named '
+      '${unmatched.map((n) => '"$n"').join(', ')}, so nothing of it is '
+      'hidden. Fix the name in the hub env file and recreate the hub '
+      'container.',
+);
 
 /// The media alerts (API.md §14.8).
 List<Alert> mediaAlerts({

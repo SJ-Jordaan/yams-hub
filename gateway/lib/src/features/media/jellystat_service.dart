@@ -84,8 +84,33 @@ final class JellystatService {
       partial: failures.isNotEmpty,
       privacy: privacy.settings,
       hiddenItems: hiddenItems,
+      hiddenUserIds: await _privateUserIds(),
     );
   });
+
+  /// The ids of the private Jellyfin users; empty when Jellyfin cannot
+  /// tell (rows are then matched by name only).
+  Future<Set<String>> _privateUserIds() async {
+    final privacy = _ctx.privacy;
+    if (!privacy.hidesUsers) return const {};
+    try {
+      return await privacy.userIds();
+    } on UpstreamException catch (e) {
+      _ctx.log.fine('Jellyfin users unavailable, matching names only: $e');
+      return const {};
+    }
+  }
+
+  /// Whether a Jellystat row's user is private: by Jellyfin user id (a
+  /// renamed user stays private), else by name.
+  Future<bool Function(Object? id, Object? name)> _privateUser() async {
+    final privacy = _ctx.privacy;
+    if (!privacy.hidesUsers) return (_, _) => false;
+    final ids = await _privateUserIds();
+    return (id, name) =>
+        ids.contains(normaliseJellyfinId(readString(id))) ||
+        privacy.isPrivateUserName(readString(name));
+  }
 
   Future<({Object? value, Object? error})> _attempt(
     Future<Object?> Function() call,
@@ -104,11 +129,12 @@ final class JellystatService {
     final body = await _js.getJson('/stats/getAllUserActivity');
     final now = _ctx.clock.now();
     final privacy = _ctx.privacy;
+    final isPrivate = await _privateUser();
     final rows = [
       if (body is List)
         for (final e in body)
           if (readMap(e) case final m?
-              when !privacy.isPrivateUserName(readString(m['UserName'])))
+              when !isPrivate(m['UserId'], m['UserName']))
             m,
     ];
     // A user's last watched item may be a private one.
@@ -166,11 +192,12 @@ final class JellystatService {
             ),
     );
     final privacy = _ctx.privacy;
+    final isPrivate = await _privateUser();
     final mine = [
       for (final r in readList(body?['results'], (m) => m))
         if ((userId == null ||
                 normaliseJellyfinId(readString(r['UserId'])) == userId) &&
-            !privacy.isPrivateUserName(readString(r['UserName'])))
+            !isPrivate(r['UserId'], r['UserName']))
           r,
     ];
     const itemKeys = ['NowPlayingItemId', 'EpisodeId', 'SeasonId'];
@@ -290,7 +317,8 @@ List<JsonMap> _rows(Object? v) => readList(v, (m) => m);
 /// `26`), converted to seconds here; every other Jellystat duration is
 /// seconds.
 ///
-/// [privacy] drops the private libraries' and users' rows (and their plays
+/// [privacy] (names) and [hiddenUserIds] drop the private libraries' and
+/// users' rows (and their plays
 /// from the totals); [hiddenItems] are the private item ids among the top
 /// lists.
 WatchStats mapWatchStats({
@@ -309,6 +337,7 @@ WatchStats mapWatchStats({
   bool partial = false,
   PrivateContentSettings privacy = PrivateContentSettings.none,
   Set<String> hiddenItems = const {},
+  Set<String> hiddenUserIds = const {},
 }) {
   final vot = readMap(viewsOverTime);
   final days7 = readMap(byDays);
@@ -423,7 +452,10 @@ WatchStats mapWatchStats({
     ],
     topUsers: [
       for (final r in _rows(topUsers))
-        if (!privacy.isPrivateUser(readString(r['Name'])))
+        if (!privacy.isPrivateUser(readString(r['Name'])) &&
+            !hiddenUserIds.contains(
+              normaliseJellyfinId(readString(r['UserId'])),
+            ))
           WatchTopUser(
             userId: readString(r['UserId']) ?? '',
             name: readString(r['Name']) ?? '',

@@ -103,7 +103,7 @@ final class ProwlarrRepository {
       ),
     );
     final results = await Future.wait([indexers, statuses, tags]);
-    return withoutPrivateIndexers(
+    final snap = withoutPrivateIndexers(
       ProwlarrSnapshot(
         indexers: parseIndexers(results[0]),
         statuses: parseStatuses(results[1]),
@@ -112,7 +112,19 @@ final class ProwlarrRepository {
       ),
       ctx.config.privateContent.prowlarrTag,
     );
+    if (snap.privateTagMissing != _warnedTagMissing) {
+      _warnedTagMissing = snap.privateTagMissing;
+      if (snap.privateTagMissing) {
+        ctx.log.warning(
+          'PRIVATE_PROWLARR_TAG: Prowlarr has no tag '
+          '"${ctx.config.privateContent.prowlarrTag}"; no indexer is hidden',
+        );
+      }
+    }
+    return snap;
   }
+
+  bool _warnedTagMissing = false;
 
   /// Ids of the private indexers (`PRIVATE_PROWLARR_TAG`); no call when the
   /// tag is unset. Throws when Prowlarr cannot be read (nothing can be

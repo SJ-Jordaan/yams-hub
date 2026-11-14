@@ -59,6 +59,35 @@ void main() {
     expect(list.categories, ['lidarr', 'radarr', 'tv-sonarr']);
   });
 
+  test('subcategories of a private category are private too', () async {
+    hub.fakes.on(_q, 'GET', '/api/v2/sync/maindata', (_) {
+      final body = jsonDecode(
+        utf8.decode(
+          fixtureBytes('downloads/qbittorrent_sync_maindata_full.json'),
+        ),
+      ) as Map<String, Object?>;
+      final torrents = Map<String, Object?>.of(
+        body['torrents']! as Map<String, Object?>,
+      );
+      torrents[sonarrHash] = {
+        ...(torrents[sonarrHash]! as Map<String, Object?>),
+        'category': 'books/sub',
+      };
+      return FakeResponse.json({
+        ...body,
+        'torrents': torrents,
+        'categories': {
+          ...(body['categories']! as Map<String, Object?>),
+          'books/sub': {'name': 'books/sub', 'savePath': ''},
+        },
+      });
+    });
+    final list = TorrentList.fromJson((await hub.get('/api/v1/torrents')).map);
+    expect(list.items.map((t) => t.hash), isNot(contains(sonarrHash)));
+    expect(list.categories, isNot(contains('books/sub')));
+    expect((await hub.get('/api/v1/torrents/$sonarrHash')).status, 404);
+  });
+
   test('the unified queue leaves out private torrents', () async {
     final r = await hub.get('/api/v1/activity/queue');
     expect(r.status, 200, reason: r.body);

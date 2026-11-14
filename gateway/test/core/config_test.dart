@@ -133,6 +133,8 @@ EMPTY=''
       expect(pc.isPrivateUser('secret user'), isTrue);
       expect(pc.isPrivateCategory('Whisparr'), isTrue);
       expect(pc.isPrivateCategory('radarr'), isFalse);
+      expect(pc.isPrivateCategory('whisparr/4k'), isTrue, reason: 'subcat');
+      expect(pc.isPrivateCategory('whisparr2'), isFalse);
       expect(pc.isPrivateTag('PRIVATE'), isTrue);
       expect(pc.isPrivateTag('flaresolverr'), isFalse);
       expect(c.warnings, isEmpty, reason: 'not secrets');

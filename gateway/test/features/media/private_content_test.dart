@@ -396,6 +396,99 @@ void main() {
     });
   });
 
+  group('a private user renamed in Jellystat is matched by id', () {
+    test('users, history and top users', () async {
+      const js = ServiceId.jellystat;
+      hub.fakes
+        ..on(js, 'GET', '/stats/getAllUserActivity', (_) {
+          return FakeResponse.json([
+            {'UserId': _rudeus, 'UserName': 'Rudy', 'TotalPlays': 3},
+            {
+              'UserId': testMemberJellyfinId,
+              'UserName': 'Zenith Greyrat',
+              'TotalPlays': 1,
+            },
+          ]);
+        })
+        ..on(js, 'GET', '/stats/getPlaybackActivity', (_) {
+          return FakeResponse.json({
+            'pages': 1,
+            'results': [
+              for (final (id, user) in [
+                (_rudeus, 'Rudy'),
+                (testMemberJellyfinId, 'Zenith Greyrat'),
+              ])
+                {
+                  'Id': user,
+                  'UserId': id,
+                  'UserName': user,
+                  'NowPlayingItemId': 'f00000000000000000000000000000f1',
+                  'NowPlayingItemName': 'Ok',
+                  'ActivityDateInserted': '2026-11-08T08:53:19.346Z',
+                },
+            ],
+          });
+        })
+        ..on(js, 'POST', '/stats/getMostActiveUsers', (_) {
+          return FakeResponse.json([
+            {'UserId': _rudeus, 'Name': 'Rudy', 'Plays': 9},
+          ]);
+        });
+      final users = await hub.get('/api/v1/media/stats/users');
+      expect(users.status, 200, reason: users.body);
+      expect(users.body, isNot(contains('Rudy')));
+      expect(users.body, contains('Zenith Greyrat'));
+      final history = await hub.get('/api/v1/media/stats/history');
+      expect(history.body, isNot(contains('Rudy')));
+      expect(history.body, contains('Zenith Greyrat'));
+      final stats = await hub.get('/api/v1/media/stats?days=30');
+      expect(stats.status, 200, reason: stats.body);
+      expect(WatchStats.fromJson(stats.map).topUsers, isEmpty);
+    });
+  });
+
+  group('names that match nothing', () {
+    TestHub withLibraries(String names) {
+      final h = TestHub(env: {'PRIVATE_JELLYFIN_LIBRARIES': names});
+      addTearDown(h.close);
+      h.fakes.fakeJellyfin();
+      h.fakes.fakeJellystat();
+      _fakePrivateJellyfin(h.fakes);
+      return h;
+    }
+
+    test('an unknown library name warns admins on the dashboard', () async {
+      final typo = withLibraries('Adlt');
+      final admin = DashboardResponse.fromJson(
+        (await typo.get('/api/v1/dashboard?cards=media')).map,
+      );
+      final alert = admin.alerts.singleWhere(
+        (a) => a.id == 'privacy.jellyfin.libraries',
+      );
+      expect(alert.title, contains('PRIVATE_JELLYFIN_LIBRARIES'));
+      expect(alert.message, contains('"adlt"'));
+      final member = await typo.get(
+        '/api/v1/dashboard?cards=media',
+        as: TestAs.member,
+      );
+      expect(member.body, isNot(contains('privacy.jellyfin')));
+      expect(member.body, isNot(contains('adlt')));
+    });
+
+    test('only the unmatched names are reported', () async {
+      final r = await hub.get('/api/v1/dashboard?cards=media');
+      final alerts = DashboardResponse.fromJson(r.map).alerts;
+      // setUp's list is " adult ,Nope": only "nope" matches nothing.
+      expect(
+        alerts.singleWhere((a) => a.id == 'privacy.jellyfin.libraries').message,
+        allOf(contains('"nope"'), isNot(contains('adult'))),
+      );
+      final ok = await withLibraries('Adult')
+          .get('/api/v1/dashboard?cards=media');
+      expect(ok.body, isNot(contains('privacy.jellyfin')));
+    });
+  });
+
   test(
     'without settings nothing is hidden and no extra call is made',
     () async {

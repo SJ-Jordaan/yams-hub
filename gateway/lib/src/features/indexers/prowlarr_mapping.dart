@@ -46,7 +46,12 @@ final class ProwlarrSnapshot {
     required this.tags,
     required this.health,
     this.hiddenIds = const {},
+    this.privateTagMissing = false,
   });
+
+  /// `PRIVATE_PROWLARR_TAG` is set but Prowlarr has no tag with that label:
+  /// nothing is hidden (the dashboard warns admins).
+  final bool privateTagMissing;
 
   /// Ids of the indexers carrying the private tag (`PRIVATE_PROWLARR_TAG`),
   /// left out of [indexers], [statuses] and [health].
@@ -143,8 +148,17 @@ ProwlarrSnapshot withoutPrivateIndexers(
     for (final e in snapshot.tags.entries)
       if (e.value.trim().toLowerCase() == tag) e.key,
   };
+  if (tagIds.isEmpty) {
+    return ProwlarrSnapshot(
+      indexers: snapshot.indexers,
+      statuses: snapshot.statuses,
+      tags: snapshot.tags,
+      health: snapshot.health,
+      privateTagMissing: true,
+    );
+  }
   final hidden = <int>{};
-  final names = <String>[];
+  final names = <RegExp>[];
   final kept = <JsonMap>[];
   for (final raw in snapshot.indexers) {
     final id = readInt(raw['id']);
@@ -155,7 +169,16 @@ ProwlarrSnapshot withoutPrivateIndexers(
     if (id != null && tags.any(tagIds.contains)) {
       hidden.add(id);
       final name = readString(raw['name'])?.trim();
-      if (name != null && name.isNotEmpty) names.add(name.toLowerCase());
+      // The whole name: "EZ" must not drop a message about "EZTV".
+      if (name != null && name.isNotEmpty) {
+        names.add(
+          RegExp(
+            '(?<![\\p{L}\\p{N}])${RegExp.escape(name)}(?![\\p{L}\\p{N}])',
+            caseSensitive: false,
+            unicode: true,
+          ),
+        );
+      }
     } else {
       kept.add(raw);
     }
@@ -170,7 +193,7 @@ ProwlarrSnapshot withoutPrivateIndexers(
     tags: snapshot.tags,
     health: [
       for (final h in snapshot.health)
-        if (!names.any(h.message.toLowerCase().contains)) h,
+        if (!names.any((n) => n.hasMatch(h.message))) h,
     ],
     hiddenIds: hidden,
   );

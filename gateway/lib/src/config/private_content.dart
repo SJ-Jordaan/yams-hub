@@ -59,9 +59,16 @@ final class PrivateContentSettings {
   bool isPrivateUser(String? name) =>
       name != null && jellyfinUsers.contains(name.trim().toLowerCase());
 
-  bool isPrivateCategory(String? category) =>
-      category != null &&
-      qbitCategories.contains(category.trim().toLowerCase());
+  /// [category] or one of its subcategories (`whisparr/4k` of `whisparr`).
+  bool isPrivateCategory(String? category) {
+    if (category == null) return false;
+    final c = category.trim().toLowerCase();
+    if (qbitCategories.contains(c)) return true;
+    for (final p in qbitCategories) {
+      if (c.startsWith('$p/')) return true;
+    }
+    return false;
+  }
 
   bool isPrivateTag(String? label) =>
       prowlarrTag != null &&

@@ -2,6 +2,7 @@
 // (lists, stats, history, search, dashboard, Discord alert).
 import 'package:test/test.dart';
 import 'package:yams_hub_gateway/src/features/indexers/indexer_alert.dart';
+import 'package:yams_hub_gateway/src/features/indexers/prowlarr_mapping.dart';
 import 'package:yams_hub_gateway/src/features/indexers/prowlarr_repository.dart';
 
 import '../../support/test_hub.dart';
@@ -151,6 +152,73 @@ void main() {
     final sample = await sampleProwlarr(ProwlarrRepository(hub.ctx), hub.clock);
     expect(sample!.enabled, 4);
     expect(sample.failing, isEmpty);
+  });
+
+  test('a tag Prowlarr does not have warns admins', () async {
+    final typo = TestHub(env: const {'PRIVATE_PROWLARR_TAG': 'privat'});
+    addTearDown(typo.close);
+    _fakePrivate(typo.fakes);
+    final r = await typo.get('/api/v1/dashboard?cards=indexers');
+    final alert = DashboardResponse.fromJson(r.map).alerts
+        .singleWhere((a) => a.id == 'privacy.prowlarr.tag');
+    expect(alert.message, contains('"privat"'));
+    final member = await typo.get(
+      '/api/v1/dashboard?cards=indexers',
+      as: TestAs.member,
+    );
+    expect(member.body, isNot(contains('privacy.prowlarr')));
+    final ok = await hub.get('/api/v1/dashboard?cards=indexers');
+    expect(ok.body, isNot(contains('privacy.prowlarr')));
+  });
+
+  group('health messages', () {
+    ProwlarrSnapshot snap(List<String> messages) => ProwlarrSnapshot(
+      indexers: [
+        {
+          'id': 1,
+          'name': 'EZ',
+          'tags': [2],
+        },
+        {'id': 2, 'name': 'EZTV', 'tags': <int>[]},
+      ],
+      statuses: const {},
+      tags: const {2: 'private'},
+      health: [
+        for (final m in messages)
+          HealthMessage(
+            service: ServiceId.prowlarr,
+            source: 'IndexerStatusCheck',
+            type: HealthMessageType.warning,
+            message: m,
+          ),
+      ],
+    );
+
+    test('only messages naming a private indexer as a whole word go', () {
+      final out = withoutPrivateIndexers(
+        snap([
+          'Indexers unavailable due to failures: EZTV',
+          'Indexers unavailable due to failures: ez, Nyaa',
+          'Indexers unavailable due to failures: EZ',
+          'Indexer EZ-mirror is slow',
+        ]),
+        'Private',
+      );
+      expect(out.health.map((h) => h.message), [
+        'Indexers unavailable due to failures: EZTV',
+      ]);
+      expect(out.hiddenIds, {1});
+    });
+
+    test('a tag Prowlarr does not have hides nothing and says so', () {
+      final out = withoutPrivateIndexers(snap(['x']), 'other');
+      expect(out.privateTagMissing, isTrue);
+      expect(out.indexers, hasLength(2));
+      expect(
+        withoutPrivateIndexers(snap(['x']), null).privateTagMissing,
+        false,
+      );
+    });
   });
 
   test('without the setting the tagged indexers are shown', () async {
