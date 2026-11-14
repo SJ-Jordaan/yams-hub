@@ -22,6 +22,38 @@ const manualImportTimeout = Duration(seconds: 60);
 
 const _maxTokens = 5000;
 
+/// How long the *arr root folders are trusted.
+const manualImportRootFoldersTtl = Duration(minutes: 10);
+
+/// The rejection the gateway adds to a candidate that is already in the
+/// library (issue #7).
+const manualImportLibraryFileReason =
+    'This file is already in the library. Importing it again would replace '
+    'the existing file, so the hub does not allow it.';
+
+/// Whether [path] is [folder] or inside it. Separator-safe (`/data/tv` does
+/// not contain `/data/tvshows/x`), ignores trailing separators, treats `\`
+/// like `/` and compares Windows drive paths case-insensitively. An empty
+/// folder (or `/`) contains nothing: it would match every download too.
+bool pathIsInside(String path, String folder) {
+  String norm(String v) {
+    var n = v.trim().replaceAll(r'\', '/');
+    while (n.endsWith('/')) {
+      n = n.substring(0, n.length - 1);
+    }
+    return n;
+  }
+
+  var f = norm(folder);
+  var p = norm(path);
+  if (f.isEmpty) return false;
+  if (RegExp('^[A-Za-z]:').hasMatch(f)) {
+    f = f.toLowerCase();
+    p = p.toLowerCase();
+  }
+  return p == f || p.startsWith('$f/');
+}
+
 /// What the gateway remembers about one candidate.
 final class ManualImportCandidate {
   ManualImportCandidate({
@@ -39,6 +71,7 @@ final class ManualImportCandidate {
     required this.episodeIds,
     required this.movieId,
     required this.indexerFlags,
+    this.inLibrary = false,
   });
 
   final String userId;
@@ -55,15 +88,59 @@ final class ManualImportCandidate {
   final List<int> episodeIds;
   final int? movieId;
   final int indexerFlags;
+
+  /// The path is inside a root folder or the series/movie folder: never
+  /// imported (issue #7).
+  final bool inLibrary;
 }
 
 /// Lists candidates and starts `ManualImport` commands.
 final class ManualImportService {
-  ManualImportService(this._ctx, this._queues);
+  ManualImportService(this._ctx, this._queues)
+    : _roots = _ctx.caches.ttl<ArrService, List<String>>(
+        'activity.manualImport.rootFolders',
+        manualImportRootFoldersTtl,
+        maxStale: const Duration(hours: 1),
+      );
 
   final FeatureContext _ctx;
   final ArrQueueSources _queues;
+  final TtlCache<ArrService, List<String>> _roots;
   final _tokens = <String, ManualImportCandidate>{};
+
+  /// The *arr's root folders, or null when they cannot be read (then only
+  /// the candidate's own series/movie folder marks a library file).
+  Future<List<String>?> _rootFolders(ArrService service) async {
+    try {
+      return await _roots.value(service, () async {
+        final body = await _ctx.upstreams
+            .arr(service)
+            .getJson('/api/v3/rootfolder');
+        if (body is! List) {
+          throw UpstreamBadResponse(
+            service: service.serviceId,
+            method: 'GET',
+            path: '/api/v3/rootfolder',
+            reason: 'not a list',
+          );
+        }
+        return [
+          for (final r in body)
+            if (readString(readMap(r)?['path']) case final p?
+                when p.trim().isNotEmpty)
+              p,
+        ];
+      });
+    } catch (e) {
+      _ctx.log.warning(
+        '${_label(service)} root folders unreadable: ${e.runtimeType}',
+      );
+      return null;
+    }
+  }
+
+  static bool _inside(String path, Iterable<String?> folders) =>
+      folders.any((f) => f != null && pathIsInside(path, f));
 
   void _prune() {
     final now = _ctx.clock.now();
@@ -91,18 +168,12 @@ final class ManualImportService {
         'This queue item has no download to import from.',
       );
     }
-    int? positive(Object? v) => switch (readInt(v)) {
-      final n? when n > 0 => n,
-      _ => null,
-    };
-    // Unknown-series/movie items have no id: Sonarr/Radarr then list the
-    // files by download alone and the admin picks the series or movie.
+    // By download alone: with a seriesId/movieId next to the downloadId,
+    // Sonarr v4 ignores the download and lists the series' library files,
+    // and importing those deletes the existing episodes (issue #7). The
+    // download's files come back already matched to their series/movie.
     final query = <String, Object?>{
       'downloadId': downloadId,
-      if (service == ArrService.sonarr)
-        'seriesId': positive(record['seriesId'])
-      else
-        'movieId': positive(record['movieId']),
       'filterExistingFiles': true,
     };
     final Object? body;
@@ -117,6 +188,7 @@ final class ManualImportService {
     } on UpstreamException catch (e) {
       throw e.toApiException(resourceNotFound: false);
     }
+    final roots = await _rootFolders(service);
     _prune();
     final expiresAt = _ctx.clock.now().add(manualImportTokenTtl);
     final items = <ManualImportFile>[];
@@ -133,6 +205,7 @@ final class ManualImportService {
           path,
           c,
           expiresAt,
+          roots ?? const [],
         ),
       );
     }
@@ -153,9 +226,17 @@ final class ManualImportService {
     String path,
     JsonMap c,
     DateTime expiresAt,
+    List<String> roots,
   ) {
     final series = readMap(c['series']);
     final movie = readMap(c['movie']);
+    // Defence in depth (issue #7): a file inside a root folder or its own
+    // series/movie folder is a library file, whatever the *arr says.
+    final inLibrary = _inside(path, [
+      ...roots,
+      readString(series?['path']),
+      readString(movie?['path']),
+    ]);
     final episodes = [
       for (final e
           in c['episodes'] is List ? c['episodes'] as List : const <Object?>[])
@@ -200,8 +281,14 @@ final class ManualImportService {
       episodeIds: [for (final e in episodeDtos) e.id],
       movieId: movieId,
       indexerFlags: readInt(c['indexerFlags']) ?? 0,
+      inLibrary: inLibrary,
     );
     final rejections = [
+      if (inLibrary)
+        const ManualImportFileRejection(
+          reason: manualImportLibraryFileReason,
+          type: ManualImportFileRejectionType.permanent,
+        ),
       for (final r
           in c['rejections'] is List
               ? c['rejections'] as List
@@ -228,9 +315,11 @@ final class ManualImportService {
       movieTitle: readString(movie?['title']),
       customFormatScore: readInt(c['customFormatScore']),
       rejections: rejections,
-      importable: service == ArrService.sonarr
-          ? seriesId != null && episodeDtos.isNotEmpty
-          : movieId != null,
+      importable:
+          !inLibrary &&
+          (service == ArrService.sonarr
+              ? seriesId != null && episodeDtos.isNotEmpty
+              : movieId != null),
     );
   }
 
@@ -251,6 +340,7 @@ final class ManualImportService {
       throw ApiException.invalidField('files', 'Select 1 to 200 files.');
     }
     _prune();
+    final roots = await _rootFolders(service) ?? const <String>[];
     final userId = req.user.id;
     final upstreamFiles = <JsonMap>[];
     for (var i = 0; i < files.length; i++) {
@@ -262,6 +352,14 @@ final class ManualImportService {
           c.service != service ||
           c.queueId != queueId) {
         throw ApiException.notFound('Import candidates expired, reload.');
+      }
+      // Checked again against the current root folders: never send a
+      // library file back to the *arr, even if a client submits it.
+      if (c.inLibrary || _inside(c.path, roots)) {
+        throw ApiException.invalidField(
+          'files[$i]',
+          manualImportLibraryFileReason,
+        );
       }
       if (service == ArrService.sonarr) {
         final seriesId = f.optInt('seriesId', min: 1) ?? c.seriesId;

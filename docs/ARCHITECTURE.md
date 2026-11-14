@@ -883,7 +883,7 @@ running job (HTTP 202 with the same id).
 | jellyfin | `GET /System/Info/Public` | `Version` |
 | jellystat | `GET /auth/isConfigured` | `version` |
 | qbittorrent | `GET /api/v2/app/version` (through `QbitSession`) | body text |
-| gluetun | `GET /v1/openvpn/portforwarded` | – |
+| gluetun | `GET /v1/portforward`, else `/v1/openvpn/portforwarded`, else `/v1/publicip/ip` (401/403 on all → degraded) | – |
 | docker | `GET /_ping` (+ `/version`) | `Version` |
 | watchtower | `GET /v1/metrics` (counts against its 60/min limit; at 30 s caching that is fine) | – |
 | updater | `GET /healthz` | `version` |

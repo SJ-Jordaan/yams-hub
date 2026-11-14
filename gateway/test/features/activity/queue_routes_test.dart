@@ -450,6 +450,14 @@ void main() {
         '/api/v3/manualimport',
         (_) => syntheticResponse('sonarr_manualimport.synthetic.json'),
       );
+      for (final s in [_sonarr, _radarr]) {
+        hub.fakes.onFixture(
+          s,
+          'GET',
+          '/api/v3/rootfolder',
+          'arr/${s.name}_rootfolder.json',
+        );
+      }
     });
 
     test('candidates keep paths behind fileId tokens', () async {
@@ -480,9 +488,10 @@ void main() {
       final call = hub.fakes
           .callsTo(_sonarr)
           .firstWhere((c) => c.path == '/api/v3/manualimport');
+      // By download alone: with a seriesId Sonarr v4 ignores the download
+      // and lists the series' library files (issue #7).
       expect(call.query, {
         'downloadId': ['0985D9EFDF7508DB837E629AE8F40EE8B56F4D71'],
-        'seriesId': ['54'],
         'filterExistingFiles': ['true'],
       });
     });
@@ -669,7 +678,7 @@ void main() {
             .callsTo(_sonarr)
             .lastWhere((c) => c.path == '/api/v3/manualimport');
         expect(mi.query['downloadId'], ['B' * 40]);
-        expect(mi.query['seriesId'], ['54']);
+        expect(mi.query.containsKey('seriesId'), isFalse);
       },
     );
 
@@ -706,6 +715,315 @@ void main() {
           .lastWhere((c) => c.path == '/api/v3/manualimport');
       expect(mi.query.containsKey('seriesId'), isFalse);
       expect(mi.query['downloadId'], ['D' * 40]);
+    });
+    test('Radarr candidates are listed by download alone (issue #7)', () async {
+      hub.fakes.on(
+        _radarr,
+        'GET',
+        '/api/v3/manualimport',
+        (_) => FakeResponse.json(<Object?>[]),
+      );
+      final r = await hub.get('/api/v1/activity/queue/radarr/9/import');
+      expect(r.status, 200, reason: r.body);
+      final mi = hub.fakes
+          .callsTo(_radarr)
+          .lastWhere((c) => c.path == '/api/v3/manualimport');
+      expect(mi.query, {
+        'downloadId': ['2B96B8269B32CB9C44BF8808ECA92AAAD3E2B015'],
+        'filterExistingFiles': ['true'],
+      });
+    });
+
+    test('library files are never importable, even if the *arr lists them '
+        '(issue #7)', () async {
+      final sample = synthetic('sonarr_manualimport.synthetic.json')! as List;
+      final download = readMap(sample.first)!;
+      JsonMap at(String path) => {
+        ...download,
+        'path': path,
+        'relativePath': path.split('/').last,
+      };
+      hub.fakes.on(
+        _sonarr,
+        'GET',
+        '/api/v3/manualimport',
+        (_) => FakeResponse.json([
+          // What Sonarr v4 answered with a seriesId: the library itself.
+          at('/data/tvshows/Slime/Season 4/Slime - S04E01.mkv'),
+          // The root folder has a trailing slash below; /data/tv is not it.
+          at('/data/tvshows-old/Slime - S04E01.mkv'),
+          download,
+        ]),
+      );
+      hub.fakes
+        ..on(
+          _sonarr,
+          'GET',
+          '/api/v3/rootfolder',
+          (_) => FakeResponse.json([
+            {'id': 1, 'path': '/data/tvshows/'},
+            {'id': 2, 'path': '/data/tv'},
+          ]),
+        )
+        ..on(
+          _sonarr,
+          'POST',
+          '/api/v3/command',
+          (_) => FakeResponse.json(_command(78, 'ManualImport'), status: 201),
+        );
+      final r = await hub.get('/api/v1/activity/queue/sonarr/123456/import');
+      expect(r.status, 200, reason: r.body);
+      final c = ManualImportCandidates.fromJson(r.map);
+      expect(c.items, hasLength(3));
+      final library = c.items[0];
+      expect(library.importable, isFalse);
+      expect(
+        library.rejections.first.reason,
+        contains('already in the library'),
+      );
+      expect(c.items[1].importable, isTrue, reason: 'separator-safe');
+      expect(c.items[2].importable, isTrue);
+
+      // A client that submits the library file anyway is refused, and
+      // nothing reaches Sonarr.
+      for (final files in [
+        [
+          {'fileId': library.fileId},
+        ],
+        [
+          {'fileId': c.items[2].fileId},
+          {
+            'fileId': library.fileId,
+            'seriesId': 54,
+            'episodeIds': [5580],
+          },
+        ],
+      ]) {
+        final refused = await hub.post(
+          '/api/v1/activity/queue/import',
+          body: {'service': 'sonarr', 'queueId': 123456, 'files': files},
+        );
+        expect(refused.status, 422, reason: refused.body);
+        expect(refused.body, contains('already in the library'));
+      }
+      expect(called(hub.fakes, _sonarr, '/api/v3/command'), isFalse);
+
+      // Download files still import as before.
+      final ok = await hub.post(
+        '/api/v1/activity/queue/import',
+        body: {
+          'service': 'sonarr',
+          'queueId': 123456,
+          'files': [
+            {'fileId': c.items[2].fileId},
+          ],
+        },
+      );
+      expect(ok.status, 202, reason: ok.body);
+      final sent = readMap(
+        jsonDecode(
+          hub.fakes
+              .callsTo(_sonarr)
+              .lastWhere((c) => c.path == '/api/v3/command')
+              .body,
+        ),
+      )!;
+      final paths = [
+        for (final f in sent['files'] as List) readMap(f)!['path'],
+      ];
+      expect(paths, [download['path']]);
+    });
+
+    test('import re-checks the current root folders (issue #7)', () async {
+      final sample = synthetic('sonarr_manualimport.synthetic.json')! as List;
+      final download = readMap(sample.first)!;
+      var rootsUp = false;
+      hub.fakes
+        ..on(
+          _sonarr,
+          'GET',
+          '/api/v3/manualimport',
+          (_) => FakeResponse.json([
+            {...download, 'path': '/data/tvshows/Slime/Season 4/S04E01.mkv'},
+          ]),
+        )
+        ..on(
+          _sonarr,
+          'GET',
+          '/api/v3/rootfolder',
+          (_) => rootsUp
+              ? FakeResponse.json([
+                  {'id': 1, 'path': '/data/tvshows'},
+                ])
+              : FakeResponse.json({'message': 'boom'}, status: 500),
+        )
+        ..on(
+          _sonarr,
+          'POST',
+          '/api/v3/command',
+          (_) => FakeResponse.json(_command(80, 'ManualImport'), status: 201),
+        );
+      // Listed while the root folders can't be read: nothing marks it.
+      final c = ManualImportCandidates.fromJson(
+        (await hub.get('/api/v1/activity/queue/sonarr/123456/import')).map,
+      );
+      expect(c.items.single.importable, isTrue);
+      // By the time it is submitted they can.
+      rootsUp = true;
+      final r = await hub.post(
+        '/api/v1/activity/queue/import',
+        body: {
+          'service': 'sonarr',
+          'queueId': 123456,
+          'files': [
+            {'fileId': c.items.single.fileId},
+          ],
+        },
+      );
+      expect(r.status, 422, reason: r.body);
+      expect(r.body, contains('already in the library'));
+      expect(called(hub.fakes, _sonarr, '/api/v3/command'), isFalse);
+    });
+
+    test(
+      'Radarr: a file in its movie folder is a library file (issue #7)',
+      () async {
+        JsonMap candidate(String path) => {
+          'id': 1,
+          'path': path,
+          'relativePath': path.split('/').last,
+          'size': 1000,
+          'movie': {
+            'id': 9,
+            'title': 'Dune: Part Two',
+            'path': '/media/films/Dune Part Two (2024)',
+          },
+          'quality': {
+            'quality': {'id': 7, 'name': 'Bluray-1080p'},
+            'revision': {'version': 1, 'real': 0, 'isRepack': false},
+          },
+          'languages': [
+            {'id': 1, 'name': 'English'},
+          ],
+          'downloadId': '2B96B8269B32CB9C44BF8808ECA92AAAD3E2B015',
+          'indexerFlags': 0,
+          'rejections': <Object?>[],
+        };
+        hub.fakes
+          ..on(
+            _radarr,
+            'GET',
+            '/api/v3/manualimport',
+            (_) => FakeResponse.json([
+              candidate('/media/films/Dune Part Two (2024)/Dune.Part.Two.mkv'),
+              candidate(
+                '/data/downloads/torrents/Dune.Part.Two/Dune.Part.Two.mkv',
+              ),
+            ]),
+          )
+          ..on(
+            _radarr,
+            'POST',
+            '/api/v3/command',
+            (_) => FakeResponse.json(_command(81, 'ManualImport'), status: 201),
+          );
+        final c = ManualImportCandidates.fromJson(
+          (await hub.get('/api/v1/activity/queue/radarr/9/import')).map,
+        );
+        expect(c.items.first.importable, isFalse);
+        expect(
+          c.items.first.rejections.first.reason,
+          contains('already in the library'),
+        );
+        expect(c.items.last.importable, isTrue);
+        var r = await hub.post(
+          '/api/v1/activity/queue/import',
+          body: {
+            'service': 'radarr',
+            'queueId': 9,
+            'files': [
+              {'fileId': c.items.first.fileId, 'movieId': 9},
+            ],
+          },
+        );
+        expect(r.status, 422, reason: r.body);
+        expect(called(hub.fakes, _radarr, '/api/v3/command'), isFalse);
+        r = await hub.post(
+          '/api/v1/activity/queue/import',
+          body: {
+            'service': 'radarr',
+            'queueId': 9,
+            'files': [
+              {'fileId': c.items.last.fileId},
+            ],
+          },
+        );
+        expect(r.status, 202, reason: r.body);
+      },
+    );
+
+    test('unreadable root folders: the series folder still marks library '
+        'files; downloads still import (issue #7)', () async {
+      final sample = synthetic('sonarr_manualimport.synthetic.json')! as List;
+      final download = readMap(sample.first)!;
+      final series = {
+        ...readMap(download['series'])!,
+        'path': '/media/anime/Slime',
+      };
+      hub.fakes
+        ..on(
+          _sonarr,
+          'GET',
+          '/api/v3/manualimport',
+          (_) => FakeResponse.json([
+            {
+              ...download,
+              'series': series,
+              'path': '/media/anime/Slime/Season 4/Slime - S04E01.mkv',
+            },
+            {...download, 'series': series},
+          ]),
+        )
+        ..on(
+          _sonarr,
+          'GET',
+          '/api/v3/rootfolder',
+          (_) => FakeResponse.json({'message': 'boom'}, status: 500),
+        )
+        ..on(
+          _sonarr,
+          'POST',
+          '/api/v3/command',
+          (_) => FakeResponse.json(_command(79, 'ManualImport'), status: 201),
+        );
+      final c = ManualImportCandidates.fromJson(
+        (await hub.get('/api/v1/activity/queue/sonarr/123456/import')).map,
+      );
+      expect(c.items.first.importable, isFalse);
+      expect(c.items.last.importable, isTrue);
+      var r = await hub.post(
+        '/api/v1/activity/queue/import',
+        body: {
+          'service': 'sonarr',
+          'queueId': 123456,
+          'files': [
+            {'fileId': c.items.first.fileId},
+          ],
+        },
+      );
+      expect(r.status, 422, reason: r.body);
+      expect(called(hub.fakes, _sonarr, '/api/v3/command'), isFalse);
+      r = await hub.post(
+        '/api/v1/activity/queue/import',
+        body: {
+          'service': 'sonarr',
+          'queueId': 123456,
+          'files': [
+            {'fileId': c.items.last.fileId},
+          ],
+        },
+      );
+      expect(r.status, 202, reason: r.body);
     });
   });
 
@@ -839,6 +1157,137 @@ void main() {
         'Manual import needed: That Time I Got Reincarnated as a Slime',
       );
       expect(importAlert.source, ServiceId.sonarr);
+    });
+
+    test('an unreadable forwarded port is an info alert, not vpn.port '
+        '(issue #8)', () async {
+      for (final path in ['/v1/portforward', '/v1/openvpn/portforwarded']) {
+        hub.fakes.on(
+          ServiceId.gluetun,
+          'GET',
+          path,
+          (_) => FakeResponse.text('Unauthorized', status: 401),
+        );
+      }
+      final r = await hub.get('/api/v1/dashboard?cards=activity');
+      expect(r.status, 200, reason: r.body);
+      final alerts = [
+        for (final a in r.map['alerts'] as List) Alert.fromJson(readMap(a)!),
+      ];
+      final ids = alerts.map((a) => a.id).toSet();
+      expect(ids, isNot(contains('vpn.port')));
+      final info = alerts.singleWhere((a) => a.id == 'vpn.unreadable');
+      expect(info.severity, AlertSeverity.info);
+      expect(info.title, "Gluetun didn't allow the hub to read the VPN status");
+      expect(info.message, contains('refused GET /v1/portforward.'));
+      expect(info.message, contains('README'));
+      final card = Section.fromJson(
+        readMap(readMap(r.map['cards'])!['activity'])!,
+      ).decode(ActivityCard.fromJson)!;
+      expect(card.vpn!.status, VpnConnectionState.connected);
+      expect(card.vpn!.portForwardReadable, isFalse);
+    });
+
+    test('a refused public IP route is an info alert, not vpn.down '
+        '(issue #8)', () async {
+      hub.fakes.on(
+        ServiceId.gluetun,
+        'GET',
+        '/v1/publicip/ip',
+        (_) => FakeResponse.text('Unauthorized', status: 401),
+      );
+      final r = await hub.get('/api/v1/dashboard?cards=activity');
+      expect(r.status, 200, reason: r.body);
+      final alerts = [
+        for (final a in r.map['alerts'] as List) Alert.fromJson(readMap(a)!),
+      ];
+      final ids = alerts.map((a) => a.id).toSet();
+      expect(ids, isNot(contains('vpn.down')));
+      expect(ids, isNot(contains('vpn.port')));
+      final info = alerts.singleWhere((a) => a.id == 'vpn.unreadable');
+      expect(info.severity, AlertSeverity.info);
+      expect(info.message, contains('refused GET /v1/publicip/ip.'));
+      expect(info.message, isNot(contains('/v1/portforward')));
+      final vpn = Section.fromJson(
+        readMap(readMap(r.map['cards'])!['activity'])!,
+      ).decode(ActivityCard.fromJson)!.vpn!;
+      expect(vpn.status, VpnConnectionState.connected);
+      expect(vpn.publicIpReadable, isFalse);
+    });
+
+    test('both refused: one info alert listing both routes', () async {
+      hub.fakes.on(
+        ServiceId.gluetun,
+        'GET',
+        RegExp('.*'),
+        (_) => FakeResponse.text('Unauthorized', status: 401),
+      );
+      final r = await hub.get('/api/v1/dashboard?cards=activity');
+      final alerts = [
+        for (final a in r.map['alerts'] as List) Alert.fromJson(readMap(a)!),
+      ];
+      final ids = alerts.map((a) => a.id).toList();
+      expect(ids, isNot(contains('vpn.down')));
+      expect(ids.where((i) => i == 'vpn.unreadable'), hasLength(1));
+      expect(
+        alerts.singleWhere((a) => a.id == 'vpn.unreadable').message,
+        contains('refused GET /v1/publicip/ip and GET /v1/portforward.'),
+      );
+    });
+
+    test(
+      'a refused public IP still reports a readable port mismatch',
+      () async {
+        hub.fakes
+          ..on(
+            ServiceId.gluetun,
+            'GET',
+            '/v1/publicip/ip',
+            (_) => FakeResponse.text('Unauthorized', status: 401),
+          )
+          ..on(
+            ServiceId.gluetun,
+            'GET',
+            '/v1/portforward',
+            (_) => gluetunResponse({'port': 40000}),
+          );
+        final r = await hub.get('/api/v1/dashboard?cards=activity');
+        final ids = {
+          for (final a in r.map['alerts'] as List) readMap(a)!['id'],
+        };
+        expect(ids, containsAll(['vpn.unreadable', 'vpn.port']));
+        expect(ids, isNot(contains('vpn.down')));
+      },
+    );
+
+    test('a 5xx from the public IP route is still vpn.down', () async {
+      hub.fakes.on(
+        ServiceId.gluetun,
+        'GET',
+        '/v1/publicip/ip',
+        (_) => FakeResponse.text('oops', status: 500),
+      );
+      final r = await hub.get('/api/v1/dashboard?cards=activity');
+      final ids = {for (final a in r.map['alerts'] as List) readMap(a)!['id']};
+      expect(ids, contains('vpn.down'));
+      expect(ids, isNot(contains('vpn.unreadable')));
+    });
+
+    test('a readable mismatch still warns vpn.port', () async {
+      hub.fakes.on(
+        ServiceId.gluetun,
+        'GET',
+        '/v1/portforward',
+        (_) => gluetunResponse({'port': 40000}),
+      );
+      final r = await hub.get('/api/v1/dashboard?cards=activity');
+      final alerts = [
+        for (final a in r.map['alerts'] as List) Alert.fromJson(readMap(a)!),
+      ];
+      final port = alerts.singleWhere((a) => a.id == 'vpn.port');
+      expect(port.severity, AlertSeverity.warning);
+      expect(port.message, contains('Gluetun forwards 40000'));
+      expect(alerts.map((a) => a.id), isNot(contains('vpn.unreadable')));
     });
 
     test('vpn.down and qbittorrent.auth', () async {

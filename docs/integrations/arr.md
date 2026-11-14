@@ -555,8 +555,11 @@ Other queue reads: `GET /api/v3/queue/details?seriesId=|episodeIds=|movieId=` (u
 
 Used to resolve `importBlocked`/`importPending` queue items (the README's "manual import needed" Discord alert).
 
-- **Candidates (read):** `GET /api/v3/manualimport?downloadId=<downloadId as in the queue>&seriesId=<id>&filterExistingFiles=true`
-  (Sonarr; optional `seasonNumber`), `GET /api/v3/manualimport?downloadId=&movieId=&filterExistingFiles=true` (Radarr).
+- **Candidates (read):** `GET /api/v3/manualimport?downloadId=<downloadId as in the queue>&filterExistingFiles=true`
+  (Sonarr and Radarr). **Do not add `seriesId`/`movieId`:** verified on a real Sonarr v4, `downloadId` + `seriesId`
+  ignores the download and returns the series' existing library files (paths under the root folder); importing them
+  makes Sonarr treat each as an upgrade of itself and delete the episode files (issue #7). By `downloadId` alone the
+  download's files come back already mapped to their series and episodes.
   `folder=<path>` is the alternative to `downloadId` (not used by the hub). Returns an **array** of
   `ManualImportResource`:
   `{id, path, relativePath, folderName, name, size, series?, seasonNumber?, episodes:[EpisodeResource], episodeFileId?, movie?, movieFileId?, releaseGroup, quality:{quality:{id,name,source,resolution}, revision:{version,real,isRepack}}, languages:[{id,name}], releaseType ("singleEpisode"|"multiEpisode"|"seasonPack"|"unknown", Sonarr), qualityWeight, downloadId, customFormats, customFormatScore, indexerFlags, rejections:[{reason, type: "permanent"|"temporary"}]}`.

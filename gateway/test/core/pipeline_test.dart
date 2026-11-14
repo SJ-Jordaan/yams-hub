@@ -606,6 +606,114 @@ void main() {
         ServiceHealthStatus.up,
       );
     });
+
+    test('gluetun with private port routes is still up (issue #8)', () async {
+      hub.fakes
+        ..on(
+          ServiceId.gluetun,
+          'GET',
+          RegExp(r'^/v1/(portforward|openvpn/portforwarded)$'),
+          (_) => FakeResponse.text('Unauthorized', status: 401),
+        )
+        ..on(
+          ServiceId.gluetun,
+          'GET',
+          '/v1/publicip/ip',
+          (_) => FakeResponse.fixture('downloads/gluetun_publicip_ip.json'),
+        );
+      final r = await hub.get('/api/v1/health', as: TestAs.member);
+      final h = HealthReport.fromJson(r.map);
+      expect(h.of(ServiceId.gluetun)!.status, ServiceHealthStatus.up);
+      expect(
+        [for (final c in hub.fakes.callsTo(ServiceId.gluetun)) c.path],
+        ['/v1/portforward', '/v1/openvpn/portforwarded', '/v1/publicip/ip'],
+      );
+    });
+
+    test(
+      'gluetun probe: falls through on 5xx and remembers the route',
+      () async {
+        hub.fakes
+          ..on(
+            ServiceId.gluetun,
+            'GET',
+            '/v1/portforward',
+            (_) => FakeResponse.text('Unauthorized', status: 401),
+          )
+          ..on(
+            ServiceId.gluetun,
+            'GET',
+            '/v1/openvpn/portforwarded',
+            (_) => FakeResponse.text('oops', status: 500),
+          )
+          ..on(
+            ServiceId.gluetun,
+            'GET',
+            '/v1/publicip/ip',
+            (_) => FakeResponse.fixture('downloads/gluetun_publicip_ip.json'),
+          );
+        var h = HealthReport.fromJson(
+          (await hub.get('/api/v1/health', as: TestAs.member)).map,
+        );
+        expect(h.of(ServiceId.gluetun)!.status, ServiceHealthStatus.up);
+        // The next probe asks the route that answered, and only that one.
+        hub.fakes.clearCalls();
+        hub.clock.advance(const Duration(seconds: 31));
+        h = HealthReport.fromJson(
+          (await hub.get('/api/v1/health', as: TestAs.member)).map,
+        );
+        expect(h.of(ServiceId.gluetun)!.status, ServiceHealthStatus.up);
+        expect(
+          [for (final c in hub.fakes.callsTo(ServiceId.gluetun)) c.path],
+          ['/v1/publicip/ip'],
+        );
+        // Every route fails: the memory is dropped.
+        hub.fakes.on(
+          ServiceId.gluetun,
+          'GET',
+          '/v1/publicip/ip',
+          (_) => FakeResponse.text('Unauthorized', status: 401),
+        );
+        for (var i = 0; i < 2; i++) {
+          hub.fakes.clearCalls();
+          hub.clock.advance(const Duration(seconds: 31));
+          h = HealthReport.fromJson(
+            (await hub.get('/api/v1/health', as: TestAs.member)).map,
+          );
+          expect(h.of(ServiceId.gluetun)!.status, ServiceHealthStatus.degraded);
+        }
+        expect(
+          [for (final c in hub.fakes.callsTo(ServiceId.gluetun)) c.path],
+          ['/v1/portforward', '/v1/openvpn/portforwarded', '/v1/publicip/ip'],
+        );
+      },
+    );
+
+    test('gluetun answering 5xx everywhere is down', () async {
+      hub.fakes.on(
+        ServiceId.gluetun,
+        'GET',
+        RegExp('.*'),
+        (_) => FakeResponse.text('oops', status: 503),
+      );
+      final h = HealthReport.fromJson(
+        (await hub.get('/api/v1/health', as: TestAs.member)).map,
+      );
+      expect(h.of(ServiceId.gluetun)!.status, ServiceHealthStatus.down);
+      expect(h.of(ServiceId.gluetun)!.message, 'HTTP 503');
+    });
+
+    test('gluetun refusing every route is degraded (issue #8)', () async {
+      hub.fakes.on(
+        ServiceId.gluetun,
+        'GET',
+        RegExp('.*'),
+        (_) => FakeResponse.text('Unauthorized', status: 401),
+      );
+      final r = await hub.get('/api/v1/health', as: TestAs.member);
+      final h = HealthReport.fromJson(r.map);
+      expect(h.of(ServiceId.gluetun)!.status, ServiceHealthStatus.degraded);
+    });
   });
 
   group('static web', () {

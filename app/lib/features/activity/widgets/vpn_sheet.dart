@@ -70,6 +70,7 @@ class _VpnSheetState extends ConsumerState<VpnSheet> {
         data: (context, v) {
           final location = [?v.city, ?v.region, ?v.country].join(', ');
           final colors = StatusColors.of(context);
+          final inSync = vpnPortInSyncChip(v);
           return Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -85,20 +86,16 @@ class _VpnSheetState extends ConsumerState<VpnSheet> {
               const SizedBox(height: 16),
               KeyValueList(
                 entries: [
-                  KeyValue('Public IP', v.publicIp ?? 'None (reconnecting?)'),
+                  KeyValue('Public IP', vpnPublicIpText(v)),
                   KeyValue('Location', location),
                   KeyValue('Provider', v.organization),
-                  KeyValue('Forwarded port', v.forwardedPort?.toString() ?? 'None yet'),
+                  KeyValue('Forwarded port', vpnForwardedPortText(v)),
                   KeyValue('qBittorrent port', v.listenPort?.toString() ?? '–'),
                   KeyValue.widget(
                     'Port in sync',
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: StatusChip(
-                        label: v.portInSync ? 'Yes' : 'No',
-                        tone: v.portInSync ? StatusTone.ok : StatusTone.warning,
-                        dense: true,
-                      ),
+                      child: StatusChip(label: inSync.$1, tone: inSync.$2, dense: true),
                     ),
                   ),
                   KeyValue('qBittorrent', v.qbitConnection),

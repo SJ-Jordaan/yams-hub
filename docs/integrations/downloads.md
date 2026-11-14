@@ -27,7 +27,7 @@ Unauthenticated liveness probes, useful for the gateway's own health page:
 - Prowlarr `GET /ping` returns `{"status":"OK"}` (no auth).
 - Bazarr `GET /api/system/ping` returns `{"status": "OK"}` (no auth).
 - qBittorrent: no unauthenticated ping. Any `/api/v2/*` call without a cookie returns `403 Forbidden`, which is enough to show the WebUI is up.
-- Gluetun: `GET /v1/openvpn/portforwarded` (no auth).
+- Gluetun: `GET /v1/portforward`, then `GET /v1/openvpn/portforwarded`, then `GET /v1/publicip/ip` (the route that answered last goes first); the first 2xx means up; 404/5xx try the next route; if none answers, any 401/403 means degraded (control server locked down), else down.
 
 ---
 
@@ -320,11 +320,31 @@ Base URL from the gateway: `http://gluetun:8000` (host-published as `192.168.10.
 | route | response body (real) | notes |
 |---|---|---|
 | `GET /v1/publicip/ip` | `{"public_ip":"203.0.113.10","region":"Provence-Alpes-Côte d'Azur","country":"France","city":"Marseille","location":"43.2970,5.3811","organization":"AS212238 Datacamp Limited","postal_code":"13000","timezone":"Europe/Paris"}` | all strings. `location` is a "lat,lon" string. While the VPN reconnects, expect `public_ip: ""` and empty fields: treat an empty `public_ip` as "VPN down / reconnecting". |
-| `GET /v1/openvpn/portforwarded` | `{"port":36681}` | int. **`0` = no forwarded port yet.** Compare with qBittorrent `listen_port`. |
+| `GET /v1/portforward` | `{"port":36681}` | the current documented route (gluetun ≥ 3.39); read first. Same shape as the legacy route. |
+| `GET /v1/openvpn/portforwarded` | `{"port":36681}` | legacy route, read when `/v1/portforward` answers 401/403/404 or fails. int. **`0` = no forwarded port yet.** Compare with qBittorrent `listen_port`. |
 
 Gotchas:
 - **Content-Type is `text/plain; charset=utf-8`** even though the body is JSON, and the body ends with `\n`. Decode the body as JSON regardless of the header.
 - Every other route returns **401 `Unauthorized`** (text). Tested: `/v1/portforward`, `/v1/openvpn/status`, `/v1/vpn/status`, `/v1/dns/status`, `/v1/updater/status`, `/v1/openvpn/settings`. The hub therefore **cannot** read VPN status or restart the VPN through gluetun. Infer VPN status from "publicip non-empty and qBittorrent `connection_status == connected`", plus the container health from the Docker spec (gluetun reports `(healthy)`). Restarting gluetun means restarting the container through the containers module. Warn the user that qBittorrent loses network when gluetun restarts and usually needs restarting afterwards.
+- **Which routes are open depends on the user's gluetun auth config** (issue #8). Gluetun ≥ 3.39 makes every route
+  private unless `/gluetun/auth/config.toml` allows it. On the maintainer's NAS the legacy port route is allowed and
+  `/v1/portforward` is 401; a reporter's gluetun allowed `/v1/publicip/ip` only. When both port routes answer
+  401/403 the gateway reports `portForwardReadable: false` (port unknown, not absent): no `vpn.port` warning, the VPN
+  is not degraded for the port. A 401/403 from `/v1/publicip/ip` likewise gives `publicIpReadable: false` instead of
+  `down` (only a 5xx, a network error or an empty `public_ip` mean down). Either raises one info alert
+  `vpn.unreadable` naming the refused routes, asking the admin to allow them. The gateway remembers which port route
+  answered (per process, forgotten when it fails), so a legacy-only gluetun sees one refused `/v1/portforward` after
+  a restart, not one per read; the `/health` probe does the same and falls through to the next route on a 5xx:
+
+```toml
+[[roles]]
+name = "yams-hub"
+routes = ["GET /v1/portforward", "GET /v1/publicip/ip"]
+auth = "none"
+```
+
+  Both routes are read-only status, so `auth = "none"` is acceptable. Older gluetun: also list
+  `"GET /v1/openvpn/portforwarded"`.
 - Latency is under 1 ms. Poll every 30–60 s at most; the values rarely change.
 - Every request is logged by gluetun (`HTTP_CONTROL_SERVER_LOG=on`). Keep polling modest.
 

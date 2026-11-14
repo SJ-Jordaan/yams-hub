@@ -159,11 +159,32 @@ StatusTone vpnTone(VpnConnectionState s) => switch (s) {
   VpnConnectionState.unknown => StatusTone.neutral,
 };
 
+/// The VPN sheet's "Forwarded port" value. Gluetun can refuse the port
+/// routes (issue #8): the port is then unknown, not missing.
+String vpnForwardedPortText(VpnStatus v) {
+  if (!v.portForwardReadable) return "Unknown (Gluetun didn't allow it)";
+  return v.forwardedPort?.toString() ?? 'None yet';
+}
+
+/// The VPN sheet's "Public IP" value; unknown when Gluetun refused the route.
+String vpnPublicIpText(VpnStatus v) {
+  if (!v.publicIpReadable) return "Unknown (Gluetun didn't allow it)";
+  return v.publicIp ?? 'None (reconnecting?)';
+}
+
+/// The VPN sheet's "Port in sync" chip.
+(String, StatusTone) vpnPortInSyncChip(VpnStatus v) {
+  if (!v.portForwardReadable) return ('Unknown', StatusTone.neutral);
+  return v.portInSync ? ('Yes', StatusTone.ok) : ('No', StatusTone.warning);
+}
+
 /// "VPN · France · port 36681 ✓" / "VPN down".
 String vpnSummary(VpnStatus v) {
   if (v.status == VpnConnectionState.down) return 'VPN down';
   final parts = <String>['VPN', ?v.country];
-  if (v.forwardedPort case final p?) {
+  if (!v.portForwardReadable) {
+    parts.add('port unknown');
+  } else if (v.forwardedPort case final p?) {
     parts.add('port $p ${v.portInSync ? '✓' : '✗'}');
   } else {
     parts.add('no forwarded port');

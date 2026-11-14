@@ -487,6 +487,63 @@ final class HealthService {
     return null;
   }
 
+  /// Gluetun ≥ 3.39 keeps every control-server route private unless its auth
+  /// config allows it (issue #8): try the current port route, the legacy
+  /// one, then the public IP. The first answer means gluetun is up; refusals
+  /// alone mean it is up but locked down.
+  Future<_Probe> _probeGluetun() async {
+    var refused = false;
+    int? status;
+    final remembered = _gluetunRoute;
+    for (final path in [
+      ?remembered,
+      for (final route in _gluetunRoutes)
+        if (route != remembered) route,
+    ]) {
+      final UpstreamResponse r;
+      try {
+        r = await _up.gluetun.send(
+          'GET',
+          path,
+          timeout: _probeTimeout,
+          maxBytes: 1 << 20,
+        );
+      } catch (_) {
+        if (_gluetunRoute == path) _gluetunRoute = null;
+        rethrow;
+      }
+      if (r.ok) {
+        _gluetunRoute = path;
+        return const _Probe(ServiceHealthStatus.up);
+      }
+      if (_gluetunRoute == path) _gluetunRoute = null;
+      if (r.status == 401 || r.status == 403) {
+        refused = true;
+      } else if (status == null || status == 404) {
+        // A 5xx says more than a 404; either way try the next route.
+        status = r.status;
+      }
+    }
+    if (refused) {
+      return const _Probe(
+        ServiceHealthStatus.degraded,
+        message: 'Control server refused every status route',
+      );
+    }
+    return _Probe(ServiceHealthStatus.down, message: 'HTTP $status');
+  }
+
+  static const _gluetunRoutes = [
+    '/v1/portforward',
+    '/v1/openvpn/portforwarded',
+    '/v1/publicip/ip',
+  ];
+
+  /// The gluetun route that answered last (tried first; forgotten when it
+  /// fails), so a locked-down gluetun is not asked for refused routes on
+  /// every probe.
+  String? _gluetunRoute;
+
   /// Sonarr, Radarr, Prowlarr: `/ping`, the version, and the Allowed Hosts
   /// check (issue #2), which turns a rejected or soon-rejected hostname into
   /// `degraded` with a message that says how to fix it.
@@ -656,8 +713,7 @@ final class HealthService {
           version: v.isEmpty ? null : (v.startsWith('v') ? v.substring(1) : v),
         );
       case ServiceId.gluetun:
-        return await _get(_up.gluetun, '/v1/openvpn/portforwarded') ??
-            const _Probe(ServiceHealthStatus.up);
+        return _probeGluetun();
       case ServiceId.docker:
         final c = _up.docker;
         final fail = await _get(c, '/_ping');

@@ -34,6 +34,11 @@ final class VpnStatusService {
   final Future<JsonMap> Function() _freshPreferences;
   final TtlCache<int, VpnStatus> _cache;
 
+  /// The port route that answered last; tried first so a gluetun that only
+  /// allows the legacy route is not asked for a refused one on every read.
+  /// Forgotten as soon as it fails.
+  String? _portRoute;
+
   Future<CacheResult<VpnStatus>> status() => _cache.get(0, _load);
 
   void invalidate() => _cache.clear();
@@ -52,14 +57,16 @@ final class VpnStatusService {
     }
 
     final results = await Future.wait<Object?>([
-      attempt(() => _gluetunJson('/v1/publicip/ip')),
-      attempt(() => _gluetunJson('/v1/openvpn/portforwarded')),
+      _publicIp(),
+      _forwarded(),
       attempt(_preferences),
       attempt(_qbitView),
       attempt(_gluetunHealth),
     ]);
-    final ip = results[0] as JsonMap?;
-    final forwarded = results[1] as JsonMap?;
+    final ipRead = results[0]! as ({JsonMap? ip, bool refused});
+    final ip = ipRead.ip;
+    final ipReadable = !ipRead.refused;
+    final forwarded = results[1]! as GluetunForwardedPort;
     final prefs = results[2] as JsonMap?;
     final qbit = results[3] as QbitView?;
     final health = results[4] as VpnGluetunHealth? ?? VpnGluetunHealth.unknown;
@@ -70,8 +77,9 @@ final class VpnStatusService {
     }
 
     final publicIp = text('public_ip');
-    final port = readInt(forwarded?['port']);
+    final port = forwarded.port;
     final forwardedPort = port == null || port <= 0 ? null : port;
+    final readable = !forwarded.refused;
     var listenPort = readInt(prefs?['listen_port']);
     if (forwardedPort != null && listenPort != forwardedPort) {
       // Gluetun's port-forwarding hook updates qBittorrent within seconds
@@ -84,9 +92,14 @@ final class VpnStatusService {
         readString(qbit?.serverState['connection_status']) ?? 'unknown';
     final inSync = forwardedPort != null && forwardedPort == listenPort;
     final VpnConnectionState state;
-    if (ip == null || publicIp == null) {
+    if (ipReadable && (ip == null || publicIp == null)) {
+      // A network error, a 5xx or an empty address (gluetun reconnecting).
+      // A refused route (401/403) is unknown, not down (issue #8).
       state = VpnConnectionState.down;
-    } else if (forwardedPort == null || !inSync || connection != 'connected') {
+    } else if (connection != 'connected' ||
+        // An unreadable port is unknown, not wrong: it alone does not
+        // degrade the VPN (issue #8).
+        (readable && (forwardedPort == null || !inSync))) {
       state = VpnConnectionState.degraded;
     } else {
       state = VpnConnectionState.connected;
@@ -101,6 +114,8 @@ final class VpnStatusService {
       forwardedPort: forwardedPort,
       listenPort: listenPort,
       portInSync: inSync,
+      portForwardReadable: readable,
+      publicIpReadable: ipReadable,
       qbitConnection: connection,
       gluetunHealth: health,
       checkedAt: _ctx.clock.now(),
@@ -120,16 +135,49 @@ final class VpnStatusService {
     return _maindata.read();
   }
 
-  /// Gluetun answers JSON with a `text/plain` content type.
-  Future<JsonMap> _gluetunJson(String path) async {
-    final r = (await _ctx.upstreams.gluetun.send('GET', path)).ensureOk();
-    return readMap(r.json()) ??
-        (throw UpstreamBadResponse(
-          service: ServiceId.gluetun,
-          method: 'GET',
-          path: path,
-          reason: 'not a JSON object',
-        ));
+  /// Gluetun's forwarded port: `GET /v1/portforward` (gluetun ≥ 3.39), else
+  /// the legacy `GET /v1/openvpn/portforwarded`. Gluetun's control server
+  /// keeps routes private unless its auth config allows them, so either
+  /// may answer 401/403; when no route answers and at least one refused
+  /// the port is reported as unreadable rather than absent.
+  Future<GluetunForwardedPort> _forwarded() async {
+    var refused = false;
+    final remembered = _portRoute;
+    for (final path in [
+      ?remembered,
+      for (final p in gluetunPortRoutes)
+        if (p != remembered) p,
+    ]) {
+      try {
+        final r = await _ctx.upstreams.gluetun.send('GET', path);
+        if (r.status == 401 || r.status == 403) {
+          refused = true;
+        } else if (r.ok) {
+          // Gluetun answers JSON with a `text/plain` content type.
+          if (readMap(r.json()) case final j?) {
+            _portRoute = path;
+            return GluetunForwardedPort(readInt(j['port']));
+          }
+        }
+      } catch (_) {
+        // Tried the next route.
+      }
+      if (_portRoute == path) _portRoute = null;
+    }
+    return GluetunForwardedPort(null, refused: refused);
+  }
+
+  /// `GET /v1/publicip/ip`: `refused` on 401/403 (gluetun's auth config
+  /// keeps the route private), `ip` null on any other failure.
+  Future<({JsonMap? ip, bool refused})> _publicIp() async {
+    try {
+      final r = await _ctx.upstreams.gluetun.send('GET', '/v1/publicip/ip');
+      if (r.status == 401 || r.status == 403) return (ip: null, refused: true);
+      if (!r.ok) return (ip: null, refused: false);
+      return (ip: readMap(r.json()), refused: false);
+    } catch (_) {
+      return (ip: null, refused: false);
+    }
   }
 
   Future<VpnGluetunHealth> _gluetunHealth() async {
@@ -151,6 +199,20 @@ final class VpnStatusService {
     }
     return VpnGluetunHealth.unknown;
   }
+}
+
+/// Gluetun's forwarded-port routes, current first.
+const gluetunPortRoutes = ['/v1/portforward', '/v1/openvpn/portforwarded'];
+
+/// What gluetun told us about its forwarded port.
+final class GluetunForwardedPort {
+  const GluetunForwardedPort(this.port, {this.refused = false});
+
+  /// `0` or null: no port yet (when not [refused]).
+  final int? port;
+
+  /// Gluetun's control server answered 401/403 and no route gave a port.
+  final bool refused;
 }
 
 /// The health of a `/containers/json` entry: `Health.Status` (Docker API
