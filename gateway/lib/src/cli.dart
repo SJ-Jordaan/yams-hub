@@ -206,6 +206,9 @@ Future<int> runCheckConfig(
   out.writeln(
     'CORS origins: ${config.corsOrigins.isEmpty ? 'none' : config.corsOrigins.join(', ')}',
   );
+  out.writeln(
+    'Discord alerts: ${config.discordAlertWebhookUrl == null ? 'off (DISCORD_ALERT_WEBHOOK_URL ${config.sources.containsKey('DISCORD_ALERT_WEBHOOK_URL') ? 'invalid or empty' : 'not set'})' : 'on (${_sourceOf(config, 'DISCORD_ALERT_WEBHOOK_URL')})'}',
+  );
   final h = hasher ?? PasswordHasher(iterations: config.auth.pbkdf2Iterations);
   final took = await h.autoTune();
   out.writeln(

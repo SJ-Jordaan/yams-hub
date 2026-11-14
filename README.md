@@ -28,7 +28,9 @@ for:
 
 - the Jellyfin API key and the qBittorrent login (press Enter to skip a service),
 - the port (default 8090),
-- an admin password.
+- an admin password,
+- optionally, a Discord webhook: the hub then sends one message when most Prowlarr indexers have been failing for
+  15 minutes, and one when they recover (Enter skips).
 
 When it finishes, open `http://<server-ip>:8090` and sign in as `admin`.
 

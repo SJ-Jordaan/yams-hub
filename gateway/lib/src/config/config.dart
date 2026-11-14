@@ -10,6 +10,7 @@ import 'package:yams_models/yams_models.dart';
 
 import '../core/http/trusted_proxies.dart';
 import '../core/log/log.dart';
+import '../core/notify/discord_webhook.dart' show parseDiscordWebhookUrl;
 import 'policy.dart';
 import 'secrets_file.dart';
 
@@ -104,6 +105,7 @@ final class HubConfig {
     this.hostDiskDevice = 'dm-0',
     this.procDir = '/proc',
     this.trustedProxies,
+    this.discordAlertWebhookUrl,
     this.sources = const {},
     this.secretsFileFound = false,
     this.policyFileFound = false,
@@ -157,6 +159,11 @@ final class HubConfig {
   final String procDir;
   final PolicyConfig policyConfig;
 
+  /// `DISCORD_ALERT_WEBHOOK_URL` (secrets file): where the gateway posts its
+  /// few out-of-app alerts (indexers failing). Null: Discord alerts are off.
+  /// Never logged or printed.
+  final Uri? discordAlertWebhookUrl;
+
   /// Which source each variable came from (keys are variable names).
   final Map<String, ConfigSource> sources;
   final bool secretsFileFound;
@@ -199,6 +206,7 @@ final class HubConfig {
     List<String>? corsOrigins,
     bool? trustProxy,
     TrustedProxies? trustedProxies,
+    Uri? discordAlertWebhookUrl,
   }) => HubConfig(
     port: port,
     dataDir: dataDir ?? this.dataDir,
@@ -223,6 +231,8 @@ final class HubConfig {
     hostDiskDevice: hostDiskDevice,
     procDir: procDir ?? this.procDir,
     policyConfig: policyConfig ?? this.policyConfig,
+    discordAlertWebhookUrl:
+        discordAlertWebhookUrl ?? this.discordAlertWebhookUrl,
     sources: sources,
     secretsFileFound: secretsFileFound,
     policyFileFound: policyFileFound,
@@ -349,6 +359,7 @@ const secretVariables = {
   'UPDATER_TOKEN',
   'ABS_API_KEY',
   'KAVITA_API_KEY',
+  'DISCORD_ALERT_WEBHOOK_URL',
 };
 
 /// Builds a [HubConfig].
@@ -558,6 +569,21 @@ abstract final class ConfigLoader {
     final volumeMount = setting('HOST_VOLUME_MOUNT', '/volume1');
     if (volumeMount.isEmpty) errors.add('HOST_VOLUME_MOUNT must not be empty');
 
+    // Optional; a bad value turns the alerts off with a warning instead of
+    // keeping the hub from starting. The value is never part of a message.
+    Uri? discordWebhook;
+    final discordText = value('DISCORD_ALERT_WEBHOOK_URL')?.trim() ?? '';
+    if (discordText.isNotEmpty) {
+      discordWebhook = parseDiscordWebhookUrl(discordText);
+      if (discordWebhook == null) {
+        warnings.add(
+          'DISCORD_ALERT_WEBHOOK_URL is not a '
+          'https://discord.com/api/webhooks/<id>/<token> URL; Discord alerts '
+          'are off',
+        );
+      }
+    }
+
     var policyConfig = PolicyConfig();
     if (policyFileContents != null) {
       final policyErrors = <String>[];
@@ -592,6 +618,7 @@ abstract final class ConfigLoader {
       hostVolumeMount: volumeMount,
       hostDiskDevice: setting('HOST_DISK_DEVICE', 'dm-0'),
       policyConfig: policyConfig,
+      discordAlertWebhookUrl: discordWebhook,
       sources: Map.unmodifiable(sources),
       secretsFileFound: secretsFileContents != null,
       policyFileFound: policyFileContents != null,

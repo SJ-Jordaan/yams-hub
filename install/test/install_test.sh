@@ -477,6 +477,53 @@ test_answers_file_is_checked() {
   check 'needs a file' test "$status" -eq 2
 }
 
+DISCORD_TOKEN=WebHook-T0ken_secret.value
+DISCORD_URL="https://discord.com/api/webhooks/123456789012345678/$DISCORD_TOKEN"
+
+test_discord_webhook_prompt_is_optional_and_kept() {
+  # The Discord prompt comes after the admin password, so the usual answers still line up.
+  install <<<"$(first_answers)"$'\n'"$DISCORD_URL"
+  local env
+  env=$(hubfile secrets/yams-hub.env)
+  check 'exit 0' test "$status" -eq 0
+  check 'asked' contains "$out" 'Discord webhook for alerts'
+  check 'stored' grep -qx "DISCORD_ALERT_WEBHOOK_URL='$DISCORD_URL'" <<<"$env"
+  check 'admin still from its own line' grep -qx "hash-password stdin=${#PASSWORD}" "$st/hashed"
+  check 'not printed' not_contains "$out" "$DISCORD_TOKEN"
+  check 'not in argv' not_contains "$(calls)" "$DISCORD_TOKEN"
+
+  install </dev/null
+  check 're-run ok' test "$status" -eq 0
+  check 're-run does not ask' not_contains "$out" 'Discord webhook for alerts'
+  check 're-run keeps it' grep -qx "DISCORD_ALERT_WEBHOOK_URL='$DISCORD_URL'" <<<"$(hubfile secrets/yams-hub.env)"
+
+  answers "$work/answers" DISCORD_ALERT_WEBHOOK_URL=-
+  install --reconfigure --answers "$work/answers" </dev/null
+  check 'reconfigure ok' test "$status" -eq 0
+  check '- clears it' not_contains "$(hubfile secrets/yams-hub.env)" DISCORD_ALERT_WEBHOOK_URL
+}
+
+test_discord_webhook_skipped_and_from_answers() {
+  install <<<"$(first_answers)"
+  check 'exit 0' test "$status" -eq 0
+  check 'Enter skips' not_contains "$(hubfile secrets/yams-hub.env)" DISCORD_ALERT_WEBHOOK_URL
+
+  answers "$work/answers" "DISCORD_ALERT_WEBHOOK_URL='$DISCORD_URL'"
+  install --reconfigure --answers "$work/answers" </dev/null
+  check 'answers ok' test "$status" -eq 0
+  check 'from the answers file' grep -qx "DISCORD_ALERT_WEBHOOK_URL='$DISCORD_URL'" <<<"$(hubfile secrets/yams-hub.env)"
+  check 'not printed' not_contains "$out" "$DISCORD_TOKEN"
+}
+
+test_discord_webhook_must_be_a_discord_url() {
+  answers "$work/answers" "ADMIN_PASSWORD=$PASSWORD" "DISCORD_ALERT_WEBHOOK_URL=https://example.com/hook/$DISCORD_TOKEN"
+  install --answers "$work/answers" </dev/null
+  check 'exit 1' test "$status" -eq 1
+  check 'explains' contains "$out" 'https://discord.com/api/webhooks/<id>/<token>'
+  check 'value not printed' not_contains "$out" "$DISCORD_TOKEN"
+  check 'nothing written' test ! -e "$yams/yams-hub/secrets/yams-hub.env"
+}
+
 test_uninstall_keeps_data_and_purge_asks() {
   install <<<"$(first_answers)"
   install --uninstall </dev/null

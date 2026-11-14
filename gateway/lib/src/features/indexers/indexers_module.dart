@@ -2,10 +2,13 @@
 /// manual search + grab (API.md §10).
 library;
 
+import 'package:http/http.dart' as http;
 import 'package:shelf/shelf.dart' show Response;
 import 'package:yams_hub_gateway/src/core/feature_context.dart';
+import 'package:yams_hub_gateway/src/core/notify/discord_webhook.dart';
 import 'package:yams_models/yams_models.dart';
 
+import 'indexer_alert.dart';
 import 'prowlarr_mapping.dart';
 import 'prowlarr_repository.dart';
 import 'release_grabber.dart';
@@ -34,8 +37,53 @@ class IndexersModule extends FeatureModule {
   /// Users with a manual search in flight (one per user).
   final _searching = <String>{};
 
+  /// The Discord "indexers failing" alert (null while off).
+  IndexerAlertMonitor? alertMonitor;
+  http.Client? _alertClient;
+
   @override
   String get id => 'indexers';
+
+  @override
+  Future<void> start() async {
+    final url = ctx.config.discordAlertWebhookUrl;
+    if (url == null) {
+      ctx.log.info(
+        'Discord alerts off (DISCORD_ALERT_WEBHOOK_URL not set or invalid)',
+      );
+      return;
+    }
+    if (!ctx.config.isConfigured(ServiceId.prowlarr)) {
+      ctx.log.info('Discord indexer alert off: Prowlarr is not configured');
+      return;
+    }
+    final client = _alertClient ??= createDiscordHttpClient();
+    alertMonitor ??= IndexerAlertMonitor.create(
+      thresholds: ctx.config.alerts,
+      store: ctx.stores.open(alertStateStoreName),
+      sample: () => sampleProwlarr(repo, ctx.clock, log: ctx.log),
+      webhook: DiscordWebhook(url: url, client: client),
+      clock: ctx.clock,
+      indexersPage: indexersPageUrl(ctx.config.publicUrls),
+    );
+    alertMonitor!.start();
+    final a = ctx.config.alerts;
+    ctx.log.info(
+      'Discord indexer alert on: ${_percent(a.indexersFailingPercent)}% of '
+      'enabled indexers failing for ${a.indexersFailingForMinutes} min',
+    );
+  }
+
+  @override
+  Future<void> stop() async {
+    alertMonitor?.stop();
+    _alertClient?.close();
+    _alertClient = null;
+    alertMonitor = null;
+  }
+
+  static String _percent(double v) =>
+      v == v.roundToDouble() ? v.toInt().toString() : v.toString();
 
   @override
   void registerRoutes(ApiRouter router) {
