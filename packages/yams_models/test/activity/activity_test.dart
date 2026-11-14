@@ -668,6 +668,31 @@ void main() {
       expect(v.publicIp, isNull);
       expect(v.forwardedPort, isNull);
     });
+
+    test('an absent portForwardReadable means readable', () {
+      final v = VpnStatus.fromJson(_vpn);
+      expect(v.portForwardReadable, isTrue);
+      expect(v.toJson().containsKey('portForwardReadable'), isFalse);
+    });
+
+    test('an unreadable forwarded port round trips', () {
+      final v = expectRoundTrip(
+        {
+          'status': 'connected',
+          'publicIp': '203.0.113.10',
+          'listenPort': 38116,
+          'portInSync': false,
+          'portForwardReadable': false,
+          'qbitConnection': 'connected',
+          'gluetunHealth': 'healthy',
+          'checkedAt': '2026-11-08T09:00:00Z',
+        },
+        VpnStatus.fromJson,
+        (v) => v.toJson(),
+      );
+      expect(v.portForwardReadable, isFalse);
+      expect(v.forwardedPort, isNull);
+    });
   });
 
   group('ActivityCard', () {

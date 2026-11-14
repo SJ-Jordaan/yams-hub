@@ -1,6 +1,7 @@
 import 'package:test/test.dart';
 import 'package:yams_hub_gateway/src/features/activity/arr_mapping.dart';
 import 'package:yams_hub_gateway/src/features/activity/maindata.dart';
+import 'package:yams_hub_gateway/src/features/activity/manual_import.dart';
 import 'package:yams_hub_gateway/src/features/activity/qbit_mapping.dart';
 import 'package:yams_hub_gateway/src/features/activity/unified_queue.dart';
 import 'package:yams_hub_gateway/src/features/activity/vpn_status.dart';
@@ -13,6 +14,19 @@ JsonMap _map(Object? v) => readMap(v)!;
 List<JsonMap> _list(Object? v) => [for (final e in v! as List) _map(e)];
 
 void main() {
+  test('pathIsInside is separator-safe (issue #7)', () {
+    expect(pathIsInside('/data/tvshows/A/x.mkv', '/data/tvshows'), isTrue);
+    expect(pathIsInside('/data/tvshows/A/x.mkv', '/data/tvshows/'), isTrue);
+    expect(pathIsInside('/data/tvshows', '/data/tvshows//'), isTrue);
+    expect(pathIsInside('/data/tvshows/A/x.mkv', '/data/tv'), isFalse);
+    expect(pathIsInside('/data/tv2/x.mkv', '/data/tv/'), isFalse);
+    expect(pathIsInside('/data/downloads/x.mkv', '/data/tvshows'), isFalse);
+    expect(pathIsInside(r'D:\TV\Show\x.mkv', r'd:\tv'), isTrue);
+    expect(pathIsInside(r'D:\TVShows\x.mkv', r'D:\TV'), isFalse);
+    expect(pathIsInside('/anything', '/'), isFalse);
+    expect(pathIsInside('/anything', ''), isFalse);
+  });
+
   group('torrent state mapping (downloads.md §1.6)', () {
     test('every v5 state maps to its UI group', () {
       const cases = {

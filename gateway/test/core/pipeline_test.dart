@@ -606,6 +606,41 @@ void main() {
         ServiceHealthStatus.up,
       );
     });
+
+    test('gluetun with private port routes is still up (issue #8)', () async {
+      hub.fakes
+        ..on(
+          ServiceId.gluetun,
+          'GET',
+          RegExp(r'^/v1/(portforward|openvpn/portforwarded)$'),
+          (_) => FakeResponse.text('Unauthorized', status: 401),
+        )
+        ..on(
+          ServiceId.gluetun,
+          'GET',
+          '/v1/publicip/ip',
+          (_) => FakeResponse.fixture('downloads/gluetun_publicip_ip.json'),
+        );
+      final r = await hub.get('/api/v1/health', as: TestAs.member);
+      final h = HealthReport.fromJson(r.map);
+      expect(h.of(ServiceId.gluetun)!.status, ServiceHealthStatus.up);
+      expect(
+        [for (final c in hub.fakes.callsTo(ServiceId.gluetun)) c.path],
+        ['/v1/portforward', '/v1/openvpn/portforwarded', '/v1/publicip/ip'],
+      );
+    });
+
+    test('gluetun refusing every route is degraded (issue #8)', () async {
+      hub.fakes.on(
+        ServiceId.gluetun,
+        'GET',
+        RegExp('.*'),
+        (_) => FakeResponse.text('Unauthorized', status: 401),
+      );
+      final r = await hub.get('/api/v1/health', as: TestAs.member);
+      final h = HealthReport.fromJson(r.map);
+      expect(h.of(ServiceId.gluetun)!.status, ServiceHealthStatus.degraded);
+    });
   });
 
   group('static web', () {

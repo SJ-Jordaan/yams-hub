@@ -868,6 +868,67 @@ void main() {
       },
     );
 
+    test('reads /v1/portforward first (issue #8)', () async {
+      hub.fakes
+        ..on(
+          ServiceId.gluetun,
+          'GET',
+          '/v1/portforward',
+          (_) => gluetunResponse({'port': 36681}),
+        )
+        ..on(
+          ServiceId.gluetun,
+          'GET',
+          '/v1/openvpn/portforwarded',
+          (_) => gluetunResponse({'port': 50000}),
+        );
+      final v = VpnStatus.fromJson((await hub.get('/api/v1/vpn')).map);
+      expect(v.forwardedPort, 36681);
+      expect(v.portInSync, isTrue);
+      expect(v.portForwardReadable, isTrue);
+      expect(v.status, VpnConnectionState.connected);
+      final paths = [
+        for (final c in hub.fakes.callsTo(ServiceId.gluetun)) c.path,
+      ];
+      expect(paths, isNot(contains('/v1/openvpn/portforwarded')));
+    });
+
+    test('falls back to the legacy route when /v1/portforward is refused '
+        '(issue #8)', () async {
+      hub.fakes.on(
+        ServiceId.gluetun,
+        'GET',
+        '/v1/portforward',
+        (_) => FakeResponse.text('Unauthorized', status: 401),
+      );
+      final v = VpnStatus.fromJson((await hub.get('/api/v1/vpn')).map);
+      expect(v.forwardedPort, 36681);
+      expect(v.portInSync, isTrue);
+      expect(v.portForwardReadable, isTrue);
+      expect(v.status, VpnConnectionState.connected);
+    });
+
+    test(
+      'both port routes refused: unreadable, not degraded (issue #8)',
+      () async {
+        for (final path in ['/v1/portforward', '/v1/openvpn/portforwarded']) {
+          hub.fakes.on(
+            ServiceId.gluetun,
+            'GET',
+            path,
+            (_) => FakeResponse.text('Unauthorized', status: 401),
+          );
+        }
+        final r = await hub.get('/api/v1/vpn');
+        expect(r.map['portForwardReadable'], isFalse);
+        final v = VpnStatus.fromJson(r.map);
+        expect(v.portForwardReadable, isFalse);
+        expect(v.forwardedPort, isNull);
+        expect(v.listenPort, 36681);
+        expect(v.status, VpnConnectionState.connected);
+      },
+    );
+
     test('down when gluetun is unreachable', () async {
       hub.fakes.on(
         ServiceId.gluetun,

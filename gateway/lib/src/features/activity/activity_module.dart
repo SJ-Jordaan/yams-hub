@@ -128,6 +128,27 @@ class ActivityModule extends FeatureModule {
         ),
       );
     } else if (vpn != null &&
+        !vpn.portForwardReadable &&
+        vpn.status != VpnConnectionState.unknown) {
+      // Gluetun ≥ 3.39 keeps control-server routes private unless its auth
+      // config allows them (issue #8): say so instead of a false mismatch.
+      alerts.add(
+        Alert(
+          id: 'vpn.port.unreadable',
+          severity: AlertSeverity.info,
+          source: ServiceId.gluetun,
+          feature: id,
+          title: "Can't read the forwarded port",
+          message:
+              "Gluetun's control server did not allow the hub to read the "
+              'forwarded port. Allow GET /v1/portforward for the hub in '
+              "Gluetun's auth config.toml (see the YAMS Hub README, "
+              '"Troubleshooting").',
+          route: '/activity',
+          since: now,
+        ),
+      );
+    } else if (vpn != null &&
         !vpn.portInSync &&
         vpn.status != VpnConnectionState.unknown) {
       alerts.add(
