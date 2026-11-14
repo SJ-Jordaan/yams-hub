@@ -395,8 +395,11 @@ void main() {
   });
 
   group('dashboard card', () {
-    Future<(SystemCard, List<Alert>, JsonMap)> card(TestHub hub) async {
-      final r = await hub.get(
+    Future<(SystemCard, List<Alert>, JsonMap)> card(
+      TestHub hub, {
+      bool settled = false,
+    }) async {
+      final r = await (settled ? hub.getSettled : hub.get)(
         '/api/v1/dashboard?cards=system',
         as: TestAs.member,
       );
@@ -474,7 +477,7 @@ void main() {
       File('${hub.config.procDir}/mdstat').writeAsStringSync(
         'Personalities : [raid0]\nmd1 : inactive sda2[0]\n      3890885632 blocks super 1.2\n\nunused devices: <none>\n',
       );
-      final (c, alerts, _) = await card(hub);
+      final (c, alerts, _) = await card(hub, settled: true);
       expect(c.raid!.healthy, isFalse);
       expect(c.raid!.state, 'inactive');
       expect(c.monitors!.down, 1);

@@ -74,16 +74,20 @@ LoginResponse buildLoginResponse({Role role = Role.admin}) => LoginResponse(
 );
 
 /// A `GET /ping` answer; with [nonce] (and [proofKey]) it carries the proof.
-ServerPing buildPing({String instanceId = testInstanceId, String? nonce, String? proofKey = testProofKey, int apiVersion = 1}) =>
-    ServerPing(
-      name: 'yams-hub',
-      version: '1.0.0',
-      apiVersion: apiVersion,
-      minAppVersion: '1.0.0',
-      instanceId: instanceId,
-      time: testNow,
-      proof: nonce == null || proofKey == null ? null : computeServerProof(proofKey, nonce),
-    );
+ServerPing buildPing({
+  String instanceId = testInstanceId,
+  String? nonce,
+  String? proofKey = testProofKey,
+  int apiVersion = 1,
+}) => ServerPing(
+  name: 'yams-hub',
+  version: '1.0.0',
+  apiVersion: apiVersion,
+  minAppVersion: '1.0.0',
+  instanceId: instanceId,
+  time: testNow,
+  proof: nonce == null || proofKey == null ? null : computeServerProof(proofKey, nonce),
+);
 
 ServerConfig buildServerConfig({Iterable<ExternalApp>? apps}) => ServerConfig(
   version: '1.0.0',
@@ -112,15 +116,18 @@ const _ports = {
   ExternalApp.portainer: 9000,
 };
 
-ServiceHealth buildServiceHealth(ServiceId id, {ServiceHealthStatus status = ServiceHealthStatus.up, String? version}) =>
-    ServiceHealth(
-      id: id,
-      name: id.displayName,
-      status: status,
-      checkedAt: testNow,
-      latencyMs: 4,
-      version: version ?? (status == ServiceHealthStatus.up ? '1.2.3' : null),
-    );
+ServiceHealth buildServiceHealth(
+  ServiceId id, {
+  ServiceHealthStatus status = ServiceHealthStatus.up,
+  String? version,
+}) => ServiceHealth(
+  id: id,
+  name: id.displayName,
+  status: status,
+  checkedAt: testNow,
+  latencyMs: 4,
+  version: version ?? (status == ServiceHealthStatus.up ? '1.2.3' : null),
+);
 
 /// Every service up, except the ones in [down].
 HealthReport buildHealth({Set<ServiceId> down = const {}}) => HealthReport(
@@ -141,6 +148,7 @@ Alert buildAlert({
   String title = 'VPN down',
   String? route = '/activity',
   bool dismissible = false,
+  String? dismissKey,
 }) => Alert(
   id: id,
   severity: severity,
@@ -150,6 +158,7 @@ Alert buildAlert({
   route: route,
   since: testNow,
   dismissible: dismissible,
+  dismissKey: dismissKey,
 );
 
 /// Card data carrying the raw keys of API.md §4.
@@ -173,7 +182,9 @@ JsonMap rawCards({
   DashboardCardKeys.indexers: buildSection({
     'enabled': 9,
     'total': 10,
-    'failing': [for (var i = 0; i < failing; i++) {'id': i, 'name': 'Indexer $i'}],
+    'failing': [
+      for (var i = 0; i < failing; i++) {'id': i, 'name': 'Indexer $i'},
+    ],
   }).toJson(),
   DashboardCardKeys.subtitles: buildSection({'missingEpisodes': missing, 'missingMovies': 4}).toJson(),
 };

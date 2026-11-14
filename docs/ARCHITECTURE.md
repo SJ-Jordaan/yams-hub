@@ -403,7 +403,7 @@ PRIVATE_PROWLARR_TAG='private'
 A name that matches nothing hides nothing. When a `PRIVATE_JELLYFIN_LIBRARIES` name matches no library (a typo or a
 renamed library), or Prowlarr has no tag called `PRIVATE_PROWLARR_TAG`, the gateway logs a warning and the dashboard
 shows admins (never members) a warning alert that names the setting and the unmatched value
-(`privacy.jellyfin.libraries`, `privacy.prowlarr.tag`).
+(`privacy.jellyfin.libraries`, `privacy.prowlarr.tag`; dismissible until the unmatched value changes).
 
 Known gaps, accepted:
 

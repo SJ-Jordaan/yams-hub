@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:test/test.dart';
 
+import 'package:yams_hub_gateway/src/core/dashboard/alert_policy.dart';
+
 import '../../support/test_hub.dart';
 import 'requests_test_support.dart';
 
@@ -722,6 +724,15 @@ void main() {
         expect(pending.severity, AlertSeverity.info);
         expect(pending.title, '2 requests waiting for approval');
         expect(pending.route, '/requests/list?tab=pending');
+        expect(pending.dismissible, isTrue);
+        expect(
+          pending.dismissKey,
+          fingerprintedDismissKey('seerr.pending', [
+            2,
+            for (final p in card.pending) p.id,
+          ]),
+          reason: 'a new pending request brings it back',
+        );
         final failed = alerts.firstWhere((a) => a.id == 'seerr.failed');
         expect(failed.severity, AlertSeverity.warning);
         expect(failed.route, '/requests/list?tab=failed');

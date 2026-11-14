@@ -501,6 +501,7 @@ final class Alert {
     this.route,
     this.since,
     this.dismissible = false,
+    this.dismissKey,
   });
 
   factory Alert.fromJson(JsonMap j) => Alert(
@@ -513,6 +514,7 @@ final class Alert {
     route: readString(j['route']),
     since: readInstant(j['since']),
     dismissible: readBool(j['dismissible']) ?? false,
+    dismissKey: readString(j['dismissKey']),
   );
 
   /// Stable id, e.g. `sonarr.health.IndexerLongTermStatusCheck`.
@@ -528,6 +530,36 @@ final class Alert {
   final DateTime? since;
   final bool dismissible;
 
+  /// What a dismissal remembers, e.g. `updates.available:3f9a1c2e`: the [id]
+  /// plus a short fingerprint of the content, so a dismissed notice comes
+  /// back when it changes. Absent (older gateways, alerts whose dismissal is
+  /// permanent): dismissals remember [id].
+  final String? dismissKey;
+
+  /// [dismissKey], or [id] when there is none.
+  String get dismissalKey => dismissKey ?? id;
+
+  Alert copyWith({
+    AlertSeverity? severity,
+    String? title,
+    String? message,
+    String? route,
+    DateTime? since,
+    bool? dismissible,
+    String? dismissKey,
+  }) => Alert(
+    id: id,
+    severity: severity ?? this.severity,
+    source: source,
+    feature: feature,
+    title: title ?? this.title,
+    message: message ?? this.message,
+    route: route ?? this.route,
+    since: since ?? this.since,
+    dismissible: dismissible ?? this.dismissible,
+    dismissKey: dismissKey ?? this.dismissKey,
+  );
+
   JsonMap toJson() => compactJson({
     'id': id,
     'severity': severity.toJson(),
@@ -538,6 +570,7 @@ final class Alert {
     'route': route,
     'since': optionalInstantToJson(since),
     'dismissible': dismissible,
+    'dismissKey': dismissKey,
   });
 }
 

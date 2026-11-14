@@ -1517,7 +1517,7 @@ void main() {
       );
       await hub.waitJob(Job.fromJson(readMap(check.map['job'])!).id);
 
-      final r = await hub.get(
+      final r = await hub.getSettled(
         '/api/v1/dashboard?cards=containers',
         as: TestAs.member,
       );
@@ -1560,6 +1560,11 @@ void main() {
       );
       expect(byId['updates.available']!.title, '1 container update available');
       expect(byId['updates.available']!.route, '/containers/updates');
+      expect(byId['updates.available']!.dismissible, isTrue);
+      expect(
+        byId['updates.available']!.dismissKey,
+        matches(RegExp(r'^updates\.available:[0-9a-f]{8}$')),
+      );
     });
 
     test('Docker down → error section', () async {

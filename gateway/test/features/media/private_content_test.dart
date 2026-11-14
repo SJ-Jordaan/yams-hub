@@ -483,6 +483,16 @@ void main() {
         alerts.singleWhere((a) => a.id == 'privacy.jellyfin.libraries').message,
         allOf(contains('"nope"'), isNot(contains('adult'))),
       );
+      // Dismissible; another typo brings a dismissed alert back.
+      final nope = alerts.singleWhere(
+        (a) => a.id == 'privacy.jellyfin.libraries',
+      );
+      expect(nope.dismissible, isTrue);
+      final adlt = DashboardResponse.fromJson(
+        (await withLibraries('Adlt').get('/api/v1/dashboard?cards=media')).map,
+      ).alerts.singleWhere((a) => a.id == 'privacy.jellyfin.libraries');
+      expect(nope.dismissKey, startsWith('privacy.jellyfin.libraries:'));
+      expect(adlt.dismissKey, isNot(nope.dismissKey));
       final ok = await withLibraries('Adult')
           .get('/api/v1/dashboard?cards=media');
       expect(ok.body, isNot(contains('privacy.jellyfin')));

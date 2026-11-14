@@ -3,6 +3,7 @@ library;
 
 import 'dart:async';
 
+import 'package:yams_hub_gateway/src/core/dashboard/alert_policy.dart';
 import 'package:yams_hub_gateway/src/core/feature_context.dart';
 import 'package:yams_models/yams_models.dart';
 
@@ -10,9 +11,6 @@ import 'activity_services.dart';
 import 'queue_routes.dart';
 import 'torrent_routes.dart';
 import 'unified_queue.dart';
-
-/// At most this many `queue.import.<key>` alerts.
-const maxImportAlerts = 5;
 
 class ActivityModule extends FeatureModule {
   ActivityModule(this.ctx)
@@ -49,6 +47,7 @@ class ActivityModule extends FeatureModule {
     return DashboardContribution(
       data: c.data,
       alerts: c.alerts,
+      supersedes: c.supersedes,
       fetchedAt: r.fetchedAt,
       stale: r.stale || c.stale,
       error: r.stale
@@ -106,13 +105,13 @@ class ActivityModule extends FeatureModule {
     return DashboardContribution(
       data: card.toJson(),
       alerts: _alerts(q, vpn),
+      supersedes: importOnlyQueueErrors(q),
       stale: q.stale,
       error: failed.firstOrNull,
     );
   }
 
   List<Alert> _alerts(QueueComputation q, VpnStatus? vpn) {
-    final now = ctx.clock.now();
     final alerts = <Alert>[];
     if (vpn != null && vpn.status == VpnConnectionState.down) {
       alerts.add(
@@ -124,7 +123,6 @@ class ActivityModule extends FeatureModule {
           title: 'VPN is down',
           message: 'Gluetun reports no public IP; qBittorrent has no network.',
           route: '/activity',
-          since: now,
         ),
       );
     }
@@ -152,7 +150,8 @@ class ActivityModule extends FeatureModule {
               "Gluetun's auth config.toml (see the YAMS Hub README, "
               '"Troubleshooting").',
           route: '/activity',
-          since: now,
+          dismissible: true,
+          dismissKey: fingerprintedDismissKey('vpn.unreadable', refused),
         ),
       );
     }
@@ -173,7 +172,6 @@ class ActivityModule extends FeatureModule {
               : 'Gluetun forwards ${vpn.forwardedPort}, qBittorrent listens on '
                     '${vpn.listenPort ?? 'an unknown port'}.',
           route: '/activity',
-          since: now,
         ),
       );
     }
@@ -189,15 +187,13 @@ class ActivityModule extends FeatureModule {
               'The gateway backs off for 10 minutes to avoid an IP ban; '
               'check QBIT_USERNAME/QBIT_PASSWORD.',
           route: '/activity',
-          since: now,
         ),
       );
     }
-    var imports = 0;
+    // One per download; the dashboard collapses several into one alert.
     for (final r in q.rows) {
       final item = r.item;
       if (!(item.attention?.isImport ?? false)) continue;
-      if (imports++ >= maxImportAlerts) break;
       final source =
           item.arr.firstOrNull?.service.serviceId ?? ServiceId.sonarr;
       alerts.add(
@@ -212,12 +208,29 @@ class ActivityModule extends FeatureModule {
             path: '/activity',
             queryParameters: {'tab': 'queue', 'import': item.key},
           ).toString(),
-          since: now,
         ),
       );
     }
     return alerts;
   }
+
+  /// `<svc>.queue.errors` (the library card's "downloads with errors") for
+  /// each *arr whose only problem downloads need a manual import: those
+  /// already have a `queue.import.*` alert. Kept when the *arr's queue did
+  /// not load or another of its downloads failed.
+  static Set<String> importOnlyQueueErrors(QueueComputation q) => {
+    for (final svc in [ArrService.sonarr, ArrService.radarr])
+      if (q.arr[svc]?.isOk ?? false)
+        if (_problems(q, svc) case final p when p.isNotEmpty)
+          if (p.every((a) => a.isImport)) '${svc.name}.queue.errors',
+  };
+
+  static List<QueueAttention> _problems(QueueComputation q, ArrService svc) => [
+    for (final r in q.rows)
+      if (r.item.attention case final a?)
+        if (a != QueueAttention.warning && a != QueueAttention.trackerError)
+          if (r.item.arr.any((e) => e.service == svc)) a,
+  ];
 
   @override
   Future<void> stop() async => _services.stop();

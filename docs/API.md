@@ -162,7 +162,12 @@ documented per endpoint), `error: ApiError?`.
   Every ExternalApp except `portainer` maps 1:1 to the ServiceId of the same name (the launcher's status source).
 - **ExternalLink** [common]: `{"app": ExternalApp, "path": string}`. The app resolves the base URL (ARCHITECTURE §7.10).
   Example: `{"app": "jellyfin", "path": "/web/#/details?id=4f5731b2c357273bf4002dd8d042a856&serverId=79315eab3c4c401f8391d5c26210b6d7"}`.
-- **Alert** [common]: `{"id": string (stable, e.g. "sonarr.health.IndexerLongTermStatusCheck"), "severity": "info"|"warning"|"error"|"critical", "source": ServiceId, "feature": string, "title": string, "message": string?, "route": string? (app route to open, e.g. "/indexers"), "since": Instant?, "dismissible": bool}`.
+- **Alert** [common]: `{"id": string (stable, e.g. "sonarr.health.IndexerLongTermStatusCheck"), "severity": "info"|"warning"|"error"|"critical", "source": ServiceId, "feature": string, "title": string, "message": string?, "route": string? (app route to open, e.g. "/indexers"), "since": Instant?, "dismissible": bool, "dismissKey": string?}`.
+  `since` is when the problem started: the upstream's own start time when it has one (an Uptime Kuma down beat, an
+  incident), else when this gateway process first saw the alert (§4, "Dashboard alerts"). `dismissKey` (optional, added
+  later; old apps ignore it) is what a dismissal remembers: the `id` plus a short fingerprint of the content, e.g.
+  `"updates.available:3f9a1c2e"`, so a dismissed notice comes back when it changes. Apps dismiss by `dismissKey` when
+  present, else by `id`.
   `route` must be a route registered in APP.md §1 (built like `AppPaths`), so it also works as a web deep link
   `http://<hub>:8090<route>` (e.g. from a Discord message). Alerts are computed only when `GET /dashboard` runs; the
   hub sends no push notifications in v1 (ARCHITECTURE §1); the only message it sends by itself is the optional Discord
@@ -378,6 +383,26 @@ absent → no badge):
 | `cards.containers.data.running` / `.total` | int | More: "21 running" |
 | `cards.indexers.data.failing` | array (length used) | More: "1 failing" |
 | `cards.subtitles.data.missingEpisodes` | int | More: "111 missing" |
+
+**Dashboard alerts.** The feature cards raise their alerts on every load; the dashboard keeps the home screen quiet
+before it sends them (gateway `core/dashboard/alert_policy.dart`). Every alert stays visible on its feature's own screen.
+
+- *First seen.* The gateway remembers, per process and per card, when it first saw each alert `id`; an id the card no
+  longer raises is forgotten (a card that timed out or failed keeps its times). That time is the alert's `since`,
+  unless the upstream reports an earlier start.
+- *Transient problems wait 5 minutes* (`transientAlertGrace`): `vpn.down`, `vpn.port`, `bazarr.signalr`,
+  `container.stopped.*`, `container.unhealthy.*`, `uptime.down.*`, `uptime.incident`, `<svc>.queue.errors` and
+  `queue.import.*` are left out until `since` is at least 5 minutes old. `critical` alerts (`raid.degraded`) and
+  everything else (configuration problems such as `qbittorrent.auth`, `*.allowedHosts`, `privacy.*`) show at once.
+- *No duplicates.* A card can name alerts its own make redundant (`DashboardContribution.supersedes`): the activity
+  card drops `<svc>.queue.errors` when every problem download of that *arr already has a `queue.import.*` alert.
+- *Several manual imports become one* `queue.imports` alert (warning, "3 downloads need manual import", route
+  `/activity?tab=queue`, `since` of the oldest); a single one keeps its own `queue.import.<key>` alert.
+- *Notices are dismissible and come back when they change.* `updates.available` (fingerprint: the containers and their
+  new image digests), `seerr.pending` (the count and the newest pending request ids), `kavita.auth` (missing vs
+  rejected key), `vpn.unreadable` (the refused routes), `privacy.jellyfin.libraries` (the unmatched names),
+  `privacy.prowlarr.tag` (the tag) and `jellyfin.restart` carry a `dismissKey`. The app folds `info` alerts behind
+  an "N notices" row (APP.md §3.3).
 
 ---
 
@@ -595,8 +620,8 @@ own). Admin: everything.
 
 ### 6.9 Dashboard card `requests` — **RequestsCard** (cache 30 s)
 `{"counts": RequestCounts, "pending": RequestSummary[] (max 5, admin only, else empty), "recent": RequestSummary[] (latest 5; members: their own), "openIssues": int}`.
-Alerts: `seerr.pending` (info, admin, "N requests waiting for approval", route `/requests/list?tab=pending`) when
-pending > 0; `seerr.failed` (warning, admin, route `/requests/list?tab=failed`) when failed > 0.
+Alerts: `seerr.pending` (info, admin, dismissible with a `dismissKey` of the count and pending ids, "N requests
+waiting for approval", route `/requests/list?tab=pending`) when pending > 0; `seerr.failed` (warning, admin, route `/requests/list?tab=failed`) when failed > 0.
 
 ---
 
@@ -817,7 +842,8 @@ Alerts: one per health message with `type` warning/error, id `{service}.health.{
 `/library`; except `IndexerLongTermStatusCheck`/`IndexerStatusCheck` (covered by the indexers card) and
 `AllowedHostsCheck` (severity downgraded to info, dismissible; its message gets "If you set Allowed Hosts, include
 sonarr (the hostname the hub uses), then restart Sonarr."). Queue errors → warning `{service}.queue.errors`
-route `/activity`. Allowed Hosts (§2.5): `{service}.allowedHosts`, warning "Sonarr will reject the hub after its next
+route `/activity` (transient; left out of the dashboard when the activity card shows that every problem download needs
+a manual import, §4 "Dashboard alerts"). Allowed Hosts (§2.5): `{service}.allowedHosts`, warning "Sonarr will reject the hub after its next
 restart" while the saved list leaves the hub out, error "Sonarr rejects the hub's hostname" once it is active; the
 `message` is the fix.
 
@@ -1023,9 +1049,11 @@ Reads: member. All torrent/transfer/queue writes: admin.
 ### 8.9 Dashboard card `activity` — **ActivityCard** (cache 5 s; touches the poller lease)
 `{"transfer": {"dlBps", "upBps", "altSpeedEnabled", "connectionStatus"}, "counts": {"downloading": int, "seeding": int, "stalled": int, "attention": int}, "top": QueueItem[] (max 3: attention first, then by eta), "vpn": VpnStatus}`.
 Alerts: `vpn.down` (error, route `/activity`), `vpn.port` (warning, "Forwarded port not in sync"),
-`qbittorrent.auth` (error, when `QbitSession.credentialsRejected`), `queue.import.<key>` (warning per item with
-importBlocked/importPending, max 5, "Manual import needed: <title>", route `/activity?tab=queue&import=<key>`, which
-opens the manual-import sheet for that item, §8.3.1).
+`qbittorrent.auth` (error, when `QbitSession.credentialsRejected`; shown at once), `vpn.unreadable` (info,
+dismissible, §8.6), `queue.import.<key>` (warning per item with importBlocked/importPending, "Manual import needed:
+<title>", route `/activity?tab=queue&import=<key>`, which opens the manual-import sheet for that item, §8.3.1; two or
+more become one `queue.imports` alert, §4 "Dashboard alerts"). `vpn.*` and `queue.import.*` are transient (shown
+after 5 minutes).
 
 ---
 
@@ -1247,8 +1275,9 @@ List/detail/events/updates/maintenance reads: member. Logs, actions, checks, upd
 ### 11.8 Dashboard card `containers` — **ContainersCard** (cache 10 s)
 `{"total": int, "running": int, "unhealthy": string[], "stopped": string[] (excluding profiles-disabled ones that never ran), "updatesAvailable": int, "lastScan": WatchtowerScan?, "topCpu": [{"name": string, "cpuPercent": double}] (max 3), "decluttarr": {"lastRunAt": Instant?, "removed24h": int}?}`.
 Alerts: `container.unhealthy.<name>` (error), `container.stopped.<name>` (warning, for containers that are exited with a
-non-zero code or that were running in the last 24 h), `updates.available` (info, "N container updates available", route
-`/containers/updates`).
+non-zero code or that were running in the last 24 h), `updates.available` (info, dismissible, "N container updates available", route
+`/containers/updates`; its `dismissKey` changes with the set of containers and their new image digests). The
+`container.*` alerts are transient (shown after 5 minutes).
 
 ---
 
@@ -1287,7 +1316,7 @@ Bazarr's `providers` badge is a hint: `throttledProviders` = count of providers 
 ### 12.6 Dashboard card `subtitles` — **SubtitlesCard** (cache 60 s)
 `{"missingEpisodes": int, "missingMovies": int, "throttledProviders": int, "signalrDown": bool}`.
 Alerts: `bazarr.signalr` (warning when either is down, "Bazarr lost its live link to Sonarr"), `bazarr.health.<n>`
-(warning per health item).
+(warning per health item). `bazarr.signalr` is transient (shown after 5 minutes, §4 "Dashboard alerts").
 
 ---
 
@@ -1346,7 +1375,8 @@ zone marker; ordered oldest → newest).
 Alerts: `raid.degraded` (critical when any md device is not `active`), `raid.noRedundancy` (info, dismissible, "Storage
 is RAID0: a single disk failure loses all data"), `host.temperature` (warning above `alerts.cpuTempWarnC`),
 `host.volume` (warning above `alerts.volumeUsedWarnPercent`), `uptime.down.<id>` (error per monitor whose latest beat
-is down, route `/system`), `uptime.incident` (warning when an incident is pinned).
+is down, route `/system`), `uptime.incident` (warning when an incident is pinned). `uptime.*` are transient (shown once they are 5 minutes
+old, counted from the down beat or incident start); `raid.degraded` is critical and never held back.
 
 ---
 
@@ -1461,8 +1491,9 @@ This is the rich tile list for the media apps; the plain launcher for every web 
 
 Dashboard card `media` — **MediaCard** (cache 10 s for now playing, 60 s for the rest):
 `{"nowPlaying": NowPlayingSession[] (max 4), "transcoding": int, "counts": {"movies": int, "series": int, "episodes": int}?, "audiobooks": {"items": int, "inProgress": int}?, "books": {"series": int, "auth": string}?, "shelfmark": {"active": int, "queued": int, "failed7d": int}?, "recentlyAdded": MediaItem[] (max 8)}`.
-Alerts: `kavita.auth` (warning when `rejected` or `missingKey`, "Kavita needs an Auth Key", route `/media/books`, which
-shows the setup card), `jellyfin.restart` (info when `HasPendingRestart`, "Jellyfin needs a restart", route
+Alerts: `kavita.auth` (warning when `rejected` or `missingKey`, dismissible with a `dismissKey` per state, "Kavita needs
+an Auth Key", route `/media/books`, which shows the setup card), `jellyfin.restart` (info, dismissible, when
+`HasPendingRestart`, "Jellyfin needs a restart", route
 `/containers/jellyfin`, where the restart action lives behind a confirm), `shelfmark.coordinator` (warning when the
 coordinator is stopped, route `/media/shelfmark`).
 

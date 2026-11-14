@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:test/test.dart';
 
 import '../../support/test_hub.dart';
+import '../library/library_fakes.dart';
 import 'activity_support.dart';
 
 const _sonarr = ServiceId.sonarr;
@@ -1127,7 +1128,7 @@ void main() {
         '/v1/openvpn/portforwarded',
         (_) => gluetunResponse({'port': 40000}),
       );
-      final r = await hub.get('/api/v1/dashboard?cards=activity');
+      final r = await hub.getSettled('/api/v1/dashboard?cards=activity');
       expect(r.status, 200, reason: r.body);
       final section = Section.fromJson(
         readMap(readMap(r.map['cards'])!['activity'])!,
@@ -1157,6 +1158,37 @@ void main() {
         'Manual import needed: That Time I Got Reincarnated as a Slime',
       );
       expect(importAlert.source, ServiceId.sonarr);
+    });
+
+    test('a download that needs a manual import is not also "Sonarr has '
+        'downloads with errors"', () async {
+      stubLibraryUpstreams(hub.fakes);
+      for (final svc in [_sonarr, _radarr]) {
+        hub.fakes.on(
+          svc,
+          'GET',
+          '/api/v3/queue/status',
+          (_) => FakeResponse.json({
+            'totalCount': 2,
+            'errors': true,
+            'warnings': false,
+          }),
+        );
+      }
+      final r = await hub.getSettled(
+        '/api/v1/dashboard?cards=activity,library',
+      );
+      expect(r.status, 200, reason: r.body);
+      final ids = [
+        for (final a in r.map['alerts'] as List) Alert.fromJson(readMap(a)!).id,
+      ];
+      expect(ids, contains('queue.import.$sonarrHash'));
+      expect(ids, isNot(contains('sonarr.queue.errors')));
+      expect(
+        ids,
+        contains('radarr.queue.errors'),
+        reason: 'no Radarr download has an import alert of its own',
+      );
     });
 
     test('an unreadable forwarded port is an info alert, not vpn.port '
@@ -1196,7 +1228,7 @@ void main() {
         '/v1/publicip/ip',
         (_) => FakeResponse.text('Unauthorized', status: 401),
       );
-      final r = await hub.get('/api/v1/dashboard?cards=activity');
+      final r = await hub.getSettled('/api/v1/dashboard?cards=activity');
       expect(r.status, 200, reason: r.body);
       final alerts = [
         for (final a in r.map['alerts'] as List) Alert.fromJson(readMap(a)!),
@@ -1222,13 +1254,16 @@ void main() {
         RegExp('.*'),
         (_) => FakeResponse.text('Unauthorized', status: 401),
       );
-      final r = await hub.get('/api/v1/dashboard?cards=activity');
+      final r = await hub.getSettled('/api/v1/dashboard?cards=activity');
       final alerts = [
         for (final a in r.map['alerts'] as List) Alert.fromJson(readMap(a)!),
       ];
       final ids = alerts.map((a) => a.id).toList();
       expect(ids, isNot(contains('vpn.down')));
       expect(ids.where((i) => i == 'vpn.unreadable'), hasLength(1));
+      final both = alerts.singleWhere((a) => a.id == 'vpn.unreadable');
+      expect(both.dismissible, isTrue);
+      expect(both.dismissKey, startsWith('vpn.unreadable:'));
       expect(
         alerts.singleWhere((a) => a.id == 'vpn.unreadable').message,
         contains('refused GET /v1/publicip/ip and GET /v1/portforward.'),
@@ -1251,7 +1286,7 @@ void main() {
             '/v1/portforward',
             (_) => gluetunResponse({'port': 40000}),
           );
-        final r = await hub.get('/api/v1/dashboard?cards=activity');
+        final r = await hub.getSettled('/api/v1/dashboard?cards=activity');
         final ids = {
           for (final a in r.map['alerts'] as List) readMap(a)!['id'],
         };
@@ -1267,7 +1302,7 @@ void main() {
         '/v1/publicip/ip',
         (_) => FakeResponse.text('oops', status: 500),
       );
-      final r = await hub.get('/api/v1/dashboard?cards=activity');
+      final r = await hub.getSettled('/api/v1/dashboard?cards=activity');
       final ids = {for (final a in r.map['alerts'] as List) readMap(a)!['id']};
       expect(ids, contains('vpn.down'));
       expect(ids, isNot(contains('vpn.unreadable')));
@@ -1280,7 +1315,7 @@ void main() {
         '/v1/portforward',
         (_) => gluetunResponse({'port': 40000}),
       );
-      final r = await hub.get('/api/v1/dashboard?cards=activity');
+      final r = await hub.getSettled('/api/v1/dashboard?cards=activity');
       final alerts = [
         for (final a in r.map['alerts'] as List) Alert.fromJson(readMap(a)!),
       ];
@@ -1304,7 +1339,7 @@ void main() {
           '/api/v2/auth/login',
           (_) => FakeResponse.text('Unauthorized', status: 401),
         );
-      final r = await hub.get('/api/v1/dashboard?cards=activity');
+      final r = await hub.getSettled('/api/v1/dashboard?cards=activity');
       final ids = {for (final a in r.map['alerts'] as List) readMap(a)!['id']};
       expect(ids, containsAll(['vpn.down', 'qbittorrent.auth']));
       // The *arr queues still feed the card.
