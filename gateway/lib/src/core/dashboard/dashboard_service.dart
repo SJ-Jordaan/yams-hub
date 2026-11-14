@@ -14,6 +14,7 @@ import '../http/api_request.dart';
 import '../http/api_response.dart';
 import '../http/api_router.dart';
 import '../upstream/upstream_exception.dart';
+import 'alert_policy.dart';
 
 final _log = Logger('core.dashboard');
 
@@ -23,11 +24,20 @@ final class DashboardService {
     required this._modules,
     required this._clock,
     this.cardBudget = const Duration(seconds: 4),
-  });
+    Duration transientGrace = transientAlertGrace,
+  }) : _trackers = {
+         for (final admin in [true, false])
+           admin: AlertTracker(_clock, grace: transientGrace),
+       };
 
   final List<FeatureModule> _modules;
   final Clock _clock;
   final Duration cardBudget;
+
+  /// First-seen times of the alerts (per process), one tracker per role: a
+  /// member's dashboard lacks the admin-only alerts and must not make them
+  /// look gone.
+  final Map<bool, AlertTracker> _trackers;
 
   void registerRoutes(ApiRouter router) {
     router.get('/dashboard', _get);
@@ -56,15 +66,27 @@ final class DashboardService {
     ]);
     final cards = <String, Section>{};
     final alerts = <String, Alert>{};
+    final superseded = <String>{};
+    final tracker = _trackers[req.isAdmin]!;
     for (final e in entries) {
-      final (section, cardAlerts) = e.value;
+      final r = e.value;
+      final List<Alert> raised;
+      if (r.known) {
+        raised = tracker.observe(e.key, r.alerts);
+      } else {
+        tracker.keep(e.key);
+        raised = r.alerts;
+      }
+      final section = r.section;
       if (section == null) continue;
       cards[e.key] = section;
-      for (final a in cardAlerts) {
+      superseded.addAll(r.supersedes);
+      for (final a in raised) {
         alerts.putIfAbsent(a.id, () => a);
       }
     }
-    final sorted = alerts.values.toList()
+    superseded.forEach(alerts.remove);
+    final sorted = tracker.apply(alerts.values)
       ..sort((a, b) {
         final s = b.severity.rank.compareTo(a.severity.rank);
         if (s != 0) return s;
@@ -78,13 +100,17 @@ final class DashboardService {
     );
   }
 
-  Future<(Section?, List<Alert>)> _card(FeatureModule m, ApiRequest req) async {
+  Future<_CardResult> _card(FeatureModule m, ApiRequest req) async {
     final load = Future.sync(() => m.dashboard(req));
     try {
       final c = await load.timeout(cardBudget);
-      if (c == null) return (null, const <Alert>[]);
+      if (c == null) return const _CardResult(null, known: true);
       if (c.failure case final failure?) {
-        return (_failedSection(m, req, failure, null), c.alerts);
+        return _CardResult(
+          _failedSection(m, req, failure, null),
+          alerts: c.alerts,
+          known: true,
+        );
       }
       final section = Section.ok(
         c.data,
@@ -92,11 +118,16 @@ final class DashboardService {
         stale: c.stale,
         error: c.error,
       );
-      return (section, c.alerts);
+      return _CardResult(
+        section,
+        alerts: c.alerts,
+        supersedes: c.supersedes,
+        known: true,
+      );
     } on TimeoutException {
       // The load continues in the background and warms the feature's caches.
       unawaited(load.then<void>((_) {}, onError: (Object _) {}));
-      return (
+      return _CardResult(
         Section.failure(
           ApiException(
             504,
@@ -105,10 +136,9 @@ final class DashboardService {
           ).toApiError(req.requestId),
           fetchedAt: _clock.now(),
         ),
-        const <Alert>[],
       );
     } catch (e, st) {
-      return (_failedSection(m, req, e, st), const <Alert>[]);
+      return _CardResult(_failedSection(m, req, e, st));
     }
   }
 
@@ -138,4 +168,21 @@ final class DashboardService {
         ? Section.disabled(error, fetchedAt: _clock.now())
         : Section.failure(error, fetchedAt: _clock.now());
   }
+}
+
+/// One card's section and alerts. [known]: the card answered, so its alerts
+/// are the whole truth (a timed-out or failed card's alerts are unknown, and
+/// their first-seen times are kept).
+final class _CardResult {
+  const _CardResult(
+    this.section, {
+    this.alerts = const [],
+    this.supersedes = const {},
+    this.known = false,
+  });
+
+  final Section? section;
+  final List<Alert> alerts;
+  final Set<String> supersedes;
+  final bool known;
 }

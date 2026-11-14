@@ -2,6 +2,7 @@
 /// (API.md §6).
 library;
 
+import 'package:yams_hub_gateway/src/core/dashboard/alert_policy.dart';
 import 'package:yams_hub_gateway/src/core/feature_context.dart';
 import 'package:yams_models/yams_models.dart';
 
@@ -121,7 +122,7 @@ class RequestsModule extends FeatureModule {
     final error = result.error;
     return DashboardContribution(
       data: card.toJson(),
-      alerts: actor.isAdmin ? _alerts(card.counts) : const [],
+      alerts: actor.isAdmin ? _alerts(card) : const [],
       stale: result.stale,
       fetchedAt: result.fetchedAt,
       error: result.stale && error != null ? _apiError(error, req) : null,
@@ -180,29 +181,38 @@ class RequestsModule extends FeatureModule {
     );
   }
 
-  static List<Alert> _alerts(RequestCounts counts) => [
-    if (counts.pending > 0)
-      Alert(
-        id: 'seerr.pending',
-        severity: AlertSeverity.info,
-        source: ServiceId.seerr,
-        feature: 'requests',
-        title: counts.pending == 1
-            ? '1 request waiting for approval'
-            : '${counts.pending} requests waiting for approval',
-        route: '/requests/list?tab=pending',
-      ),
-    if (counts.failed > 0)
-      Alert(
-        id: 'seerr.failed',
-        severity: AlertSeverity.warning,
-        source: ServiceId.seerr,
-        feature: 'requests',
-        title: counts.failed == 1
-            ? '1 request failed'
-            : '${counts.failed} requests failed',
-        message: 'Seerr could not send them to Sonarr/Radarr. Retry them.',
-        route: '/requests/list?tab=failed',
-      ),
-  ];
+  static List<Alert> _alerts(RequestsCard card) {
+    final counts = card.counts;
+    return [
+      if (counts.pending > 0)
+        Alert(
+          id: 'seerr.pending',
+          severity: AlertSeverity.info,
+          source: ServiceId.seerr,
+          feature: 'requests',
+          title: counts.pending == 1
+              ? '1 request waiting for approval'
+              : '${counts.pending} requests waiting for approval',
+          route: '/requests/list?tab=pending',
+          // A new request (or another count) brings a dismissed notice back.
+          dismissible: true,
+          dismissKey: fingerprintedDismissKey('seerr.pending', [
+            counts.pending,
+            for (final r in card.pending) r.id,
+          ]),
+        ),
+      if (counts.failed > 0)
+        Alert(
+          id: 'seerr.failed',
+          severity: AlertSeverity.warning,
+          source: ServiceId.seerr,
+          feature: 'requests',
+          title: counts.failed == 1
+              ? '1 request failed'
+              : '${counts.failed} requests failed',
+          message: 'Seerr could not send them to Sonarr/Radarr. Retry them.',
+          route: '/requests/list?tab=failed',
+        ),
+    ];
+  }
 }

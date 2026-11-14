@@ -170,9 +170,14 @@ Shown when no server profile exists (not on the gateway-served web build).
 Layout: a responsive masonry of cards (1 column < 600 dp, 2 columns < 1200 dp, 3 columns above). Header: greeting,
 server chip ("LAN"/"Tailscale" + host), last update time.
 
-1. **Alerts panel** (core): top of the page, only when alerts exist. Rows sorted by severity with a colour bar, title,
-   message, relative `since`; tap opens `route`. Dismissible alerts have a close button (stored per device by `id`).
-   Collapses to "N more" after 3.
+1. **Alerts panel** (core): top of the page, only when alerts exist. Problems (`warning`, `error`, `critical`) are
+   rows sorted by severity with a colour bar, title, message, relative `since` ("2 h ago": the gateway sends when the
+   problem was first seen); tap opens `route`. Collapses to "N more" after 3 problems. Info notices (and unknown
+   severities) wait behind one compact "N notices" row that expands in place ("Hide notices" folds them again).
+   Dismissible alerts have a close button; the dismissal is stored per device by `dismissKey` when the alert has one
+   (it changes with the content, so e.g. a different set of container updates or a new pending request shows again),
+   else by `id`. The gateway already holds back transient problems and duplicates (API.md §4, "Dashboard alerts"), so the panel shows
+   what it gets.
 2. Cards, in this order (each owned by its feature, wrapped by core's `DashboardCardFrame` which handles `status:
    error/disabled`, stale badge, and the card title/icon/route):
    - **System** (system): CPU % with a 5-min sparkline, temperature, memory bar, volume bar (used/total), RAID chip

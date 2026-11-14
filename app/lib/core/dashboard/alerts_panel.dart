@@ -1,5 +1,7 @@
-/// The dashboard's alerts panel (APP.md §3.3): sorted by severity, colour
-/// bar, tap opens the alert's route, dismissible alerts remembered per device.
+/// The dashboard's alerts panel (APP.md §3.3): problems sorted by severity
+/// with a colour bar, info notices folded behind an "N notices" row, tap
+/// opens the alert's route, dismissals remembered per device by
+/// [Alert.dismissalKey].
 library;
 
 import 'package:flutter/material.dart';
@@ -13,11 +15,12 @@ import '../widgets/formatters.dart';
 import 'dashboard_providers.dart';
 
 /// [alerts] without the dismissed ones, most severe first (newest first
-/// within a severity).
+/// within a severity). A dismissal is remembered by [Alert.dismissalKey], so
+/// a notice whose content changed (a new key) shows again.
 List<Alert> visibleAlerts(List<Alert> alerts, Set<String> dismissed) {
   final list = [
     for (final a in alerts)
-      if (!(a.dismissible && dismissed.contains(a.id))) a,
+      if (!(a.dismissible && dismissed.contains(a.dismissalKey))) a,
   ];
   list.sort((a, b) {
     final bySeverity = b.severity.rank.compareTo(a.severity.rank);
@@ -28,6 +31,9 @@ List<Alert> visibleAlerts(List<Alert> alerts, Set<String> dismissed) {
   });
   return list;
 }
+
+/// Info (and unknown) alerts: notices, not problems.
+bool isNotice(Alert a) => a.severity.rank <= AlertSeverity.info.rank;
 
 /// The dashboard's alerts; watches only `alerts` of [dashboardProvider].
 class AlertsPanel extends ConsumerStatefulWidget {
@@ -42,6 +48,7 @@ class AlertsPanel extends ConsumerStatefulWidget {
 
 class _AlertsPanelState extends ConsumerState<AlertsPanel> {
   bool _expanded = false;
+  bool _noticesOpen = false;
 
   @override
   Widget build(BuildContext context) {
@@ -49,26 +56,76 @@ class _AlertsPanelState extends ConsumerState<AlertsPanel> {
     final all = ref.watch(dashboardProvider.select((s) => s.value?.alerts ?? const <Alert>[]));
     final alerts = visibleAlerts(all, dismissed);
     if (alerts.isEmpty) return const SizedBox.shrink();
-    final shown = _expanded ? alerts : alerts.take(AlertsPanel.collapsedCount).toList();
-    final hidden = alerts.length - shown.length;
+    final problems = [
+      for (final a in alerts)
+        if (!isNotice(a)) a,
+    ];
+    final notices = [
+      for (final a in alerts)
+        if (isNotice(a)) a,
+    ];
+    final shown = _expanded ? problems : problems.take(AlertsPanel.collapsedCount).toList();
+    final hidden = problems.length - shown.length;
+    Widget row(Alert a) => _AlertRow(
+      alert: a,
+      onDismiss: a.dismissible ? () => ref.read(appSettingsProvider.notifier).dismissAlert(a.dismissalKey) : null,
+    );
     return Card(
       clipBehavior: Clip.antiAlias,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          for (final (i, a) in shown.indexed) ...[
-            if (i > 0) const Divider(height: 1),
-            _AlertRow(
-              alert: a,
-              onDismiss: a.dismissible ? () => ref.read(appSettingsProvider.notifier).dismissAlert(a.id) : null,
-            ),
-          ],
-          if (hidden > 0 || _expanded && alerts.length > AlertsPanel.collapsedCount)
+          for (final (i, a) in shown.indexed) ...[if (i > 0) const Divider(height: 1), row(a)],
+          if (hidden > 0 || _expanded && problems.length > AlertsPanel.collapsedCount)
             TextButton(
               onPressed: () => setState(() => _expanded = !_expanded),
               child: Text(_expanded ? 'Show less' : '$hidden more'),
             ),
+          if (notices.isNotEmpty) ...[
+            if (shown.isNotEmpty) const Divider(height: 1),
+            _NoticesRow(
+              count: notices.length,
+              open: _noticesOpen,
+              onTap: () => setState(() => _noticesOpen = !_noticesOpen),
+            ),
+            if (_noticesOpen)
+              for (final a in notices) ...[const Divider(height: 1), row(a)],
+          ],
         ],
+      ),
+    );
+  }
+}
+
+/// The compact row that folds the info notices away.
+class _NoticesRow extends StatelessWidget {
+  const _NoticesRow({required this.count, required this.open, required this.onTap});
+
+  final int count;
+  final bool open;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final color = theme.colorScheme.onSurfaceVariant;
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 8, 8, 8),
+        child: Row(
+          children: [
+            Icon(Icons.info_outline, size: 18, color: color),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                open ? 'Hide notices' : (count == 1 ? '1 notice' : '$count notices'),
+                style: theme.textTheme.bodyMedium?.copyWith(color: color),
+              ),
+            ),
+            Icon(open ? Icons.expand_less : Icons.expand_more, color: color),
+          ],
+        ),
       ),
     );
   }

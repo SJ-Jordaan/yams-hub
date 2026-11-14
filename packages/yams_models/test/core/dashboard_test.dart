@@ -77,6 +77,42 @@ void main() {
     expect(d.card(DashboardCardKeys.system), isNull);
   });
 
+  test('Alert.dismissKey round trips and falls back to id when absent', () {
+    final keyed = expectRoundTrip(
+      {
+        'id': 'updates.available',
+        'severity': 'info',
+        'source': 'watchtower',
+        'feature': 'containers',
+        'title': '2 container updates available',
+        'since': '2026-11-08T07:00:00Z',
+        'dismissible': true,
+        'dismissKey': 'updates.available:1a2b3c4d',
+      },
+      Alert.fromJson,
+      (a) => a.toJson(),
+    );
+    expect(keyed.dismissKey, 'updates.available:1a2b3c4d');
+    expect(keyed.dismissalKey, 'updates.available:1a2b3c4d');
+
+    // An older gateway sends no key: dismissals remember the id.
+    final old = Alert.fromJson({
+      'id': 'jellyfin.restart',
+      'severity': 'info',
+      'source': 'jellyfin',
+      'title': 'Jellyfin needs a restart',
+      'dismissible': true,
+    });
+    expect(old.dismissKey, isNull);
+    expect(old.dismissalKey, 'jellyfin.restart');
+    expect(old.toJson().containsKey('dismissKey'), isFalse);
+
+    final moved = old.copyWith(since: DateTime.utc(2026, 11, 8));
+    expect(moved.since, DateTime.utc(2026, 11, 8));
+    expect(moved.id, old.id);
+    expect(moved.dismissible, isTrue);
+  });
+
   test('raw badge keys stay readable from Section.data', () {
     final d = DashboardResponse.fromJson(wire(sample));
     final counts = readMap(d.card(DashboardCardKeys.requests)?.data?['counts']);

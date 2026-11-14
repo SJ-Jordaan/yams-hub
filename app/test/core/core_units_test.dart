@@ -236,6 +236,18 @@ void main() {
       expect(visibleAlerts(alerts, {'d'}).length, 4, reason: 'non-dismissible alerts cannot be hidden');
     });
 
+    test('a dismissed notice comes back when its dismissal key changes', () {
+      Alert updates(String key) =>
+          buildAlert(id: 'updates.available', severity: AlertSeverity.info, dismissible: true, dismissKey: key);
+      const dismissed = {'updates.available:aaaa1111'};
+      expect(visibleAlerts([updates('updates.available:aaaa1111')], dismissed), isEmpty);
+      expect(visibleAlerts([updates('updates.available:bbbb2222')], dismissed), hasLength(1));
+      // Without a key (an older gateway) the id is what was dismissed.
+      expect(visibleAlerts([buildAlert(id: 'updates.available', dismissible: true)], {'updates.available'}), isEmpty);
+      expect(isNotice(updates('k')), isTrue);
+      expect(isNotice(buildAlert(severity: AlertSeverity.warning)), isFalse);
+    });
+
     test('masonry columns and shell layout by width', () {
       expect(dashboardColumnsFor(400), 1);
       expect(dashboardColumnsFor(800), 2);

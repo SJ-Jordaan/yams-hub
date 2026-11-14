@@ -134,6 +134,7 @@ void main() {
         containsAll(['jellyfin.restart', 'shelfmark.coordinator']),
       );
       expect(ids['jellyfin.restart']!.route, '/containers/jellyfin');
+      expect(ids['jellyfin.restart']!.dismissible, isFalse);
       expect(ids['jellyfin.restart']!.severity, AlertSeverity.info);
       expect(ids['shelfmark.coordinator']!.route, '/media/shelfmark');
       expect(ids['shelfmark.coordinator']!.severity, AlertSeverity.warning);
@@ -241,6 +242,13 @@ void main() {
     );
     expect(rejected.single.id, 'kavita.auth');
     expect(rejected.single.message, contains('rejected'));
+    // A dismissed "add a key" nag comes back when the key is rejected.
+    final missing = mediaAlerts(
+      books: const BooksOverview(auth: BooksAuth.missingKey, library: web),
+    );
+    expect(missing.single.dismissible, isTrue);
+    expect(missing.single.dismissKey, startsWith('kavita.auth:'));
+    expect(rejected.single.dismissKey, isNot(missing.single.dismissKey));
     expect(
       mediaAlerts(
         books: const BooksOverview(auth: BooksAuth.ok, library: web),

@@ -41,6 +41,7 @@ final class DashboardContribution {
     this.stale = false,
     this.fetchedAt,
     this.error,
+    this.supersedes = const {},
   }) : failure = null;
 
   /// A card whose main part failed with [failure] (shown as an error, or
@@ -53,7 +54,8 @@ final class DashboardContribution {
   }) : data = const {},
        stale = false,
        fetchedAt = null,
-       error = null;
+       error = null,
+       supersedes = const {};
 
   /// The feature's card DTO `.toJson()`.
   final Map<String, Object?> data;
@@ -70,6 +72,11 @@ final class DashboardContribution {
 
   /// The refresh failure behind a [stale] card.
   final ApiError? error;
+
+  /// Alert ids (raised by any card) that this card's [alerts] make redundant,
+  /// e.g. `sonarr.queue.errors` when every Sonarr download with a problem
+  /// already has its own manual import alert. The dashboard drops them.
+  final Set<String> supersedes;
 
   /// Set by [DashboardContribution.failed]: the card is an error section.
   final Object? failure;

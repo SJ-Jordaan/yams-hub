@@ -330,7 +330,7 @@ void main() {
             'warnings': false,
           }),
         );
-        final r = await hub.get('/api/v1/dashboard?cards=library');
+        final r = await hub.getSettled('/api/v1/dashboard?cards=library');
         expect(r.status, 200);
         final card = (r.map['cards']! as Map)['library'] as Map;
         expect(card['status'], 'ok');

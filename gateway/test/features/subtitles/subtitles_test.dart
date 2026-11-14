@@ -230,7 +230,7 @@ void main() {
             _synthetic('bazarr_system_health_issue.synthetic.json'),
           ),
         );
-      final r = await hub.get('/api/v1/dashboard?cards=subtitles');
+      final r = await hub.getSettled('/api/v1/dashboard?cards=subtitles');
       final card = SubtitlesCard.fromJson(
         readMap(readMap(readMap(r.map['cards'])!['subtitles'])!['data'])!,
       );

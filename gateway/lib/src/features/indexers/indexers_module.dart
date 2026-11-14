@@ -4,6 +4,7 @@ library;
 
 import 'package:http/http.dart' as http;
 import 'package:shelf/shelf.dart' show Response;
+import 'package:yams_hub_gateway/src/core/dashboard/alert_policy.dart';
 import 'package:yams_hub_gateway/src/core/feature_context.dart';
 import 'package:yams_hub_gateway/src/core/notify/discord_webhook.dart';
 import 'package:yams_models/yams_models.dart';
@@ -419,6 +420,10 @@ class IndexersModule extends FeatureModule {
               'so no indexer is hidden. Fix the tag (in Prowlarr or the hub '
               'env file) and recreate the hub container.',
           route: _indexersRoute,
+          dismissible: true,
+          dismissKey: fingerprintedDismissKey('privacy.prowlarr.tag', [
+            ctx.config.privateContent.prowlarrTag,
+          ]),
         ),
       for (final i in failing)
         Alert(

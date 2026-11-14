@@ -19,13 +19,23 @@ void main() {
   testWidgets('dashboard: alerts, cards in their states, web apps', (tester) async {
     final api = buildCoreFakeApi(
       alerts: [
-        buildAlert(id: 'seerr.pending', severity: AlertSeverity.info, title: '3 requests waiting', route: '/requests/list?tab=pending', feature: 'requests'),
+        buildAlert(
+          id: 'seerr.pending',
+          severity: AlertSeverity.info,
+          title: '3 requests waiting',
+          route: '/requests/list?tab=pending',
+          feature: 'requests',
+        ),
         buildAlert(id: 'vpn.down', title: 'VPN down'),
       ],
     );
     await pumpHubApp(tester, api: api);
 
     expect(find.text('VPN down'), findsOneWidget);
+    // Info notices wait behind a compact row.
+    expect(find.text('3 requests waiting'), findsNothing);
+    await tester.tap(find.text('1 notice'));
+    await settle(tester);
     expect(find.text('3 requests waiting'), findsOneWidget);
     // Feature card frames.
     expect(find.text('System'), findsWidgets);
@@ -42,7 +52,9 @@ void main() {
   });
 
   testWidgets('tapping an alert opens its route', (tester) async {
-    final api = buildCoreFakeApi(alerts: [buildAlert(id: 'vpn.down', title: 'VPN down', route: '/activity?tab=queue')]);
+    final api = buildCoreFakeApi(
+      alerts: [buildAlert(id: 'vpn.down', title: 'VPN down', route: '/activity?tab=queue')],
+    );
     final app = await pumpHubApp(tester, api: api);
     await tester.tap(find.text('VPN down'));
     await settle(tester);
@@ -52,14 +64,70 @@ void main() {
 
   testWidgets('dismissing an alert hides it and remembers it per device', (tester) async {
     final api = buildCoreFakeApi(
-      alerts: [buildAlert(id: 'raid.noRedundancy', severity: AlertSeverity.info, title: 'Storage is RAID0', dismissible: true)],
+      alerts: [
+        buildAlert(
+          id: 'container.stopped.x',
+          severity: AlertSeverity.warning,
+          title: 'x is stopped',
+          dismissible: true,
+        ),
+      ],
     );
     final app = await pumpHubApp(tester, api: api);
-    expect(find.text('Storage is RAID0'), findsOneWidget);
+    expect(find.text('x is stopped'), findsOneWidget);
     await tester.tap(find.byTooltip('Dismiss'));
     await settle(tester);
-    expect(find.text('Storage is RAID0'), findsNothing);
-    expect(app.container.read(appSettingsProvider).dismissedAlerts, contains('raid.noRedundancy'));
+    expect(find.text('x is stopped'), findsNothing);
+    expect(app.container.read(appSettingsProvider).dismissedAlerts, contains('container.stopped.x'));
+  });
+
+  testWidgets('a notice is dismissed by its dismissal key', (tester) async {
+    final api = buildCoreFakeApi(
+      alerts: [
+        buildAlert(
+          id: 'updates.available',
+          severity: AlertSeverity.info,
+          title: '2 container updates available',
+          dismissible: true,
+          dismissKey: 'updates.available:1a2b3c4d',
+        ),
+      ],
+    );
+    final app = await pumpHubApp(tester, api: api);
+    await tester.tap(find.text('1 notice'));
+    await settle(tester);
+    await tester.tap(find.byTooltip('Dismiss'));
+    await settle(tester);
+    expect(find.text('2 container updates available'), findsNothing);
+    expect(find.text('1 notice'), findsNothing, reason: 'no notices left, no row');
+    final dismissed = app.container.read(appSettingsProvider).dismissedAlerts;
+    expect(dismissed, contains('updates.available:1a2b3c4d'));
+    expect(dismissed, isNot(contains('updates.available')));
+  });
+
+  testWidgets('the collapsed panel shows up to 3 problems; notices fold away', (tester) async {
+    final api = buildCoreFakeApi(
+      alerts: [
+        for (final i in [1, 2, 3, 4])
+          buildAlert(id: 'container.stopped.c$i', severity: AlertSeverity.warning, title: 'c$i is stopped'),
+        buildAlert(id: 'seerr.pending', severity: AlertSeverity.info, title: '1 request waiting'),
+        buildAlert(id: 'jellyfin.restart', severity: AlertSeverity.info, title: 'Jellyfin needs a restart'),
+      ],
+    );
+    await pumpHubApp(tester, api: api);
+    expect(find.textContaining(RegExp(r'^c\d is stopped$')), findsNWidgets(3));
+    expect(find.text('1 more'), findsOneWidget);
+    expect(find.text('2 notices'), findsOneWidget);
+    expect(find.text('1 request waiting'), findsNothing);
+    await tester.tap(find.text('2 notices'));
+    await settle(tester);
+    expect(find.text('1 request waiting'), findsOneWidget);
+    expect(find.text('Jellyfin needs a restart'), findsOneWidget);
+    expect(find.text('Hide notices'), findsOneWidget);
+    await tester.tap(find.text('1 more'));
+    await settle(tester);
+    expect(find.textContaining(RegExp(r'^c\d is stopped$')), findsNWidgets(4));
+    expect(find.text('Show less'), findsOneWidget);
   });
 
   testWidgets('phone layout: bottom bar with badges for admins', (tester) async {
@@ -132,7 +200,12 @@ void main() {
         final cards = (all['cards']! as Map<String, Object?>);
         return FakeResponse({
           ...all,
-          'cards': keys == null ? cards : {for (final k in keys) if (cards.containsKey(k)) k: cards[k]},
+          'cards': keys == null
+              ? cards
+              : {
+                  for (final k in keys)
+                    if (cards.containsKey(k)) k: cards[k],
+                },
         });
       });
       return api;
@@ -200,9 +273,7 @@ void main() {
     await pumpHubApp(
       tester,
       location: '/home/apps',
-      prefsValues: {
-        AppSettingsController.storageKey: '{"hiddenLauncherApps": ["portainer", "jellystat"]}',
-      },
+      prefsValues: {AppSettingsController.storageKey: '{"hiddenLauncherApps": ["portainer", "jellystat"]}'},
     );
     expect(find.text('Portainer'), findsNothing);
     expect(find.text('Jellystat'), findsNothing);

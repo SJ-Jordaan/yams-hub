@@ -7,6 +7,7 @@
 library;
 
 import 'package:shelf/shelf.dart';
+import 'package:yams_hub_gateway/src/core/dashboard/alert_policy.dart';
 import 'package:yams_hub_gateway/src/core/feature_context.dart';
 import 'package:yams_models/yams_models.dart';
 
@@ -333,6 +334,8 @@ Alert privateLibrariesAlert(List<String> unmatched) => Alert(
       '${unmatched.map((n) => '"$n"').join(', ')}, so nothing of it is '
       'hidden. Fix the name in the hub env file and recreate the hub '
       'container.',
+  dismissible: true,
+  dismissKey: fingerprintedDismissKey('privacy.jellyfin.libraries', unmatched),
 );
 
 /// The media alerts (API.md §14.8).
@@ -355,6 +358,8 @@ List<Alert> mediaAlerts({
           : 'Create an Auth Key in Kavita (User settings → Auth Keys) and add '
                 'it to the hub as KAVITA_API_KEY.',
       route: '/media/books',
+      dismissible: true,
+      dismissKey: fingerprintedDismissKey('kavita.auth', [books.auth.name]),
     ),
   if (pendingRestart)
     const Alert(
@@ -365,7 +370,8 @@ List<Alert> mediaAlerts({
       title: 'Jellyfin needs a restart',
       message: 'Jellyfin has a pending restart to apply updates or settings.',
       route: '/containers/jellyfin',
-      dismissible: true,
+      // Not dismissible: Jellyfin says nothing about why or since when, so a
+      // dismissal could not tell one pending restart from the next.
     ),
   if (shelfmark?.coordinator == ShelfmarkCoordinator.stopped)
     const Alert(

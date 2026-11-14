@@ -22,6 +22,7 @@ import 'package:path/path.dart' as p;
 import 'package:shelf/shelf.dart';
 import 'package:yams_hub_gateway/src/core/auth/password_hasher.dart';
 import 'package:yams_hub_gateway/src/core/auth/records.dart';
+import 'package:yams_hub_gateway/src/core/dashboard/alert_policy.dart';
 import 'package:yams_hub_gateway/yams_hub_gateway.dart';
 import 'package:yams_models/yams_models.dart';
 
@@ -281,6 +282,17 @@ final class TestHub {
     Map<String, String> headers = const {},
     String? ip,
   }) => request('GET', path, as: as, token: token, headers: headers, ip: ip);
+
+  /// GETs [path] twice, [transientAlertGrace] apart: the dashboard holds a
+  /// transient alert back until it has lasted that long.
+  Future<TestResponse> getSettled(
+    String path, {
+    TestAs as = TestAs.admin,
+  }) async {
+    await get(path, as: as);
+    clock.advance(transientAlertGrace);
+    return get(path, as: as);
+  }
 
   Future<TestResponse> post(
     String path, {

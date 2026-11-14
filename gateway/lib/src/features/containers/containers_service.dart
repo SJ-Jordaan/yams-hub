@@ -5,6 +5,7 @@ library;
 import 'dart:async';
 import 'dart:io' show FileSystemException;
 
+import 'package:yams_hub_gateway/src/core/dashboard/alert_policy.dart';
 import 'package:yams_hub_gateway/src/core/feature_context.dart';
 import 'package:yams_models/yams_models.dart';
 
@@ -1259,9 +1260,11 @@ final class ContainersService {
         if (e.state == ContainerState.exited || e.state == ContainerState.dead)
           e,
     ]..sort((a, b) => a.name.compareTo(b.name));
-    final updatesAvailable = updates.all
-        .where((r) => (r.updateAvailable ?? false) && names.contains(r.name))
-        .length;
+    final pendingUpdates = [
+      for (final r in updates.all)
+        if ((r.updateAvailable ?? false) && names.contains(r.name)) r,
+    ]..sort((a, b) => a.name.compareTo(b.name));
+    final updatesAvailable = pendingUpdates.length;
     final top = [
       for (final e in list)
         if (e.isRunning)
@@ -1317,6 +1320,10 @@ final class ContainersService {
               : '$updatesAvailable container updates available',
           route: '/containers/updates',
           dismissible: true,
+          // Another container or a newer image brings it back.
+          dismissKey: fingerprintedDismissKey('updates.available', [
+            for (final r in pendingUpdates) '${r.name}@${r.latestDigest}',
+          ]),
         ),
     ];
     return DashboardContribution(data: card.toJson(), alerts: alerts);

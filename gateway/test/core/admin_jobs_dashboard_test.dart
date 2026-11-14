@@ -509,7 +509,7 @@ void main() {
                   title: 'second',
                 ),
                 Alert(
-                  id: 'vpn.down',
+                  id: 'qbittorrent.auth',
                   severity: AlertSeverity.error,
                   source: ServiceId.gluetun,
                   feature: 'activity',
@@ -533,7 +533,7 @@ void main() {
       expect(d.card('library'), isNull);
       expect(d.cards.containsKey('containers'), isFalse);
       expect(d.alerts.map((a) => a.id), [
-        'vpn.down',
+        'qbittorrent.auth',
         'dup',
         'seerr.failed',
         'raid.noRedundancy',
