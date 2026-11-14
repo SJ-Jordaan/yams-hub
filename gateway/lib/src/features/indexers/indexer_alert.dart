@@ -16,6 +16,12 @@ import 'prowlarr_repository.dart';
 /// How often the monitor looks at Prowlarr.
 const indexerAlertInterval = Duration(minutes: 3);
 
+/// A known sample further than this after the previous one (about two missed
+/// intervals: Prowlarr unreachable, a stale snapshot, the hub stopped) restarts
+/// the pending breach and recovery waits: time nobody observed is not
+/// "continuously failing".
+const indexerAlertMaxSampleGap = Duration(minutes: 7);
+
 /// The ratio must stay below the threshold this long before "recovered".
 const indexerAlertRecoverAfter = Duration(minutes: 5);
 
@@ -48,6 +54,7 @@ final class IndexerAlertState {
     this.breachSince,
     this.clearSince,
     this.firedAt,
+    this.lastSampleAt,
   });
 
   factory IndexerAlertState.fromJson(Object? json) {
@@ -58,6 +65,7 @@ final class IndexerAlertState {
       breachSince: readInstant(m['breachSince']),
       clearSince: readInstant(m['clearSince']),
       firedAt: readInstant(m['firedAt']),
+      lastSampleAt: readInstant(m['lastSampleAt']),
     );
   }
 
@@ -74,11 +82,19 @@ final class IndexerAlertState {
   /// When the "down" message was sent.
   DateTime? firedAt;
 
+  /// When the last known sample was evaluated.
+  DateTime? lastSampleAt;
+
+  /// A breach or recovery wait is running (only then does [lastSampleAt]
+  /// matter enough to persist on every sample).
+  bool get pending => breachSince != null || clearSince != null;
+
   JsonMap toJson() => {
     'firing': firing,
     'breachSince': breachSince == null ? null : instantToJson(breachSince!),
     'clearSince': clearSince == null ? null : instantToJson(clearSince!),
     'firedAt': firedAt == null ? null : instantToJson(firedAt!),
+    'lastSampleAt': lastSampleAt == null ? null : instantToJson(lastSampleAt!),
   };
 }
 
@@ -112,6 +128,7 @@ final class IndexerAlertRule {
     required this.failingFor,
     this.recoverAfter = indexerAlertRecoverAfter,
     this.minEnabled = indexerAlertMinEnabled,
+    this.maxSampleGap = indexerAlertMaxSampleGap,
     IndexerAlertState? state,
   }) : state = state ?? IndexerAlertState();
 
@@ -119,6 +136,7 @@ final class IndexerAlertRule {
   final Duration failingFor;
   final Duration recoverAfter;
   final int minEnabled;
+  final Duration maxSampleGap;
   final IndexerAlertState state;
 
   /// Whether [s] is at or above the threshold.
@@ -129,11 +147,23 @@ final class IndexerAlertRule {
   /// send, if any.
   ///
   /// - Unknown data (null) changes nothing: Prowlarr being down is Uptime
-  ///   Kuma's alert, and the running timers carry on afterwards.
+  ///   Kuma's alert, and a sent alert stays sent.
+  /// - A known sample more than [maxSampleGap] after the previous one (or
+  ///   before it: the clock went back) restarts a pending breach or recovery
+  ///   at [now]: only observed time counts as continuous. The firing state is
+  ///   kept, so nothing is sent twice.
   /// - Fewer than [minEnabled] enabled indexers: the rule does not apply; a
   ///   pending breach or recovery starts over, a sent alert stays sent.
   IndexerAlertEvent? evaluate(IndexerFailureSample? sample, DateTime now) {
     if (sample == null) return null;
+    final last = state.lastSampleAt;
+    state.lastSampleAt = now;
+    if (last != null &&
+        (now.isBefore(last) || now.difference(last) > maxSampleGap)) {
+      state
+        ..breachSince = null
+        ..clearSince = null;
+    }
     if (sample.enabled < minEnabled) {
       state
         ..breachSince = null
@@ -267,10 +297,7 @@ Uri? indexersPageUrl(List<Uri> publicUrls) {
     scheme: base.scheme,
     host: base.host,
     port: base.hasPort ? base.port : null,
-    pathSegments: [
-      ...base.pathSegments.where((s) => s.isNotEmpty),
-      'indexers',
-    ],
+    pathSegments: [...base.pathSegments.where((s) => s.isNotEmpty), 'indexers'],
   );
 }
 
@@ -342,9 +369,16 @@ final class IndexerAlertMonitor {
   Future<void> _tick() async {
     try {
       final s = await sample();
-      final before = rule.state.toJson().toString();
+      final state = rule.state;
+      final before = state.toJson();
       final event = rule.evaluate(s, clock.now());
-      if (rule.state.toJson().toString() != before) {
+      final after = state.toJson();
+      // lastSampleAt changes on every known sample; it is only written while
+      // a wait is running (a restart must see a gap in it), not every 3 min.
+      final changed = after.keys.any(
+        (k) => before[k] != after[k] && (k != 'lastSampleAt' || state.pending),
+      );
+      if (changed) {
         // The state is saved before the message goes out: a crash in
         // between loses one message instead of repeating it.
         await _save();

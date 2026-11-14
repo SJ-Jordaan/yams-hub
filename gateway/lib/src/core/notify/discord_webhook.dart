@@ -64,7 +64,8 @@ http.Client createDiscordHttpClient() => IOClient(
 
 /// Sends JSON payloads to one Discord webhook: a short timeout per attempt,
 /// retries with backoff on network errors, 5xx and 429 (honouring Discord's
-/// `retry_after`), and gives up after [maxAttempts].
+/// `retry_after` when given, else the same backoff), and gives up after
+/// [maxAttempts].
 final class DiscordWebhook {
   DiscordWebhook({
     required this._url,
@@ -114,8 +115,10 @@ final class DiscordWebhook {
         }
         problem = 'HTTP ${r.statusCode}';
         if (r.statusCode == 429) {
+          // Without a usable retry_after (e.g. Cloudflare's HTML 429) the
+          // normal backoff applies.
           wait = _retryAfter(r);
-          if (wait == null || wait > maxRetryAfter) {
+          if (wait != null && wait > maxRetryAfter) {
             _log.warning(
               'Discord alert not sent: rate limited for longer than '
               '${maxRetryAfter.inSeconds} s',

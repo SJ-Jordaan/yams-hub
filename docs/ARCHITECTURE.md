@@ -710,13 +710,17 @@ server change.
   that knocks every indexer out for a few minutes sends nothing. Fewer than 2 enabled indexers: the rule does not apply.
 - **Recovery:** below the threshold on every sample for 5 min → one "recovered" message.
 - **Hysteresis:** nothing is repeated while the condition holds. When Prowlarr cannot be read (error, or only a stale
-  cached copy) nothing changes, neither the pending timers nor the firing state: Prowlarr being down is Uptime Kuma's
-  alert.
-- **State** (`$DATA/alerts.json`, written atomically by `JsonFileStore` when it changes, before the message is sent):
-  `{"version":1,"indexersFailing":{"firing","breachSince","clearSince","firedAt"}}`. A restart neither re-sends nor
-  forgets a pending breach.
+  cached copy) the sample is unknown and nothing is sent or cleared: Prowlarr being down is Uptime Kuma's alert.
+- **Only observed time counts:** a known sample more than 7 min after the previous one (Prowlarr unreachable, the hub
+  stopped) or before it (the clock went back) restarts a pending breach or recovery wait at that sample. One failing
+  sample before an outage and one after it are not "15 min failing". A sent alert stays sent.
+- **State** (`$DATA/alerts.json`, written atomically by `JsonFileStore` before the message is sent):
+  `{"version":1,"indexersFailing":{"firing","breachSince","clearSince","firedAt","lastSampleAt"}}`. Written when the
+  state changes, and on every sample only while a wait is running. A restart neither re-sends nor forgets a pending
+  breach (if it comes back within 7 min).
 - **Delivery:** `POST` JSON to the webhook, 10 s timeout per attempt, up to 4 attempts with 2/4/8 s backoff on network
-  errors, timeouts and 5xx; a 429 waits Discord's `retry_after` (or `Retry-After`, up to 60 s). Other 4xx (deleted
+  errors, timeouts and 5xx; a 429 waits Discord's `retry_after` (or `Retry-After`; longer than 60 s gives up), or the
+  same backoff when it carries neither (Cloudflare's HTML 429). Other 4xx (deleted
   webhook) are not retried. A message that still fails is dropped and logged (never repeated by the rule). The URL is
   never logged; `redactSecrets` also scrubs any Discord webhook path.
 - **Message:** an embed titled `⚠️ Indexers down: 9 of 10 failing for 15 min` or `✅ Indexers recovered: 1 of 10

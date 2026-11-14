@@ -114,6 +114,19 @@ void main() {
     return m.tick();
   }
 
+  /// Samples [s] every 3 min (like production) from [from] to [to] inclusive.
+  Future<void> every(
+    IndexerAlertMonitor m,
+    int from,
+    int to,
+    IndexerFailureSample? s,
+  ) async {
+    for (var minute = from; minute <= to; minute += 3) {
+      await at(m, minute, s);
+    }
+    if ((to - from) % 3 != 0) await at(m, to, s);
+  }
+
   group('trigger', () {
     test('no alert after 14 min at the threshold, one at 15', () async {
       final m = monitor();
@@ -161,8 +174,7 @@ void main() {
           indexersFailingForMinutes: 30,
         ),
       );
-      await at(m, 0, _sample(5, 10));
-      await at(m, 29, _sample(5, 10));
+      await every(m, 0, 29, _sample(5, 10));
       expect(discord.posts, isEmpty);
       await at(m, 30, _sample(5, 10));
       expect(discord.titles.single, contains('5 of 10 failing for 30 min'));
@@ -182,8 +194,7 @@ void main() {
   group('recovery', () {
     Future<IndexerAlertMonitor> firing() async {
       final m = monitor();
-      await at(m, 0, _sample(10, 10));
-      await at(m, 15, _sample(10, 10));
+      await every(m, 0, 15, _sample(10, 10));
       expect(discord.posts, hasLength(1));
       return m;
     }
@@ -228,8 +239,7 @@ void main() {
 
     test('never counts as recovered', () async {
       final m = monitor();
-      await at(m, 0, _sample(10, 10));
-      await at(m, 15, _sample(10, 10));
+      await every(m, 0, 15, _sample(10, 10));
       for (var minute = 18; minute <= 120; minute += 3) {
         await at(m, minute, null);
       }
@@ -259,13 +269,55 @@ void main() {
       hub.clock.advance(const Duration(hours: 1)); // past maxStale
       expect(await sampleProwlarr(repo, hub.clock), isNull); // error
     });
+
+    test('a gap in the samples restarts a pending breach', () async {
+      // One breach before a Prowlarr outage and one after it are not 15
+      // continuous minutes of failures.
+      final m = monitor();
+      await at(m, 0, _sample(9, 10));
+      for (var minute = 3; minute <= 18; minute += 3) {
+        await at(m, minute, null);
+      }
+      await at(m, 21, _sample(9, 10));
+      expect(discord.posts, isEmpty);
+      expect(m.rule.state.breachSince, t0.add(const Duration(minutes: 21)));
+      await every(m, 24, 35, _sample(9, 10));
+      expect(discord.posts, isEmpty);
+      await at(m, 36, _sample(9, 10));
+      expect(discord.titles, ['⚠️ Indexers down: 9 of 10 failing for 15 min']);
+    });
+
+    test('a gap in the samples restarts a pending recovery', () async {
+      final m = monitor();
+      await every(m, 0, 15, _sample(10, 10));
+      await at(m, 18, _sample(1, 10));
+      for (var minute = 21; minute <= 27; minute += 3) {
+        await at(m, minute, null);
+      }
+      await at(m, 30, _sample(1, 10));
+      expect(discord.posts, hasLength(1));
+      await at(m, 33, _sample(1, 10));
+      expect(discord.posts, hasLength(1));
+      await at(m, 35, _sample(1, 10));
+      expect(discord.titles.last, '✅ Indexers recovered: 1 of 10 failing');
+    });
+
+    test('a clock jump backwards restarts a pending breach', () async {
+      final m = monitor();
+      await every(m, 0, 9, _sample(9, 10));
+      // NTP moves the clock back an hour: the breach must still be seen for
+      // 15 min, measured from the new time.
+      await every(m, -60, -48, _sample(9, 10));
+      expect(discord.posts, isEmpty);
+      await at(m, -45, _sample(9, 10));
+      expect(discord.titles, ['⚠️ Indexers down: 9 of 10 failing for 15 min']);
+    });
   });
 
   group('persistence', () {
     test('a restart while firing does not resend', () async {
       final first = monitor();
-      await at(first, 0, _sample(10, 10));
-      await at(first, 15, _sample(10, 10));
+      await every(first, 0, 15, _sample(10, 10));
       expect(discord.posts, hasLength(1));
 
       final saved = jsonDecode(
@@ -278,19 +330,55 @@ void main() {
         await at(second, minute, _sample(10, 10));
       }
       expect(discord.posts, hasLength(1));
-      await at(second, 63, _sample(0, 10));
-      await at(second, 68, _sample(0, 10));
+      await every(second, 63, 68, _sample(0, 10));
       expect(discord.titles.last, startsWith('✅ Indexers recovered'));
     });
 
     test('a pending breach survives a restart', () async {
       final first = monitor();
-      await at(first, 0, _sample(9, 10));
-      await at(first, 9, _sample(9, 10));
+      await every(first, 0, 12, _sample(9, 10));
       final second = monitor();
+      await at(second, 14, _sample(9, 10));
+      expect(discord.posts, isEmpty);
       await at(second, 15, _sample(9, 10));
-      expect(discord.posts, hasLength(1));
+      expect(discord.titles, ['⚠️ Indexers down: 9 of 10 failing for 15 min']);
     });
+
+    test('a restart days later does not count the downtime', () async {
+      final first = monitor();
+      await every(first, 0, 3, _sample(9, 10));
+      final second = monitor();
+      const twoDays = 2 * 24 * 60;
+      await at(second, twoDays, _sample(9, 10));
+      expect(discord.posts, isEmpty);
+      await every(second, twoDays + 3, twoDays + 14, _sample(9, 10));
+      expect(discord.posts, isEmpty);
+      await at(second, twoDays + 15, _sample(9, 10));
+      expect(discord.titles, ['⚠️ Indexers down: 9 of 10 failing for 15 min']);
+    });
+
+    test(
+      'the file is not rewritten every sample while nothing is pending',
+      () async {
+        Map<String, Object?> saved() =>
+            (jsonDecode(
+                  File(p.join(dir.path, alertStateStoreName))
+                      .readAsStringSync(),
+                ) as Map)['indexersFailing']
+                as Map<String, Object?>;
+        final m = monitor();
+        await every(m, 0, 12, _sample(9, 10));
+        // A running wait keeps lastSampleAt current on disk.
+        expect(
+          saved()['lastSampleAt'],
+          instantToJson(t0.add(const Duration(minutes: 12))),
+        );
+        await at(m, 15, _sample(9, 10));
+        final atFire = saved();
+        await every(m, 18, 60, _sample(9, 10));
+        expect(saved(), atFire);
+      },
+    );
 
     test('a corrupt or missing state file starts clean', () async {
       File(p.join(dir.path, alertStateStoreName)).writeAsStringSync('{nope');
@@ -324,6 +412,30 @@ void main() {
       );
       expect(await discord.webhook().send({'content': 'x'}), isTrue);
       expect(discord.sleeps, [const Duration(seconds: 3)]);
+    });
+
+    test(
+      '429 without retry_after or Retry-After backs off and retries',
+      () async {
+        // Cloudflare's 429 page is HTML without either.
+        discord.replies.addAll([
+          () => http.Response('<html>Too Many Requests</html>', 429),
+          () => http.Response('', 429),
+        ]);
+        expect(await discord.webhook().send({'content': 'x'}), isTrue);
+        expect(discord.posts, hasLength(3));
+        expect(discord.sleeps, [
+          const Duration(seconds: 2),
+          const Duration(seconds: 4),
+        ]);
+      },
+    );
+
+    test('429 with a retry_after over the cap gives up at once', () async {
+      discord.replies.add(() => http.Response('{"retry_after": 3600}', 429));
+      expect(await discord.webhook().send({'content': 'x'}), isFalse);
+      expect(discord.posts, hasLength(1));
+      expect(discord.sleeps, isEmpty);
     });
 
     test('gives up after a few failed attempts', () async {
@@ -363,9 +475,7 @@ void main() {
     test('an undeliverable alert is not repeated by the rule', () async {
       discord.replies.addAll(List.filled(4, () => http.Response('', 503)));
       final m = monitor();
-      await at(m, 0, _sample(10, 10));
-      await at(m, 15, _sample(10, 10));
-      await at(m, 18, _sample(10, 10));
+      await every(m, 0, 18, _sample(10, 10));
       expect(discord.posts, hasLength(4)); // the attempts of one message
       expect(m.rule.state.firing, isTrue);
     });
@@ -378,11 +488,9 @@ void main() {
         () => http.Response('', 500),
       ]);
       final m = monitor();
-      await at(m, 0, _sample(10, 10));
-      await at(m, 15, _sample(10, 10));
+      await every(m, 0, 15, _sample(10, 10));
       discord.replies.add(() => http.Response('', 404));
-      await at(m, 18, _sample(0, 10));
-      await at(m, 23, _sample(0, 10));
+      await every(m, 18, 23, _sample(0, 10));
       expect(discord.urls.toSet(), {_webhookUrl});
       expect(logs.raw, isNotEmpty);
       for (final line in [...logs.lines, ...logs.raw]) {
@@ -404,8 +512,7 @@ void main() {
           enabled: 12,
           failing: [for (var i = 1; i <= 12; i++) 'Idx $i'],
         );
-        await at(m, 0, s);
-        await at(m, 15, s);
+        await every(m, 0, 15, s);
         final post = discord.posts.single;
         expect(post['allowed_mentions'], {'parse': <String>[]});
         final embed = (post['embeds']! as List).single as Map;
