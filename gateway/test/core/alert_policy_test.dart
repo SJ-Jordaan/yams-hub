@@ -53,8 +53,7 @@ void main() {
     List<String> ids(List<Alert> alerts) => [for (final a in alerts) a.id];
 
     List<Alert> poll(List<Alert> alerts, [String card = 'activity']) {
-      tracker.observe(card, [for (final a in alerts) a.id]);
-      return tracker.apply(alerts);
+      return tracker.apply(tracker.observe(card, alerts));
     }
 
     test('transient alerts wait out the grace period', () {
@@ -78,6 +77,62 @@ void main() {
       expect(poll(stopped), isEmpty, reason: 'forgotten while it was gone');
       clock.advance(transientAlertGrace);
       expect(ids(poll(stopped)), ['container.stopped.sonarr']);
+    });
+
+    test('a flapping problem reaches the panel and does not blink', () {
+      // A container in a restart loop: stopped in two polls out of three
+      // (one 30 s poll every cycle sees it running).
+      final stopped = [_alert('container.stopped.sonarr')];
+      final start = clock.now();
+      final shownAt = <Duration>[];
+      for (var i = 0; i < 24; i++) {
+        final present = i % 3 != 2;
+        final out = poll(present ? stopped : const []);
+        if (out.isNotEmpty) shownAt.add(clock.now().difference(start));
+        clock.advance(const Duration(seconds: 30));
+      }
+      expect(shownAt.first, transientAlertGrace);
+      final last = const Duration(seconds: 30) * 23;
+      expect(shownAt, [
+        for (
+          var t = transientAlertGrace;
+          t <= last;
+          t += const Duration(seconds: 30)
+        )
+          t,
+      ], reason: 'shown in every poll from 5 min on, absent polls included');
+      expect(poll(stopped).single.since, start);
+    });
+
+    test('a VPN that keeps reconnecting is shown after 5 min', () {
+      final down = [_alert('vpn.down', severity: AlertSeverity.error)];
+      // Down for 2 min, up for 1 min, again and again.
+      for (var minute = 0; minute < 5; minute++) {
+        expect(poll(minute % 3 == 2 ? const [] : down), isEmpty);
+        clock.advance(const Duration(minutes: 1));
+      }
+      expect(ids(poll(down)), ['vpn.down']);
+    });
+
+    test('a cleared alert goes away after the absence grace', () {
+      final down = [_alert('vpn.down', severity: AlertSeverity.error)];
+      poll(down);
+      clock.advance(transientAlertGrace);
+      expect(ids(poll(down)), ['vpn.down']);
+      clock.advance(const Duration(minutes: 2));
+      expect(ids(poll(const [])), ['vpn.down'], reason: 'may come back');
+      clock.advance(const Duration(minutes: 1));
+      expect(ids(poll(const [])), ['vpn.down']);
+      clock.advance(const Duration(seconds: 1));
+      expect(poll(const []), isEmpty, reason: 'gone for over 3 min');
+      expect(poll(down), isEmpty, reason: 'a new occurrence waits again');
+    });
+
+    test('a non-transient alert goes as soon as it clears', () {
+      final auth = [_alert('qbittorrent.auth', severity: AlertSeverity.error)];
+      expect(ids(poll(auth)), ['qbittorrent.auth']);
+      clock.advance(const Duration(seconds: 30));
+      expect(poll(const []), isEmpty);
     });
 
     test('critical and non-transient alerts show at once with a since', () {
@@ -228,6 +283,32 @@ void main() {
       expect(shown.every((a) => a.since == start), isTrue);
     });
 
+    test("a member's polls do not reset admin-only alerts", () async {
+      final start = hub.clock.now();
+      activity.alerts = [_alert('vpn.port')];
+      library.alerts = [_alert('privacy.jellyfin.libraries')];
+      await alerts();
+      // A member's dashboard leaves the admin-only alert out.
+      library.alerts = const [];
+      for (var i = 0; i < 5; i++) {
+        hub.clock.advance(const Duration(minutes: 1));
+        final r = await hub.get(
+          '/api/v1/dashboard?cards=activity,library',
+          as: TestAs.member,
+        );
+        final ids = DashboardResponse.fromJson(r.map).alerts.map((a) => a.id);
+        expect(ids, isNot(contains('privacy.jellyfin.libraries')));
+      }
+      library.alerts = [_alert('privacy.jellyfin.libraries')];
+      final shown = await alerts();
+      expect(
+        shown.firstWhere((a) => a.id == 'privacy.jellyfin.libraries').since,
+        start,
+        reason: 'the admin first saw it 5 min ago',
+      );
+      expect(shown.map((a) => a.id), contains('vpn.port'));
+    });
+
     test('a card that fails keeps its first-seen times', () async {
       activity.alerts = [_alert('vpn.port')];
       await alerts();
@@ -257,6 +338,13 @@ void main() {
       activity
         ..alerts = const []
         ..supersedes = const {};
+      // The import alert lingers through the absence grace.
+      expect((await alerts()).map((a) => a.id).toSet(), {
+        'queue.import.a',
+        'radarr.queue.errors',
+        'sonarr.queue.errors',
+      });
+      hub.clock.advance(alertAbsenceGrace + const Duration(seconds: 1));
       expect((await alerts()).map((a) => a.id).toSet(), {
         'radarr.queue.errors',
         'sonarr.queue.errors',

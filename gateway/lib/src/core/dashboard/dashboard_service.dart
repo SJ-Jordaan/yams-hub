@@ -25,14 +25,19 @@ final class DashboardService {
     required this._clock,
     this.cardBudget = const Duration(seconds: 4),
     Duration transientGrace = transientAlertGrace,
-  }) : _tracker = AlertTracker(_clock, grace: transientGrace);
+  }) : _trackers = {
+         for (final admin in [true, false])
+           admin: AlertTracker(_clock, grace: transientGrace),
+       };
 
   final List<FeatureModule> _modules;
   final Clock _clock;
   final Duration cardBudget;
 
-  /// First-seen times of the alerts (per process).
-  final AlertTracker _tracker;
+  /// First-seen times of the alerts (per process), one tracker per role: a
+  /// member's dashboard lacks the admin-only alerts and must not make them
+  /// look gone.
+  final Map<bool, AlertTracker> _trackers;
 
   void registerRoutes(ApiRouter router) {
     router.get('/dashboard', _get);
@@ -62,19 +67,26 @@ final class DashboardService {
     final cards = <String, Section>{};
     final alerts = <String, Alert>{};
     final superseded = <String>{};
+    final tracker = _trackers[req.isAdmin]!;
     for (final e in entries) {
       final r = e.value;
-      if (r.known) _tracker.observe(e.key, [for (final a in r.alerts) a.id]);
+      final List<Alert> raised;
+      if (r.known) {
+        raised = tracker.observe(e.key, r.alerts);
+      } else {
+        tracker.keep(e.key);
+        raised = r.alerts;
+      }
       final section = r.section;
       if (section == null) continue;
       cards[e.key] = section;
       superseded.addAll(r.supersedes);
-      for (final a in r.alerts) {
+      for (final a in raised) {
         alerts.putIfAbsent(a.id, () => a);
       }
     }
     superseded.forEach(alerts.remove);
-    final sorted = _tracker.apply(alerts.values)
+    final sorted = tracker.apply(alerts.values)
       ..sort((a, b) {
         final s = b.severity.rank.compareTo(a.severity.rank);
         if (s != 0) return s;

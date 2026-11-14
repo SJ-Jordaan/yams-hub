@@ -51,33 +51,106 @@ String fingerprintedDismissKey(String id, Iterable<Object?> parts) {
   return '$id:${digest.toString().substring(0, 8)}';
 }
 
-/// Remembers when each alert id was first seen (per gateway process) and
-/// applies the dashboard's alert policy.
+/// How long an alert may be missing from a card's polls before it counts as
+/// gone. Shorter absences (a container in a restart loop, a VPN that keeps
+/// reconnecting) keep its first-seen time, and a transient alert that was
+/// already shown stays on the dashboard through them.
+const alertAbsenceGrace = Duration(minutes: 3);
+
+/// What the tracker remembers about one alert id of one card.
+final class _Seen {
+  _Seen(this.firstSeen, this.lastSeen, this.alert);
+
+  final DateTime firstSeen;
+  DateTime lastSeen;
+
+  /// A poll of the card found it missing (since [lastSeen]). Without polls
+  /// in between (nobody had the hub open) an alert is not "gone".
+  bool missing = false;
+
+  /// The alert as last raised (shown while it lingers).
+  Alert alert;
+
+  /// The dashboard showed it.
+  bool shown = false;
+}
+
+/// Remembers when each alert id was first seen (per gateway process and per
+/// card; one tracker per role, so a member's polls never touch the times of
+/// admin-only alerts) and applies the dashboard's alert policy.
 final class AlertTracker {
-  AlertTracker(this._clock, {this.grace = transientAlertGrace});
+  AlertTracker(
+    this._clock, {
+    this.grace = transientAlertGrace,
+    this.absenceGrace = alertAbsenceGrace,
+  });
 
   final Clock _clock;
   final Duration grace;
+  final Duration absenceGrace;
 
-  /// Card key → alert id → first seen.
-  final Map<String, Map<String, DateTime>> _firstSeen = {};
+  /// Card key → alert id → what was seen.
+  final Map<String, Map<String, _Seen>> _cards = {};
 
-  /// Records the alerts a card raised just now. Ids the card no longer raises
-  /// are forgotten, so a problem that comes back starts its grace period
-  /// again. Call it only for cards whose alerts are known (not for a card
-  /// that timed out or threw: its alerts are not "gone").
-  void observe(String card, Iterable<String> ids) {
+  bool _expired(_Seen s, DateTime now) =>
+      s.missing && now.difference(s.lastSeen) > absenceGrace;
+
+  /// Records the [alerts] a card raised just now and returns the ones to
+  /// consider: these plus the transient alerts that were shown and have been
+  /// missing for no longer than [absenceGrace] (so a flapping problem does
+  /// not blink). An id missing for longer is forgotten: when it comes back
+  /// it starts its grace period again.
+  ///
+  /// Call it only for cards whose alerts are known; for a card that timed
+  /// out or threw call [keep] (its alerts are not "gone").
+  List<Alert> observe(String card, List<Alert> alerts) {
     final now = _clock.now();
-    final previous = _firstSeen[card] ?? const <String, DateTime>{};
-    _firstSeen[card] = {for (final id in ids) id: previous[id] ?? now};
+    final seen = _cards[card] ??= {};
+    final present = <String>{};
+    for (final a in alerts) {
+      present.add(a.id);
+      final s = seen[a.id];
+      if (s == null || _expired(s, now)) {
+        seen[a.id] = _Seen(now, now, a);
+      } else {
+        s
+          ..lastSeen = now
+          ..missing = false
+          ..alert = a;
+      }
+    }
+    for (final e in seen.entries) {
+      if (!present.contains(e.key)) e.value.missing = true;
+    }
+    seen.removeWhere((id, s) => _expired(s, now));
+    return [
+      ...alerts,
+      for (final e in seen.entries)
+        if (!present.contains(e.key) &&
+            e.value.shown &&
+            isTransientAlert(e.key))
+          e.value.alert,
+    ];
   }
 
-  /// When [id] was first seen by any card (null when never observed).
+  /// A [card] that did not answer: its alerts count as still there.
+  void keep(String card) {
+    final now = _clock.now();
+    for (final s in _cards[card]?.values ?? const <_Seen>[]) {
+      if (!s.missing) s.lastSeen = now;
+    }
+  }
+
+  /// When [id] was first seen by any card (null when never observed or
+  /// forgotten).
   DateTime? firstSeen(String id) {
+    final now = _clock.now();
     DateTime? out;
-    for (final m in _firstSeen.values) {
-      final t = m[id];
-      if (t != null && (out == null || t.isBefore(out))) out = t;
+    for (final m in _cards.values) {
+      final s = m[id];
+      if (s == null || _expired(s, now)) continue;
+      final t = s.firstSeen;
+      if (out == null || t.isBefore(out)) out = t;
     }
     return out;
   }
@@ -99,6 +172,9 @@ final class AlertTracker {
           isTransientAlert(a.id) &&
           now.difference(since) < grace) {
         continue;
+      }
+      for (final m in _cards.values) {
+        m[a.id]?.shown = true;
       }
       out.add(a.copyWith(since: since));
     }

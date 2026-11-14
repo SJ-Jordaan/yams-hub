@@ -134,10 +134,7 @@ void main() {
         containsAll(['jellyfin.restart', 'shelfmark.coordinator']),
       );
       expect(ids['jellyfin.restart']!.route, '/containers/jellyfin');
-      expect(
-        ids['jellyfin.restart']!.dismissKey,
-        startsWith('jellyfin.restart:'),
-      );
+      expect(ids['jellyfin.restart']!.dismissible, isFalse);
       expect(ids['jellyfin.restart']!.severity, AlertSeverity.info);
       expect(ids['shelfmark.coordinator']!.route, '/media/shelfmark');
       expect(ids['shelfmark.coordinator']!.severity, AlertSeverity.warning);

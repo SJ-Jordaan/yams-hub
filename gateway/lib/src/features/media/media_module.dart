@@ -362,7 +362,7 @@ List<Alert> mediaAlerts({
       dismissKey: fingerprintedDismissKey('kavita.auth', [books.auth.name]),
     ),
   if (pendingRestart)
-    Alert(
+    const Alert(
       id: 'jellyfin.restart',
       severity: AlertSeverity.info,
       source: ServiceId.jellyfin,
@@ -370,10 +370,8 @@ List<Alert> mediaAlerts({
       title: 'Jellyfin needs a restart',
       message: 'Jellyfin has a pending restart to apply updates or settings.',
       route: '/containers/jellyfin',
-      dismissible: true,
-      dismissKey: fingerprintedDismissKey('jellyfin.restart', const [
-        'pending',
-      ]),
+      // Not dismissible: Jellyfin says nothing about why or since when, so a
+      // dismissal could not tell one pending restart from the next.
     ),
   if (shelfmark?.coordinator == ShelfmarkCoordinator.stopped)
     const Alert(

@@ -387,9 +387,12 @@ absent → no badge):
 **Dashboard alerts.** The feature cards raise their alerts on every load; the dashboard keeps the home screen quiet
 before it sends them (gateway `core/dashboard/alert_policy.dart`). Every alert stays visible on its feature's own screen.
 
-- *First seen.* The gateway remembers, per process and per card, when it first saw each alert `id`; an id the card no
-  longer raises is forgotten (a card that timed out or failed keeps its times). That time is the alert's `since`,
-  unless the upstream reports an earlier start.
+- *First seen.* The gateway remembers, per process, per card and per role (admin or member, so a member's dashboard
+  without the admin-only alerts never resets them), when it first saw each alert `id`. That time is the alert's
+  `since`, unless the upstream reports an earlier start. An id is forgotten only once polls have found it missing for
+  more than 3 minutes (`alertAbsenceGrace`); shorter absences (a container in a restart loop, a VPN that keeps
+  reconnecting) keep its first-seen time, and a transient alert already shown stays on the dashboard through them. A
+  card that timed out or failed keeps its times, and so do gaps without any poll.
 - *Transient problems wait 5 minutes* (`transientAlertGrace`): `vpn.down`, `vpn.port`, `bazarr.signalr`,
   `container.stopped.*`, `container.unhealthy.*`, `uptime.down.*`, `uptime.incident`, `<svc>.queue.errors` and
   `queue.import.*` are left out until `since` is at least 5 minutes old. `critical` alerts (`raid.degraded`) and
@@ -401,7 +404,8 @@ before it sends them (gateway `core/dashboard/alert_policy.dart`). Every alert s
 - *Notices are dismissible and come back when they change.* `updates.available` (fingerprint: the containers and their
   new image digests), `seerr.pending` (the count and the newest pending request ids), `kavita.auth` (missing vs
   rejected key), `vpn.unreadable` (the refused routes), `privacy.jellyfin.libraries` (the unmatched names),
-  `privacy.prowlarr.tag` (the tag) and `jellyfin.restart` carry a `dismissKey`. The app folds `info` alerts behind
+  `privacy.prowlarr.tag` (the tag) carry a `dismissKey`. `jellyfin.restart` is not dismissible (Jellyfin does not say
+  why or since when, so a dismissal could not tell one pending restart from the next). The app folds `info` alerts behind
   an "N notices" row (APP.md §3.3).
 
 ---
@@ -1492,7 +1496,7 @@ This is the rich tile list for the media apps; the plain launcher for every web 
 Dashboard card `media` — **MediaCard** (cache 10 s for now playing, 60 s for the rest):
 `{"nowPlaying": NowPlayingSession[] (max 4), "transcoding": int, "counts": {"movies": int, "series": int, "episodes": int}?, "audiobooks": {"items": int, "inProgress": int}?, "books": {"series": int, "auth": string}?, "shelfmark": {"active": int, "queued": int, "failed7d": int}?, "recentlyAdded": MediaItem[] (max 8)}`.
 Alerts: `kavita.auth` (warning when `rejected` or `missingKey`, dismissible with a `dismissKey` per state, "Kavita needs
-an Auth Key", route `/media/books`, which shows the setup card), `jellyfin.restart` (info, dismissible, when
+an Auth Key", route `/media/books`, which shows the setup card), `jellyfin.restart` (info, not dismissible, when
 `HasPendingRestart`, "Jellyfin needs a restart", route
 `/containers/jellyfin`, where the restart action lives behind a confirm), `shelfmark.coordinator` (warning when the
 coordinator is stopped, route `/media/shelfmark`).
