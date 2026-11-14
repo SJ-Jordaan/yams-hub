@@ -86,7 +86,7 @@ class _VpnSheetState extends ConsumerState<VpnSheet> {
               const SizedBox(height: 16),
               KeyValueList(
                 entries: [
-                  KeyValue('Public IP', v.publicIp ?? 'None (reconnecting?)'),
+                  KeyValue('Public IP', vpnPublicIpText(v)),
                   KeyValue('Location', location),
                   KeyValue('Provider', v.organization),
                   KeyValue('Forwarded port', vpnForwardedPortText(v)),

@@ -929,6 +929,104 @@ void main() {
       },
     );
 
+    test('a refused public IP route is unknown, not down (issue #8)', () async {
+      for (final status in [401, 403]) {
+        hub.fakes.on(
+          ServiceId.gluetun,
+          'GET',
+          '/v1/publicip/ip',
+          (_) => FakeResponse.text('Unauthorized', status: status),
+        );
+        hub.clock.advance(const Duration(seconds: 31));
+        final r = await hub.get('/api/v1/vpn');
+        expect(r.map['publicIpReadable'], isFalse);
+        final v = VpnStatus.fromJson(r.map);
+        expect(v.status, VpnConnectionState.connected, reason: '$status');
+        expect(v.publicIp, isNull);
+        expect(v.forwardedPort, 36681);
+      }
+    });
+
+    test(
+      'a 5xx or an empty address from the public IP route is down',
+      () async {
+        hub.fakes.on(
+          ServiceId.gluetun,
+          'GET',
+          '/v1/publicip/ip',
+          (_) => FakeResponse.text('oops', status: 502),
+        );
+        final v = VpnStatus.fromJson((await hub.get('/api/v1/vpn')).map);
+        expect(v.status, VpnConnectionState.down);
+        expect(v.publicIpReadable, isTrue);
+      },
+    );
+
+    test('the port route that answered is asked first next time', () async {
+      var legacyStatus = 200;
+      var newStatus = 401;
+      hub.fakes
+        ..on(
+          ServiceId.gluetun,
+          'GET',
+          '/v1/portforward',
+          (_) => newStatus == 200
+              ? gluetunResponse({'port': 36681})
+              : FakeResponse.text('Unauthorized', status: newStatus),
+        )
+        ..on(
+          ServiceId.gluetun,
+          'GET',
+          '/v1/openvpn/portforwarded',
+          (_) => legacyStatus == 200
+              ? gluetunResponse({'port': 36681})
+              : FakeResponse.text('Unauthorized', status: legacyStatus),
+        );
+      List<String> portCalls() => [
+        for (final c in hub.fakes.callsTo(ServiceId.gluetun))
+          if (c.path != '/v1/publicip/ip') c.path,
+      ];
+      Future<VpnStatus> read() async {
+        hub.fakes.clearCalls();
+        hub.clock.advance(const Duration(seconds: 31));
+        return VpnStatus.fromJson((await hub.get('/api/v1/vpn')).map);
+      }
+
+      var v = await read();
+      expect(v.forwardedPort, 36681);
+      expect(portCalls(), ['/v1/portforward', '/v1/openvpn/portforwarded']);
+      // A NAS that only allows the legacy route: no refused call any more.
+      for (var i = 0; i < 2; i++) {
+        v = await read();
+        expect(v.forwardedPort, 36681);
+        expect(portCalls(), ['/v1/openvpn/portforwarded']);
+      }
+      // The config changes: the remembered route fails and is forgotten.
+      legacyStatus = 403;
+      newStatus = 200;
+      v = await read();
+      expect(v.forwardedPort, 36681);
+      expect(v.portForwardReadable, isTrue);
+      expect(portCalls(), ['/v1/openvpn/portforwarded', '/v1/portforward']);
+      v = await read();
+      expect(portCalls(), ['/v1/portforward']);
+      // Every route fails: the memory is dropped and the next read starts
+      // again from the current route.
+      newStatus = 500;
+      legacyStatus = 200;
+      v = await read();
+      expect(portCalls(), ['/v1/portforward', '/v1/openvpn/portforwarded']);
+      legacyStatus = 500;
+      newStatus = 401;
+      v = await read();
+      expect(v.forwardedPort, isNull);
+      expect(portCalls(), ['/v1/openvpn/portforwarded', '/v1/portforward']);
+      newStatus = 200;
+      v = await read();
+      expect(v.forwardedPort, 36681);
+      expect(portCalls(), ['/v1/portforward']);
+    });
+
     test('down when gluetun is unreachable', () async {
       hub.fakes.on(
         ServiceId.gluetun,

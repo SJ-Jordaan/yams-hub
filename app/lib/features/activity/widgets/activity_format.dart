@@ -166,6 +166,12 @@ String vpnForwardedPortText(VpnStatus v) {
   return v.forwardedPort?.toString() ?? 'None yet';
 }
 
+/// The VPN sheet's "Public IP" value; unknown when Gluetun refused the route.
+String vpnPublicIpText(VpnStatus v) {
+  if (!v.publicIpReadable) return "Unknown (Gluetun didn't allow it)";
+  return v.publicIp ?? 'None (reconnecting?)';
+}
+
 /// The VPN sheet's "Port in sync" chip.
 (String, StatusTone) vpnPortInSyncChip(VpnStatus v) {
   if (!v.portForwardReadable) return ('Unknown', StatusTone.neutral);

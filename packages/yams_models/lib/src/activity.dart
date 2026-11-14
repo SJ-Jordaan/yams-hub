@@ -1773,6 +1773,7 @@ final class VpnStatus {
     this.forwardedPort,
     this.listenPort,
     this.portForwardReadable = true,
+    this.publicIpReadable = true,
   });
 
   factory VpnStatus.fromJson(JsonMap j) => VpnStatus(
@@ -1786,6 +1787,7 @@ final class VpnStatus {
     listenPort: readInt(j['listenPort']),
     portInSync: readBool(j['portInSync']) ?? false,
     portForwardReadable: readBool(j['portForwardReadable']) ?? true,
+    publicIpReadable: readBool(j['publicIpReadable']) ?? true,
     qbitConnection: readString(j['qbitConnection']) ?? 'unknown',
     gluetunHealth: VpnGluetunHealth.fromJson(j['gluetunHealth']),
     checkedAt: req(readInstant(j['checkedAt']), 'checkedAt'),
@@ -1812,6 +1814,11 @@ final class VpnStatus {
   /// [portInSync] says nothing. Absent in older gateways' JSON ⇒ true.
   final bool portForwardReadable;
 
+  /// False when gluetun's control server refused `GET /v1/publicip/ip`
+  /// (401/403): the exit address is unknown, which is not "VPN down".
+  /// Absent in older gateways' JSON ⇒ true.
+  final bool publicIpReadable;
+
   /// qBittorrent's `connection_status`.
   final String qbitConnection;
   final VpnGluetunHealth gluetunHealth;
@@ -1829,6 +1836,7 @@ final class VpnStatus {
     'portInSync': portInSync,
     // Only sent when false, so the common case keeps its old shape.
     if (!portForwardReadable) 'portForwardReadable': false,
+    if (!publicIpReadable) 'publicIpReadable': false,
     'qbitConnection': qbitConnection,
     'gluetunHealth': gluetunHealth.toJson(),
     'checkedAt': instantToJson(checkedAt),

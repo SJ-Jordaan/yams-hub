@@ -32,6 +32,13 @@ void main() {
       expect(vpnSummary(v), 'VPN · France · port unknown');
     });
 
+    test('a refused public IP route is Unknown too', () {
+      final v = VpnStatus.fromJson({...buildVpn().toJson(), 'publicIpReadable': false}..remove('publicIp'));
+      expect(vpnPublicIpText(v), "Unknown (Gluetun didn't allow it)");
+      expect(vpnPublicIpText(buildVpn()), '203.0.113.10');
+      expect(vpnPublicIpText(buildVpn(status: VpnConnectionState.down)), 'None (reconnecting?)');
+    });
+
     test('a readable port keeps the old texts', () {
       expect(vpnForwardedPortText(buildVpn(port: null)), 'None yet');
       expect(vpnPortInSyncChip(buildVpn(port: null)), ('No', StatusTone.warning));
@@ -46,6 +53,14 @@ void main() {
       expect(find.text('Unknown'), findsOneWidget);
       expect(find.text('None yet'), findsNothing);
       expect(find.text('No'), findsNothing);
+    });
+
+    testWidgets('the VPN sheet shows an unknown public IP', (tester) async {
+      await _pump(tester, VpnStatus.fromJson({...buildVpn().toJson(), 'publicIpReadable': false}..remove('publicIp')));
+      await tester.pumpAndSettle();
+      expect(find.text("Unknown (Gluetun didn't allow it)"), findsOneWidget);
+      expect(find.text('None (reconnecting?)'), findsNothing);
+      expect(find.text('Yes'), findsOneWidget);
     });
   });
 }

@@ -127,29 +127,39 @@ class ActivityModule extends FeatureModule {
           since: now,
         ),
       );
-    } else if (vpn != null &&
-        !vpn.portForwardReadable &&
+    }
+    if (vpn != null &&
+        (!vpn.portForwardReadable || !vpn.publicIpReadable) &&
+        vpn.status != VpnConnectionState.down &&
         vpn.status != VpnConnectionState.unknown) {
       // Gluetun ≥ 3.39 keeps control-server routes private unless its auth
-      // config allows them (issue #8): say so instead of a false mismatch.
+      // config allows them (issue #8): say so instead of a false mismatch
+      // or a false "VPN down".
+      final refused = [
+        if (!vpn.publicIpReadable) 'GET /v1/publicip/ip',
+        if (!vpn.portForwardReadable) 'GET /v1/portforward',
+      ];
       alerts.add(
         Alert(
-          id: 'vpn.port.unreadable',
+          id: 'vpn.unreadable',
           severity: AlertSeverity.info,
           source: ServiceId.gluetun,
           feature: id,
-          title: "Can't read the forwarded port",
+          title: "Gluetun didn't allow the hub to read the VPN status",
           message:
-              "Gluetun's control server did not allow the hub to read the "
-              'forwarded port. Allow GET /v1/portforward for the hub in '
+              "Gluetun's control server refused ${refused.join(' and ')}. "
+              "Allow ${refused.length == 1 ? 'it' : 'them'} for the hub in "
               "Gluetun's auth config.toml (see the YAMS Hub README, "
               '"Troubleshooting").',
           route: '/activity',
           since: now,
         ),
       );
-    } else if (vpn != null &&
+    }
+    if (vpn != null &&
+        vpn.portForwardReadable &&
         !vpn.portInSync &&
+        vpn.status != VpnConnectionState.down &&
         vpn.status != VpnConnectionState.unknown) {
       alerts.add(
         Alert(

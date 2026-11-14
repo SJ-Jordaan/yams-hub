@@ -994,16 +994,20 @@ Upstream (form posts, `hashes` pipe-joined): `torrents/stop|start|setForceStart(
 
 ### 8.6 VPN
 `GET /vpn` (cache 30 s) → **VpnStatus**:
-`{"status": "connected"|"degraded"|"down"|"unknown", "publicIp": string?, "country": string?, "region": string?, "city": string?, "organization": string?, "forwardedPort": int?, "listenPort": int?, "portInSync": bool, "portForwardReadable": bool?, "qbitConnection": string, "gluetunHealth": "healthy"|"unhealthy"|"starting"|"none"|"unknown", "checkedAt": Instant}`.
+`{"status": "connected"|"degraded"|"down"|"unknown", "publicIp": string?, "country": string?, "region": string?, "city": string?, "organization": string?, "forwardedPort": int?, "listenPort": int?, "portInSync": bool, "portForwardReadable": bool?, "publicIpReadable": bool?, "qbitConnection": string, "gluetunHealth": "healthy"|"unhealthy"|"starting"|"none"|"unknown", "checkedAt": Instant}`.
 Upstream: gluetun `/v1/publicip/ip` and `/v1/portforward` (falling back to `/v1/openvpn/portforwarded` on 401/403/404
-or an error) (JSON with text/plain content type), qBittorrent
+or an error; the route that answered is tried first on later reads, forgotten when it fails) (JSON with text/plain
+content type), qBittorrent
 `listen_port` (whitelisted preferences, cache 10 min) and `connection_status`, Docker container list for gluetun health
 (Dart enum name for `gluetunHealth`: **VpnGluetunHealth**).
-Rules: `down` when `publicIp` empty or gluetun unreachable; `degraded` when port 0, out of sync, or qBittorrent not
+Rules: `down` when `/v1/publicip/ip` answers 200 with an empty `public_ip`, fails with a 5xx/other error, or gluetun is
+unreachable (a 401/403 is not `down`, see below); `degraded` when port 0, out of sync, or qBittorrent not
 `connected`; else `connected`. `forwardedPort` 0 → null. `portForwardReadable` is sent only as `false` (absent ⇒
 true): both port routes answered 401/403, so the port is unknown; then `portInSync` is false but means nothing, the
-port alone does not make the status `degraded`, and the dashboard raises the info alert `vpn.port.unreadable` instead
-of `vpn.port`.
+port alone does not make the status `degraded`, and there is no `vpn.port` warning. `publicIpReadable` works the same
+way (sent only as `false`): `/v1/publicip/ip` answered 401/403, so the exit address is unknown and the status comes
+from the other signals instead of `down`. Either flag raises one info alert `vpn.unreadable` ("Gluetun didn't allow the
+hub to read the VPN status") naming the refused routes and pointing to the README.
 
 ### 8.7 Merged history
 `GET /activity/history`

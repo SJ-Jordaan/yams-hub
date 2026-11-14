@@ -34,6 +34,11 @@ final class VpnStatusService {
   final Future<JsonMap> Function() _freshPreferences;
   final TtlCache<int, VpnStatus> _cache;
 
+  /// The port route that answered last; tried first so a gluetun that only
+  /// allows the legacy route is not asked for a refused one on every read.
+  /// Forgotten as soon as it fails.
+  String? _portRoute;
+
   Future<CacheResult<VpnStatus>> status() => _cache.get(0, _load);
 
   void invalidate() => _cache.clear();
@@ -52,13 +57,15 @@ final class VpnStatusService {
     }
 
     final results = await Future.wait<Object?>([
-      attempt(() => _gluetunJson('/v1/publicip/ip')),
+      _publicIp(),
       _forwarded(),
       attempt(_preferences),
       attempt(_qbitView),
       attempt(_gluetunHealth),
     ]);
-    final ip = results[0] as JsonMap?;
+    final ipRead = results[0]! as ({JsonMap? ip, bool refused});
+    final ip = ipRead.ip;
+    final ipReadable = !ipRead.refused;
     final forwarded = results[1]! as GluetunForwardedPort;
     final prefs = results[2] as JsonMap?;
     final qbit = results[3] as QbitView?;
@@ -85,7 +92,9 @@ final class VpnStatusService {
         readString(qbit?.serverState['connection_status']) ?? 'unknown';
     final inSync = forwardedPort != null && forwardedPort == listenPort;
     final VpnConnectionState state;
-    if (ip == null || publicIp == null) {
+    if (ipReadable && (ip == null || publicIp == null)) {
+      // A network error, a 5xx or an empty address (gluetun reconnecting).
+      // A refused route (401/403) is unknown, not down (issue #8).
       state = VpnConnectionState.down;
     } else if (connection != 'connected' ||
         // An unreadable port is unknown, not wrong: it alone does not
@@ -106,6 +115,7 @@ final class VpnStatusService {
       listenPort: listenPort,
       portInSync: inSync,
       portForwardReadable: readable,
+      publicIpReadable: ipReadable,
       qbitConnection: connection,
       gluetunHealth: health,
       checkedAt: _ctx.clock.now(),
@@ -132,34 +142,42 @@ final class VpnStatusService {
   /// the port is reported as unreadable rather than absent.
   Future<GluetunForwardedPort> _forwarded() async {
     var refused = false;
-    for (final path in gluetunPortRoutes) {
+    final remembered = _portRoute;
+    for (final path in [
+      ?remembered,
+      for (final p in gluetunPortRoutes)
+        if (p != remembered) p,
+    ]) {
       try {
         final r = await _ctx.upstreams.gluetun.send('GET', path);
         if (r.status == 401 || r.status == 403) {
           refused = true;
-          continue;
+        } else if (r.ok) {
+          // Gluetun answers JSON with a `text/plain` content type.
+          if (readMap(r.json()) case final j?) {
+            _portRoute = path;
+            return GluetunForwardedPort(readInt(j['port']));
+          }
         }
-        if (!r.ok) continue;
-        final j = readMap(r.json());
-        if (j == null) continue;
-        return GluetunForwardedPort(readInt(j['port']));
       } catch (_) {
-        continue;
+        // Tried the next route.
       }
+      if (_portRoute == path) _portRoute = null;
     }
     return GluetunForwardedPort(null, refused: refused);
   }
 
-  /// Gluetun answers JSON with a `text/plain` content type.
-  Future<JsonMap> _gluetunJson(String path) async {
-    final r = (await _ctx.upstreams.gluetun.send('GET', path)).ensureOk();
-    return readMap(r.json()) ??
-        (throw UpstreamBadResponse(
-          service: ServiceId.gluetun,
-          method: 'GET',
-          path: path,
-          reason: 'not a JSON object',
-        ));
+  /// `GET /v1/publicip/ip`: `refused` on 401/403 (gluetun's auth config
+  /// keeps the route private), `ip` null on any other failure.
+  Future<({JsonMap? ip, bool refused})> _publicIp() async {
+    try {
+      final r = await _ctx.upstreams.gluetun.send('GET', '/v1/publicip/ip');
+      if (r.status == 401 || r.status == 403) return (ip: null, refused: true);
+      if (!r.ok) return (ip: null, refused: false);
+      return (ip: readMap(r.json()), refused: false);
+    } catch (_) {
+      return (ip: null, refused: false);
+    }
   }
 
   Future<VpnGluetunHealth> _gluetunHealth() async {

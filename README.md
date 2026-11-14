@@ -75,8 +75,9 @@ git pull
 - **"172.30.250.0/29 overlaps ...":** another Docker network or VPN uses the hub's control network range. Move or
   remove it, then run `./install.sh` again.
 - **"port 8090 is already in use":** run `./install.sh` again and choose another port.
-- **"Can't read the forwarded port" (VPN shows the port as Unknown):** Gluetun 3.39 and later keep every control
-  server route private unless its auth config allows it, so the hub can't see which port Gluetun forwards. Allow
+- **"Gluetun didn't allow the hub to read the VPN status" (VPN shows the port or public IP as Unknown):** Gluetun
+  3.39 and later keep every control server route private unless its auth config allows it, so the hub can't see
+  which port Gluetun forwards or which public IP it uses. Allow
   the two read-only status routes the hub uses in Gluetun's auth file (`/gluetun/auth/config.toml` inside the
   gluetun container, i.e. the folder you mount at `/gluetun`), then restart gluetun (and qBittorrent after it):
 

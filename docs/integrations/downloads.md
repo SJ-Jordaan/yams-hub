@@ -27,7 +27,7 @@ Unauthenticated liveness probes, useful for the gateway's own health page:
 - Prowlarr `GET /ping` returns `{"status":"OK"}` (no auth).
 - Bazarr `GET /api/system/ping` returns `{"status": "OK"}` (no auth).
 - qBittorrent: no unauthenticated ping. Any `/api/v2/*` call without a cookie returns `403 Forbidden`, which is enough to show the WebUI is up.
-- Gluetun: `GET /v1/portforward`, then `GET /v1/openvpn/portforwarded`, then `GET /v1/publicip/ip`; the first 2xx means up, only 401/403 means degraded (control server locked down).
+- Gluetun: `GET /v1/portforward`, then `GET /v1/openvpn/portforwarded`, then `GET /v1/publicip/ip` (the route that answered last goes first); the first 2xx means up; 404/5xx try the next route; if none answers, any 401/403 means degraded (control server locked down), else down.
 
 ---
 
@@ -330,7 +330,11 @@ Gotchas:
   private unless `/gluetun/auth/config.toml` allows it. On the maintainer's NAS the legacy port route is allowed and
   `/v1/portforward` is 401; a reporter's gluetun allowed `/v1/publicip/ip` only. When both port routes answer
   401/403 the gateway reports `portForwardReadable: false` (port unknown, not absent): no `vpn.port` warning, the VPN
-  is not degraded for the port, and an info alert `vpn.port.unreadable` asks the admin to allow the routes:
+  is not degraded for the port. A 401/403 from `/v1/publicip/ip` likewise gives `publicIpReadable: false` instead of
+  `down` (only a 5xx, a network error or an empty `public_ip` mean down). Either raises one info alert
+  `vpn.unreadable` naming the refused routes, asking the admin to allow them. The gateway remembers which port route
+  answered (per process, forgotten when it fails), so a legacy-only gluetun sees one refused `/v1/portforward` after
+  a restart, not one per read; the `/health` probe does the same and falls through to the next route on a 5xx:
 
 ```toml
 [[roles]]

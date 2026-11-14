@@ -494,24 +494,35 @@ final class HealthService {
   Future<_Probe> _probeGluetun() async {
     var refused = false;
     int? status;
-    for (final path in const [
-      '/v1/portforward',
-      '/v1/openvpn/portforwarded',
-      '/v1/publicip/ip',
+    final remembered = _gluetunRoute;
+    for (final path in [
+      ?remembered,
+      for (final route in _gluetunRoutes)
+        if (route != remembered) route,
     ]) {
-      final r = await _up.gluetun.send(
-        'GET',
-        path,
-        timeout: _probeTimeout,
-        maxBytes: 1 << 20,
-      );
-      if (r.ok) return const _Probe(ServiceHealthStatus.up);
+      final UpstreamResponse r;
+      try {
+        r = await _up.gluetun.send(
+          'GET',
+          path,
+          timeout: _probeTimeout,
+          maxBytes: 1 << 20,
+        );
+      } catch (_) {
+        if (_gluetunRoute == path) _gluetunRoute = null;
+        rethrow;
+      }
+      if (r.ok) {
+        _gluetunRoute = path;
+        return const _Probe(ServiceHealthStatus.up);
+      }
+      if (_gluetunRoute == path) _gluetunRoute = null;
       if (r.status == 401 || r.status == 403) {
         refused = true;
-      } else if (r.status != 404) {
-        return _Probe(ServiceHealthStatus.down, message: 'HTTP ${r.status}');
+      } else if (status == null || status == 404) {
+        // A 5xx says more than a 404; either way try the next route.
+        status = r.status;
       }
-      status = r.status;
     }
     if (refused) {
       return const _Probe(
@@ -521,6 +532,17 @@ final class HealthService {
     }
     return _Probe(ServiceHealthStatus.down, message: 'HTTP $status');
   }
+
+  static const _gluetunRoutes = [
+    '/v1/portforward',
+    '/v1/openvpn/portforwarded',
+    '/v1/publicip/ip',
+  ];
+
+  /// The gluetun route that answered last (tried first; forgotten when it
+  /// fails), so a locked-down gluetun is not asked for refused routes on
+  /// every probe.
+  String? _gluetunRoute;
 
   /// Sonarr, Radarr, Prowlarr: `/ping`, the version, and the Allowed Hosts
   /// check (issue #2), which turns a rejected or soon-rejected hostname into
