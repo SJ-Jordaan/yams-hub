@@ -128,7 +128,10 @@ dart run bin/server.dart check-config             # what is configured, from whi
 ```
 
 `dev-secrets.env` holds `KEY='value'` lines such as `YAMS_HUB_ADMIN_PASSWORD_HASH='...'` and the service keys (see
-ARCHITECTURE §5.2 for every variable). It is git-ignored (`*.env`).
+ARCHITECTURE §5.2 for every variable). It is git-ignored (`*.env`). To try the Discord indexer alert (ARCHITECTURE
+§5.7.1), add `DISCORD_ALERT_WEBHOOK_URL='https://discord.com/api/webhooks/...'` for a test channel and lower
+`alerts.indexersFailingForMinutes` in a local `yams-hub.yaml`; the rule's tests (`gateway/test/features/indexers/
+indexer_alert_test.dart`) use a fake clock and a fake Discord instead.
 
 App:
 

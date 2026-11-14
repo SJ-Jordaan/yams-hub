@@ -43,7 +43,9 @@ launcher only; the request flow is v1.1, see section 11).
 `#requests`, `#updates`; monitoring README "Discord routing"). The hub computes alerts only when the app asks
 (`GET /dashboard`), and every alert carries a `route` that is also a valid web deep link (`http://<hub>/<route>`), so
 a Discord message can link straight into the hub. A gateway-side AlertEvaluator that pushes to a self-hosted ntfy
-topic is recorded as a v1.1 option (section 11); it adds no new third-party service when it lands.
+topic is recorded as a v1.1 option (section 11); it adds no new third-party service when it lands. The one exception
+is the optional **Discord indexer alert** (5.7.1): a single message when most Prowlarr indexers are failing, posted to a
+webhook the owner already uses, so the noisy per-indexer *arr health notifications can be turned off.
 
 ```mermaid
 flowchart LR
@@ -241,7 +243,7 @@ These apply to the gateway API and to `yams_models`.
 | `serve` (default) | Load config, open stores, start background services, listen on `0.0.0.0:$YAMS_HUB_PORT`. Handles SIGTERM/SIGINT: stop accepting, wait up to 10 s for in-flight requests, stop pollers, flush stores. |
 | `hash-password` | Reads a password from stdin (no echo when a TTY), prints a `pbkdf2-sha256$...` hash. Used to fill `YAMS_HUB_ADMIN_PASSWORD_HASH`. |
 | `healthcheck` | `GET http://127.0.0.1:$PORT/api/v1/ping`, exit 0 on 200. Used by Docker `HEALTHCHECK` (the runtime image has no shell or curl). |
-| `check-config` | Load config (environment **and** secrets file), print which services are configured and from which source (`env`/`file`; never print values), whether `JELLYFIN_ADMIN_USER_ID` is set or will be auto-detected, the measured PBKDF2 verify time and the iteration count that will be used, and any CORS/policy errors. Exit 1 on invalid config. |
+| `check-config` | Load config (environment **and** secrets file), print which services are configured and from which source (`env`/`file`; never print values), whether `JELLYFIN_ADMIN_USER_ID` is set or will be auto-detected, whether the Discord indexer alert is on (`DISCORD_ALERT_WEBHOOK_URL`), the measured PBKDF2 verify time and the iteration count that will be used, and any CORS/policy errors. Exit 1 on invalid config. |
 | `reset-admin` | Replace the admin user's password with `YAMS_HUB_ADMIN_PASSWORD_HASH` and revoke all sessions. |
 
 Compiled with `dart compile exe bin/server.dart -o /out/yams-hub`. One process, one isolate for serving; CPU-heavy work
@@ -297,6 +299,7 @@ goes in compose `environment:`.
 | `UPTIME_KUMA_URL` / `UPTIME_KUMA_SLUG` | `http://uptime-kuma:3001` / `zenith` | no secret |
 | `ABS_URL` / `ABS_API_KEY` (S) | `http://audiobookshelf:80` | |
 | `KAVITA_URL` / `KAVITA_API_KEY` (S) | `http://kavita:5000` | Kavita Auth Key (header `x-api-key`) |
+| `DISCORD_ALERT_WEBHOOK_URL` (S) | unset | optional Discord webhook (`https://discord.com/api[/vN]/webhooks/<id>/<token>`, or `discordapp.com`) for the indexer alert (5.7.1). Unset: the alert is off (one `info` line at start-up). Any other value: a start-up warning and the alert stays off; the hub still starts. Never logged or printed (`check-config` shows only on/off and the source). |
 | `SHELFMARK_URL` | `http://shelfmark:8084` | no secret: Shelfmark runs with `auth_mode: none` (every LAN client is its admin; see 5.18). Configured = URL set. |
 | `HOST_SYS` | `/sys` | the container's own sysfs shows the host hwmon devices; no bind mount (a bind of `/sys/class/hwmon` alone leaves its relative symlinks dangling, verified on Zenith) |
 | `HOST_NET_DEV` | `/host/proc/1/net/dev` | host network counters (bind mount of that one file, section 6) |
@@ -337,6 +340,8 @@ policy:
 alerts:
   cpuTempWarnC: 85
   volumeUsedWarnPercent: 90
+  indexersFailingPercent: 80       # Discord indexer alert (5.7.1): this share of enabled indexers failing...
+  indexersFailingForMinutes: 15    # ...continuously for this long (1-1440)
 auth:
   accessTokenTtlMinutes: 60
   refreshTokenTtlDays: 90          # members
@@ -684,11 +689,39 @@ class UpstreamClient {
   every 6 h; it is the **only** caller of `/v1/check`). Core never calls `/v1/check`: `features.watchtowerCheck` is
   probed with `GET /v1/containers/details` (200 → the `check,containers` endpoints are enabled, 404 → not), at start-up
   and every 6 h.
+- **Discord indexer alert** (indexers, every 3 min while `DISCORD_ALERT_WEBHOOK_URL` is set): see 5.7.1.
 - **Merged-feed cursors** (`core/http/merged_cursor.dart`, used by Activity history): the cursor is base64url JSON
   `{"v":1,"exp":<unix>,"s":{"sonarr":{"page":3,"idx":12},"radarr":{"page":1,"idx":40}}}`. To serve `limit` items the
   gateway loads each source's current page (fixed upstream `pageSize` 50, cached 30 s), repeatedly takes the newest head
   item across sources, advances that source's `idx` (loading the next page when `idx` reaches 50), and stops at `limit`
   or when every source is exhausted. Cursors expire after 10 min.
+
+#### 5.7.1 Discord indexer alert
+
+One rule, "indexers failing", in `features/indexers/indexer_alert.dart`, posted through `core/notify/discord_webhook.dart`.
+It replaces the per-indexer *arr/Prowlarr health notifications, which fire once per indexer and again on every VPN
+server change.
+
+- **Data:** every 3 min the indexers module reads its cached Prowlarr snapshot (the `GET /indexers` cache, 60 s TTL,
+  no extra upstream calls): enabled indexers, and the failing ones (an `indexerstatus` row whose `disabledTill` is in the
+  future, the same test as the indexers screen).
+- **Trigger:** `failing / enabled ≥ alerts.indexersFailingPercent` (80) on every sample for at least
+  `alerts.indexersFailingForMinutes` (15). One sample below the threshold starts the wait over, so a VPN reconnect
+  that knocks every indexer out for a few minutes sends nothing. Fewer than 2 enabled indexers: the rule does not apply.
+- **Recovery:** below the threshold on every sample for 5 min → one "recovered" message.
+- **Hysteresis:** nothing is repeated while the condition holds. When Prowlarr cannot be read (error, or only a stale
+  cached copy) nothing changes, neither the pending timers nor the firing state: Prowlarr being down is Uptime Kuma's
+  alert.
+- **State** (`$DATA/alerts.json`, written atomically by `JsonFileStore` when it changes, before the message is sent):
+  `{"version":1,"indexersFailing":{"firing","breachSince","clearSince","firedAt"}}`. A restart neither re-sends nor
+  forgets a pending breach.
+- **Delivery:** `POST` JSON to the webhook, 10 s timeout per attempt, up to 4 attempts with 2/4/8 s backoff on network
+  errors, timeouts and 5xx; a 429 waits Discord's `retry_after` (or `Retry-After`, up to 60 s). Other 4xx (deleted
+  webhook) are not retried. A message that still fails is dropped and logged (never repeated by the rule). The URL is
+  never logged; `redactSecrets` also scrubs any Discord webhook path.
+- **Message:** an embed titled `⚠️ Indexers down: 9 of 10 failing for 15 min` or `✅ Indexers recovered: 1 of 10
+  failing`, the failing names (up to 10, markdown stripped, `allowed_mentions` empty) and a link to
+  `<first publicUrls entry>/indexers` when `publicUrls` is set.
 
 ### 5.8 Image proxy
 
@@ -853,7 +886,8 @@ strings of upstream calls are ever logged.
 - the value of `(?i)(api[_-]?key|apikey|passkey|token|password|pass|auth|sid|secret)=([^&\s"']+)`;
 - `(?i)(authorization|x-api-key|x-emby-token|cookie):\s*\S+(\s+\S+)?`;
 - private-tracker announce path keys: `/announce/[A-Za-z0-9]{16,}` → `/announce/***`, and `/[A-Za-z0-9]{24,}/announce`;
-- `yha_[A-Za-z0-9_-]+` and `yhr_[A-Za-z0-9_.-]+`.
+- `yha_[A-Za-z0-9_-]+` and `yhr_[A-Za-z0-9_.-]+`;
+- Discord webhook ids and tokens: `discord(app)?.com/api/[vN/]webhooks/...` → `.../webhooks/***`.
 It is applied in the root log listener (to `msg` and `error`), to `UpstreamException.message`, health messages,
 indexer test failure texts, job logs/results, decluttarr/recyclarr text, container log lines and health-check output.
 Unit-tested with a Prowlarr download URL (`.../download?apikey=...&link=...`), a tracker announce URL and an
@@ -1636,7 +1670,7 @@ Both native builds are outside the gateway deploy.
 | Delete with files (no recycle bin) | Allowed for admins with a **typed** confirmation (type the title) and an audit entry. The UI suggests configuring a recycle bin. |
 | Interactive release search (arr `release`) | **In v1** (revised): admin "Choose release" on episode, season and movie (API.md §7.8) through Sonarr/Radarr `GET /api/v3/release` and `POST /api/v3/release {guid, indexerId}`, so the grab is tracked and imported by the *arr. Prowlarr manual search stays as an admin power tool (Indexers > Search) with grab to qBittorrent category `manual` (created on first grab if missing; untracked by design). |
 | Manual import (`importBlocked`/`importPending`) | **In v1**: `GET /activity/queue/{service}/{queueId}/import` + `POST /activity/queue/import` (API.md §8.3.1) and an "Open in Sonarr/Radarr" link on every arr queue entry as the fallback. |
-| Push notifications | **Not in v1.** Discord stays the notification channel; alert `route`s double as web deep links. v1.1 option: gateway AlertEvaluator (60 s, system principal, diffs alert ids) publishing to an optional **self-hosted** ntfy topic (`NTFY_URL`/`NTFY_TOPIC`), click URL = hub web route. |
+| Push notifications | **Not in v1.** Discord stays the notification channel; alert `route`s double as web deep links. The only gateway-sent message is the optional Discord indexer alert (5.7.1). v1.1 option: gateway AlertEvaluator (60 s, system principal, diffs alert ids) publishing to an optional **self-hosted** ntfy topic (`NTFY_URL`/`NTFY_TOPIC`), click URL = hub web route. |
 | Shelfmark (books/audiobooks) | v1: health, Media > Apps tile with counts from `GET /api/stats`, detail screen with the same counts, web launcher. v1.1: in-hub search → queue (`GET /api/metadata/search` → `GET /api/releases` → `POST /api/releases/download`), deferred because results are source-specific (Anna's Archive/Libgen/torrent) and Shelfmark has no auth to scope requests per hub user. |
 | Step-up re-auth for destructive admin actions | v1.1 (current password in the body for delete-with-files, user deletion, stop of confirm-list containers). v1 shortens the admin refresh TTL to 30 days instead. |
 | SignalR / live updates | Polling only (intervals in APP.md). |
@@ -1758,7 +1792,7 @@ secrets in argv; updater hardening (token ≥ 32 bytes, wider deny-list, `--` be
 | No interactive release search | `GET .../releases` for episode, season and movie + `POST /library/releases/grab` (API.md §7.8); APP "Choose release". |
 | Seerr watchlist used admin identity | Watchlist uses `GET /user/{seerrUserId}/watchlist`, cache keyed by Seerr user, unlinked → empty page (API.md §6.2). |
 | hwmon bind mount dangling symlinks | Mount dropped, `HOST_SYS=/sys`; sampler resolves symlinks safely; test fixture with symlinked entries (§5.2, §6, API.md §13.1). |
-| Notifications outside the app | v1 non-goal, Discord stays; alert routes are deep links; ntfy AlertEvaluator recorded as v1.1 (§1, §11, APP.md §2.5). |
+| Notifications outside the app | v1 non-goal, Discord stays (plus the optional Discord indexer alert, 5.7.1); alert routes are deep links; ntfy AlertEvaluator recorded as v1.1 (§1, §11, APP.md §2.5). |
 | Shared Seerr identity / Jellyfin server id | `ctx.seerrIdentity`, `ctx.jellyfin`, `ctx.seerrSettings`, `ctx.health`, `ctx.stores` in FeatureContext; core and features share them (§5.5). |
 | Minor items | `torrents/add` sheet + magnet intent; RequestSummary `libraryId`/`seerrMediaId`; issues `commentCount`, `IssueCounts` mapping, `IssueStatus.unknown`, identity on comment/resolve; declined filter paged in the gateway; series/movie `tags`; `kavita.auth` → `/media/books`, `jellyfin.restart` → `/containers/jellyfin`; calendar `downloading` from both queues; `seerrAvatar(int seerrUserId, {version})`; `JELLYFIN_ADMIN_USER_ID` auto-detect + default; import-to-Seerr and quota; Watchtower `lastScan`; Kuma monitor steps and iOS distribution; `navBadgesProvider`; updater capability wording + constant exec test. |
 

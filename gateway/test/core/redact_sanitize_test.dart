@@ -61,6 +61,24 @@ void main() {
       expect(redactSecrets('SID=abc; token=x'), 'SID=*** token=***');
       expect(redactSecrets('nothing to see'), 'nothing to see');
     });
+
+    test('Discord webhook ids and tokens', () {
+      const token = 'AbC-def_123.xyz';
+      expect(
+        redactSecrets(
+          'POST https://discord.com/api/webhooks/1234/$token failed',
+        ),
+        'POST https://discord.com/api/webhooks/*** failed',
+      );
+      expect(
+        redactSecrets('uri=https://DiscordApp.com/api/v10/webhooks/99/$token'),
+        'uri=https://DiscordApp.com/api/v10/webhooks/***',
+      );
+      expect(
+        redactSecrets('"https://discord.com/api/webhooks/1/$token"'),
+        isNot(contains(token)),
+      );
+    });
   });
 
   group('audit params sanitisation', () {

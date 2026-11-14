@@ -165,7 +165,8 @@ documented per endpoint), `error: ApiError?`.
 - **Alert** [common]: `{"id": string (stable, e.g. "sonarr.health.IndexerLongTermStatusCheck"), "severity": "info"|"warning"|"error"|"critical", "source": ServiceId, "feature": string, "title": string, "message": string?, "route": string? (app route to open, e.g. "/indexers"), "since": Instant?, "dismissible": bool}`.
   `route` must be a route registered in APP.md §1 (built like `AppPaths`), so it also works as a web deep link
   `http://<hub>:8090<route>` (e.g. from a Discord message). Alerts are computed only when `GET /dashboard` runs; the
-  hub sends no push notifications in v1 (ARCHITECTURE §1).
+  hub sends no push notifications in v1 (ARCHITECTURE §1); the only message it sends by itself is the optional Discord
+  indexer alert (§10.7).
 
 ---
 
@@ -1117,6 +1118,14 @@ Reads: member. Writes, search and grab: admin.
 Alerts: `prowlarr.indexer.<id>` (warning, "Indexer Uindex failing, retry at 19:06", route `/indexers`); Prowlarr health
 warnings/errors as `prowlarr.health.<source>` (AllowedHostsCheck as info, with the hint to include `prowlarr`);
 `prowlarr.allowedHosts` as in §7.11.
+
+### 10.7 Discord indexer alert (no endpoint)
+With the optional secret `DISCORD_ALERT_WEBHOOK_URL` set, the indexers module evaluates the snapshot behind this card
+every 3 min and posts **one** Discord message when at least `alerts.indexersFailingPercent` (default 80) of the enabled
+indexers have been failing for `alerts.indexersFailingForMinutes` (default 15), and one "recovered" message after 5 min
+below the threshold. Fewer than 2 enabled indexers, or Prowlarr unreachable, change nothing. The message links to
+`<publicUrls[0]>/indexers` when `publicUrls` is set. Details: ARCHITECTURE §5.7.1. The dashboard alerts above are
+unaffected.
 
 ---
 

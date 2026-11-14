@@ -4,6 +4,7 @@ import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 import 'package:yams_hub_gateway/src/config/secrets_file.dart';
 import 'package:yams_hub_gateway/src/core/auth/password_hasher.dart';
+import 'package:yams_hub_gateway/src/core/notify/discord_webhook.dart';
 import 'package:yams_hub_gateway/yams_hub_gateway.dart';
 import 'package:yams_models/yams_models.dart';
 
@@ -189,6 +190,34 @@ EMPTY=''
       expect(c.imageCache.newRemoteEntriesPerUserPerMinute, 300);
       expect(c.externalApps[ExternalApp.shelfmark]!.port, 8084);
       expect(c.remoteImageHosts, contains('www.gravatar.com'));
+      expect(c.alerts.indexersFailingPercent, 80);
+      expect(c.alerts.indexersFailingForMinutes, 15);
+      expect(c.discordAlertWebhookUrl, isNull);
+    });
+
+    test('indexer alert keys are read and validated', () {
+      final c = ConfigLoader.load(
+        {},
+        policyFileContents: 'alerts: {indexersFailingPercent: 60, indexersFailingForMinutes: 30}\n',
+      );
+      expect(c.alerts.indexersFailingPercent, 60);
+      expect(c.alerts.indexersFailingForMinutes, 30);
+      expect(
+        () => ConfigLoader.load(
+          {},
+          policyFileContents: 'alerts: {indexersFailingPercent: 0, indexersFailingForMinutes: 1.5}\n',
+        ),
+        throwsA(
+          isA<ConfigException>().having(
+            (e) => e.errors,
+            'errors',
+            containsAll([
+              contains('alerts.indexersFailingPercent must be between'),
+              contains('alerts.indexersFailingForMinutes must be an integer'),
+            ]),
+          ),
+        ),
+      );
     });
 
     test('values are read and validated', () {
@@ -236,6 +265,105 @@ imageCache:
           ),
         ),
       );
+    });
+  });
+
+  group('DISCORD_ALERT_WEBHOOK_URL', () {
+    const token = 'tOkEn_value-123';
+    const good = 'https://discord.com/api/webhooks/123456789012345678/$token';
+
+    test('is a secret read from the secrets file', () {
+      expect(secretVariables, contains('DISCORD_ALERT_WEBHOOK_URL'));
+      final c = ConfigLoader.load(
+        {},
+        secretsFileContents: "DISCORD_ALERT_WEBHOOK_URL='$good'\n",
+      );
+      expect(c.discordAlertWebhookUrl, Uri.parse(good));
+      expect(c.warnings, isEmpty);
+    });
+
+    test('only https Discord webhook URLs are accepted', () {
+      for (final ok in [
+        good,
+        'https://discordapp.com/api/webhooks/1/$token',
+        'https://discord.com/api/v10/webhooks/1/$token/',
+        'https://DISCORD.com:443/api/webhooks/1/$token',
+      ]) {
+        expect(parseDiscordWebhookUrl(ok), isNotNull, reason: ok);
+      }
+      for (final bad in [
+        'http://discord.com/api/webhooks/1/$token',
+        'https://evil.example/api/webhooks/1/$token',
+        'https://discord.com.evil.example/api/webhooks/1/$token',
+        'https://discord.com/api/webhooks/1',
+        'https://discord.com/api/webhooks/abc/$token',
+        'https://discord.com/api/webhooks/1/$token?wait=true',
+        'https://user:pw@discord.com/api/webhooks/1/$token',
+        'https://discord.com:8443/api/webhooks/1/$token',
+        'https://discord.com/api/webhooks/1/$token/github',
+        'not a url',
+      ]) {
+        expect(parseDiscordWebhookUrl(bad), isNull, reason: bad);
+      }
+    });
+
+    test(
+      'an invalid value turns the alerts off with a warning, never the value',
+      () {
+        final c = ConfigLoader.load(
+          {},
+          secretsFileContents:
+              "DISCORD_ALERT_WEBHOOK_URL='https://example.com/hook/$token'\n",
+        );
+        expect(c.discordAlertWebhookUrl, isNull);
+        expect(c.warnings.single, contains('Discord alerts are off'));
+        expect(c.warnings.single, isNot(contains(token)));
+      },
+    );
+
+    test('in the environment it warns like the other secrets', () {
+      final c = ConfigLoader.load({'DISCORD_ALERT_WEBHOOK_URL': good});
+      expect(c.discordAlertWebhookUrl, isNotNull);
+      expect(
+        c.warnings.single,
+        contains('DISCORD_ALERT_WEBHOOK_URL is set in the environment'),
+      );
+      expect(c.warnings.single, isNot(contains(token)));
+    });
+
+    test('check-config reports it without printing it', () async {
+      final dir = await Directory.systemTemp.createTemp('yams-hub-cfg-');
+      addTearDown(() => dir.delete(recursive: true));
+      Future<String> run(String? secrets) async {
+        final out = StringBuffer();
+        await runCheckConfig(
+          {'YAMS_HUB_DATA_DIR': p.join(dir.path, 'data')},
+          out,
+          readFiles: false,
+          secretsFileContents: secrets,
+          hasher: PasswordHasher(iterations: minHashIterations),
+        );
+        return out.toString();
+      }
+
+      final on = await run("DISCORD_ALERT_WEBHOOK_URL='$good'\n");
+      expect(on, contains('Discord alerts: on (file)'));
+      expect(on, isNot(contains(token)));
+      final off = await run(null);
+      expect(
+        off,
+        contains('Discord alerts: off (DISCORD_ALERT_WEBHOOK_URL not set)'),
+      );
+      final bad = await run(
+        "DISCORD_ALERT_WEBHOOK_URL='https://x.example/$token'\n",
+      );
+      expect(
+        bad,
+        contains(
+          'Discord alerts: off (DISCORD_ALERT_WEBHOOK_URL invalid or empty)',
+        ),
+      );
+      expect(bad, isNot(contains(token)));
     });
   });
 

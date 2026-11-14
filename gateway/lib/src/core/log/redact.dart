@@ -12,13 +12,18 @@ final _headerValue = RegExp(
 final _announceKeyAfter = RegExp(r'/announce/[A-Za-z0-9]{16,}');
 final _announceKeyBefore = RegExp(r'/[A-Za-z0-9]{24,}/announce');
 final _hubTokens = RegExp(r'yha_[A-Za-z0-9_-]+|yhr_[A-Za-z0-9_.-]+');
+final _discordWebhook = RegExp(
+  r'''(discord(?:app)?\.com/api/(?:v\d+/)?webhooks)/[^\s"'<>]+''',
+  caseSensitive: false,
+);
 
 /// Replaces secrets in [input] with `***`:
 /// - values of `apikey=`, `token=`, `password=`, ... query/form parameters;
 /// - `Authorization:`, `X-Api-Key:`, `X-Emby-Token:` and `Cookie:` header values
 ///   (including a second word, as in `MediaBrowser Token="..."`);
 /// - private-tracker passkeys in announce paths;
-/// - hub access and refresh tokens.
+/// - hub access and refresh tokens;
+/// - Discord webhook ids and tokens.
 String redactSecrets(String input) {
   if (input.isEmpty) return input;
   var s = input.replaceAllMapped(_queryValue, (m) => '${m[1]}=***');
@@ -26,5 +31,6 @@ String redactSecrets(String input) {
   s = s.replaceAll(_announceKeyAfter, '/announce/***');
   s = s.replaceAll(_announceKeyBefore, '/***/announce');
   s = s.replaceAll(_hubTokens, '***');
+  s = s.replaceAllMapped(_discordWebhook, (m) => '${m[1]}/***');
   return s;
 }

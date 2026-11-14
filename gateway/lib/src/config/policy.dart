@@ -88,10 +88,19 @@ final class AlertThresholds {
   const AlertThresholds({
     this.cpuTempWarnC = 85,
     this.volumeUsedWarnPercent = 90,
+    this.indexersFailingPercent = 80,
+    this.indexersFailingForMinutes = 15,
   });
 
   final double cpuTempWarnC;
   final double volumeUsedWarnPercent;
+
+  /// Discord "indexers down" alert: the share of enabled Prowlarr indexers
+  /// that must be failing...
+  final double indexersFailingPercent;
+
+  /// ...continuously for this many minutes.
+  final int indexersFailingForMinutes;
 }
 
 /// `auth:` settings.
@@ -303,6 +312,8 @@ final class PolicyConfig {
       r.checkKeys(a, 'alerts.', const {
         'cpuTempWarnC',
         'volumeUsedWarnPercent',
+        'indexersFailingPercent',
+        'indexersFailingForMinutes',
       });
       alerts = AlertThresholds(
         cpuTempWarnC:
@@ -310,6 +321,24 @@ final class PolicyConfig {
         volumeUsedWarnPercent:
             r.number(a, 'volumeUsedWarnPercent', 'alerts.', min: 1, max: 100) ??
             90,
+        indexersFailingPercent:
+            r.number(
+              a,
+              'indexersFailingPercent',
+              'alerts.',
+              min: 1,
+              max: 100,
+            ) ??
+            80,
+        indexersFailingForMinutes:
+            r.integer(
+              a,
+              'indexersFailingForMinutes',
+              'alerts.',
+              min: 1,
+              max: 1440,
+            ) ??
+            15,
       );
     }
 
