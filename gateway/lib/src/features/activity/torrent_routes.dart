@@ -135,6 +135,7 @@ final class TorrentRoutes {
   /// `GET /torrents/{hash}`.
   Future<Response> detail(ApiRequest req) async {
     final hash = req.pathParam('hash').toLowerCase();
+    await _s.ensureNotPrivate([hash]);
     final qbit = _s.qbit;
     // Read in parallel; a failed snapshot only loses the live fields.
     final viewFuture = _s.maindata.read().then<QbitView?>(
@@ -262,6 +263,7 @@ final class TorrentRoutes {
       }
     }
     final lower = {for (final h in hashes) h.toLowerCase()}.toList();
+    await _s.ensureNotPrivate(lower);
     final form = <String, String>{'hashes': lower.join('|')};
     switch (action) {
       case TorrentAction.delete:
@@ -515,6 +517,7 @@ final class TorrentRoutes {
   /// `PUT /torrents/{hash}/share-limits`.
   Future<Response> shareLimits(ApiRequest req) async {
     final hash = req.pathParam('hash').toLowerCase();
+    await _s.ensureNotPrivate([hash]);
     final b = ActivityBody(await req.jsonBody());
     final mode = b.reqEnum(
       'mode',
@@ -630,6 +633,7 @@ final class TorrentRoutes {
   /// `PUT /torrents/{hash}/files/priority`.
   Future<Response> filePriority(ApiRequest req) async {
     final hash = req.pathParam('hash').toLowerCase();
+    await _s.ensureNotPrivate([hash]);
     final b = ActivityBody(await req.jsonBody());
     final indexes = b.optIntList('indexes') ?? const [];
     if (indexes.isEmpty || indexes.any((i) => i < 0)) {

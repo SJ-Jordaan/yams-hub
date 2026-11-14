@@ -150,6 +150,12 @@ final class Hub {
       caches: caches,
       configuredAdminUserId: config.jellyfinAdminUserId,
     );
+    final privacy = PrivateContent(
+      settings: config.privateContent,
+      jellyfin: upstreams.jellyfin,
+      caches: caches,
+      clock: clock,
+    );
     final imageCache = ImageDiskCache(
       dir: config.imageCacheDir,
       maxBytes: config.imageCache.maxBytes,
@@ -161,6 +167,7 @@ final class Hub {
       upstreams: upstreams,
       remote: remote,
       seerrIdentity: seerrIdentity,
+      privacy: privacy,
       cache: imageCache,
       clock: clock,
     );
@@ -176,6 +183,7 @@ final class Hub {
       images: images,
       remoteHttp: remote,
       jellyfin: jellyfin,
+      privacy: privacy,
       seerrIdentity: seerrIdentity,
       seerrSettings: seerrSettings,
       health: health,
@@ -206,6 +214,7 @@ final class Hub {
       audit: audit,
       upstreams: upstreams,
       seerrIdentity: seerrIdentity,
+      privacy: privacy,
       images: images,
       clock: clock,
     ).register(router);

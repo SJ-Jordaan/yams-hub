@@ -63,6 +63,11 @@ final class JellystatService {
         if (p.error != null) p.error!,
     ];
     if (failures.length == parts.length) throw failures.first;
+    final privacy = _ctx.privacy;
+    final hiddenItems = await privacy.privateItemIds([
+      for (final i in [4, 5, 6])
+        for (final r in _rows(parts[i].value)) readString(r['Id']),
+    ]);
     return mapWatchStats(
       days: days,
       images: _ctx.images,
@@ -77,6 +82,8 @@ final class JellystatService {
       topClients: parts[8].value,
       topLibraries: parts[9].value,
       partial: failures.isNotEmpty,
+      privacy: privacy.settings,
+      hiddenItems: hiddenItems,
     );
   });
 
@@ -96,10 +103,29 @@ final class JellystatService {
   Future<List<WatchUser>> users() => _users.value(0, () async {
     final body = await _js.getJson('/stats/getAllUserActivity');
     final now = _ctx.clock.now();
-    final users = [
+    final privacy = _ctx.privacy;
+    final rows = [
       if (body is List)
         for (final e in body)
-          if (readMap(e) case final m?) ?mapWatchUser(m, now, _ctx.images),
+          if (readMap(e) case final m?
+              when !privacy.isPrivateUserName(readString(m['UserName'])))
+            m,
+    ];
+    // A user's last watched item may be a private one.
+    final hidden = await privacy.privateItemIds([
+      for (final r in rows) readString(r['NowPlayingItemId']),
+    ]);
+    final users = [
+      for (final m in rows)
+        ?mapWatchUser(
+          hidden.contains(
+                normaliseJellyfinId(readString(m['NowPlayingItemId'])),
+              )
+              ? {...m, 'LastWatched': null}
+              : m,
+          now,
+          _ctx.images,
+        ),
     ];
     users.sort((a, b) {
       final byPlays = b.totalPlays.compareTo(a.totalPlays);
@@ -139,10 +165,24 @@ final class JellystatService {
               query: paging,
             ),
     );
-    final rows = [
+    final privacy = _ctx.privacy;
+    final mine = [
       for (final r in readList(body?['results'], (m) => m))
-        if (userId == null ||
-            normaliseJellyfinId(readString(r['UserId'])) == userId)
+        if ((userId == null ||
+                normaliseJellyfinId(readString(r['UserId'])) == userId) &&
+            !privacy.isPrivateUserName(readString(r['UserName'])))
+          r,
+    ];
+    const itemKeys = ['NowPlayingItemId', 'EpisodeId', 'SeasonId'];
+    final hidden = await privacy.privateItemIds([
+      for (final r in mine)
+        for (final k in itemKeys) readString(r[k]),
+    ]);
+    final rows = [
+      for (final r in mine)
+        if (!itemKeys.any(
+          (k) => hidden.contains(normaliseJellyfinId(readString(r[k]))),
+        ))
           r,
     ];
     final records = [for (final r in rows) ?mapPlaybackRecord(r, _ctx.images)];
@@ -217,11 +257,12 @@ Duration? parsePgInterval(Object? v) {
 /// the per-library cells of one row, keyed by library id.
 Map<String, ({int count, int minutes})> _cells(
   JsonMap row,
-  Map<String, String> idByName,
-) {
+  Map<String, String> idByName, [
+  PrivateContentSettings privacy = PrivateContentSettings.none,
+]) {
   final out = <String, ({int count, int minutes})>{};
   for (final e in row.entries) {
-    if (e.key == 'Key') continue;
+    if (e.key == 'Key' || privacy.isPrivateLibrary(e.key)) continue;
     final cell = readMap(e.value);
     if (cell == null) continue;
     final id = idByName[e.key] ?? e.key;
@@ -233,11 +274,13 @@ Map<String, ({int count, int minutes})> _cells(
   return out;
 }
 
-List<WatchLibrary> _libraries(JsonMap? body) => [
-  for (final l in readList(body?['libraries'], (m) => m))
-    if (readString(l['Id']) case final id?)
-      WatchLibrary(id: id, name: readString(l['Name']) ?? id),
-];
+List<WatchLibrary> _libraries(JsonMap? body, PrivateContentSettings privacy) =>
+    [
+      for (final l in readList(body?['libraries'], (m) => m))
+        if (readString(l['Id']) case final id?
+            when !privacy.isPrivateLibrary(readString(l['Name'])))
+          WatchLibrary(id: id, name: readString(l['Name']) ?? id),
+    ];
 
 List<JsonMap> _rows(Object? v) => readList(v, (m) => m);
 
@@ -246,6 +289,10 @@ List<JsonMap> _rows(Object? v) => readList(v, (m) => m);
 /// The views endpoints report `duration` in **minutes** (a 1559 s play is
 /// `26`), converted to seconds here; every other Jellystat duration is
 /// seconds.
+///
+/// [privacy] drops the private libraries' and users' rows (and their plays
+/// from the totals); [hiddenItems] are the private item ids among the top
+/// lists.
 WatchStats mapWatchStats({
   required int days,
   required ImageUrls images,
@@ -260,13 +307,15 @@ WatchStats mapWatchStats({
   Object? topClients,
   Object? topLibraries,
   bool partial = false,
+  PrivateContentSettings privacy = PrivateContentSettings.none,
+  Set<String> hiddenItems = const {},
 }) {
   final vot = readMap(viewsOverTime);
   final days7 = readMap(byDays);
   final hours = readMap(byHour);
-  var libraries = _libraries(vot);
-  if (libraries.isEmpty) libraries = _libraries(days7);
-  if (libraries.isEmpty) libraries = _libraries(hours);
+  var libraries = _libraries(vot, privacy);
+  if (libraries.isEmpty) libraries = _libraries(days7, privacy);
+  if (libraries.isEmpty) libraries = _libraries(hours, privacy);
   final idByName = {for (final l in libraries) l.name: l.id};
 
   var totalPlays = 0;
@@ -275,7 +324,7 @@ WatchStats mapWatchStats({
   for (final row in _rows(vot?['stats'])) {
     final date = parseJellystatDate(row['Key']);
     if (date == null) continue;
-    final cells = _cells(row, idByName);
+    final cells = _cells(row, idByName, privacy);
     final plays = {for (final e in cells.entries) e.key: e.value.count};
     final secs = {for (final e in cells.entries) e.key: e.value.minutes * 60};
     totalPlays += plays.values.fold(0, (a, b) => a + b);
@@ -294,7 +343,7 @@ WatchStats mapWatchStats({
       if (day == WatchWeekday.unknown) continue;
       byDay[day] =
           (byDay[day] ?? 0) +
-          _cells(row, idByName).values.fold(0, (a, c) => a + c.count);
+          _cells(row, idByName, privacy).values.fold(0, (a, c) => a + c.count);
     }
     weekdays = [
       for (final d in WatchWeekday.values)
@@ -311,7 +360,7 @@ WatchStats mapWatchStats({
       if (h == null || h < 0 || h > 23) continue;
       byH[h] =
           (byH[h] ?? 0) +
-          _cells(row, idByName).values.fold(0, (a, c) => a + c.count);
+          _cells(row, idByName, privacy).values.fold(0, (a, c) => a + c.count);
     }
     hourly = [
       for (var h = 0; h < 24; h++) WatchHourPlays(hour: h, plays: byH[h] ?? 0),
@@ -322,7 +371,8 @@ WatchStats mapWatchStats({
 
   List<WatchTopItem> top(Object? v) => [
     for (final r in _rows(v))
-      if (normaliseJellyfinId(readString(r['Id'])) case final id?)
+      if (normaliseJellyfinId(readString(r['Id'])) case final id?
+          when !hiddenItems.contains(id))
         WatchTopItem(
           id: id,
           name: readString(r['Name']) ?? '',
@@ -334,11 +384,12 @@ WatchStats mapWatchStats({
 
   final libs = [
     for (final r in _rows(topLibraries))
-      WatchTopLibrary(
-        id: readString(r['Id']) ?? '',
-        name: readString(r['Name']) ?? '',
-        plays: readInt(r['Plays']) ?? 0,
-      ),
+      if (!privacy.isPrivateLibrary(readString(r['Name'])))
+        WatchTopLibrary(
+          id: readString(r['Id']) ?? '',
+          name: readString(r['Name']) ?? '',
+          plays: readInt(r['Plays']) ?? 0,
+        ),
   ];
   if (vot == null) {
     totalPlays = libs.fold(0, (a, l) => a + l.plays);
@@ -361,7 +412,8 @@ WatchStats mapWatchStats({
     topSeries: top(topSeries),
     popularSeries: [
       for (final r in _rows(popularSeries))
-        if (normaliseJellyfinId(readString(r['Id'])) case final id?)
+        if (normaliseJellyfinId(readString(r['Id'])) case final id?
+            when !hiddenItems.contains(id))
           WatchPopularItem(
             id: id,
             name: readString(r['Name']) ?? '',
@@ -371,11 +423,12 @@ WatchStats mapWatchStats({
     ],
     topUsers: [
       for (final r in _rows(topUsers))
-        WatchTopUser(
-          userId: readString(r['UserId']) ?? '',
-          name: readString(r['Name']) ?? '',
-          plays: readInt(r['Plays']) ?? 0,
-        ),
+        if (!privacy.isPrivateUser(readString(r['Name'])))
+          WatchTopUser(
+            userId: readString(r['UserId']) ?? '',
+            name: readString(r['Name']) ?? '',
+            plays: readInt(r['Plays']) ?? 0,
+          ),
     ],
     topClients: [
       for (final r in _rows(topClients))

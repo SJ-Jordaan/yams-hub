@@ -22,6 +22,7 @@ final class QbitView {
     required this.tags,
     required this.updatedAt,
     required this.stale,
+    this.hiddenHashes = const {},
   });
 
   /// Raw torrents keyed by lower-case hash.
@@ -35,6 +36,10 @@ final class QbitView {
 
   /// The last tick failed (or the first tick did not answer in time).
   final bool stale;
+
+  /// Hashes of the torrents in a private category (`PRIVATE_QBIT_CATEGORIES`),
+  /// left out of [torrents].
+  final Set<String> hiddenHashes;
 
   /// Hashes qBittorrent flags with `has_tracker_error`.
   Iterable<String> trackerErrorFlagged() => [
@@ -205,14 +210,42 @@ final class QbitMaindata {
   /// successful tick).
   QbitView? peek() => _loaded ? view(stale: _lastError != null) : null;
 
-  QbitView view({required bool stale}) => QbitView(
-    torrents: Map.unmodifiable(_torrents),
-    serverState: Map.unmodifiable(_serverState),
-    categories: Map.unmodifiable(_categories),
-    tags: List.unmodifiable(_tags),
-    updatedAt: _updatedAt ?? _ctx.clock.now(),
-    stale: stale,
-  );
+  /// The snapshot without the torrents and categories that are private
+  /// (`PRIVATE_QBIT_CATEGORIES`). The global speeds stay as they are.
+  QbitView view({required bool stale}) {
+    final privacy = _ctx.config.privateContent;
+    if (!privacy.hasCategories) {
+      return QbitView(
+        torrents: Map.unmodifiable(_torrents),
+        serverState: Map.unmodifiable(_serverState),
+        categories: Map.unmodifiable(_categories),
+        tags: List.unmodifiable(_tags),
+        updatedAt: _updatedAt ?? _ctx.clock.now(),
+        stale: stale,
+      );
+    }
+    final torrents = <String, JsonMap>{};
+    final hidden = <String>{};
+    for (final e in _torrents.entries) {
+      if (privacy.isPrivateCategory(readString(e.value['category']))) {
+        hidden.add(e.key);
+      } else {
+        torrents[e.key] = e.value;
+      }
+    }
+    return QbitView(
+      torrents: Map.unmodifiable(torrents),
+      serverState: Map.unmodifiable(_serverState),
+      categories: Map.unmodifiable({
+        for (final e in _categories.entries)
+          if (!privacy.isPrivateCategory(e.key)) e.key: e.value,
+      }),
+      tags: List.unmodifiable(_tags),
+      updatedAt: _updatedAt ?? _ctx.clock.now(),
+      stale: stale,
+      hiddenHashes: Set.unmodifiable(hidden),
+    );
+  }
 
   /// Runs a tick now (after a write) and waits for it (at most 2 s).
   Future<void> refresh() async {

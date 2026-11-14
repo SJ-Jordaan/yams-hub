@@ -209,6 +209,13 @@ Future<int> runCheckConfig(
   out.writeln(
     'Discord alerts: ${config.discordAlertWebhookUrl == null ? 'off (DISCORD_ALERT_WEBHOOK_URL ${config.sources.containsKey('DISCORD_ALERT_WEBHOOK_URL') ? 'invalid or empty' : 'not set'})' : 'on (${_sourceOf(config, 'DISCORD_ALERT_WEBHOOK_URL')})'}',
   );
+  final pc = config.privateContent;
+  out.writeln(
+    'Private content: ${!pc.any ? 'none hidden' : 'hidden: ${pc.jellyfinLibraries.length} Jellyfin libraries, '
+              '${pc.jellyfinUsers.length} Jellyfin users, '
+              '${pc.qbitCategories.length} qBittorrent categories, '
+              'Prowlarr tag ${pc.hasProwlarrTag ? 'set' : 'not set'}'}',
+  );
   final h = hasher ?? PasswordHasher(iterations: config.auth.pbkdf2Iterations);
   final took = await h.autoTune();
   out.writeln(

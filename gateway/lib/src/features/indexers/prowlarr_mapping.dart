@@ -45,7 +45,12 @@ final class ProwlarrSnapshot {
     required this.statuses,
     required this.tags,
     required this.health,
+    this.hiddenIds = const {},
   });
+
+  /// Ids of the indexers carrying the private tag (`PRIVATE_PROWLARR_TAG`),
+  /// left out of [indexers], [statuses] and [health].
+  final Set<int> hiddenIds;
 
   /// Raw `GET /api/v1/indexer` objects.
   final List<JsonMap> indexers;
@@ -124,6 +129,52 @@ List<HealthMessage> parseHealth(Object? body) => [
       wikiUrl: readString(h['wikiUrl']),
     ),
 ];
+
+/// [snapshot] without the indexers tagged [privateTag] (any case): they
+/// leave the indexer list, the statuses and every health message that names
+/// one of them. Unchanged when [privateTag] is null.
+ProwlarrSnapshot withoutPrivateIndexers(
+  ProwlarrSnapshot snapshot,
+  String? privateTag,
+) {
+  final tag = privateTag?.trim().toLowerCase();
+  if (tag == null || tag.isEmpty) return snapshot;
+  final tagIds = {
+    for (final e in snapshot.tags.entries)
+      if (e.value.trim().toLowerCase() == tag) e.key,
+  };
+  final hidden = <int>{};
+  final names = <String>[];
+  final kept = <JsonMap>[];
+  for (final raw in snapshot.indexers) {
+    final id = readInt(raw['id']);
+    final tags = [
+      for (final t in raw['tags'] is List ? raw['tags'] as List : const [])
+        ?readInt(t),
+    ];
+    if (id != null && tags.any(tagIds.contains)) {
+      hidden.add(id);
+      final name = readString(raw['name'])?.trim();
+      if (name != null && name.isNotEmpty) names.add(name.toLowerCase());
+    } else {
+      kept.add(raw);
+    }
+  }
+  if (hidden.isEmpty) return snapshot;
+  return ProwlarrSnapshot(
+    indexers: kept,
+    statuses: {
+      for (final e in snapshot.statuses.entries)
+        if (!hidden.contains(e.key)) e.key: e.value,
+    },
+    tags: snapshot.tags,
+    health: [
+      for (final h in snapshot.health)
+        if (!names.any(h.message.toLowerCase().contains)) h,
+    ],
+    hiddenIds: hidden,
+  );
+}
 
 /// `GET /api/v1/indexerstats` → stats by indexer id.
 Map<int, IndexerStats> parseStats(Object? body) {

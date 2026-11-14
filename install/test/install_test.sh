@@ -524,6 +524,35 @@ test_discord_webhook_must_be_a_discord_url() {
   check 'nothing written' test ! -e "$yams/yams-hub/secrets/yams-hub.env"
 }
 
+test_private_content_from_answers_kept_and_cleared() {
+  install <<<"$(first_answers)"
+  check 'exit 0' test "$status" -eq 0
+  check 'not set by default' not_contains "$(hubfile secrets/yams-hub.env)" PRIVATE_
+  check 'never asked' not_contains "$out" PRIVATE_JELLYFIN
+
+  answers "$work/answers" "PRIVATE_JELLYFIN_LIBRARIES='Adult, Other'" PRIVATE_QBIT_CATEGORIES=whisparr \
+    PRIVATE_PROWLARR_TAG=private PRIVATE_JELLYFIN_USERS=
+  install --answers "$work/answers" </dev/null
+  check 'answers ok' test "$status" -eq 0
+  local env
+  env=$(hubfile secrets/yams-hub.env)
+  check 'libraries' grep -qx "PRIVATE_JELLYFIN_LIBRARIES='Adult, Other'" <<<"$env"
+  check 'categories' grep -qx "PRIVATE_QBIT_CATEGORIES='whisparr'" <<<"$env"
+  check 'tag' grep -qx "PRIVATE_PROWLARR_TAG='private'" <<<"$env"
+  check 'empty answer skips' not_contains "$env" PRIVATE_JELLYFIN_USERS
+
+  install </dev/null
+  check 're-run ok' test "$status" -eq 0
+  check 're-run keeps them' grep -qx "PRIVATE_QBIT_CATEGORIES='whisparr'" <<<"$(hubfile secrets/yams-hub.env)"
+
+  answers "$work/answers" PRIVATE_QBIT_CATEGORIES=-
+  install --answers "$work/answers" </dev/null
+  check 'clear ok' test "$status" -eq 0
+  env=$(hubfile secrets/yams-hub.env)
+  check '- clears it' not_contains "$env" PRIVATE_QBIT_CATEGORIES
+  check 'others kept' grep -qx "PRIVATE_PROWLARR_TAG='private'" <<<"$env"
+}
+
 test_uninstall_keeps_data_and_purge_asks() {
   install <<<"$(first_answers)"
   install --uninstall </dev/null

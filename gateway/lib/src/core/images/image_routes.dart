@@ -16,6 +16,7 @@ import '../http/api_exception.dart';
 import '../http/api_request.dart';
 import '../http/api_response.dart';
 import '../http/api_router.dart';
+import '../services/private_content.dart';
 import '../services/seerr_identity.dart';
 import '../upstream/remote_fetcher.dart';
 import '../upstream/upstream_client.dart';
@@ -83,6 +84,7 @@ final class ImageService {
     required Upstreams upstreams,
     required this._remote,
     required SeerrIdentityResolver seerrIdentity,
+    required this._privacy,
     required this.cache,
     required Clock clock,
   }) : _config = config,
@@ -97,6 +99,7 @@ final class ImageService {
   final Upstreams _up;
   final RemoteFetcher _remote;
   final SeerrIdentityResolver _seerr;
+  final PrivateContent _privacy;
   final ImageDiskCache cache;
   final RemoteEntryLimiter _limiter;
   final _slots = _FetchSlots(8);
@@ -152,6 +155,7 @@ final class ImageService {
   }
 
   Future<Response> _serve(ApiRequest req, ImageSpec spec) async {
+    await _refusePrivate(spec);
     final key = spec.cacheKey;
     final cached = await cache.read(key);
     final stale =
@@ -185,6 +189,20 @@ final class ImageService {
       fetched.contentType,
       ImageDiskCache.hashOf(key),
     );
+  }
+
+  /// A private Jellyfin item or user is "not found", cached or not
+  /// (`PRIVATE_JELLYFIN_LIBRARIES` / `PRIVATE_JELLYFIN_USERS`).
+  Future<void> _refusePrivate(ImageSpec spec) async {
+    final privacy = _privacy;
+    final private = switch (spec) {
+      JellyfinImageSpec() when privacy.hidesLibraries =>
+        await privacy.isPrivateItem(spec.itemId),
+      JellyfinUserImageSpec() when privacy.hidesUsers =>
+        (await privacy.userIds()).contains(normaliseJellyfinId(spec.userId)),
+      _ => false,
+    };
+    if (private) throw ApiException.notFound('Image not found.');
   }
 
   Future<_Fetched> _singleFlight(String key, Future<_Fetched> Function() f) {

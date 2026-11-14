@@ -107,6 +107,37 @@ EMPTY=''
       expect(c.hostDiskDevice, 'dm-0');
     });
 
+    test('PRIVATE_* settings: unset hides nothing', () {
+      final c = ConfigLoader.load({});
+      expect(c.privateContent.any, isFalse);
+      expect(c.privateContent.isPrivateLibrary('Adult'), isFalse);
+      expect(c.privateContent.isPrivateCategory('whisparr'), isFalse);
+      expect(c.privateContent.isPrivateTag('private'), isFalse);
+      final empty = ConfigLoader.load({
+        'PRIVATE_JELLYFIN_LIBRARIES': ' , ',
+        'PRIVATE_PROWLARR_TAG': '  ',
+      });
+      expect(empty.privateContent.any, isFalse);
+    });
+
+    test('PRIVATE_* settings: comma lists, any case, env or file', () {
+      final c = ConfigLoader.load({
+        'PRIVATE_JELLYFIN_LIBRARIES': 'Adult, Other ',
+        'PRIVATE_QBIT_CATEGORIES': 'whisparr',
+        'PRIVATE_PROWLARR_TAG': 'Private',
+      }, secretsFileContents: "PRIVATE_JELLYFIN_USERS='Secret User'\n");
+      final pc = c.privateContent;
+      expect(pc.jellyfinLibraries, {'adult', 'other'});
+      expect(pc.isPrivateLibrary('ADULT'), isTrue);
+      expect(pc.isPrivateLibrary('Movies'), isFalse);
+      expect(pc.isPrivateUser('secret user'), isTrue);
+      expect(pc.isPrivateCategory('Whisparr'), isTrue);
+      expect(pc.isPrivateCategory('radarr'), isFalse);
+      expect(pc.isPrivateTag('PRIVATE'), isTrue);
+      expect(pc.isPrivateTag('flaresolverr'), isFalse);
+      expect(c.warnings, isEmpty, reason: 'not secrets');
+    });
+
     test('HOST_VOLUME_MOUNT and HOST_DISK_DEVICE describe a generic host', () {
       final c = ConfigLoader.load({
         'HOST_VOLUME_MOUNT': '/srv/media',
@@ -348,6 +379,18 @@ imageCache:
 
       final on = await run("DISCORD_ALERT_WEBHOOK_URL='$good'\n");
       expect(on, contains('Discord alerts: on (file)'));
+      expect(on, contains('Private content: none hidden'));
+      final hidden = await run(
+        "PRIVATE_JELLYFIN_LIBRARIES='Adult,Other'\nPRIVATE_PROWLARR_TAG='p'\n",
+      );
+      expect(
+        hidden,
+        contains(
+          'Private content: hidden: 2 Jellyfin libraries, 0 Jellyfin users, '
+          '0 qBittorrent categories, Prowlarr tag set',
+        ),
+      );
+      expect(hidden, isNot(contains('Adult')), reason: 'names stay private');
       expect(on, isNot(contains(token)));
       final off = await run(null);
       expect(

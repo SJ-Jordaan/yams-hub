@@ -92,8 +92,9 @@ final class JellyfinService {
       ];
     });
     final serverId = await _ctx.jellyfin.serverId();
+    final visible = await publicSessions(res.value);
     final sessions = [
-      for (final s in res.value)
+      for (final s in visible)
         ?mapSession(
           s,
           images: _ctx.images,
@@ -114,6 +115,29 @@ final class JellyfinService {
       stale: res.stale,
       error: res.error,
     );
+  }
+
+  /// [sessions] without those of private users or playing a private item
+  /// (`PRIVATE_JELLYFIN_USERS` / `PRIVATE_JELLYFIN_LIBRARIES`).
+  Future<List<JsonMap>> publicSessions(List<JsonMap> sessions) async {
+    final privacy = _ctx.privacy;
+    if (!privacy.hidesUsers && !privacy.hidesLibraries) return sessions;
+    final byUser = [
+      for (final s in sessions)
+        if (!privacy.isPrivateUserName(readString(s['UserName']))) s,
+    ];
+    if (!privacy.hidesLibraries) return byUser;
+    final items = [for (final s in byUser) ?readMap(s['NowPlayingItem'])];
+    final public = Set<JsonMap>.identity()
+      ..addAll(await privacy.withoutPrivateItems(items));
+    return [
+      for (final s in byUser)
+        if (readMap(s['NowPlayingItem']) case final item?
+            when public.contains(item))
+          s
+        else if (readMap(s['NowPlayingItem']) == null)
+          s,
+    ];
   }
 
   /// `HardwareAccelerationType` of `/System/Configuration/encoding` (cache
@@ -164,6 +188,7 @@ final class JellyfinService {
     required String sessionId,
     Object? body,
   }) async {
+    await _ensureVisibleSession(sessionId);
     try {
       final r = await _jf.send(method, path, jsonBody: body);
       if (r.status == 404) {
@@ -174,6 +199,31 @@ final class JellyfinService {
       throw e.toApiException();
     } finally {
       _sessions.clear();
+    }
+  }
+
+  /// A session the hub does not show is "ended" (private content).
+  Future<void> _ensureVisibleSession(String sessionId) async {
+    final privacy = _ctx.privacy;
+    if (!privacy.hidesUsers && !privacy.hidesLibraries) return;
+    final List<JsonMap> raw;
+    try {
+      final body = await _jf.getJson(
+        '/Sessions',
+        query: {'activeWithinSeconds': 960},
+      );
+      raw = [
+        if (body is List)
+          for (final s in body) ?readMap(s),
+      ];
+    } on UpstreamException catch (e) {
+      throw e.toApiException();
+    }
+    final visible = await publicSessions(raw);
+    if (!visible.any(
+      (s) => readString(s['Id'])?.toLowerCase() == sessionId.toLowerCase(),
+    )) {
+      throw ApiException.notFound('That playback session has ended.');
     }
   }
 
@@ -218,11 +268,20 @@ final class JellyfinService {
       hwAccel(),
     ], eagerError: true);
     final info = readMap(r[0]) ?? const {};
-    final counts = mapCounts(readMap(r[1]) ?? const {});
-    final folders = [
+    final allFolders = [
       if (r[2] case final List<Object?> l)
         for (final f in l) ?readMap(f),
     ];
+    final privacy = _ctx.privacy;
+    final private = privacy.rememberLibraries(allFolders);
+    final folders = [
+      for (final f in allFolders)
+        if (!privacy.settings.isPrivateLibrary(readString(f['Name']))) f,
+    ];
+    var counts = mapCounts(readMap(r[1]) ?? const {});
+    if (private.ids.isNotEmpty) {
+      counts = subtractCounts(counts, await _countsOf(private.ids));
+    }
     final sizes = r[3] as Map<String, ({int? size, int? files})>;
     final libraries = mapLibraries(folders, counts: counts, sizes: sizes);
     final recent = await _recentlyAdded(libraries);
@@ -235,6 +294,38 @@ final class JellyfinService {
       counts: counts,
       libraries: libraries,
       recentlyAdded: recent,
+    );
+  }
+
+  /// The `/Items/Counts` fields of the items under [libraryIds] (one
+  /// `limit=0` query per library and item type).
+  Future<JellyfinCounts> _countsOf(Set<String> libraryIds) async {
+    const types = ['Movie', 'Series', 'Episode', 'Audio', 'MusicAlbum', 'Book'];
+    final totals = await Future.wait([
+      for (final lib in libraryIds)
+        for (final t in types)
+          _jf
+              .getJson(
+                '/Items',
+                query: {
+                  'parentId': lib,
+                  'recursive': true,
+                  'includeItemTypes': t,
+                  'limit': 0,
+                  'enableTotalRecordCount': true,
+                },
+              )
+              .then((b) => (t, readInt(readMap(b)?['TotalRecordCount']) ?? 0)),
+    ], eagerError: true);
+    int sum(String t) =>
+        totals.where((e) => e.$1 == t).fold(0, (a, e) => a + e.$2);
+    return JellyfinCounts(
+      movies: sum('Movie'),
+      series: sum('Series'),
+      episodes: sum('Episode'),
+      songs: sum('Audio'),
+      albums: sum('MusicAlbum'),
+      books: sum('Book'),
     );
   }
 
@@ -270,6 +361,8 @@ final class JellyfinService {
     List<JellyfinLibrary> libraries,
   ) async {
     final serverId = await _ctx.jellyfin.serverId();
+    final privacy = _ctx.privacy;
+    final hides = privacy.hidesLibraries;
     MediaItem? map(JsonMap j) => mapItem(
       j,
       images: _ctx.images,
@@ -299,7 +392,7 @@ final class JellyfinService {
                 'userId': admin,
                 'parentId': lib,
                 'limit': 16,
-                'fields': 'DateCreated',
+                'fields': hides ? 'DateCreated,Path' : 'DateCreated',
                 'enableImageTypes': 'Primary',
                 'imageTypeLimit': 1,
               },
@@ -312,9 +405,11 @@ final class JellyfinService {
         return interleave([
           for (final l in lists)
             [
-              if (l is List)
-                for (final e in l)
-                  if (readMap(e) case final m?) ?map(m),
+              for (final m in await privacy.withoutPrivateItems([
+                if (l is List)
+                  for (final e in l) ?readMap(e),
+              ]))
+                ?map(m),
             ],
         ]).take(16).toList();
       } on UpstreamException catch (e) {
@@ -332,12 +427,18 @@ final class JellyfinService {
           'includeItemTypes': 'Movie,Episode',
           'sortBy': 'DateCreated',
           'sortOrder': 'Descending',
-          'limit': 16,
-          'fields': 'DateCreated,ProviderIds',
+          // Private items are dropped below: ask for more.
+          'limit': hides ? 64 : 16,
+          'fields': hides
+              ? 'DateCreated,ProviderIds,Path,ParentId'
+              : 'DateCreated,ProviderIds',
         },
       ),
     );
-    return [for (final e in readList(body?['Items'], (m) => m)) ?map(e)];
+    final items = await privacy.withoutPrivateItems(
+      readList(body?['Items'], (m) => m),
+    );
+    return [for (final e in items) ?map(e)].take(16).toList();
   }
 
   /// Continue watching and next up for [jellyfinUserId] (cache 60 s). A
@@ -353,12 +454,17 @@ final class JellyfinService {
                 query: {
                   'userId': jellyfinUserId,
                   'limit': 12,
-                  'fields': 'DateCreated',
+                  'fields': _ctx.privacy.hidesLibraries
+                      ? 'DateCreated,Path,ParentId'
+                      : 'DateCreated',
                 },
               ),
             );
+            final items = await _ctx.privacy.withoutPrivateItems(
+              readList(body?['Items'], (m) => m),
+            );
             return [
-              for (final e in readList(body?['Items'], (m) => m))
+              for (final e in items)
                 ?mapItem(
                   e,
                   images: _ctx.images,
@@ -579,6 +685,19 @@ JellyfinCounts mapCounts(JsonMap j) => JellyfinCounts(
   albums: readInt(j['AlbumCount']) ?? 0,
   books: readInt(j['BookCount']) ?? 0,
 );
+
+/// [a] minus [b], never below zero.
+JellyfinCounts subtractCounts(JellyfinCounts a, JellyfinCounts b) {
+  int sub(int x, int y) => x - y < 0 ? 0 : x - y;
+  return JellyfinCounts(
+    movies: sub(a.movies, b.movies),
+    series: sub(a.series, b.series),
+    episodes: sub(a.episodes, b.episodes),
+    songs: sub(a.songs, b.songs),
+    albums: sub(a.albums, b.albums),
+    books: sub(a.books, b.books),
+  );
+}
 
 /// `/Library/VirtualFolders` + Jellystat sizes → libraries. `itemCount` is
 /// filled from [counts] when the library is the only one of its type.
