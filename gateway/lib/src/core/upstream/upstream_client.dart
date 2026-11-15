@@ -424,10 +424,15 @@ class UpstreamClient {
     h.remove('origin');
     h.remove('referer');
 
-    final request = http.Request(method, uri)
-      ..followRedirects = false
-      ..persistentConnection = true
-      ..headers.addAll(h);
+    // Abortable so a timeout really cancels the request: an abandoned one
+    // would hold one of the few per-host connections until the upstream
+    // answers, queueing every later call behind it.
+    final abort = Completer<void>();
+    final request =
+        http.AbortableRequest(method, uri, abortTrigger: abort.future)
+          ..followRedirects = false
+          ..persistentConnection = true
+          ..headers.addAll(h);
     if (body != null) request.bodyBytes = body;
     // bodyBytes sets a text/plain default; restore ours.
     if (contentType != null) request.headers['content-type'] = contentType;
@@ -478,6 +483,7 @@ class UpstreamClient {
     } on UpstreamException {
       rethrow;
     } on TimeoutException {
+      if (!abort.isCompleted) abort.complete();
       throw UpstreamTimeout(service: service, method: method, path: p);
     } on http.ClientException {
       throw UpstreamUnavailable(service: service, method: method, path: p);
@@ -509,12 +515,20 @@ class UpstreamClient {
     };
     await _auth.apply(h);
     if (headers != null) h.addAll(headers);
-    final request = http.Request(method, uri)
-      ..followRedirects = false
-      ..headers.addAll(h);
+    final abort = Completer<void>();
+    final request =
+        http.AbortableRequest(method, uri, abortTrigger: abort.future)
+          ..followRedirects = false
+          ..headers.addAll(h);
     final p = '$pathPrefix$path';
     try {
-      final streamed = await _client.send(request).timeout(connectTimeout);
+      final http.StreamedResponse streamed;
+      try {
+        streamed = await _client.send(request).timeout(connectTimeout);
+      } on TimeoutException {
+        if (!abort.isCompleted) abort.complete();
+        rethrow;
+      }
       if (streamed.statusCode < 200 || streamed.statusCode >= 300) {
         List<int> bytes;
         try {
