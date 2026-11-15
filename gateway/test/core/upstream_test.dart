@@ -464,6 +464,47 @@ void main() {
       }
     });
 
+    // A timed-out request must be aborted, not just abandoned: otherwise it
+    // keeps one of the few per-host connections busy until the upstream
+    // finally answers, and a slow Sonarr backs every later call up behind it.
+    test('a timeout aborts the request (frees its connection)', () async {
+      final hung = _HangingClient();
+      final s = Upstreams(
+        config: ConfigLoader.load(fakes.env()),
+        client: hung,
+        clock: clock,
+      );
+      await expectLater(
+        s.sonarr.getJson(
+          '/api/v3/calendar',
+          timeout: const Duration(milliseconds: 50),
+        ),
+        throwsA(isA<UpstreamTimeout>()),
+      );
+      await Future<void>.delayed(Duration.zero);
+      expect(hung.requests, hasLength(1));
+      expect(hung.requests.single, isA<http.Abortable>());
+      expect(hung.aborted, [true]);
+    });
+
+    test('openStream connect timeout aborts the request', () async {
+      final hung = _HangingClient();
+      final s = Upstreams(
+        config: ConfigLoader.load(fakes.env()),
+        client: hung,
+        clock: clock,
+      );
+      await expectLater(
+        s.sonarr.openStream(
+          '/stream',
+          connectTimeout: const Duration(milliseconds: 50),
+        ),
+        throwsA(isA<UpstreamTimeout>()),
+      );
+      await Future<void>.delayed(Duration.zero);
+      expect(hung.aborted, [true]);
+    });
+
     test('maxBytes aborts the stream', () async {
       var cancelled = false;
       final controller = StreamController<List<int>>(
@@ -777,4 +818,26 @@ void main() {
       }
     });
   });
+}
+
+/// Never answers; records whether each request's abort trigger fired.
+final class _HangingClient extends http.BaseClient {
+  final requests = <http.BaseRequest>[];
+  final aborted = <bool>[];
+
+  @override
+  Future<http.StreamedResponse> send(http.BaseRequest request) {
+    requests.add(request);
+    final i = aborted.length;
+    aborted.add(false);
+    final done = Completer<http.StreamedResponse>();
+    final trigger = request is http.Abortable ? request.abortTrigger : null;
+    trigger?.then((_) {
+      aborted[i] = true;
+      if (!done.isCompleted) {
+        done.completeError(http.RequestAbortedException(request.url));
+      }
+    });
+    return done.future;
+  }
 }
